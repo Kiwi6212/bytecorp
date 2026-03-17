@@ -1474,26 +1474,53 @@ function showTutorialStep() {
 
   // Highlight target
   const targetEl = step.target ? step.target() : null;
+  tooltip.style.transform = 'none';
   if (targetEl) {
     targetEl.classList.add('tut-highlight');
     tutHighlightedEl = targetEl;
 
-    // Position tooltip near target
+    // Position tooltip near target — never overlapping
     const rect = targetEl.getBoundingClientRect();
-    const ttW = 380;
-    const ttH = 150;
+    const gap = 20; // minimum margin between tooltip and element
+    // Render tooltip off-screen first to measure its actual size
+    tooltip.style.left = '-9999px';
+    tooltip.style.top = '-9999px';
+    tooltip.style.maxWidth = '380px';
+    const ttW = tooltip.offsetWidth;
+    const ttH = tooltip.offsetHeight;
 
-    // Try below the element first
-    let top = rect.bottom + 12;
-    let left = rect.left + rect.width / 2 - ttW / 2;
+    const spaceAbove = rect.top;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceLeft = rect.left;
+    const spaceRight = window.innerWidth - rect.right;
 
-    // If below goes off screen, try above
-    if (top + ttH > window.innerHeight - 20) {
-      top = rect.top - ttH - 12;
+    let top, left;
+
+    // Prefer above if enough space, else below, else to the side
+    if (spaceAbove >= ttH + gap + 12) {
+      // Place above
+      top = rect.top - ttH - gap;
+      left = rect.left + rect.width / 2 - ttW / 2;
+    } else if (spaceBelow >= ttH + gap + 12) {
+      // Place below
+      top = rect.bottom + gap;
+      left = rect.left + rect.width / 2 - ttW / 2;
+    } else if (spaceRight >= ttW + gap + 12) {
+      // Place to the right
+      top = rect.top + rect.height / 2 - ttH / 2;
+      left = rect.right + gap;
+    } else if (spaceLeft >= ttW + gap + 12) {
+      // Place to the left
+      top = rect.top + rect.height / 2 - ttH / 2;
+      left = rect.left - ttW - gap;
+    } else {
+      // Fallback: center on screen (no overlap with tall full-height panels)
+      top = window.innerHeight / 2 - ttH / 2;
+      left = window.innerWidth / 2 - ttW / 2;
     }
-    // Clamp horizontal
+
+    // Clamp to viewport
     left = Math.max(12, Math.min(window.innerWidth - ttW - 12, left));
-    // Clamp vertical
     top = Math.max(12, Math.min(window.innerHeight - ttH - 12, top));
 
     tooltip.style.left = left + 'px';
@@ -1528,10 +1555,6 @@ function showTutorialStep() {
     tutWaitHandler = { cleanup: () => clearInterval(interval) };
   }
 
-  // Reset transform for non-centered tooltips
-  if (targetEl) {
-    tooltip.style.transform = 'none';
-  }
 }
 
 function advanceTutorial() {
