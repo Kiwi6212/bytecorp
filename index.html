@@ -87,10 +87,22 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #hack-btn{width:100%;padding:10px;background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.85em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.15s}
 #hack-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
 #hack-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
-#hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden}
+#hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden;transition:border-color 0.3s}
 #hack-minigame.active{display:flex}
+#hack-minigame.hack-fail-flash{border-color:var(--danger);background:rgba(255,0,0,0.08)}
+#hack-minigame.hack-success-flash{border-color:var(--accent);background:rgba(0,255,65,0.08)}
 #hack-prompt{font-size:0.75em;color:var(--accent);margin-bottom:6px}
 #hack-timer{font-size:0.7em;color:var(--danger);margin-bottom:4px}
+/* Antivirus timer bar */
+#av-timer-wrap{margin-bottom:6px;display:none}
+#av-timer-wrap.active{display:block}
+#av-timer-label{font-size:0.65em;margin-bottom:3px;letter-spacing:1px}
+@keyframes avBlink{0%,100%{opacity:1}50%{opacity:0.4}}
+#av-timer-label.critical{animation:avBlink 0.6s infinite}
+#av-timer-bar-bg{height:8px;background:#1a1a2e;border:1px solid #333;overflow:hidden}
+#av-timer-bar{height:100%;width:100%;transition:width 0.2s linear,background 0.3s}
+#hack-result-msg{font-size:0.8em;text-align:center;padding:8px;display:none;letter-spacing:1px}
+#hack-result-msg.active{display:block}
 #hack-commands{flex:1;overflow-y:auto;margin-bottom:6px}
 .cmd-line{font-size:0.7em;padding:2px 0;color:#555}
 .cmd-line.done{color:var(--accent)}
@@ -239,10 +251,15 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div id="hack-target"><span style="color:#555">Scanning for targets...</span></div>
     <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
     <div id="hack-minigame">
+      <div id="av-timer-wrap">
+        <div id="av-timer-label">ANTIVIRUS SCAN: --s remaining</div>
+        <div id="av-timer-bar-bg"><div id="av-timer-bar"></div></div>
+      </div>
       <div id="hack-timer"></div>
       <div id="hack-prompt"></div>
       <div id="hack-commands"></div>
       <div style="display:flex;align-items:center"><span style="color:var(--accent);margin-right:4px">$</span><input id="hack-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
+      <div id="hack-result-msg"></div>
     </div>
     <div id="contract-area"></div>
   </div>
@@ -691,6 +708,10 @@ let hackCmdIndex = 0;
 let hackTimerInterval = null;
 let hackTimeLeft = 0;
 let targetRotateTimer = null;
+let avTimerInterval = null;
+let avTimeLeft = 0;
+let avTimeMax = 0;
+let hackCooldown = false;
 
 function getEffectiveDifficulty(npc) {
   let d = npc.baseDifficulty + Math.floor(npc.securityLevel / 3);
@@ -763,11 +784,11 @@ function renderTarget() {
     <div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
     <div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly ? ' (contract active)' : ''}</div>
     <div class="target-reward">Reward: ~${fmt(reward.data)} DATA, ~${fmt(reward.credits)} CR, +${reward.rep} REP</div>`;
-  btn.disabled = isAlly || hackActive;
+  btn.disabled = isAlly || hackActive || hackCooldown;
 }
 
 function startHack() {
-  if (!currentTarget || hackActive) return;
+  if (!currentTarget || hackActive || hackCooldown) return;
   const n = currentTarget;
   if (n.relation === 'ally' && n.allyExpiry > Date.now()) return;
   hackActive = true;
@@ -785,34 +806,67 @@ function startHack() {
   hackCmds = shuffled.slice(0, Math.min(count, shuffled.length));
   hackCmdIndex = 0;
 
-  hackTimeLeft = diff === 3 ? (n.os === 'Windows' ? 20 : 30) : 0;
+  // Antivirus timer per difficulty
+  const avTimes = [60, 45, 30, 20];
+  avTimeMax = avTimes[diff];
+  avTimeLeft = avTimeMax;
 
-  document.getElementById('hack-minigame').classList.add('active');
+  // Legacy elite timer removed — antivirus handles all difficulties
+  hackTimeLeft = 0;
+  document.getElementById('hack-timer').textContent = '';
+
+  const mg = document.getElementById('hack-minigame');
+  mg.classList.add('active');
+  mg.classList.remove('hack-fail-flash', 'hack-success-flash');
   document.getElementById('hack-btn').disabled = true;
   document.getElementById('hack-prompt').textContent = `Hacking ${n.name}... Type each command:`;
+  document.getElementById('hack-result-msg').classList.remove('active');
   renderHackCmds();
 
   const input = document.getElementById('hack-input');
   input.value = '';
+  input.disabled = false;
   input.focus();
 
-  if (hackTimeLeft > 0) {
-    hackTimerInterval = setInterval(() => {
-      hackTimeLeft--;
-      document.getElementById('hack-timer').textContent = `⏱ ${hackTimeLeft}s remaining`;
-      if (hackTimeLeft <= 0) {
-        clearInterval(hackTimerInterval);
-        hackTimerInterval = null;
-        failHack('Timeout! +15 HEAT');
-        addHeat(15);
-      }
-    }, 1000);
-    document.getElementById('hack-timer').textContent = `⏱ ${hackTimeLeft}s remaining`;
-  } else {
-    document.getElementById('hack-timer').textContent = '';
-  }
+  // Start antivirus countdown
+  const avWrap = document.getElementById('av-timer-wrap');
+  avWrap.classList.add('active');
+  updateAvTimerDisplay();
+
+  avTimerInterval = setInterval(() => {
+    avTimeLeft--;
+    updateAvTimerDisplay();
+    if (avTimeLeft <= 0) {
+      clearInterval(avTimerInterval);
+      avTimerInterval = null;
+      failHack('CONNECTION TERMINATED — Antivirus detected intrusion', 20);
+    }
+  }, 1000);
 
   addLog('Initiating hack on ' + n.name + '...', 'warning');
+}
+
+function updateAvTimerDisplay() {
+  const label = document.getElementById('av-timer-label');
+  const bar = document.getElementById('av-timer-bar');
+  const pct = avTimeMax > 0 ? (avTimeLeft / avTimeMax) * 100 : 0;
+
+  label.textContent = 'ANTIVIRUS SCAN: ' + avTimeLeft + 's remaining';
+
+  bar.style.width = pct + '%';
+  if (pct > 50) {
+    bar.style.background = 'var(--accent)';
+    label.style.color = 'var(--accent)';
+    label.classList.remove('critical');
+  } else if (pct > 20) {
+    bar.style.background = 'var(--warning)';
+    label.style.color = 'var(--warning)';
+    label.classList.remove('critical');
+  } else {
+    bar.style.background = 'var(--danger)';
+    label.style.color = 'var(--danger)';
+    label.classList.add('critical');
+  }
 }
 
 function renderHackCmds() {
@@ -833,19 +887,68 @@ function renderHackCmds() {
   });
 }
 
-function failHack(msg) {
-  hackActive = false;
+function cleanupHackTimers() {
   if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
-  document.getElementById('hack-minigame').classList.remove('active');
-  document.getElementById('hack-btn').disabled = false;
+  if (avTimerInterval) { clearInterval(avTimerInterval); avTimerInterval = null; }
+  document.getElementById('av-timer-wrap').classList.remove('active');
+  document.getElementById('av-timer-label').classList.remove('critical');
+}
+
+function failHack(msg, heatAmount) {
+  hackActive = false;
+  cleanupHackTimers();
+
+  const mg = document.getElementById('hack-minigame');
+  const input = document.getElementById('hack-input');
+  const resultMsg = document.getElementById('hack-result-msg');
+
+  // Disable input
+  input.disabled = true;
+
+  // Show failure message and flash
+  resultMsg.textContent = msg;
+  resultMsg.style.color = 'var(--danger)';
+  resultMsg.classList.add('active');
+  mg.classList.add('hack-fail-flash');
+
+  addHeat(heatAmount || 15);
   addLog('HACK FAILED: ' + msg, 'alert');
+
+  // Trigger cooldown — wait for next target (45s)
+  hackCooldown = true;
+  document.getElementById('hack-btn').disabled = true;
+
+  // Close minigame after 1.5s, then wait for next target rotation
+  setTimeout(() => {
+    mg.classList.remove('active', 'hack-fail-flash');
+    resultMsg.classList.remove('active');
+    input.disabled = false;
+    // Force pick new target after cooldown
+    currentTarget = null;
+    renderTarget();
+    // Cooldown ends when next target appears (45s from original rotation)
+    // But allow manual re-pick after a short delay
+    setTimeout(() => {
+      hackCooldown = false;
+      pickTarget();
+    }, 5000);
+  }, 1500);
 }
 
 function succeedHack() {
   hackActive = false;
-  if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
-  document.getElementById('hack-minigame').classList.remove('active');
-  document.getElementById('hack-btn').disabled = false;
+  cleanupHackTimers();
+
+  const mg = document.getElementById('hack-minigame');
+  const input = document.getElementById('hack-input');
+  const resultMsg = document.getElementById('hack-result-msg');
+
+  // Disable input, show success flash
+  input.disabled = true;
+  resultMsg.textContent = 'ACCESS GRANTED';
+  resultMsg.style.color = 'var(--accent)';
+  resultMsg.classList.add('active');
+  mg.classList.add('hack-success-flash');
 
   const n = currentTarget;
   const reward = getHackReward(n);
@@ -871,7 +974,14 @@ function succeedHack() {
     addLog('⚠ ' + n.name + ' is now HOSTILE — tracers deployed!', 'alert');
   }
 
-  renderTarget();
+  // Close minigame after showing ACCESS GRANTED
+  setTimeout(() => {
+    mg.classList.remove('active', 'hack-success-flash');
+    resultMsg.classList.remove('active');
+    input.disabled = false;
+    document.getElementById('hack-btn').disabled = false;
+    renderTarget();
+  }, 1500);
 }
 
 document.getElementById('hack-input').addEventListener('keydown', (e) => {
@@ -889,14 +999,11 @@ document.getElementById('hack-input').addEventListener('keydown', (e) => {
         renderHackCmds();
       }
     } else {
-      addHeat(5);
-      addLog('Wrong command! +5 HEAT', 'alert');
+      // Wrong command = immediate detection and hack failure
       input.value = '';
       const lines = document.querySelectorAll('.cmd-line');
-      if (lines[hackCmdIndex]) {
-        lines[hackCmdIndex].classList.add('failed');
-        setTimeout(() => { if (lines[hackCmdIndex]) lines[hackCmdIndex].classList.remove('failed'); }, 500);
-      }
+      if (lines[hackCmdIndex]) lines[hackCmdIndex].classList.add('failed');
+      failHack('INTRUSION DETECTED — Wrong command signature', 15);
     }
   }
 });
@@ -1211,7 +1318,9 @@ function stopGame() {
   gameIntervals.forEach(id => clearInterval(id));
   gameIntervals = [];
   if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
+  if (avTimerInterval) { clearInterval(avTimerInterval); avTimerInterval = null; }
   hackActive = false;
+  hackCooldown = false;
   currentTarget = null;
 }
 
