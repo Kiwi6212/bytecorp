@@ -164,6 +164,17 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 /* Raid alert */
 @keyframes raidFlash{0%,100%{background:var(--bg)}50%{background:rgba(255,0,0,0.15)}}
 .raid-flash{animation:raidFlash 0.3s 3}
+/* Tutorial */
+#tutorial-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:8000;pointer-events:none}
+#tutorial-overlay.active{display:block}
+#tutorial-dim{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);pointer-events:auto}
+#tutorial-tooltip{position:absolute;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;max-width:400px;min-width:280px;z-index:8002;pointer-events:auto;box-shadow:0 0 20px rgba(0,255,65,0.15)}
+#tutorial-tooltip .tut-step{font-size:0.65em;color:#555;letter-spacing:2px;margin-bottom:8px}
+#tutorial-tooltip .tut-text{font-size:0.8em;color:var(--text);line-height:1.5;margin-bottom:16px}
+#tutorial-tooltip .tut-btn{padding:8px 24px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
+#tutorial-tooltip .tut-btn:hover{background:rgba(0,255,65,0.1)}
+@keyframes tutGlow{0%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}50%{box-shadow:0 0 15px var(--accent),0 0 30px rgba(0,255,65,0.5)}100%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}}
+.tut-highlight{position:relative;z-index:8001 !important;animation:tutGlow 1.5s ease-in-out infinite;outline:2px solid var(--accent);outline-offset:3px;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -294,6 +305,16 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
   <button id="ipo-restart" onclick="doNewGamePlus()">[ NEW GAME+ ]</button>
 </div>
 
+<!-- Tutorial -->
+<div id="tutorial-overlay">
+  <div id="tutorial-dim"></div>
+  <div id="tutorial-tooltip">
+    <div class="tut-step" id="tut-step-label">STEP 1/8</div>
+    <div class="tut-text" id="tut-text"></div>
+    <button class="tut-btn" id="tut-btn" style="display:none">[ NEXT ]</button>
+  </div>
+</div>
+
 <script>
 // ========== STATE ==========
 let G = {
@@ -309,7 +330,8 @@ let G = {
   totalRep: 0,
   npcs: null,
   npcTimers: {},
-  lastSave: Date.now()
+  lastSave: Date.now(),
+  tutorialDone: false
 };
 
 let gameRunning = false;
@@ -1054,6 +1076,7 @@ function saveGame() {
     dataPower: G.dataPower, bots: G.bots, devs: G.devs, upgrades: G.upgrades,
     prestige: G.prestige, prestigeMulti: G.prestigeMulti,
     totalDataMined: G.totalDataMined, totalHacks: G.totalHacks, totalRep: G.totalRep,
+    tutorialDone: G.tutorialDone,
     npcs: G.npcs ? G.npcs.map(n => ({
       name: n.name, os: n.os, baseDifficulty: n.baseDifficulty,
       securityLevel: n.securityLevel, relation: n.relation,
@@ -1080,6 +1103,7 @@ function applySave(s) {
   G.totalDataMined = s.totalDataMined || 0;
   G.totalHacks = s.totalHacks || 0;
   G.totalRep = s.totalRep || 0;
+  G.tutorialDone = !!s.tutorialDone;
   G._endgameShown = false;
   if (s.npcs && s.npcs.length === 20) {
     G.npcs = s.npcs;
@@ -1138,6 +1162,7 @@ function resetRun() {
   G.prestige = 0;
   G.prestigeMulti = 1;
   G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
+  G.tutorialDone = false;
   G._endgameShown = false;
   G.npcs = null;
 
@@ -1243,12 +1268,183 @@ function newGame() {
   G.prestige = 0;
   G.prestigeMulti = 1;
   G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
+  G.tutorialDone = false;
   G._endgameShown = false;
   initNPCs();
 
   document.getElementById('start-screen').classList.add('hidden');
   document.getElementById('game-container').style.display = 'flex';
   startGameLoops();
+  // Trigger tutorial on new game
+  startTutorial();
+}
+
+// ========== TUTORIAL SYSTEM ==========
+let tutStep = 0;
+let tutActive = false;
+let tutHighlightedEl = null;
+let tutWaitHandler = null;
+
+const TUTORIAL_STEPS = [
+  {
+    target: () => document.getElementById('mine-btn'),
+    text: 'Welcome, operator. Start by mining DATA manually. Click [ MINE DATA ] to begin.',
+    waitFor: 'click-mine'
+  },
+  {
+    target: () => document.getElementById('panel-bots'),
+    text: 'DATA is your main currency. Use it to buy BOTS that mine automatically — even when you\'re not clicking.',
+    waitFor: 'button'
+  },
+  {
+    target: () => {
+      const cards = document.querySelectorAll('#bot-list .item-card');
+      return cards.length > 0 ? cards[0] : document.getElementById('bot-list');
+    },
+    text: 'Buy your first bot to start generating passive DATA/s. Click [ BUY ] on Script Kiddie.',
+    waitFor: 'buy-bot'
+  },
+  {
+    target: () => document.getElementById('panel-hack'),
+    text: 'Every 45 seconds a target appears. Hacking servers gives big DATA + CREDITS + REP rewards — but raises your HEAT.',
+    waitFor: 'button'
+  },
+  {
+    target: () => document.getElementById('heat-container'),
+    text: 'HEAT is your threat level. If it hits 100%, you get RAIDED — losing 30% of your DATA. Buy VPN and Shell Company upgrades to keep it low.',
+    waitFor: 'button'
+  },
+  {
+    target: () => document.getElementById('panel-corp'),
+    text: 'CREDITS fund your corporation. Hire DEVS to generate passive CREDITS/s. You need CREDITS to unlock the best upgrades.',
+    waitFor: 'button'
+  },
+  {
+    target: () => document.getElementById('hack-target'),
+    text: 'Companies are alive. Hack them too often → they become ENEMIES and send tracers that raise your HEAT. Leave them alone → they may offer ALLIANCE contracts.',
+    waitFor: 'button'
+  },
+  {
+    target: null,
+    text: 'You\'re ready, operator. Mine. Hack. Recruit. Dominate. Reach Level 50 to decide ByteCorp\'s fate.',
+    waitFor: 'final',
+    btnText: '[ START HACKING ]'
+  }
+];
+
+function startTutorial() {
+  tutStep = 0;
+  tutActive = true;
+  document.getElementById('tutorial-overlay').classList.add('active');
+  showTutorialStep();
+}
+
+function showTutorialStep() {
+  if (tutStep >= TUTORIAL_STEPS.length) { endTutorial(); return; }
+
+  const step = TUTORIAL_STEPS[tutStep];
+  const overlay = document.getElementById('tutorial-overlay');
+  const tooltip = document.getElementById('tutorial-tooltip');
+  const btn = document.getElementById('tut-btn');
+  const textEl = document.getElementById('tut-text');
+  const labelEl = document.getElementById('tut-step-label');
+
+  // Clear previous highlight
+  if (tutHighlightedEl) {
+    tutHighlightedEl.classList.remove('tut-highlight');
+    tutHighlightedEl = null;
+  }
+  // Remove previous wait handler
+  if (tutWaitHandler) {
+    tutWaitHandler.cleanup();
+    tutWaitHandler = null;
+  }
+
+  labelEl.textContent = 'STEP ' + (tutStep + 1) + '/8';
+  textEl.textContent = step.text;
+
+  // Highlight target
+  const targetEl = step.target ? step.target() : null;
+  if (targetEl) {
+    targetEl.classList.add('tut-highlight');
+    tutHighlightedEl = targetEl;
+
+    // Position tooltip near target
+    const rect = targetEl.getBoundingClientRect();
+    const ttW = 380;
+    const ttH = 150;
+
+    // Try below the element first
+    let top = rect.bottom + 12;
+    let left = rect.left + rect.width / 2 - ttW / 2;
+
+    // If below goes off screen, try above
+    if (top + ttH > window.innerHeight - 20) {
+      top = rect.top - ttH - 12;
+    }
+    // Clamp horizontal
+    left = Math.max(12, Math.min(window.innerWidth - ttW - 12, left));
+    // Clamp vertical
+    top = Math.max(12, Math.min(window.innerHeight - ttH - 12, top));
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  } else {
+    // Center on screen
+    tooltip.style.left = '50%';
+    tooltip.style.top = '50%';
+    tooltip.style.transform = 'translate(-50%, -50%)';
+  }
+
+  // Setup wait condition
+  if (step.waitFor === 'button' || step.waitFor === 'final') {
+    btn.style.display = 'inline-block';
+    btn.textContent = step.btnText || '[ NEXT ]';
+    btn.onclick = () => { advanceTutorial(); };
+  } else if (step.waitFor === 'click-mine') {
+    btn.style.display = 'none';
+    const handler = () => { advanceTutorial(); };
+    document.getElementById('mine-btn').addEventListener('click', handler, { once: true });
+    tutWaitHandler = { cleanup: () => document.getElementById('mine-btn').removeEventListener('click', handler) };
+  } else if (step.waitFor === 'buy-bot') {
+    btn.style.display = 'none';
+    // Poll for bot purchase
+    const origBots = G.bots[0];
+    const interval = setInterval(() => {
+      if (G.bots[0] > origBots) {
+        clearInterval(interval);
+        advanceTutorial();
+      }
+    }, 200);
+    tutWaitHandler = { cleanup: () => clearInterval(interval) };
+  }
+
+  // Reset transform for non-centered tooltips
+  if (targetEl) {
+    tooltip.style.transform = 'none';
+  }
+}
+
+function advanceTutorial() {
+  if (tutWaitHandler) { tutWaitHandler.cleanup(); tutWaitHandler = null; }
+  tutStep++;
+  if (tutStep >= TUTORIAL_STEPS.length) {
+    endTutorial();
+  } else {
+    showTutorialStep();
+  }
+}
+
+function endTutorial() {
+  tutActive = false;
+  if (tutHighlightedEl) {
+    tutHighlightedEl.classList.remove('tut-highlight');
+    tutHighlightedEl = null;
+  }
+  if (tutWaitHandler) { tutWaitHandler.cleanup(); tutWaitHandler = null; }
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  G.tutorialDone = true;
+  saveGame();
 }
 
 // ========== INIT ==========
