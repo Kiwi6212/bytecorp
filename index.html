@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ByteCorp — Idle Hacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--accent:#00ff41;--secondary:#ff0066;--text:#c0c0c0;--panel:#0d0d14;--border:#1a1a2e;--danger:#ff3333;--warning:#ffaa00}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Share Tech Mono',monospace;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+/* Scanlines */
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px)}
+/* Glitch title */
+@keyframes glitch{0%{text-shadow:2px 0 var(--secondary),-2px 0 var(--accent)}20%{text-shadow:-2px 0 var(--secondary),2px 0 var(--accent)}40%{text-shadow:2px -1px var(--secondary),-2px 1px var(--accent)}60%{text-shadow:-1px 2px var(--secondary),1px -2px var(--accent)}80%{text-shadow:2px 0 var(--secondary),-2px 0 var(--accent)}100%{text-shadow:-2px 0 var(--secondary),2px 0 var(--accent)}}
+@keyframes glitchSkew{0%{transform:skew(0deg)}2%{transform:skew(-2deg)}4%{transform:skew(0deg)}98%{transform:skew(0deg)}100%{transform:skew(1deg)}}
+@keyframes flash{0%{color:var(--accent);text-shadow:0 0 8px var(--accent)}100%{color:var(--text);text-shadow:none}}
+.flash{animation:flash 0.3s ease-out}
+/* Header */
+#header{background:#080810;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#header h1{color:var(--accent);font-size:1.4em;animation:glitch 3s infinite,glitchSkew 4s infinite;letter-spacing:3px}
+#prestige-badge{color:var(--secondary);font-size:0.8em;margin-left:8px}
+#level-info{font-size:0.8em;color:var(--warning)}
+#resources{display:flex;gap:24px;align-items:center}
+.res{text-align:center;min-width:100px}
+.res-label{font-size:0.65em;color:#666;letter-spacing:2px}
+.res-value{font-size:1.1em;color:var(--accent)}
+#heat-container{width:120px}
+#heat-bar-bg{background:#1a1a2e;height:14px;border:1px solid #333;position:relative;overflow:hidden}
+#heat-bar{height:100%;background:var(--accent);transition:width 0.3s,background 0.3s;width:0%}
+#heat-bar.danger{background:var(--danger)}
+#heat-text{font-size:0.7em;text-align:center;margin-top:2px}
+/* Main layout */
+#main{display:flex;flex:1;overflow:hidden}
+.panel{border-right:1px solid var(--border);padding:10px;display:flex;flex-direction:column;overflow:hidden}
+.panel:last-child{border-right:none}
+.panel-title{color:var(--accent);font-size:0.85em;letter-spacing:3px;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:8px;text-transform:uppercase}
+#panel-terminal{width:22%;min-width:200px}
+#panel-bots{width:24%;min-width:220px}
+#panel-hack{width:30%;min-width:280px}
+#panel-corp{width:24%;min-width:220px}
+/* Terminal panel */
+#mine-btn{width:100%;padding:16px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:1.1em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.1s}
+#mine-btn:hover{background:rgba(0,255,65,0.1)}
+#mine-btn:active{background:rgba(0,255,65,0.25);transform:scale(0.98)}
+#dps-display{font-size:0.75em;color:#888;margin-bottom:8px;text-align:center}
+#log{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.log-entry{font-size:0.7em;color:var(--accent);opacity:0.85;padding:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log-entry.warning{color:var(--secondary)}
+.log-entry.alert{color:var(--danger)}
+.log-entry.info{color:var(--warning)}
+/* Bot / Dev list */
+.item-list{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.item-list::-webkit-scrollbar{width:4px}
+.item-list::-webkit-scrollbar-thumb{background:var(--border)}
+.item-card{border:1px solid var(--border);padding:8px;margin-bottom:6px;background:rgba(255,255,255,0.01)}
+.item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.item-name{color:var(--accent);font-size:0.8em}
+.item-count{color:var(--warning);font-size:0.75em}
+.item-stats{font-size:0.65em;color:#666;margin-bottom:6px}
+.buy-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.7em;cursor:pointer;transition:all 0.15s}
+.buy-btn:hover:not(:disabled){background:rgba(0,255,65,0.1)}
+.buy-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+/* Hack panel */
+#hack-target{border:1px solid var(--border);padding:10px;margin-bottom:8px;min-height:100px}
+.target-name{font-size:0.9em;color:var(--accent)}
+.target-info{font-size:0.7em;color:#888;margin:4px 0}
+.target-reward{font-size:0.7em;color:var(--warning)}
+#hack-btn{width:100%;padding:10px;background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.85em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.15s}
+#hack-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
+#hack-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+#hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden}
+#hack-minigame.active{display:flex}
+#hack-prompt{font-size:0.75em;color:var(--accent);margin-bottom:6px}
+#hack-timer{font-size:0.7em;color:var(--danger);margin-bottom:4px}
+#hack-commands{flex:1;overflow-y:auto;margin-bottom:6px}
+.cmd-line{font-size:0.7em;padding:2px 0;color:#555}
+.cmd-line.done{color:var(--accent)}
+.cmd-line.current{color:#fff}
+.cmd-line.failed{color:var(--danger)}
+.cmd-tooltip{display:none;position:absolute;background:#111;border:1px solid var(--accent);color:var(--text);font-size:0.65em;padding:4px 8px;z-index:100;max-width:250px;pointer-events:none}
+.cmd-line-wrap{position:relative}
+.cmd-line-wrap:hover .cmd-tooltip{display:block}
+#hack-input{background:transparent;border:none;border-bottom:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;padding:4px;outline:none;width:100%}
+#hack-input::placeholder{color:#333}
+/* Corp panel tabs */
+.tab-bar{display:flex;gap:0;margin-bottom:8px}
+.tab-btn{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#666;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
+.tab-btn.active{color:var(--accent);border-color:var(--accent);background:rgba(0,255,65,0.05)}
+.tab-content{display:none;flex:1;overflow:hidden}
+.tab-content.active{display:flex;flex-direction:column}
+/* Upgrades */
+.upgrade-card{border:1px solid var(--border);padding:8px;margin-bottom:6px}
+.upgrade-card.bought{opacity:0.4;border-color:#1a1a1a}
+.upgrade-name{color:var(--warning);font-size:0.8em}
+.upgrade-desc{font-size:0.65em;color:#666;margin:3px 0}
+.upgrade-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--warning);color:var(--warning);font-family:inherit;font-size:0.7em;cursor:pointer}
+.upgrade-btn:hover:not(:disabled){background:rgba(255,170,0,0.1)}
+.upgrade-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+/* Footer */
+#footer{background:#080810;border-top:1px solid var(--border);padding:6px 16px;display:flex;justify-content:center;gap:16px;flex-shrink:0}
+.footer-btn{background:transparent;border:1px solid #333;color:#666;font-family:inherit;font-size:0.65em;padding:3px 12px;cursor:pointer;letter-spacing:1px}
+.footer-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* Market popup */
+#market-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center}
+#market-overlay.active{display:flex}
+#market-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:350px;max-width:450px}
+#market-popup h2{color:var(--secondary);font-size:1em;margin-bottom:12px;letter-spacing:3px}
+#market-info{font-size:0.75em;color:#888;margin-bottom:12px}
+#market-slider{width:100%;margin:8px 0;accent-color:var(--secondary)}
+#market-amount{font-size:0.8em;color:var(--text);text-align:center;margin-bottom:8px}
+#market-sell-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;cursor:pointer;font-size:0.8em}
+#market-sell-btn:hover{background:rgba(255,0,102,0.1)}
+#market-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#666;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
+#market-btn{display:none;width:100%;padding:6px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.7em;cursor:pointer;margin-top:6px;letter-spacing:1px}
+#market-btn.unlocked{display:block}
+/* Endgame overlay */
+#endgame-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center}
+#endgame-overlay.active{display:flex}
+#endgame-popup{text-align:center;max-width:500px;padding:32px}
+#endgame-popup h2{color:var(--accent);font-size:1.5em;margin-bottom:16px;animation:glitch 2s infinite}
+#endgame-popup p{font-size:0.85em;margin-bottom:20px}
+#endgame-popup .eg-btn{padding:12px 24px;margin:8px;background:transparent;font-family:inherit;font-size:0.9em;cursor:pointer;letter-spacing:2px}
+#btn-ipo{border:2px solid var(--accent);color:var(--accent)}
+#btn-ipo:hover{background:rgba(0,255,65,0.1)}
+#btn-newgame{border:2px solid var(--secondary);color:var(--secondary)}
+#btn-newgame:hover{background:rgba(255,0,102,0.1)}
+/* IPO screen */
+#ipo-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:3000;justify-content:center;align-items:center;flex-direction:column}
+#ipo-overlay.active{display:flex}
+#ipo-overlay h1{color:var(--accent);font-size:2em;animation:glitch 2s infinite;margin-bottom:16px}
+#ipo-overlay p{font-size:0.9em;margin-bottom:8px}
+#ipo-overlay .stat{color:var(--warning)}
+#ipo-restart{margin-top:24px;padding:10px 30px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.9em;cursor:pointer}
+/* Contract notification */
+.contract-notif{background:rgba(0,255,65,0.05);border:1px solid var(--accent);padding:6px 8px;margin-bottom:6px;font-size:0.7em}
+.contract-notif button{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.9em;cursor:pointer;padding:2px 8px;margin-left:6px}
+/* Raid alert */
+@keyframes raidFlash{0%,100%{background:var(--bg)}50%{background:rgba(255,0,0,0.15)}}
+.raid-flash{animation:raidFlash 0.3s 3}
+/* Alliance indicator in log */
+.log-ally{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div style="display:flex;align-items:baseline">
+    <h1>BYTECORP</h1>
+    <span id="prestige-badge"></span>
+  </div>
+  <div id="level-info">LVL 1 — Script Kiddie</div>
+  <div id="resources">
+    <div class="res"><div class="res-label">DATA</div><div class="res-value" id="res-data">0</div></div>
+    <div class="res"><div class="res-label">CREDITS</div><div class="res-value" id="res-credits">0</div></div>
+    <div class="res"><div class="res-label">REP</div><div class="res-value" id="res-rep">0</div></div>
+    <div id="heat-container">
+      <div class="res-label">HEAT</div>
+      <div id="heat-bar-bg"><div id="heat-bar"></div></div>
+      <div id="heat-text">0%</div>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <!-- Terminal -->
+  <div class="panel" id="panel-terminal">
+    <div class="panel-title">// Terminal</div>
+    <button id="mine-btn">[ MINE DATA ]</button>
+    <div id="dps-display">+1 DATA/click | 0.0 DATA/s</div>
+    <div id="market-btn" onclick="openMarket()">[ DARK WEB MARKET ]</div>
+    <div id="log"></div>
+  </div>
+
+  <!-- Bots -->
+  <div class="panel" id="panel-bots">
+    <div class="panel-title">// Bots</div>
+    <div class="item-list" id="bot-list"></div>
+  </div>
+
+  <!-- Hack -->
+  <div class="panel" id="panel-hack">
+    <div class="panel-title">// Hack</div>
+    <div id="hack-target"><span style="color:#555">Scanning for targets...</span></div>
+    <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
+    <div id="hack-minigame">
+      <div id="hack-timer"></div>
+      <div id="hack-prompt"></div>
+      <div id="hack-commands"></div>
+      <div style="display:flex;align-items:center"><span style="color:var(--accent);margin-right:4px">$</span><input id="hack-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
+    </div>
+    <div id="contract-area"></div>
+  </div>
+
+  <!-- Corp -->
+  <div class="panel" id="panel-corp">
+    <div class="panel-title">// Corp</div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('devs')">DEVS</button>
+      <button class="tab-btn" onclick="switchTab('upgrades')">UPGRADES</button>
+    </div>
+    <div class="tab-content active" id="tab-devs">
+      <div class="item-list" id="dev-list"></div>
+    </div>
+    <div class="tab-content" id="tab-upgrades">
+      <div class="item-list" id="upgrade-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="footer">
+  <button class="footer-btn" onclick="saveGame()">[ SAVE ]</button>
+  <button class="footer-btn" onclick="loadGame()">[ LOAD ]</button>
+  <button class="footer-btn" onclick="resetGame()">[ RESET ]</button>
+</div>
+
+<!-- Market -->
+<div id="market-overlay">
+  <div id="market-popup">
+    <h2>// DARK WEB MARKET</h2>
+    <div id="market-info">Exchange rate: 10 DATA → 1 CREDIT (+10 HEAT per transaction)</div>
+    <input type="range" id="market-slider" min="0" max="0" value="0" step="10" oninput="updateMarketDisplay()">
+    <div id="market-amount">0 DATA → 0 CREDITS</div>
+    <button id="market-sell-btn" onclick="sellData()">[ SELL DATA ]</button>
+    <button id="market-close" onclick="closeMarket()">[ CLOSE ]</button>
+  </div>
+</div>
+
+<!-- Endgame -->
+<div id="endgame-overlay">
+  <div id="endgame-popup">
+    <h2>LEVEL 50 — ENDGAME</h2>
+    <p>ByteCorp has reached critical mass. Choose your destiny.</p>
+    <button class="eg-btn" id="btn-ipo" onclick="doIPO()">[ GO LEGIT — IPO ]</button>
+    <button class="eg-btn" id="btn-newgame" onclick="doNewGamePlus()">[ BURN IT ALL — NEW GAME+ ]</button>
+  </div>
+</div>
+
+<!-- IPO -->
+<div id="ipo-overlay">
+  <h1>ByteCorp is now public.</h1>
+  <p>You won. For now.</p>
+  <div id="ipo-stats"></div>
+  <button id="ipo-restart" onclick="doNewGamePlus()">[ NEW GAME+ ]</button>
+</div>
+
+<script>
+// ========== STATE ==========
+let G = {
+  data: 0, credits: 0, rep: 0, heat: 0,
+  dataPower: 1,
+  bots: [0,0,0,0,0,0],
+  devs: [0,0,0,0,0],
+  upgrades: {},
+  prestige: 0,
+  prestigeMulti: 1,
+  totalDataMined: 0,
+  totalHacks: 0,
+  totalRep: 0,
+  npcs: null,
+  npcTimers: {},
+  lastSave: Date.now()
+};
+
+// ========== DEFINITIONS ==========
+const BOTS = [
+  {name:'Script Kiddie', baseCost:10, dps:0.1},
+  {name:'Basic Bot', baseCost:100, dps:1},
+  {name:'Crawler', baseCost:1000, dps:10},
+  {name:'AI Scraper', baseCost:10000, dps:100},
+  {name:'Quantum Miner', baseCost:100000, dps:1000},
+  {name:'God Mode', baseCost:1000000, dps:10000}
+];
+
+const DEVS = [
+  {name:'Intern', baseCost:50, cps:0.5},
+  {name:'Junior Dev', baseCost:500, cps:5},
+  {name:'Senior Dev', baseCost:5000, cps:50},
+  {name:'Lead Dev', baseCost:50000, cps:500},
+  {name:'Rockstar', baseCost:500000, cps:5000}
+];
+
+const UPGRADES = [
+  {id:'keyboard', name:'Better Keyboard', cost:500, currency:'data', desc:'x2 DATA/click'},
+  {id:'vpn', name:'VPN Pro', cost:1000, currency:'data', desc:'HEAT gains reduced 50%'},
+  {id:'shell', name:'Shell Company', cost:5000, currency:'credits', desc:'HEAT -1/min auto'},
+  {id:'darkweb', name:'Dark Web Access', cost:10000, currency:'data', desc:'Unlock dark web market'},
+  {id:'quantum', name:'Quantum CPU', cost:50000, currency:'data', desc:'x3 DATA/s all bots'},
+  {id:'aiassist', name:'AI Assistant', cost:100000, currency:'credits', desc:'x2 CREDITS/s all devs'},
+  {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%'}
+];
+
+const NPC_NAMES = [
+  'NovaTech','MegaCorp','DarkSec','NeuroNet','CyberAxis',
+  'OmniVault','ShadowByte','IronClad','PhantomLink','ZeroCool',
+  'Nexus Prime','VoidStack','TechWraith','DataForge','CryptoPulse',
+  'NeonGrid','SilkRoute','DeepNode','BlackIce','QuantumLeap'
+];
+
+const DIFFICULTIES = ['Easy','Medium','Hard','Elite'];
+
+const COMMANDS = {
+  Linux: {
+    Easy: [
+      {cmd:'nmap 192.168.1.1', tip:'Network scanner — discovers open ports on target'},
+      {cmd:'ls /etc', tip:'List files in /etc configuration directory'},
+      {cmd:'cat /etc/hostname', tip:'Read the system hostname file'},
+      {cmd:'ping target', tip:'Send ICMP echo to check if host is alive'}
+    ],
+    Medium: [
+      {cmd:'ssh root@target', tip:'Open SSH session as root to remote target'},
+      {cmd:'netstat -an', tip:'Show all network connections and listening ports'},
+      {cmd:'cat /etc/passwd', tip:'Read the user account database'},
+      {cmd:'find / -name "*.conf"', tip:'Search entire filesystem for .conf files'}
+    ],
+    Hard: [
+      {cmd:'sudo iptables -L', tip:'List all firewall rules'},
+      {cmd:'grep -r "password" /var/www', tip:'Recursively search web root for passwords'},
+      {cmd:'curl -X POST http://target/api', tip:'Send POST request to target API endpoint'},
+      {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt', tip:'Crack password hashes using rockyou wordlist'}
+    ],
+    Elite: [
+      {cmd:'sudo iptables -L', tip:'List all firewall rules'},
+      {cmd:'grep -r "password" /var/www', tip:'Recursively search web root for passwords'},
+      {cmd:'curl -X POST http://target/api', tip:'Send POST request to target API endpoint'},
+      {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt', tip:'Crack password hashes using rockyou wordlist'},
+      {cmd:'nmap -sV -O target', tip:'Scan target with version and OS detection'},
+      {cmd:'ssh -L 8080:localhost:80 root@target', tip:'SSH tunnel — forward local 8080 to target port 80'},
+      {cmd:'cat /etc/shadow', tip:'Read the shadow password file (hashes)'}
+    ]
+  },
+  Windows: {
+    Easy: [
+      {cmd:'ipconfig', tip:'Display network adapter configuration'},
+      {cmd:'dir C:\\', tip:'List contents of C: drive root'},
+      {cmd:'whoami', tip:'Show current user name'},
+      {cmd:'net user', tip:'List all local user accounts'}
+    ],
+    Medium: [
+      {cmd:'Get-Process', tip:'PowerShell — list all running processes'},
+      {cmd:'netstat -ano', tip:'Show connections with process IDs'},
+      {cmd:'Get-LocalUser', tip:'PowerShell — enumerate local user accounts'},
+      {cmd:'dir C:\\Users', tip:'List user profile directories'}
+    ],
+    Hard: [
+      {cmd:'Get-EventLog -LogName Security', tip:'Read Windows Security event log'},
+      {cmd:'Invoke-WebRequest -Uri http://target', tip:'PowerShell HTTP request to target'},
+      {cmd:'Set-ExecutionPolicy Bypass', tip:'Allow all PowerShell scripts to run'},
+      {cmd:'Get-ADUser -Filter *', tip:'Query Active Directory for all user objects'}
+    ],
+    Elite: [
+      {cmd:'Get-EventLog -LogName Security', tip:'Read Windows Security event log'},
+      {cmd:'Invoke-WebRequest -Uri http://target', tip:'PowerShell HTTP request to target'},
+      {cmd:'Set-ExecutionPolicy Bypass', tip:'Allow all PowerShell scripts to run'},
+      {cmd:'Get-ADUser -Filter *', tip:'Query Active Directory for all user objects'},
+      {cmd:'Get-WmiObject Win32_Service', tip:'Enumerate all Windows services via WMI'},
+      {cmd:'New-PSSession -ComputerName target', tip:'Open remote PowerShell session to target'},
+      {cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords', tip:'Dump credentials from memory'}
+    ]
+  }
+};
+
+const LEVELS = [
+  {lv:1,rep:0,title:'Script Kiddie'},{lv:2,rep:50,title:'Newbie'},{lv:3,rep:150,title:'Curious Cat'},
+  {lv:4,rep:300,title:'Dabbler'},{lv:5,rep:500,title:'Hacker'},{lv:6,rep:800,title:'Phreaker'},
+  {lv:7,rep:1200,title:'Code Monkey'},{lv:8,rep:1800,title:'Net Runner'},{lv:9,rep:2800,title:'Data Thief'},
+  {lv:10,rep:5000,title:'Black Hat'},{lv:11,rep:7500,title:'Exploit Dev'},{lv:12,rep:10000,title:'Zero Day'},
+  {lv:13,rep:15000,title:'Root Access'},{lv:14,rep:20000,title:'Backdoor'},
+  {lv:15,rep:30000,title:'Trojan Horse'},{lv:16,rep:40000,title:'Worm Master'},
+  {lv:17,rep:50000,title:'Ransomware'},{lv:18,rep:65000,title:'Spyware King'},
+  {lv:19,rep:80000,title:'APT Group'},{lv:20,rep:50000,title:'Cyber Mercenary'},
+  {lv:21,rep:120000,title:'Dark Web Lord'},{lv:22,rep:150000,title:'Botnet Commander'},
+  {lv:23,rep:180000,title:'Rootkit Artist'},{lv:24,rep:220000,title:'Kernel Hacker'},
+  {lv:25,rep:270000,title:'Shadow Broker'},{lv:26,rep:320000,title:'Cipher Punk'},
+  {lv:27,rep:380000,title:'Data Overlord'},{lv:28,rep:440000,title:'Net Wraith'},
+  {lv:29,rep:500000,title:'Phantom'},{lv:30,rep:500000,title:'Ghost in the Shell'},
+  {lv:31,rep:700000,title:'Digital Ghost'},{lv:32,rep:900000,title:'Byte Lord'},
+  {lv:33,rep:1200000,title:'Neuro Hacker'},{lv:34,rep:1500000,title:'Quantum Breaker'},
+  {lv:35,rep:2000000,title:'System Crusher'},{lv:36,rep:2500000,title:'The Architect'},
+  {lv:37,rep:3000000,title:'Void Walker'},{lv:38,rep:3500000,title:'Techno Shaman'},
+  {lv:39,rep:4000000,title:'Singularity'},{lv:40,rep:5000000,title:'Shadow Corp'},
+  {lv:41,rep:6000000,title:'The Collective'},{lv:42,rep:8000000,title:'Grid Master'},
+  {lv:43,rep:10000000,title:'Net Sovereign'},{lv:44,rep:13000000,title:'Data God'},
+  {lv:45,rep:17000000,title:'Omega Protocol'},{lv:46,rep:22000000,title:'Final Form'},
+  {lv:47,rep:28000000,title:'Transcendence'},{lv:48,rep:35000000,title:'The One'},
+  {lv:49,rep:42000000,title:'Absolute Zero'},{lv:50,rep:50000000,title:'ENDGAME'}
+];
+
+// Fix level 20 and 30 rep values
+LEVELS[19].rep = 100000;
+LEVELS[29].rep = 600000;
+
+// ========== FORMAT ==========
+function fmt(n) {
+  if (n < 0) n = 0;
+  if (n < 1000) return n < 10 ? n.toFixed(1) : Math.floor(n).toString();
+  const s = ['','K','M','B','T','Q'];
+  const i = Math.min(Math.floor(Math.log10(n) / 3), s.length - 1);
+  return (n / Math.pow(10, i * 3)).toFixed(2) + s[i];
+}
+
+function ts() {
+  const d = new Date();
+  return '[' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') + ':' + String(d.getSeconds()).padStart(2,'0') + ']';
+}
+
+// ========== LOG ==========
+function addLog(msg, cls) {
+  const el = document.getElementById('log');
+  const e = document.createElement('div');
+  e.className = 'log-entry' + (cls ? ' ' + cls : '');
+  e.textContent = ts() + ' ' + msg;
+  el.appendChild(e);
+  while (el.children.length > 5) el.removeChild(el.firstChild);
+}
+
+// ========== NPC INIT ==========
+function initNPCs() {
+  G.npcs = NPC_NAMES.map((name, i) => ({
+    name,
+    os: i % 2 === 0 ? 'Linux' : 'Windows',
+    baseDifficulty: i < 5 ? 0 : i < 10 ? 1 : i < 15 ? 2 : 3,
+    securityLevel: 1 + Math.random() * 2,
+    relation: 'neutral', // neutral, ally, enemy
+    hackCount: 0,
+    lastHackTime: 0,
+    lastInteraction: Date.now(),
+    allyExpiry: 0,
+    tracerExpiry: 0,
+    breachExpiry: 0,
+    breachMulti: 1
+  }));
+}
+
+// ========== RESOURCE DISPLAY ==========
+function updateUI() {
+  const dEl = document.getElementById('res-data');
+  const cEl = document.getElementById('res-credits');
+  const rEl = document.getElementById('res-rep');
+  const oldD = dEl.textContent, oldC = cEl.textContent, oldR = rEl.textContent;
+
+  dEl.textContent = fmt(G.data);
+  cEl.textContent = fmt(G.credits);
+  rEl.textContent = fmt(G.rep);
+
+  if (dEl.textContent !== oldD) flashEl(dEl);
+  if (cEl.textContent !== oldC) flashEl(cEl);
+  if (rEl.textContent !== oldR) flashEl(rEl);
+
+  // Heat
+  const hb = document.getElementById('heat-bar');
+  const ht = document.getElementById('heat-text');
+  const pct = Math.min(100, Math.max(0, G.heat));
+  hb.style.width = pct + '%';
+  hb.className = pct > 70 ? 'danger' : '';
+  ht.textContent = Math.floor(pct) + '%';
+  ht.style.color = pct > 70 ? 'var(--danger)' : 'var(--text)';
+
+  // DPS
+  const dps = getDataPerSec();
+  const cps = getCreditsPerSec();
+  document.getElementById('dps-display').textContent =
+    '+' + fmt(getClickPower()) + ' DATA/click | ' + fmt(dps) + ' DATA/s | ' + fmt(cps) + ' CR/s';
+
+  // Level
+  updateLevel();
+
+  // Market button
+  document.getElementById('market-btn').className = G.upgrades.darkweb ? 'unlocked' : '';
+
+  // Prestige badge
+  if (G.prestige > 0) {
+    document.getElementById('prestige-badge').textContent = ' #' + G.prestige + ' (+' + Math.round((G.prestigeMulti - 1) * 100) + '%)';
+  }
+}
+
+function flashEl(el) {
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+
+// ========== CALCULATIONS ==========
+function getClickPower() {
+  let p = G.dataPower;
+  if (G.upgrades.keyboard) p *= 2;
+  return p;
+}
+
+function getDataPerSec() {
+  let total = 0;
+  for (let i = 0; i < BOTS.length; i++) total += G.bots[i] * BOTS[i].dps;
+  if (G.upgrades.quantum) total *= 3;
+  total *= G.prestigeMulti;
+  return total;
+}
+
+function getCreditsPerSec() {
+  let total = 0;
+  for (let i = 0; i < DEVS.length; i++) total += G.devs[i] * DEVS[i].cps;
+  if (G.upgrades.aiassist) total *= 2;
+  // Ally contracts
+  if (G.npcs) {
+    const now = Date.now();
+    G.npcs.forEach(npc => {
+      if (npc.relation === 'ally' && npc.allyExpiry > now) total += 2;
+    });
+  }
+  return total;
+}
+
+function getBotCost(i) { return Math.floor(BOTS[i].baseCost * Math.pow(1.15, G.bots[i])); }
+function getDevCost(i) { return Math.floor(DEVS[i].baseCost * Math.pow(1.15, G.devs[i])); }
+
+// ========== MINE ==========
+document.getElementById('mine-btn').addEventListener('click', () => {
+  const gain = getClickPower();
+  G.data += gain;
+  G.totalDataMined += gain;
+  addLog('Mined +' + fmt(gain) + ' DATA');
+});
+
+// ========== BOTS ==========
+function renderBots() {
+  const el = document.getElementById('bot-list');
+  el.innerHTML = '';
+  BOTS.forEach((b, i) => {
+    const cost = getBotCost(i);
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `<div class="item-header"><span class="item-name">${b.name}</span><span class="item-count">x${G.bots[i]}</span></div>
+      <div class="item-stats">+${fmt(b.dps)} DATA/s | Cost: ${fmt(cost)} DATA</div>
+      <button class="buy-btn" ${G.data < cost ? 'disabled' : ''} onclick="buyBot(${i})">[ BUY ]</button>`;
+    el.appendChild(card);
+  });
+}
+
+function buyBot(i) {
+  const cost = getBotCost(i);
+  if (G.data >= cost) {
+    G.data -= cost;
+    G.bots[i]++;
+    addLog('Bought ' + BOTS[i].name);
+    renderBots();
+  }
+}
+
+// ========== DEVS ==========
+function renderDevs() {
+  const el = document.getElementById('dev-list');
+  el.innerHTML = '';
+  DEVS.forEach((d, i) => {
+    const cost = getDevCost(i);
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `<div class="item-header"><span class="item-name">${d.name}</span><span class="item-count">x${G.devs[i]}</span></div>
+      <div class="item-stats">+${fmt(d.cps)} CR/s | Cost: ${fmt(cost)} CR</div>
+      <button class="buy-btn" ${G.credits < cost ? 'disabled' : ''} onclick="buyDev(${i})">[ BUY ]</button>`;
+    el.appendChild(card);
+  });
+}
+
+function buyDev(i) {
+  const cost = getDevCost(i);
+  if (G.credits >= cost) {
+    G.credits -= cost;
+    G.devs[i]++;
+    addLog('Hired ' + DEVS[i].name);
+    renderDevs();
+  }
+}
+
+// ========== UPGRADES ==========
+function renderUpgrades() {
+  const el = document.getElementById('upgrade-list');
+  el.innerHTML = '';
+  UPGRADES.forEach(u => {
+    const bought = !!G.upgrades[u.id];
+    const canAfford = u.currency === 'data' ? G.data >= u.cost : G.credits >= u.cost;
+    const card = document.createElement('div');
+    card.className = 'upgrade-card' + (bought ? ' bought' : '');
+    card.innerHTML = `<div class="upgrade-name">${u.name}</div>
+      <div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency === 'data' ? 'DATA' : 'CR'}</div>
+      <button class="upgrade-btn" ${(bought || !canAfford) ? 'disabled' : ''} onclick="buyUpgrade('${u.id}')">${bought ? '[ OWNED ]' : '[ BUY ]'}</button>`;
+    el.appendChild(card);
+  });
+}
+
+function buyUpgrade(id) {
+  const u = UPGRADES.find(x => x.id === id);
+  if (!u || G.upgrades[id]) return;
+  if (u.currency === 'data' && G.data >= u.cost) {
+    G.data -= u.cost;
+  } else if (u.currency === 'credits' && G.credits >= u.cost) {
+    G.credits -= u.cost;
+  } else return;
+  G.upgrades[id] = true;
+  addLog('Upgrade: ' + u.name, 'info');
+  renderUpgrades();
+}
+
+// ========== TABS ==========
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`).classList.add('active');
+}
+
+// ========== HACK SYSTEM ==========
+let currentTarget = null;
+let hackActive = false;
+let hackCmds = [];
+let hackCmdIndex = 0;
+let hackTimerInterval = null;
+let hackTimeLeft = 0;
+let targetRotateTimer = null;
+
+function getEffectiveDifficulty(npc) {
+  let d = npc.baseDifficulty + Math.floor(npc.securityLevel / 3);
+  if (npc.relation === 'enemy') d += 1;
+  return Math.min(3, Math.max(0, d));
+}
+
+function getHackReward(npc) {
+  const diff = getEffectiveDifficulty(npc);
+  const base = [50, 200, 1000, 5000];
+  const credBase = [5, 20, 100, 500];
+  const repBase = [5, 15, 50, 200];
+  let dataR = base[diff] * (1 + npc.securityLevel * 0.1);
+  let credR = credBase[diff];
+  let repR = repBase[diff];
+  if (npc.relation === 'enemy') { dataR *= 1.5; credR *= 1.5; }
+  if (npc.breachExpiry > Date.now()) { dataR *= npc.breachMulti; }
+  return { data: Math.floor(dataR), credits: Math.floor(credR), rep: Math.floor(repR) };
+}
+
+function pickTarget() {
+  if (!G.npcs || hackActive) return;
+  const available = G.npcs.filter(n => n.relation !== 'ally' || n.allyExpiry < Date.now());
+  if (available.length === 0) return;
+  currentTarget = available[Math.floor(Math.random() * available.length)];
+  // Update ally expiry
+  if (currentTarget.relation === 'ally' && currentTarget.allyExpiry < Date.now()) {
+    currentTarget.relation = 'neutral';
+  }
+  renderTarget();
+}
+
+function renderTarget() {
+  const el = document.getElementById('hack-target');
+  const btn = document.getElementById('hack-btn');
+  if (!currentTarget) {
+    el.innerHTML = '<span style="color:#555">Scanning for targets...</span>';
+    btn.disabled = true;
+    return;
+  }
+  const n = currentTarget;
+  const diff = DIFFICULTIES[getEffectiveDifficulty(n)];
+  const statusIcon = n.relation === 'ally' ? '🟢' : n.relation === 'enemy' ? '🔴' : '🟡';
+  const reward = getHackReward(n);
+  const isAlly = n.relation === 'ally' && n.allyExpiry > Date.now();
+  el.innerHTML = `<div class="target-name">${statusIcon} ${n.name}</div>
+    <div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
+    <div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly ? ' (contract active)' : ''}</div>
+    <div class="target-reward">Reward: ~${fmt(reward.data)} DATA, ~${fmt(reward.credits)} CR, +${reward.rep} REP</div>`;
+  btn.disabled = isAlly || hackActive;
+}
+
+function startHack() {
+  if (!currentTarget || hackActive) return;
+  const n = currentTarget;
+  if (n.relation === 'ally' && n.allyExpiry > Date.now()) return;
+  hackActive = true;
+  const diff = getEffectiveDifficulty(n);
+  const diffName = DIFFICULTIES[diff];
+  const pool = COMMANDS[n.os][diffName];
+
+  // Pick commands
+  let count;
+  if (diff === 0) count = 3;
+  else if (diff === 1) count = 4;
+  else if (diff === 2) count = 5;
+  else count = n.os === 'Windows' ? 6 : 7;
+
+  // Shuffle and pick
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  hackCmds = shuffled.slice(0, Math.min(count, shuffled.length));
+  hackCmdIndex = 0;
+
+  // Timer for Elite
+  hackTimeLeft = diff === 3 ? (n.os === 'Windows' ? 20 : 30) : 0;
+
+  // Render
+  document.getElementById('hack-minigame').classList.add('active');
+  document.getElementById('hack-btn').disabled = true;
+  document.getElementById('hack-prompt').textContent = `Hacking ${n.name}... Type each command:`;
+  renderHackCmds();
+
+  const input = document.getElementById('hack-input');
+  input.value = '';
+  input.focus();
+
+  if (hackTimeLeft > 0) {
+    hackTimerInterval = setInterval(() => {
+      hackTimeLeft--;
+      document.getElementById('hack-timer').textContent = `⏱ ${hackTimeLeft}s remaining`;
+      if (hackTimeLeft <= 0) {
+        clearInterval(hackTimerInterval);
+        hackTimerInterval = null;
+        failHack('Timeout! +15 HEAT');
+        addHeat(15);
+      }
+    }, 1000);
+    document.getElementById('hack-timer').textContent = `⏱ ${hackTimeLeft}s remaining`;
+  } else {
+    document.getElementById('hack-timer').textContent = '';
+  }
+
+  addLog('Initiating hack on ' + n.name + '...', 'warning');
+}
+
+function renderHackCmds() {
+  const el = document.getElementById('hack-commands');
+  el.innerHTML = '';
+  hackCmds.forEach((c, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'cmd-line-wrap';
+    const line = document.createElement('div');
+    line.className = 'cmd-line' + (i < hackCmdIndex ? ' done' : i === hackCmdIndex ? ' current' : '');
+    line.textContent = (i < hackCmdIndex ? '✓ ' : i === hackCmdIndex ? '> ' : '  ') + c.cmd;
+    const tip = document.createElement('div');
+    tip.className = 'cmd-tooltip';
+    tip.textContent = c.tip;
+    wrap.appendChild(line);
+    wrap.appendChild(tip);
+    el.appendChild(wrap);
+  });
+}
+
+function failHack(msg) {
+  hackActive = false;
+  if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
+  document.getElementById('hack-minigame').classList.remove('active');
+  document.getElementById('hack-btn').disabled = false;
+  addLog('HACK FAILED: ' + msg, 'alert');
+}
+
+function succeedHack() {
+  hackActive = false;
+  if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
+  document.getElementById('hack-minigame').classList.remove('active');
+  document.getElementById('hack-btn').disabled = false;
+
+  const n = currentTarget;
+  const reward = getHackReward(n);
+  const diff = getEffectiveDifficulty(n);
+  const heatGain = [5, 10, 20, 35][diff];
+
+  G.data += reward.data;
+  G.credits += reward.credits;
+  G.rep += reward.rep;
+  G.totalRep += reward.rep;
+  G.totalHacks++;
+  addHeat(heatGain);
+
+  n.hackCount++;
+  n.lastHackTime = Date.now();
+  n.lastInteraction = Date.now();
+
+  addLog('HACK SUCCESS: +' + fmt(reward.data) + ' DATA, +' + fmt(reward.credits) + ' CR, +' + reward.rep + ' REP', 'info');
+
+  // Enemy check
+  if (n.hackCount >= 3 && n.relation !== 'enemy') {
+    n.relation = 'enemy';
+    n.tracerExpiry = Date.now() + 600000; // 10 min
+    addLog('⚠ ' + n.name + ' is now HOSTILE — tracers deployed!', 'alert');
+  }
+
+  renderTarget();
+}
+
+document.getElementById('hack-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && hackActive) {
+    const input = e.target;
+    const typed = input.value.trim();
+    const expected = hackCmds[hackCmdIndex].cmd;
+
+    if (typed.toLowerCase() === expected.toLowerCase()) {
+      hackCmdIndex++;
+      input.value = '';
+      if (hackCmdIndex >= hackCmds.length) {
+        succeedHack();
+      } else {
+        renderHackCmds();
+      }
+    } else {
+      addHeat(5);
+      addLog('Wrong command! +5 HEAT', 'alert');
+      input.value = '';
+      // Mark current as failed briefly
+      const lines = document.querySelectorAll('.cmd-line');
+      if (lines[hackCmdIndex]) {
+        lines[hackCmdIndex].classList.add('failed');
+        setTimeout(() => { if (lines[hackCmdIndex]) lines[hackCmdIndex].classList.remove('failed'); }, 500);
+      }
+    }
+  }
+});
+
+document.getElementById('hack-btn').addEventListener('click', startHack);
+
+// ========== HEAT ==========
+function addHeat(amount) {
+  let mult = 1;
+  if (G.upgrades.vpn) mult = 0.5;
+  G.heat = Math.min(100, G.heat + amount * mult);
+  if (G.heat >= 100) triggerRaid();
+}
+
+function triggerRaid() {
+  const lossPercent = G.upgrades.legal ? 0.1 : 0.3;
+  const lost = Math.floor(G.data * lossPercent);
+  G.data -= lost;
+  G.heat = 0;
+  addLog('🚨 RAID! Lost ' + fmt(lost) + ' DATA! (' + (lossPercent * 100) + '% penalty)', 'alert');
+  document.body.classList.add('raid-flash');
+  setTimeout(() => document.body.classList.remove('raid-flash'), 1000);
+}
+
+// ========== NPC BEHAVIOR ==========
+function updateNPCs() {
+  if (!G.npcs) return;
+  const now = Date.now();
+
+  G.npcs.forEach(npc => {
+    // Security level increase (+0.1 every 5 min = +0.02/min)
+    npc.securityLevel = Math.min(10, npc.securityLevel + 0.02 / 60);
+
+    // Tracer heat
+    if (npc.relation === 'enemy' && npc.tracerExpiry > now) {
+      G.heat = Math.min(100, G.heat + (0.5 / 60)); // +0.5/min = per tick at 1/s
+      if (G.heat >= 100) triggerRaid();
+    }
+
+    // Ally expiry
+    if (npc.relation === 'ally' && npc.allyExpiry > 0 && npc.allyExpiry < now) {
+      npc.relation = 'neutral';
+      addLog(npc.name + ' contract expired — now neutral');
+    }
+
+    // Breach expiry
+    // (handled in reward calc)
+  });
+}
+
+// Alliance proposals
+function checkAllianceProposals() {
+  if (!G.npcs) return;
+  const now = Date.now();
+  const neutrals = G.npcs.filter(n => n.relation === 'neutral' && (now - n.lastInteraction) > 600000);
+  if (neutrals.length === 0) return;
+  const npc = neutrals[Math.floor(Math.random() * neutrals.length)];
+  npc.lastInteraction = now;
+
+  const area = document.getElementById('contract-area');
+  const div = document.createElement('div');
+  div.className = 'contract-notif';
+  div.innerHTML = `🤝 ${npc.name} offers an alliance contract (+2 CR/s for 5 min) <button onclick="acceptContract('${npc.name}', this.parentElement)">[ ACCEPT ]</button>`;
+  area.appendChild(div);
+  addLog('🤝 ' + npc.name + ' offers a contract', 'info');
+
+  // Auto-remove after 30s
+  setTimeout(() => { if (div.parentElement) div.remove(); }, 30000);
+}
+
+function acceptContract(name, el) {
+  const npc = G.npcs.find(n => n.name === name);
+  if (!npc) return;
+  npc.relation = 'ally';
+  npc.allyExpiry = Date.now() + 300000; // 5 min
+  npc.lastInteraction = Date.now();
+  if (el) el.remove();
+  addLog('✓ Alliance with ' + name + ' — +2 CR/s for 5 min', 'info');
+  renderTarget();
+}
+
+// Random events
+function randomNPCEvent() {
+  if (!G.npcs) return;
+  const npc = G.npcs[Math.floor(Math.random() * G.npcs.length)];
+  const events = [
+    { msg: `⚡ ${npc.name} patched a critical flaw — difficulty +1`, fn: () => { npc.securityLevel = Math.min(10, npc.securityLevel + 1); }},
+    { msg: `🔓 ${npc.name} has a breach — reward x2 for 3 min`, fn: () => { npc.breachExpiry = Date.now() + 180000; npc.breachMulti = 2; }},
+    { msg: `⚔️ ${npc.name} launches an offensive — your HEAT +10`, fn: () => { addHeat(10); }},
+    { msg: `🤝 ${npc.name} seeks a discreet partner — contract available`, fn: () => { checkAllianceProposals(); }},
+    { msg: `💀 ${npc.name} was hacked by a competitor — security -1`, fn: () => { npc.securityLevel = Math.max(1, npc.securityLevel - 1); }}
+  ];
+  const ev = events[Math.floor(Math.random() * events.length)];
+  ev.fn();
+  addLog(ev.msg, 'warning');
+}
+
+// ========== MARKET ==========
+function openMarket() {
+  if (!G.upgrades.darkweb) return;
+  const overlay = document.getElementById('market-overlay');
+  overlay.classList.add('active');
+  const slider = document.getElementById('market-slider');
+  slider.max = Math.floor(G.data / 10) * 10;
+  slider.value = 0;
+  updateMarketDisplay();
+}
+
+function closeMarket() {
+  document.getElementById('market-overlay').classList.remove('active');
+}
+
+function updateMarketDisplay() {
+  const v = parseInt(document.getElementById('market-slider').value);
+  document.getElementById('market-amount').textContent = fmt(v) + ' DATA → ' + fmt(Math.floor(v / 10)) + ' CREDITS';
+}
+
+function sellData() {
+  const v = parseInt(document.getElementById('market-slider').value);
+  if (v <= 0 || G.data < v) return;
+  G.data -= v;
+  G.credits += Math.floor(v / 10);
+  addHeat(10);
+  addLog('Dark Web: sold ' + fmt(v) + ' DATA for ' + fmt(Math.floor(v / 10)) + ' CR (+10 HEAT)', 'warning');
+  closeMarket();
+}
+
+// ========== LEVELS ==========
+function updateLevel() {
+  let current = LEVELS[0];
+  for (const l of LEVELS) {
+    if (G.rep >= l.rep) current = l;
+    else break;
+  }
+  document.getElementById('level-info').textContent = 'LVL ' + current.lv + ' — ' + current.title;
+
+  if (current.lv >= 50 && !G._endgameShown) {
+    G._endgameShown = true;
+    document.getElementById('endgame-overlay').classList.add('active');
+  }
+}
+
+// ========== ENDGAME ==========
+function doIPO() {
+  document.getElementById('endgame-overlay').classList.remove('active');
+  document.getElementById('ipo-overlay').classList.add('active');
+  document.getElementById('ipo-stats').innerHTML =
+    `<p class="stat">Total DATA mined: ${fmt(G.totalDataMined)}</p>
+     <p class="stat">Total hacks: ${G.totalHacks}</p>
+     <p class="stat">Total REP: ${fmt(G.totalRep)}</p>
+     <p class="stat">Prestige level: #${G.prestige}</p>`;
+}
+
+function doNewGamePlus() {
+  G.prestige++;
+  G.prestigeMulti = 1 + G.prestige * 0.25;
+  const prestige = G.prestige;
+  const multi = G.prestigeMulti;
+
+  // Reset
+  G.data = 0; G.credits = 0; G.rep = 0; G.heat = 0;
+  G.dataPower = 1;
+  G.bots = [0,0,0,0,0,0];
+  G.devs = [0,0,0,0,0];
+  G.upgrades = {};
+  G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
+  G.prestige = prestige;
+  G.prestigeMulti = multi;
+  G._endgameShown = false;
+
+  initNPCs();
+
+  document.getElementById('endgame-overlay').classList.remove('active');
+  document.getElementById('ipo-overlay').classList.remove('active');
+
+  addLog('NEW GAME+ #' + G.prestige + ' — +' + Math.round((G.prestigeMulti - 1) * 100) + '% DATA/s bonus', 'info');
+  saveGame();
+  renderAll();
+}
+
+// ========== SAVE / LOAD ==========
+function saveGame() {
+  const save = {
+    data: G.data, credits: G.credits, rep: G.rep, heat: G.heat,
+    dataPower: G.dataPower, bots: G.bots, devs: G.devs, upgrades: G.upgrades,
+    prestige: G.prestige, prestigeMulti: G.prestigeMulti,
+    totalDataMined: G.totalDataMined, totalHacks: G.totalHacks, totalRep: G.totalRep,
+    npcs: G.npcs ? G.npcs.map(n => ({
+      name: n.name, os: n.os, baseDifficulty: n.baseDifficulty,
+      securityLevel: n.securityLevel, relation: n.relation,
+      hackCount: n.hackCount, lastHackTime: n.lastHackTime,
+      lastInteraction: n.lastInteraction, allyExpiry: n.allyExpiry,
+      tracerExpiry: n.tracerExpiry, breachExpiry: n.breachExpiry, breachMulti: n.breachMulti
+    })) : null,
+    lastSave: Date.now()
+  };
+  localStorage.setItem('bytecorp_save', JSON.stringify(save));
+}
+
+function loadGame() {
+  const raw = localStorage.getItem('bytecorp_save');
+  if (!raw) { addLog('No save found'); return; }
+  try {
+    const s = JSON.parse(raw);
+    G.data = s.data || 0;
+    G.credits = s.credits || 0;
+    G.rep = s.rep || 0;
+    G.heat = s.heat || 0;
+    G.dataPower = s.dataPower || 1;
+    G.bots = s.bots || [0,0,0,0,0,0];
+    G.devs = s.devs || [0,0,0,0,0];
+    G.upgrades = s.upgrades || {};
+    G.prestige = s.prestige || 0;
+    G.prestigeMulti = s.prestigeMulti || 1;
+    G.totalDataMined = s.totalDataMined || 0;
+    G.totalHacks = s.totalHacks || 0;
+    G.totalRep = s.totalRep || 0;
+    G._endgameShown = false;
+    if (s.npcs && s.npcs.length === 20) {
+      G.npcs = s.npcs;
+    } else {
+      initNPCs();
+    }
+    addLog('Game loaded');
+    renderAll();
+  } catch(e) {
+    addLog('Load failed: corrupted save', 'alert');
+  }
+}
+
+function resetGame() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  localStorage.removeItem('bytecorp_save');
+  location.reload();
+}
+
+// ========== RENDER ALL ==========
+function renderAll() {
+  renderBots();
+  renderDevs();
+  renderUpgrades();
+  renderTarget();
+  updateUI();
+}
+
+// ========== SHELL COMPANY HEAT DECAY ==========
+function shellCompanyDecay() {
+  if (G.upgrades.shell && G.heat > 0) {
+    G.heat = Math.max(0, G.heat - (1 / 60)); // -1/min, called every second
+  }
+}
+
+// ========== GAME LOOP ==========
+function gameLoop() {
+  // Passive income
+  const dps = getDataPerSec();
+  const cps = getCreditsPerSec();
+  G.data += dps / 10; // Called 10x per second
+  G.credits += cps / 10;
+
+  updateUI();
+}
+
+function slowLoop() {
+  // NPC updates (1/s)
+  updateNPCs();
+  shellCompanyDecay();
+  renderBots();
+  renderDevs();
+  renderUpgrades();
+  renderTarget();
+}
+
+// ========== INIT ==========
+function init() {
+  // Try loading save
+  const raw = localStorage.getItem('bytecorp_save');
+  if (raw) {
+    try {
+      const s = JSON.parse(raw);
+      G.data = s.data || 0;
+      G.credits = s.credits || 0;
+      G.rep = s.rep || 0;
+      G.heat = s.heat || 0;
+      G.dataPower = s.dataPower || 1;
+      G.bots = s.bots || [0,0,0,0,0,0];
+      G.devs = s.devs || [0,0,0,0,0];
+      G.upgrades = s.upgrades || {};
+      G.prestige = s.prestige || 0;
+      G.prestigeMulti = s.prestigeMulti || 1;
+      G.totalDataMined = s.totalDataMined || 0;
+      G.totalHacks = s.totalHacks || 0;
+      G.totalRep = s.totalRep || 0;
+      if (s.npcs && s.npcs.length === 20) {
+        G.npcs = s.npcs;
+      } else {
+        initNPCs();
+      }
+      addLog('Save restored');
+    } catch(e) {
+      initNPCs();
+    }
+  } else {
+    initNPCs();
+  }
+
+  renderAll();
+  addLog('ByteCorp v1.0 initialized');
+  addLog('Welcome, operator.');
+
+  // Game loop — 100ms tick
+  setInterval(gameLoop, 100);
+
+  // Slow loop — 1s tick
+  setInterval(slowLoop, 1000);
+
+  // Target rotation — 45s
+  pickTarget();
+  targetRotateTimer = setInterval(pickTarget, 45000);
+
+  // Alliance proposals — every 2 min
+  setInterval(checkAllianceProposals, 120000);
+
+  // Random NPC event — every 3 min
+  setInterval(randomNPCEvent, 180000);
+
+  // NPC security increase — every 5 min
+  setInterval(() => {
+    if (!G.npcs) return;
+    G.npcs.forEach(n => { n.securityLevel = Math.min(10, n.securityLevel + 0.1); });
+  }, 300000);
+
+  // Auto-save — 10s
+  setInterval(saveGame, 10000);
+}
+
+init();
+</script>
+</body>
+</html>
