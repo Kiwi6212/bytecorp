@@ -720,38 +720,30 @@ function getEffectiveDifficulty(npc) {
 }
 
 // ========== FIXED REWARD FORMULA ==========
+function randInt(min, max) {
+  return Math.floor(min + Math.random() * (max - min + 1));
+}
+
 function getHackReward(npc) {
   const diff = getEffectiveDifficulty(npc);
-  // Reward ranges: [min, max] for DATA and CREDITS per difficulty
-  const dataRange = [
-    [50, 200],     // Easy
-    [200, 800],    // Medium
-    [800, 3000],   // Hard
-    [3000, 10000]  // Elite
-  ];
-  const credRange = [
-    [5, 20],       // Easy
-    [20, 80],      // Medium
-    [80, 300],     // Hard
-    [300, 1000]    // Elite
-  ];
-  const repBase = [5, 15, 50, 200];
+  // Hardcoded safe random ranges per difficulty
+  const dataRange = [[50,200],[200,800],[800,3000],[3000,10000]];
+  const credRange = [[5,20],[20,80],[80,300],[300,1000]];
+  const repRange  = [[3,10],[10,25],[30,80],[100,300]];
 
-  // Scale within range based on securityLevel (1-10)
-  const t = Math.min(1, Math.max(0, (npc.securityLevel - 1) / 9));
-  let dataR = dataRange[diff][0] + (dataRange[diff][1] - dataRange[diff][0]) * t;
-  let credR = credRange[diff][0] + (credRange[diff][1] - credRange[diff][0]) * t;
-  let repR = repBase[diff];
+  let dataR = randInt(dataRange[diff][0], dataRange[diff][1]);
+  let credR = randInt(credRange[diff][0], credRange[diff][1]);
+  let repR  = randInt(repRange[diff][0], repRange[diff][1]);
 
   // Enemy bonus x1.5
-  if (npc.relation === 'enemy') { dataR *= 1.5; credR *= 1.5; }
+  if (npc.relation === 'enemy') { dataR = Math.floor(dataR * 1.5); credR = Math.floor(credR * 1.5); }
   // Breach bonus
-  if (npc.breachExpiry > Date.now()) { dataR *= npc.breachMulti; }
+  if (npc.breachExpiry > Date.now()) { dataR = Math.floor(dataR * npc.breachMulti); }
 
   return {
-    data: Math.max(1, Math.floor(dataR)),
-    credits: Math.max(1, Math.floor(credR)),
-    rep: Math.max(1, Math.floor(repR))
+    data: Math.max(1, dataR),
+    credits: Math.max(1, credR),
+    rep: Math.max(1, repR)
   };
 }
 
@@ -1475,58 +1467,65 @@ function showTutorialStep() {
   // Highlight target
   const targetEl = step.target ? step.target() : null;
   tooltip.style.transform = 'none';
+  tooltip.style.width = '';
+  tooltip.style.maxWidth = '380px';
+
   if (targetEl) {
     targetEl.classList.add('tut-highlight');
     tutHighlightedEl = targetEl;
 
-    // Position tooltip near target — never overlapping
-    const rect = targetEl.getBoundingClientRect();
-    const gap = 20; // minimum margin between tooltip and element
-    // Render tooltip off-screen first to measure its actual size
-    tooltip.style.left = '-9999px';
-    tooltip.style.top = '-9999px';
-    tooltip.style.maxWidth = '380px';
-    const ttW = tooltip.offsetWidth;
-    const ttH = tooltip.offsetHeight;
-
-    const spaceAbove = rect.top;
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceLeft = rect.left;
-    const spaceRight = window.innerWidth - rect.right;
-
-    let top, left;
-
-    // Prefer above if enough space, else below, else to the side
-    if (spaceAbove >= ttH + gap + 12) {
-      // Place above
-      top = rect.top - ttH - gap;
-      left = rect.left + rect.width / 2 - ttW / 2;
-    } else if (spaceBelow >= ttH + gap + 12) {
-      // Place below
-      top = rect.bottom + gap;
-      left = rect.left + rect.width / 2 - ttW / 2;
-    } else if (spaceRight >= ttW + gap + 12) {
-      // Place to the right
-      top = rect.top + rect.height / 2 - ttH / 2;
-      left = rect.right + gap;
-    } else if (spaceLeft >= ttW + gap + 12) {
-      // Place to the left
-      top = rect.top + rect.height / 2 - ttH / 2;
-      left = rect.left - ttW - gap;
+    // Steps 2 and 3 (index 1,2): force top-center to avoid covering BOTS panel buttons
+    if (tutStep === 1 || tutStep === 2) {
+      tooltip.style.position = 'fixed';
+      tooltip.style.top = '40px';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translateX(-50%)';
+      tooltip.style.width = '500px';
+      tooltip.style.maxWidth = '500px';
     } else {
-      // Fallback: center on screen (no overlap with tall full-height panels)
-      top = window.innerHeight / 2 - ttH / 2;
-      left = window.innerWidth / 2 - ttW / 2;
+      // Default positioning for all other steps
+      tooltip.style.position = 'absolute';
+      const rect = targetEl.getBoundingClientRect();
+      const gap = 20;
+      // Measure tooltip
+      tooltip.style.left = '-9999px';
+      tooltip.style.top = '-9999px';
+      const ttW = tooltip.offsetWidth;
+      const ttH = tooltip.offsetHeight;
+
+      const spaceAbove = rect.top;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceRight = window.innerWidth - rect.right;
+      const spaceLeft = rect.left;
+
+      let top, left;
+
+      if (spaceAbove >= ttH + gap + 12) {
+        top = rect.top - ttH - gap;
+        left = rect.left + rect.width / 2 - ttW / 2;
+      } else if (spaceBelow >= ttH + gap + 12) {
+        top = rect.bottom + gap;
+        left = rect.left + rect.width / 2 - ttW / 2;
+      } else if (spaceRight >= ttW + gap + 12) {
+        top = rect.top + rect.height / 2 - ttH / 2;
+        left = rect.right + gap;
+      } else if (spaceLeft >= ttW + gap + 12) {
+        top = rect.top + rect.height / 2 - ttH / 2;
+        left = rect.left - ttW - gap;
+      } else {
+        top = window.innerHeight / 2 - ttH / 2;
+        left = window.innerWidth / 2 - ttW / 2;
+      }
+
+      left = Math.max(12, Math.min(window.innerWidth - ttW - 12, left));
+      top = Math.max(12, Math.min(window.innerHeight - ttH - 12, top));
+
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
     }
-
-    // Clamp to viewport
-    left = Math.max(12, Math.min(window.innerWidth - ttW - 12, left));
-    top = Math.max(12, Math.min(window.innerHeight - ttH - 12, top));
-
-    tooltip.style.left = left + 'px';
-    tooltip.style.top = top + 'px';
   } else {
-    // Center on screen
+    // Center on screen (step 8)
+    tooltip.style.position = 'fixed';
     tooltip.style.left = '50%';
     tooltip.style.top = '50%';
     tooltip.style.transform = 'translate(-50%, -50%)';
