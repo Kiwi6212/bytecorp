@@ -180,7 +180,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #tutorial-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:8000;pointer-events:none}
 #tutorial-overlay.active{display:block}
 #tutorial-dim{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);pointer-events:auto}
-#tutorial-tooltip{position:absolute;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;max-width:400px;min-width:280px;z-index:8002;pointer-events:auto;box-shadow:0 0 20px rgba(0,255,65,0.15)}
+#tutorial-tooltip{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:600px;max-width:600px;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;min-width:280px;z-index:9999;pointer-events:auto;box-shadow:0 0 20px rgba(0,255,65,0.15)}
 #tutorial-tooltip .tut-step{font-size:0.65em;color:#555;letter-spacing:2px;margin-bottom:8px}
 #tutorial-tooltip .tut-text{font-size:0.8em;color:var(--text);line-height:1.5;margin-bottom:16px}
 #tutorial-tooltip .tut-btn{padding:8px 24px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
@@ -1464,72 +1464,22 @@ function showTutorialStep() {
   labelEl.textContent = 'STEP ' + (tutStep + 1) + '/8';
   textEl.textContent = step.text;
 
-  // Highlight target
+  // Highlight target (if any)
   const targetEl = step.target ? step.target() : null;
-  tooltip.style.transform = 'none';
-  tooltip.style.width = '';
-  tooltip.style.maxWidth = '380px';
-
   if (targetEl) {
     targetEl.classList.add('tut-highlight');
     tutHighlightedEl = targetEl;
-
-    // Steps 2 and 3 (index 1,2): force top-center to avoid covering BOTS panel buttons
-    if (tutStep === 1 || tutStep === 2) {
-      tooltip.style.position = 'fixed';
-      tooltip.style.top = '40px';
-      tooltip.style.left = '50%';
-      tooltip.style.transform = 'translateX(-50%)';
-      tooltip.style.width = '500px';
-      tooltip.style.maxWidth = '500px';
-    } else {
-      // Default positioning for all other steps
-      tooltip.style.position = 'absolute';
-      const rect = targetEl.getBoundingClientRect();
-      const gap = 20;
-      // Measure tooltip
-      tooltip.style.left = '-9999px';
-      tooltip.style.top = '-9999px';
-      const ttW = tooltip.offsetWidth;
-      const ttH = tooltip.offsetHeight;
-
-      const spaceAbove = rect.top;
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const spaceRight = window.innerWidth - rect.right;
-      const spaceLeft = rect.left;
-
-      let top, left;
-
-      if (spaceAbove >= ttH + gap + 12) {
-        top = rect.top - ttH - gap;
-        left = rect.left + rect.width / 2 - ttW / 2;
-      } else if (spaceBelow >= ttH + gap + 12) {
-        top = rect.bottom + gap;
-        left = rect.left + rect.width / 2 - ttW / 2;
-      } else if (spaceRight >= ttW + gap + 12) {
-        top = rect.top + rect.height / 2 - ttH / 2;
-        left = rect.right + gap;
-      } else if (spaceLeft >= ttW + gap + 12) {
-        top = rect.top + rect.height / 2 - ttH / 2;
-        left = rect.left - ttW - gap;
-      } else {
-        top = window.innerHeight / 2 - ttH / 2;
-        left = window.innerWidth / 2 - ttW / 2;
-      }
-
-      left = Math.max(12, Math.min(window.innerWidth - ttW - 12, left));
-      top = Math.max(12, Math.min(window.innerHeight - ttH - 12, top));
-
-      tooltip.style.left = left + 'px';
-      tooltip.style.top = top + 'px';
-    }
-  } else {
-    // Center on screen (step 8)
-    tooltip.style.position = 'fixed';
-    tooltip.style.left = '50%';
-    tooltip.style.top = '50%';
-    tooltip.style.transform = 'translate(-50%, -50%)';
   }
+
+  // Tooltip always pinned to bottom center — no dynamic positioning
+  tooltip.style.position = 'fixed';
+  tooltip.style.bottom = '20px';
+  tooltip.style.top = 'auto';
+  tooltip.style.left = '50%';
+  tooltip.style.transform = 'translateX(-50%)';
+  tooltip.style.width = '600px';
+  tooltip.style.maxWidth = '600px';
+  tooltip.style.zIndex = '9999';
 
   // Setup wait condition
   if (step.waitFor === 'button' || step.waitFor === 'final') {
