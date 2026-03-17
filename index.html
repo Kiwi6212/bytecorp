@@ -176,16 +176,16 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 /* Raid alert */
 @keyframes raidFlash{0%,100%{background:var(--bg)}50%{background:rgba(255,0,0,0.15)}}
 .raid-flash{animation:raidFlash 0.3s 3}
-/* Tutorial */
-#tutorial-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99990;pointer-events:none}
-#tutorial-overlay.active{display:block}
-#tutorial-tooltip{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:600px;max-width:600px;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;min-width:280px;z-index:99999;pointer-events:all;box-shadow:0 0 20px rgba(0,255,65,0.15)}
-#tutorial-tooltip .tut-step{font-size:0.65em;color:#555;letter-spacing:2px;margin-bottom:8px}
-#tutorial-tooltip .tut-text{font-size:0.8em;color:var(--text);line-height:1.5;margin-bottom:16px}
-#tutorial-tooltip .tut-btn{padding:8px 24px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
-#tutorial-tooltip .tut-btn:hover{background:rgba(0,255,65,0.1)}
-@keyframes tutGlow{0%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}50%{box-shadow:0 0 15px var(--accent),0 0 30px rgba(0,255,65,0.5)}100%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}}
-.tut-highlight{position:relative;z-index:99995 !important;animation:tutGlow 1.5s ease-in-out infinite;outline:2px solid var(--accent);outline-offset:3px;pointer-events:auto}
+/* Help modal */
+#help-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;justify-content:center;align-items:center}
+#help-overlay.active{display:flex}
+#help-popup{background:var(--panel);border:2px solid var(--accent);padding:24px 28px;max-width:620px;width:90%;max-height:80vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#help-popup::-webkit-scrollbar{width:4px}
+#help-popup::-webkit-scrollbar-thumb{background:var(--border)}
+#help-popup h2{color:var(--accent);font-size:1em;margin-bottom:16px;letter-spacing:3px}
+#help-popup pre{font-family:inherit;font-size:0.75em;color:var(--accent);line-height:1.7;white-space:pre-wrap;margin-bottom:16px}
+#help-close-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px}
+#help-close-btn:hover{background:rgba(0,255,65,0.1)}
 </style>
 </head>
 <body>
@@ -214,6 +214,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
   <div id="header-actions">
     <button class="header-btn" onclick="manualSave()">[ SAVE ]</button>
     <span id="save-flash">SAVED</span>
+    <button class="header-btn" onclick="openHelp()">[ ? ]</button>
     <button class="header-btn" onclick="openMenu()">[ MENU ]</button>
   </div>
   <div id="resources">
@@ -321,12 +322,34 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
   <button id="ipo-restart" onclick="doNewGamePlus()">[ NEW GAME+ ]</button>
 </div>
 
-<!-- Tutorial -->
-<div id="tutorial-overlay">
-  <div id="tutorial-tooltip">
-    <div class="tut-step" id="tut-step-label">STEP 1/8</div>
-    <div class="tut-text" id="tut-text"></div>
-    <button class="tut-btn" id="tut-btn" style="display:none">[ NEXT ]</button>
+<!-- Help -->
+<div id="help-overlay">
+  <div id="help-popup">
+    <h2>// HELP — BYTECORP v1.0</h2>
+    <pre>
+[ DATA ]      Main currency. Mine manually or buy BOTS.
+[ CREDITS ]   Corp currency. Hire DEVS to generate passively.
+[ REP ]       Reputation. Gained by hacking. Unlocks levels.
+[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).
+
+[ MINE DATA ] Click to earn DATA manually.
+[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.
+[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.
+              Wrong command or timeout = HEAT penalty + hack fails.
+[ DEVS ]      Hire developers for passive CREDITS/s.
+[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.
+
+[ NPC STATUS ]
+  🟡 NEUTRAL  — can be hacked
+  🟢 ALLY     — offers contracts, cannot be hacked
+  🔴 ENEMY    — higher rewards but sends tracers (+HEAT/min)
+  Hack same target 3x → becomes ENEMY
+  Leave neutral target alone → may offer ALLIANCE
+
+[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:
+  IPO → go legit and win
+  NEW GAME+ → reset with +25% permanent DATA/s bonus</pre>
+    <button id="help-close-btn" onclick="closeHelp()">[ CLOSE ]</button>
   </div>
 </div>
 
@@ -345,8 +368,7 @@ let G = {
   totalRep: 0,
   npcs: null,
   npcTimers: {},
-  lastSave: Date.now(),
-  tutorialDone: false
+  lastSave: Date.now()
 };
 
 let gameRunning = false;
@@ -700,6 +722,7 @@ function switchTab(tab) {
 
 // ========== HACK SYSTEM ==========
 let currentTarget = null;
+let currentTargetReward = null;
 let hackActive = false;
 let hackCmds = [];
 let hackCmdIndex = 0;
@@ -735,11 +758,6 @@ function getReward(difficulty, securityLevel) {
   return result;
 }
 
-function getHackReward(npc) {
-  const diffName = DIFFICULTIES[getEffectiveDifficulty(npc)];
-  return getReward(diffName, npc.securityLevel);
-}
-
 function pickTarget() {
   if (!G.npcs || hackActive) return;
   const available = G.npcs.filter(n => n.relation !== 'ally' || n.allyExpiry < Date.now());
@@ -748,6 +766,9 @@ function pickTarget() {
   if (currentTarget.relation === 'ally' && currentTarget.allyExpiry < Date.now()) {
     currentTarget.relation = 'neutral';
   }
+  // Cache reward so preview doesn't regenerate random values each render
+  const diffName = DIFFICULTIES[getEffectiveDifficulty(currentTarget)];
+  currentTargetReward = getReward(diffName, currentTarget.securityLevel);
   renderTarget();
 }
 
@@ -763,12 +784,12 @@ function renderTarget() {
   const n = currentTarget;
   const diff = DIFFICULTIES[getEffectiveDifficulty(n)];
   const statusIcon = n.relation === 'ally' ? '🟢' : n.relation === 'enemy' ? '🔴' : '🟡';
-  const reward = getHackReward(n);
+  const r = currentTargetReward || {data: 0, cr: 0, rep: 0};
   const isAlly = n.relation === 'ally' && n.allyExpiry > Date.now();
   el.innerHTML = `<div class="target-name">${statusIcon} ${n.name}</div>
     <div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
     <div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly ? ' (contract active)' : ''}</div>
-    <div class="target-reward">Reward: ~${fmt(reward.data)} DATA, ~${fmt(reward.cr)} CR, +${reward.rep} REP</div>`;
+    <div class="target-reward">Reward: ~${fmt(r.data)} DATA, ~${fmt(r.cr)} CR, +${r.rep} REP</div>`;
   btn.disabled = isAlly || hackActive || hackCooldown;
 }
 
@@ -936,8 +957,9 @@ function succeedHack() {
   mg.classList.add('hack-success-flash');
 
   const n = currentTarget;
-  const reward = getHackReward(n);
   const diff = getEffectiveDifficulty(n);
+  const diffName = DIFFICULTIES[diff];
+  const reward = getReward(diffName, n.securityLevel);
   const heatGain = [5, 10, 20, 35][diff];
 
   G.data += reward.data;
@@ -1168,7 +1190,7 @@ function saveGame() {
     dataPower: G.dataPower, bots: G.bots, devs: G.devs, upgrades: G.upgrades,
     prestige: G.prestige, prestigeMulti: G.prestigeMulti,
     totalDataMined: G.totalDataMined, totalHacks: G.totalHacks, totalRep: G.totalRep,
-    tutorialDone: G.tutorialDone,
+
     npcs: G.npcs ? G.npcs.map(n => ({
       name: n.name, os: n.os, baseDifficulty: n.baseDifficulty,
       securityLevel: n.securityLevel, relation: n.relation,
@@ -1195,7 +1217,7 @@ function applySave(s) {
   G.totalDataMined = s.totalDataMined || 0;
   G.totalHacks = s.totalHacks || 0;
   G.totalRep = s.totalRep || 0;
-  G.tutorialDone = !!s.tutorialDone;
+
   G._endgameShown = false;
   if (s.npcs && s.npcs.length === 20) {
     G.npcs = s.npcs;
@@ -1254,7 +1276,7 @@ function resetRun() {
   G.prestige = 0;
   G.prestigeMulti = 1;
   G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
-  G.tutorialDone = false;
+
   G._endgameShown = false;
   G.npcs = null;
 
@@ -1307,6 +1329,7 @@ function stopGame() {
   hackActive = false;
   hackCooldown = false;
   currentTarget = null;
+  currentTargetReward = null;
 }
 
 function startGameLoops() {
@@ -1362,163 +1385,21 @@ function newGame() {
   G.prestige = 0;
   G.prestigeMulti = 1;
   G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
-  G.tutorialDone = false;
+
   G._endgameShown = false;
   initNPCs();
 
   document.getElementById('start-screen').classList.add('hidden');
   document.getElementById('game-container').style.display = 'flex';
   startGameLoops();
-  // Trigger tutorial on new game
-  startTutorial();
 }
 
-// ========== TUTORIAL SYSTEM ==========
-let tutStep = 0;
-let tutActive = false;
-let tutHighlightedEl = null;
-let tutWaitHandler = null;
-
-const TUTORIAL_STEPS = [
-  {
-    target: () => document.getElementById('mine-btn'),
-    text: 'Welcome, operator. Start by mining DATA manually. Click [ MINE DATA ] to begin.',
-    waitFor: 'click-mine'
-  },
-  {
-    target: () => document.getElementById('panel-bots'),
-    text: 'DATA is your main currency. Use it to buy BOTS that mine automatically — even when you\'re not clicking.',
-    waitFor: 'button'
-  },
-  {
-    target: () => {
-      const cards = document.querySelectorAll('#bot-list .item-card');
-      return cards.length > 0 ? cards[0] : document.getElementById('bot-list');
-    },
-    text: 'Buy your first bot to start generating passive DATA/s. Click [ BUY ] on Script Kiddie.',
-    waitFor: 'buy-bot'
-  },
-  {
-    target: () => document.getElementById('panel-hack'),
-    text: 'Every 45 seconds a target appears. Hacking servers gives big DATA + CREDITS + REP rewards — but raises your HEAT.',
-    waitFor: 'button'
-  },
-  {
-    target: () => document.getElementById('heat-container'),
-    text: 'HEAT is your threat level. If it hits 100%, you get RAIDED — losing 30% of your DATA. Buy VPN and Shell Company upgrades to keep it low.',
-    waitFor: 'button'
-  },
-  {
-    target: () => document.getElementById('panel-corp'),
-    text: 'CREDITS fund your corporation. Hire DEVS to generate passive CREDITS/s. You need CREDITS to unlock the best upgrades.',
-    waitFor: 'button'
-  },
-  {
-    target: () => document.getElementById('hack-target'),
-    text: 'Companies are alive. Hack them too often → they become ENEMIES and send tracers that raise your HEAT. Leave them alone → they may offer ALLIANCE contracts.',
-    waitFor: 'button'
-  },
-  {
-    target: null,
-    text: 'You\'re ready, operator. Mine. Hack. Recruit. Dominate. Reach Level 50 to decide ByteCorp\'s fate.',
-    waitFor: 'final',
-    btnText: '[ START HACKING ]'
-  }
-];
-
-function startTutorial() {
-  tutStep = 0;
-  tutActive = true;
-  document.getElementById('tutorial-overlay').classList.add('active');
-  showTutorialStep();
+// ========== HELP ==========
+function openHelp() {
+  document.getElementById('help-overlay').classList.add('active');
 }
-
-function showTutorialStep() {
-  if (tutStep >= TUTORIAL_STEPS.length) { endTutorial(); return; }
-
-  const step = TUTORIAL_STEPS[tutStep];
-  const overlay = document.getElementById('tutorial-overlay');
-  const tooltip = document.getElementById('tutorial-tooltip');
-  const btn = document.getElementById('tut-btn');
-  const textEl = document.getElementById('tut-text');
-  const labelEl = document.getElementById('tut-step-label');
-
-  // Clear previous highlight
-  if (tutHighlightedEl) {
-    tutHighlightedEl.classList.remove('tut-highlight');
-    tutHighlightedEl = null;
-  }
-  // Remove previous wait handler
-  if (tutWaitHandler) {
-    tutWaitHandler.cleanup();
-    tutWaitHandler = null;
-  }
-
-  labelEl.textContent = 'STEP ' + (tutStep + 1) + '/8';
-  textEl.textContent = step.text;
-
-  // Highlight target (if any)
-  const targetEl = step.target ? step.target() : null;
-  if (targetEl) {
-    targetEl.classList.add('tut-highlight');
-    tutHighlightedEl = targetEl;
-  }
-
-  // Tooltip always pinned to bottom center — no dynamic positioning
-  tooltip.style.position = 'fixed';
-  tooltip.style.bottom = '20px';
-  tooltip.style.top = 'auto';
-  tooltip.style.left = '50%';
-  tooltip.style.transform = 'translateX(-50%)';
-  tooltip.style.width = '600px';
-  tooltip.style.maxWidth = '600px';
-  tooltip.style.zIndex = '99999';
-
-  // Setup wait condition
-  if (step.waitFor === 'button' || step.waitFor === 'final') {
-    btn.style.display = 'inline-block';
-    btn.textContent = step.btnText || '[ NEXT ]';
-    btn.onclick = () => { advanceTutorial(); };
-  } else if (step.waitFor === 'click-mine') {
-    btn.style.display = 'none';
-    const handler = () => { advanceTutorial(); };
-    document.getElementById('mine-btn').addEventListener('click', handler, { once: true });
-    tutWaitHandler = { cleanup: () => document.getElementById('mine-btn').removeEventListener('click', handler) };
-  } else if (step.waitFor === 'buy-bot') {
-    btn.style.display = 'none';
-    // Poll for bot purchase
-    const origBots = G.bots[0];
-    const interval = setInterval(() => {
-      if (G.bots[0] > origBots) {
-        clearInterval(interval);
-        advanceTutorial();
-      }
-    }, 200);
-    tutWaitHandler = { cleanup: () => clearInterval(interval) };
-  }
-
-}
-
-function advanceTutorial() {
-  if (tutWaitHandler) { tutWaitHandler.cleanup(); tutWaitHandler = null; }
-  tutStep++;
-  if (tutStep >= TUTORIAL_STEPS.length) {
-    endTutorial();
-  } else {
-    showTutorialStep();
-  }
-}
-
-function endTutorial() {
-  tutActive = false;
-  if (tutHighlightedEl) {
-    tutHighlightedEl.classList.remove('tut-highlight');
-    tutHighlightedEl = null;
-  }
-  if (tutWaitHandler) { tutWaitHandler.cleanup(); tutWaitHandler = null; }
-  document.getElementById('tutorial-overlay').classList.remove('active');
-  G.tutorialDone = true;
-  saveGame();
+function closeHelp() {
+  document.getElementById('help-overlay').classList.remove('active');
 }
 
 // ========== INIT ==========
