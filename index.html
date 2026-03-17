@@ -177,16 +177,16 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 @keyframes raidFlash{0%,100%{background:var(--bg)}50%{background:rgba(255,0,0,0.15)}}
 .raid-flash{animation:raidFlash 0.3s 3}
 /* Tutorial */
-#tutorial-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:8000;pointer-events:none}
+#tutorial-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99990;pointer-events:none}
 #tutorial-overlay.active{display:block}
-#tutorial-dim{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);pointer-events:auto}
-#tutorial-tooltip{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:600px;max-width:600px;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;min-width:280px;z-index:9999;pointer-events:auto;box-shadow:0 0 20px rgba(0,255,65,0.15)}
+#tutorial-dim{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);pointer-events:auto;z-index:99990}
+#tutorial-tooltip{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:600px;max-width:600px;background:#0a0a0f;border:2px solid var(--accent);padding:20px 24px;min-width:280px;z-index:99999;pointer-events:all;box-shadow:0 0 20px rgba(0,255,65,0.15)}
 #tutorial-tooltip .tut-step{font-size:0.65em;color:#555;letter-spacing:2px;margin-bottom:8px}
 #tutorial-tooltip .tut-text{font-size:0.8em;color:var(--text);line-height:1.5;margin-bottom:16px}
 #tutorial-tooltip .tut-btn{padding:8px 24px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
 #tutorial-tooltip .tut-btn:hover{background:rgba(0,255,65,0.1)}
 @keyframes tutGlow{0%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}50%{box-shadow:0 0 15px var(--accent),0 0 30px rgba(0,255,65,0.5)}100%{box-shadow:0 0 5px var(--accent),0 0 10px rgba(0,255,65,0.3)}}
-.tut-highlight{position:relative;z-index:8001 !important;animation:tutGlow 1.5s ease-in-out infinite;outline:2px solid var(--accent);outline-offset:3px;pointer-events:auto}
+.tut-highlight{position:relative;z-index:99995 !important;animation:tutGlow 1.5s ease-in-out infinite;outline:2px solid var(--accent);outline-offset:3px;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -720,31 +720,24 @@ function getEffectiveDifficulty(npc) {
 }
 
 // ========== FIXED REWARD FORMULA ==========
-function randInt(min, max) {
-  return Math.floor(min + Math.random() * (max - min + 1));
+function getReward(difficulty, securityLevel) {
+  const ranges = {
+    'Easy':   { data: [50, 200],     cr: [5, 20],      rep: [5, 15] },
+    'Medium': { data: [200, 800],    cr: [20, 80],     rep: [15, 40] },
+    'Hard':   { data: [800, 3000],   cr: [80, 300],    rep: [40, 100] },
+    'Elite':  { data: [3000, 10000], cr: [300, 1000],  rep: [100, 250] }
+  };
+  const r = ranges[difficulty] || ranges['Easy'];
+  return {
+    data: Math.max(1, Math.floor(Math.random() * (r.data[1] - r.data[0]) + r.data[0])),
+    cr:   Math.max(1, Math.floor(Math.random() * (r.cr[1]   - r.cr[0])   + r.cr[0])),
+    rep:  Math.max(1, Math.floor(Math.random() * (r.rep[1]  - r.rep[0])  + r.rep[0]))
+  };
 }
 
 function getHackReward(npc) {
-  const diff = getEffectiveDifficulty(npc);
-  // Hardcoded safe random ranges per difficulty
-  const dataRange = [[50,200],[200,800],[800,3000],[3000,10000]];
-  const credRange = [[5,20],[20,80],[80,300],[300,1000]];
-  const repRange  = [[3,10],[10,25],[30,80],[100,300]];
-
-  let dataR = randInt(dataRange[diff][0], dataRange[diff][1]);
-  let credR = randInt(credRange[diff][0], credRange[diff][1]);
-  let repR  = randInt(repRange[diff][0], repRange[diff][1]);
-
-  // Enemy bonus x1.5
-  if (npc.relation === 'enemy') { dataR = Math.floor(dataR * 1.5); credR = Math.floor(credR * 1.5); }
-  // Breach bonus
-  if (npc.breachExpiry > Date.now()) { dataR = Math.floor(dataR * npc.breachMulti); }
-
-  return {
-    data: Math.max(1, dataR),
-    credits: Math.max(1, credR),
-    rep: Math.max(1, repR)
-  };
+  const diffName = DIFFICULTIES[getEffectiveDifficulty(npc)];
+  return getReward(diffName, npc.securityLevel);
 }
 
 function pickTarget() {
@@ -775,7 +768,7 @@ function renderTarget() {
   el.innerHTML = `<div class="target-name">${statusIcon} ${n.name}</div>
     <div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
     <div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly ? ' (contract active)' : ''}</div>
-    <div class="target-reward">Reward: ~${fmt(reward.data)} DATA, ~${fmt(reward.credits)} CR, +${reward.rep} REP</div>`;
+    <div class="target-reward">Reward: ~${fmt(reward.data)} DATA, ~${fmt(reward.cr)} CR, +${reward.rep} REP</div>`;
   btn.disabled = isAlly || hackActive || hackCooldown;
 }
 
@@ -948,7 +941,7 @@ function succeedHack() {
   const heatGain = [5, 10, 20, 35][diff];
 
   G.data += reward.data;
-  G.credits += reward.credits;
+  G.credits += reward.cr;
   G.rep += reward.rep;
   G.totalRep += reward.rep;
   G.totalHacks++;
@@ -958,7 +951,7 @@ function succeedHack() {
   n.lastHackTime = Date.now();
   n.lastInteraction = Date.now();
 
-  addLog('HACK SUCCESS: +' + fmt(reward.data) + ' DATA, +' + fmt(reward.credits) + ' CR, +' + reward.rep + ' REP', 'info');
+  addLog('HACK SUCCESS: +' + fmt(reward.data) + ' DATA, +' + fmt(reward.cr) + ' CR, +' + reward.rep + ' REP', 'info');
 
   if (n.hackCount >= 3 && n.relation !== 'enemy') {
     n.relation = 'enemy';
@@ -1479,7 +1472,7 @@ function showTutorialStep() {
   tooltip.style.transform = 'translateX(-50%)';
   tooltip.style.width = '600px';
   tooltip.style.maxWidth = '600px';
-  tooltip.style.zIndex = '9999';
+  tooltip.style.zIndex = '99999';
 
   // Setup wait condition
   if (step.waitFor === 'button' || step.waitFor === 'final') {
