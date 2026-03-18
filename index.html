@@ -2142,6 +2142,7 @@ const MAN_WINDOWS = [
 
 function getMasteryLevel(cmd){const uses=G.commandMastery[cmd]||0;if(uses>=15)return 3;if(uses>=8)return 2;if(uses>=3)return 1;return 0;}
 function getMasteryStars(cmd){const lv=getMasteryLevel(cmd);return '\u2605'.repeat(lv)+'\u2606'.repeat(3-lv);}
+function getMasteryStarsHtml(cmd){const lv=getMasteryLevel(cmd);return '<span style="color:#FFD700">\u2605</span>'.repeat(lv)+'<span style="color:#444">\u2606</span>'.repeat(3-lv);}
 function getOsAffinityBonus(os){const aff=os==='Linux'?G.linuxAffinity:G.windowsAffinity;let timerBonus=0,rewardMult=1;
 if(aff>90){timerBonus=15;rewardMult=1.3;}else if(aff>60){timerBonus=10;rewardMult=1.2;}else if(aff>30){timerBonus=5;rewardMult=1;}
 return{timerBonus,rewardMult};}
@@ -2898,13 +2899,13 @@ hackCmds.forEach((c,i)=>{
   const wrap=document.createElement('div');wrap.className='cmd-line-wrap';
   const line=document.createElement('div');
   const mastery=getMasteryLevel(c.cmd);
-  const stars=getMasteryStars(c.cmd);
+  const starsHtml=getMasteryStarsHtml(c.cmd);
   line.className='cmd-line'+(i<hackCmdIndex?' done':i===hackCmdIndex?' current':'');
-  if(i<hackCmdIndex){line.textContent='\u2713 '+c.cmd+' '+stars;}
+  if(i<hackCmdIndex){line.innerHTML='\u2713 '+c.cmd+' '+starsHtml;}
   else if(i===hackCmdIndex&&mastery>=3){
-    line.innerHTML='<span class="current">'+c.cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+stars+'</span> <button style="background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;padding:1px 6px;margin-left:4px" onclick="oneClickCmd('+i+')">'+L('oneClick')+'</button>';
+    line.innerHTML='<span class="current">'+c.cmd+'</span> '+starsHtml+' <button style="background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;padding:1px 6px;margin-left:4px" onclick="oneClickCmd('+i+')">'+L('oneClick')+'</button>';
   } else {
-    line.textContent=(i===hackCmdIndex?'> ':'')+c.cmd+' '+stars;
+    line.innerHTML=(i===hackCmdIndex?'&gt; ':'')+c.cmd+' '+starsHtml;
   }
   const tip=document.createElement('div');tip.className='cmd-tooltip';tip.textContent=c.tip||c.cmd;
   wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
@@ -4340,9 +4341,9 @@ function renderCmdShop(){
     CMD_SHOP[os].forEach(c=>{
       const owned=G.unlockedCommands.includes(c.cmd);
       const card=document.createElement('div');card.className='item-card'+(owned?' bought':'');
-      const mastery=getMasteryStars(c.cmd);
+      const masteryHtml=getMasteryStarsHtml(c.cmd);
       const reqTag=c.reqFor?' <span style="color:var(--warning);font-size:0.85em">['+c.reqFor+']</span>':'';
-      card.innerHTML='<div class="item-header"><span class="item-name" style="font-size:0.7em">'+c.cmd+reqTag+'</span><span style="color:var(--warning);font-size:0.65em">'+mastery+'</span></div>\n<div class="item-stats">'+c.desc+'</div>\n<button class="buy-btn" '+(owned||(!c.starter&&G.data<c.cost)?'disabled':'')+' onclick="buyCommand(\''+os+'\',\''+c.cmd.replace(/'/g,"\\'").replace(/\\/g,"\\\\")+'\')">'+( owned?L('owned'):c.starter?L('owned'):LF('unlockBtn',fmt(c.cost)))+'</button>';
+      card.innerHTML='<div class="item-header"><span class="item-name" style="font-size:0.7em">'+c.cmd+reqTag+'</span><span style="font-size:0.65em">'+masteryHtml+'</span></div>\n<div class="item-stats">'+c.desc+'</div>\n<button class="buy-btn" '+(owned||(!c.starter&&G.data<c.cost)?'disabled':'')+' onclick="buyCommand(\''+os+'\',\''+c.cmd.replace(/'/g,"\\'").replace(/\\/g,"\\\\")+'\')">'+( owned?L('owned'):c.starter?L('owned'):LF('unlockBtn',fmt(c.cost)))+'</button>';
       el.appendChild(card);
     });
   });
@@ -4371,7 +4372,7 @@ function renderLoadout(){
       const slot=document.createElement('div');slot.className='item-card';slot.style.cssText='padding:4px 6px;margin-bottom:4px;font-size:0.7em';
       if(cmd){
         const cmdSpan=document.createElement('span');cmdSpan.style.color='var(--accent)';cmdSpan.textContent=cmd;
-        const starSpan=document.createElement('span');starSpan.style.cssText='color:var(--warning);font-size:0.85em;margin-left:4px';starSpan.textContent=getMasteryStars(cmd);
+        const starSpan=document.createElement('span');starSpan.style.cssText='font-size:0.85em;margin-left:4px';starSpan.innerHTML=getMasteryStarsHtml(cmd);
         const removeBtn=document.createElement('span');removeBtn.style.cssText='color:var(--danger);cursor:pointer;float:right';removeBtn.textContent='\u2715';
         const osRef=os,idxRef=i;removeBtn.onclick=()=>{removeFromDeck(osRef,idxRef);};
         slot.appendChild(cmdSpan);slot.appendChild(starSpan);slot.appendChild(removeBtn);
@@ -4390,7 +4391,7 @@ function renderLoadout(){
       addDiv.textContent=L('availableLabel');el.appendChild(addDiv);
       avail.forEach(c=>{
         const btn=document.createElement('div');btn.style.cssText='font-size:0.65em;color:var(--accent);cursor:pointer;padding:2px 0';
-        btn.textContent='+ '+c+' '+getMasteryStars(c);btn.onclick=()=>{addToDeck(os,c);};
+        btn.innerHTML='+ '+c+' '+getMasteryStarsHtml(c);btn.onclick=()=>{addToDeck(os,c);};
         el.appendChild(btn);
       });
     }
@@ -4424,7 +4425,7 @@ function renderManContent(){
   list.forEach(c=>{
     const owned=G.unlockedCommands.includes(c.cmd);
     const div=document.createElement('div');div.style.cssText='padding:4px 0;border-bottom:1px solid var(--border)';
-    div.innerHTML='<div style="color:var(--accent);font-size:0.75em">'+c.cmd+(owned?' <span style="color:var(--warning)">'+getMasteryStars(c.cmd)+'</span>':'')+'</div>\n<div style="color:#cccccc;font-size:0.65em">'+c.desc+'</div>';
+    div.innerHTML='<div style="color:var(--accent);font-size:0.75em">'+c.cmd+(owned?' '+getMasteryStarsHtml(c.cmd):'')+'</div>\n<div style="color:#cccccc;font-size:0.65em">'+c.desc+'</div>';
     el.appendChild(div);
   });
 }
