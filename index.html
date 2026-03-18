@@ -87,7 +87,10 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .target-info{font-size:0.7em;color:#cccccc;margin:4px 0}
 .target-reward{font-size:0.7em;color:var(--warning)}
 #hack-btn{width:100%;padding:10px;background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.85em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.15s}
-#hack-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
+@keyframes redPulse{0%,100%{background:rgba(255,0,50,0.05)}50%{background:rgba(255,0,50,0.15)}}
+@keyframes hackBtnGlow{0%,100%{border-color:var(--secondary)}50%{border-color:#ff3366}}
+#hack-btn:hover:not(:disabled){animation:hackBtnGlow 1s ease-in-out infinite;background:rgba(255,0,102,0.1)}
+#hack-btn:hover:not(:disabled)~#hack-minigame:not(.active),#panel-hack:has(#hack-btn:hover:not(:disabled)) #hack-target{animation:redPulse 1s ease-in-out infinite}
 #hack-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
 #spoof-checkbox-wrap{font-size:0.7em;margin-bottom:6px;display:none}
 #spoof-checkbox-wrap.visible{display:block}
@@ -95,8 +98,26 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #spoof-checkbox-wrap .spoof-cooldown{color:#cccccc;font-size:0.9em}
 #hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden;transition:border-color 0.3s}
 #hack-minigame.active{display:flex}
+#hack-minigame.os-linux{background:rgba(0,255,65,0.03)}
+#hack-minigame.os-windows{background:rgba(0,120,255,0.03)}
 #hack-minigame.hack-fail-flash{border-color:var(--danger);background:rgba(255,0,0,0.08)}
 #hack-minigame.hack-success-flash{border-color:var(--accent);background:rgba(0,255,65,0.08)}
+@keyframes borderFlashRed{0%,100%{border-color:var(--accent)}50%{border-color:var(--danger)}}
+#hack-minigame.av-danger{animation:borderFlashRed 0.5s infinite}
+@keyframes hackShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+#hack-minigame.heat-shake{animation:hackShake 0.3s ease-in-out}
+#hack-session-header{font-size:0.6em;color:var(--accent);letter-spacing:1px;margin-bottom:4px;padding:3px 0;border-bottom:1px solid var(--border);opacity:0.8}
+#av-closing-warning{display:none;font-size:0.7em;color:var(--danger);text-align:center;margin-bottom:4px;letter-spacing:1px}
+@keyframes avClosingBlink{0%,100%{opacity:1}50%{opacity:0.2}}
+#av-closing-warning.active{display:block;animation:avClosingBlink 0.5s infinite}
+#hack-scan-output{font-size:0.7em;color:var(--accent);line-height:1.6;padding:8px 0}
+#hack-scan-output .scan-line{opacity:0}
+#hack-scan-output .scan-line.visible{opacity:1}
+.cmd-line.done{color:var(--accent)}
+@keyframes cmdFlashGreen{0%{background:rgba(0,255,65,0.2)}100%{background:transparent}}
+.cmd-line.cmd-success-flash{animation:cmdFlashGreen 0.3s ease-out}
+@keyframes cmdFlashRed{0%{background:rgba(255,0,0,0.2)}100%{background:transparent}}
+.cmd-line.cmd-fail-flash{animation:cmdFlashRed 0.3s ease-out}
 #hack-prompt{font-size:0.75em;color:var(--accent);margin-bottom:6px}
 #hack-timer{font-size:0.7em;color:var(--danger);margin-bottom:4px}
 #av-timer-wrap{margin-bottom:6px;display:none}
@@ -479,12 +500,15 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div id="spoof-checkbox-wrap"><label><input type="checkbox" id="spoof-checkbox"> SPOOF IP — use another company's identity</label><span class="spoof-cooldown" id="spoof-cooldown-text"></span></div>
     <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
     <div id="hack-minigame">
+      <div id="hack-session-header"></div>
       <div id="av-timer-wrap">
         <div id="av-timer-label">ANTIVIRUS SCAN: --s remaining</div>
         <div id="av-timer-bar-bg"><div id="av-timer-bar"></div></div>
       </div>
+      <div id="av-closing-warning">⚠ ANTIVIRUS CLOSING IN</div>
       <div id="hack-timer"></div>
       <div id="hack-prompt"></div>
+      <div id="hack-scan-output"></div>
       <div id="hack-commands"></div>
       <div style="display:flex;align-items:center"><span style="color:var(--accent);margin-right:4px">$</span><input id="hack-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
       <div id="hack-result-msg"></div>
@@ -1614,27 +1638,73 @@ function startHack(){
   avTimeMax=avTime;avTimeLeft=avTimeMax;
   hackTimeLeft=0;document.getElementById('hack-timer').textContent='';
   const mg=document.getElementById('hack-minigame');mg.classList.add('active');
-  mg.classList.remove('hack-fail-flash','hack-success-flash');
+  mg.classList.remove('hack-fail-flash','hack-success-flash','av-danger','heat-shake','os-linux','os-windows');
+  // OS-specific tint
+  mg.classList.add(n.os==='Linux'?'os-linux':'os-windows');
   document.getElementById('hack-btn').disabled=true;
-  document.getElementById('hack-prompt').textContent=`Hacking ${n.name}...${hackUsedSpoof&&hackSpoofDecoy?' [SPOOFING as '+hackSpoofDecoy.name+']':''} Type each command:`;
   document.getElementById('hack-result-msg').classList.remove('active');
   document.getElementById('download-screen').classList.remove('active');
-  document.getElementById('hack-commands').style.display='';
-  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='';
-  renderHackCmds();
-  const input=document.getElementById('hack-input');input.value='';input.disabled=false;input.focus();
-  document.getElementById('av-timer-wrap').classList.add('active');updateAvTimerDisplay();
-  avTimerInterval=setInterval(()=>{avTimeLeft--;updateAvTimerDisplay();if(avTimeLeft<=0){clearInterval(avTimerInterval);avTimerInterval=null;failHack('CONNECTION TERMINATED — Antivirus detected intrusion',20);}},1000);
+  document.getElementById('hack-commands').style.display='none';
+  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='none';
+  document.getElementById('av-timer-wrap').classList.remove('active');
+  document.getElementById('av-closing-warning').classList.remove('active');
+  // Session header
+  const targetIP=Math.floor(Math.random()*223+1)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256);
+  document.getElementById('hack-session-header').textContent='SESSION ACTIVE — '+n.name+' | '+n.os+' | '+targetIP;
+  // HEAT warning
+  if(G.heat>70)addLog('⚠ High heat detected — hack compromised','alert');
+  // Scan sequence
+  const scanLines=[
+    '> Locating target IP...',
+    '> Establishing encrypted tunnel...',
+    '> Bypassing firewall layer 1...',
+    '> Bypassing firewall layer 2...',
+    '> Connected to [target IP: '+targetIP+']',
+    '> Deploying exploit...',
+    '> ACCESS POINT FOUND — Awaiting commands'
+  ];
+  const scanEl=document.getElementById('hack-scan-output');
+  scanEl.innerHTML=scanLines.map(l=>'<div class="scan-line">'+l+'</div>').join('');
+  scanEl.style.display='';
+  document.getElementById('hack-prompt').textContent='';
+  const scanDivs=scanEl.querySelectorAll('.scan-line');
+  let scanIdx=0;
+  const scanTimer=setInterval(()=>{
+    if(scanIdx<scanDivs.length){scanDivs[scanIdx].classList.add('visible');scanIdx++;}
+    else{clearInterval(scanTimer);setTimeout(()=>{
+      scanEl.style.display='none';
+      document.getElementById('hack-prompt').textContent=`Hacking ${n.name}...${hackUsedSpoof&&hackSpoofDecoy?' [SPOOFING as '+hackSpoofDecoy.name+']':''} Type each command:`;
+      document.getElementById('hack-commands').style.display='';
+      document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='';
+      renderHackCmds();
+      const input=document.getElementById('hack-input');input.value='';input.disabled=false;input.focus();
+      document.getElementById('av-timer-wrap').classList.add('active');updateAvTimerDisplay();
+      avTimerInterval=setInterval(()=>{avTimeLeft--;updateAvTimerDisplay();
+        if(avTimeLeft<=0){clearInterval(avTimerInterval);avTimerInterval=null;failHack('CONNECTION TERMINATED — Antivirus detected intrusion',20);}
+        // HEAT shake during hack
+        if(G.heat>70&&hackActive){mg.classList.add('heat-shake');setTimeout(()=>mg.classList.remove('heat-shake'),300);}
+      },1000);
+      // Start glitch hover interval cleanup
+      hackHeatShakeInterval=G.heat>70?setInterval(()=>{if(hackActive&&G.heat>70){mg.classList.add('heat-shake');setTimeout(()=>mg.classList.remove('heat-shake'),300);}},3000):null;
+    },400);}
+  },250);
   addLog('Initiating hack on '+n.name+'...','warning');
 }
+let hackHeatShakeInterval=null;
 
 function updateAvTimerDisplay(){
   const label=document.getElementById('av-timer-label'),bar=document.getElementById('av-timer-bar');
+  const mg=document.getElementById('hack-minigame'),avWarn=document.getElementById('av-closing-warning');
   const pct=avTimeMax>0?(avTimeLeft/avTimeMax)*100:0;
   label.textContent='ANTIVIRUS SCAN: '+avTimeLeft+'s remaining';bar.style.width=pct+'%';
-  if(pct>50){bar.style.background='var(--accent)';label.style.color='var(--accent)';label.classList.remove('critical');}
-  else if(pct>20){bar.style.background='var(--warning)';label.style.color='var(--warning)';label.classList.remove('critical');}
-  else{bar.style.background='var(--danger)';label.style.color='var(--danger)';label.classList.add('critical');}
+  // Pulse speed: faster as timer depletes
+  const pulseDur=pct>50?'2s':pct>30?'1s':pct>10?'0.5s':'0.3s';
+  bar.style.animation='none';void bar.offsetWidth;
+  if(pct<=50)bar.style.animation='avBlink '+pulseDur+' infinite';
+  if(pct>50){bar.style.background='var(--accent)';label.style.color='var(--accent)';label.classList.remove('critical');mg.classList.remove('av-danger');avWarn.classList.remove('active');}
+  else if(pct>20){bar.style.background='var(--warning)';label.style.color='var(--warning)';label.classList.remove('critical');mg.classList.remove('av-danger');avWarn.classList.remove('active');}
+  else if(pct>10){bar.style.background='var(--danger)';label.style.color='var(--danger)';label.classList.add('critical');mg.classList.add('av-danger');avWarn.classList.remove('active');}
+  else{bar.style.background='var(--danger)';label.style.color='var(--danger)';label.classList.add('critical');mg.classList.add('av-danger');avWarn.classList.add('active');}
 }
 
 function renderHackCmds(){const el=document.getElementById('hack-commands');el.innerHTML='';
@@ -1646,7 +1716,11 @@ wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
 
 function cleanupHackTimers(){if(hackTimerInterval){clearInterval(hackTimerInterval);hackTimerInterval=null;}
 if(avTimerInterval){clearInterval(avTimerInterval);avTimerInterval=null;}
-document.getElementById('av-timer-wrap').classList.remove('active');document.getElementById('av-timer-label').classList.remove('critical');}
+if(hackHeatShakeInterval){clearInterval(hackHeatShakeInterval);hackHeatShakeInterval=null;}
+document.getElementById('av-timer-wrap').classList.remove('active');document.getElementById('av-timer-label').classList.remove('critical');
+document.getElementById('av-closing-warning').classList.remove('active');
+const mg=document.getElementById('hack-minigame');mg.classList.remove('av-danger','heat-shake','os-linux','os-windows');
+document.getElementById('hack-session-header').textContent='';}
 
 function failHack(msg,heatAmount){
   hackActive=false;cleanupHackTimers();
@@ -1859,10 +1933,40 @@ if(document.getElementById('bmarket-overlay').classList.contains('active'))rende
 // ========== HACK INPUT ==========
 document.getElementById('hack-input').addEventListener('keydown',(e)=>{
   if(e.key==='Enter'&&hackActive){const input=e.target,typed=input.value.trim(),expected=hackCmds[hackCmdIndex].cmd;
-  if(typed.toLowerCase()===expected.toLowerCase()){hackCmdIndex++;input.value='';if(hackCmdIndex>=hackCmds.length)succeedHack();else renderHackCmds();}
-  else{input.value='';const lines=document.querySelectorAll('.cmd-line');if(lines[hackCmdIndex])lines[hackCmdIndex].classList.add('failed');failHack('INTRUSION DETECTED — Wrong command signature',15);}}
+  if(typed.toLowerCase()===expected.toLowerCase()){
+    hackCmdIndex++;input.value='';
+    // Flash green on correct command
+    const prevLine=document.querySelectorAll('.cmd-line')[hackCmdIndex-1];
+    if(prevLine){prevLine.classList.add('cmd-success-flash');setTimeout(()=>prevLine.classList.remove('cmd-success-flash'),300);}
+    if(hackCmdIndex>=hackCmds.length)succeedHack();else renderHackCmds();
+  } else {
+    input.value='';
+    const lines=document.querySelectorAll('.cmd-line');
+    if(lines[hackCmdIndex]){lines[hackCmdIndex].classList.add('failed','cmd-fail-flash');
+      lines[hackCmdIndex].textContent='✗ WRONG COMMAND — CONNECTION DROPPING';}
+    setTimeout(()=>failHack('INTRUSION DETECTED — Wrong command signature',15),600);
+  }}
 });
 document.getElementById('hack-btn').addEventListener('click',startHack);
+
+// Target name glitch on hack button hover
+let targetGlitchInterval=null;
+const hackBtn=document.getElementById('hack-btn');
+hackBtn.addEventListener('mouseenter',()=>{
+  if(hackBtn.disabled||!currentTarget)return;
+  const nameEl=document.querySelector('.target-name');if(!nameEl)return;
+  const originalText=nameEl.textContent;
+  targetGlitchInterval=setInterval(()=>{
+    const chars=originalText.split('');
+    const glitchChars=['█','▓','░','▒'];
+    for(let g=0;g<2;g++){const idx=Math.floor(Math.random()*chars.length);chars[idx]=glitchChars[Math.floor(Math.random()*glitchChars.length)];}
+    nameEl.textContent=chars.join('');
+  },200);
+});
+hackBtn.addEventListener('mouseleave',()=>{
+  if(targetGlitchInterval){clearInterval(targetGlitchInterval);targetGlitchInterval=null;}
+  if(currentTarget)renderTarget();
+});
 
 // ========== HEAT ==========
 function addHeat(amount){
@@ -2797,7 +2901,9 @@ if(downloadInterval){clearInterval(downloadInterval);downloadInterval=null;}
 if(defenseTimer){clearInterval(defenseTimer);defenseTimer=null;}
 if(defenseGameTimer){clearInterval(defenseGameTimer);defenseGameTimer=null;}
 if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
-hackActive=false;hackCooldown=false;downloadActive=false;defenseActive=false;defenseGameActive=false;ddosActive=false;
+if(hackHeatShakeInterval){clearInterval(hackHeatShakeInterval);hackHeatShakeInterval=null;}
+if(targetGlitchInterval){clearInterval(targetGlitchInterval);targetGlitchInterval=null;}
+hackActive=false;hackCooldown=false;downloadActive=false;defenseActive=false;defenseGameActive=false;ddosActive=false;gamePaused=false;
 currentTarget=null;currentTargetReward=null;}
 
 function startGameLoops(){gameRunning=true;lastNpcAttackTime=Date.now();lastEnemyAttackTime=Date.now();
