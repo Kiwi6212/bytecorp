@@ -440,6 +440,96 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .upgrade-multi-btn:hover:not(:disabled){background:rgba(255,0,102,0.08)}
 .upgrade-multi-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
 #res-crypto{color:#f7931a}
+
+/* ===== PUBLIC MODE ===== */
+body.public-mode{--accent:#FFD700;--secondary:#4a9eff}
+body.public-mode::after{background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px)}
+body.public-mode #header{border-bottom-color:#FFD700}
+body.public-mode #header h1{color:#FFD700}
+body.public-mode .panel-title{color:#FFD700}
+#public-container{display:none;flex:1;overflow:hidden}
+#public-container.active{display:flex}
+body.public-mode #main{display:none}
+body.public-mode #public-container{display:flex}
+.pub-panel{border-right:1px solid var(--border);padding:10px;display:flex;flex-direction:column;overflow:hidden}
+.pub-panel:last-child{border-right:none}
+#pub-trading{width:25%;min-width:200px}
+#pub-departments{width:25%;min-width:220px}
+#pub-events{width:25%;min-width:220px}
+#pub-boardroom{width:25%;min-width:200px}
+.pub-panel-title{color:#FFD700;font-size:0.85em;letter-spacing:3px;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:8px;text-transform:uppercase}
+.stock-chart{font-family:monospace;font-size:0.6em;line-height:1.1;color:#FFD700;margin-bottom:8px;white-space:pre;overflow:hidden;height:120px}
+.stock-price{font-size:1.4em;color:#FFD700;text-align:center;margin-bottom:4px}
+.stock-change{font-size:0.8em;text-align:center;margin-bottom:8px}
+.stock-change.up{color:#00ff41}
+.stock-change.down{color:#ff3333}
+.pub-btn{width:100%;padding:6px;background:transparent;border:1px solid #FFD700;color:#FFD700;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:1px;margin-bottom:4px;transition:all 0.15s}
+.pub-btn:hover:not(:disabled){background:rgba(255,215,0,0.1)}
+.pub-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+.pub-btn.danger{border-color:var(--danger);color:var(--danger)}
+.pub-btn.danger:hover:not(:disabled){background:rgba(255,51,51,0.1)}
+.dept-card{border:1px solid var(--border);padding:6px;margin-bottom:4px}
+.dept-name{color:#FFD700;font-size:0.8em}
+.dept-info{font-size:0.6em;color:#ccc;margin:2px 0}
+.dept-upgrade{width:100%;padding:4px;background:transparent;border:1px solid #FFD700;color:#FFD700;font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:3px}
+.dept-upgrade:hover:not(:disabled){background:rgba(255,215,0,0.1)}
+.dept-upgrade:disabled{border-color:#333;color:#333;cursor:not-allowed}
+.event-card{border:1px solid var(--border);padding:8px;margin-bottom:6px}
+.event-card.positive{border-color:#00ff41}
+.event-card.negative{border-color:var(--danger)}
+.event-card.past{border-color:var(--secondary)}
+.event-title{font-size:0.8em;color:#FFD700;margin-bottom:4px}
+.event-desc{font-size:0.65em;color:#ccc;margin-bottom:6px}
+.event-btn{padding:4px 8px;background:transparent;font-family:inherit;font-size:0.6em;cursor:pointer;letter-spacing:1px;margin-right:4px}
+.event-btn.a{border:1px solid #00ff41;color:#00ff41}
+.event-btn.a:hover{background:rgba(0,255,65,0.1)}
+.event-btn.b{border:1px solid var(--warning);color:var(--warning)}
+.event-btn.b:hover{background:rgba(255,170,0,0.1)}
+.shareholder-card{border:1px solid var(--border);padding:6px;margin-bottom:4px}
+.shareholder-name{font-size:0.75em;color:#FFD700}
+.shareholder-bar-bg{height:8px;background:#1a1a2e;border:1px solid #333;overflow:hidden;margin:3px 0}
+.shareholder-bar{height:100%;transition:width 0.3s,background 0.3s}
+.shareholder-pct{font-size:0.6em;text-align:right}
+.pub-log{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;margin-top:8px}
+.pub-log-entry{font-size:0.65em;color:#FFD700;opacity:0.9;padding:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pub-log-entry.bad{color:var(--danger)}
+.pub-log-entry.good{color:#00ff41}
+#shadow-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1900;justify-content:center;align-items:center}
+#shadow-overlay.active{display:flex}
+#shadow-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:420px;max-width:560px;max-height:80vh;overflow-y:auto}
+#shadow-popup h2{color:var(--secondary);font-size:1em;margin-bottom:16px;letter-spacing:3px}
+.shadow-action{border:1px solid var(--border);padding:8px;margin-bottom:6px}
+.shadow-action-name{color:var(--secondary);font-size:0.8em}
+.shadow-action-desc{font-size:0.65em;color:#ccc;margin:3px 0}
+.shadow-action-btn{width:100%;padding:4px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.65em;cursor:pointer}
+.shadow-action-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
+.shadow-action-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+#pub-ending-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center}
+#pub-ending-overlay.active{display:flex}
+#pub-ending-popup{text-align:center;max-width:500px;padding:32px}
+#pub-ending-popup h2{font-size:1.5em;margin-bottom:16px;animation:glitch 2s infinite}
+#pub-ending-popup p{font-size:0.85em;margin-bottom:20px}
+#pub-ending-popup .eg-btn{padding:12px 24px;margin:8px;background:transparent;font-family:inherit;font-size:0.9em;cursor:pointer;letter-spacing:2px}
+#ipo-transition{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0a0f;z-index:4000;justify-content:center;align-items:center;flex-direction:column}
+#ipo-transition.active{display:flex}
+#ipo-transition h1{color:#FFD700;font-size:2.5em;letter-spacing:6px;animation:glitch 2s infinite;margin-bottom:16px}
+#ipo-transition .ticker-anim{color:#FFD700;font-size:1.2em;letter-spacing:3px}
+@keyframes goldPulse{0%,100%{text-shadow:0 0 10px rgba(255,215,0,0.3)}50%{text-shadow:0 0 30px rgba(255,215,0,0.8)}}
+#ipo-transition h1{animation:goldPulse 1s infinite}
+#board-meeting-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1950;justify-content:center;align-items:center}
+#board-meeting-overlay.active{display:flex}
+#board-meeting-popup{background:var(--panel);border:2px solid #FFD700;padding:24px;min-width:420px;max-width:560px}
+#board-meeting-popup h2{color:#FFD700;font-size:1em;margin-bottom:16px;letter-spacing:3px}
+.board-question{font-size:0.8em;color:#ccc;margin-bottom:12px}
+.board-answer{width:100%;padding:8px;background:transparent;border:1px solid #FFD700;color:#FFD700;font-family:inherit;font-size:0.75em;cursor:pointer;margin-bottom:6px;text-align:left}
+.board-answer:hover{background:rgba(255,215,0,0.1)}
+#quarterly-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1950;justify-content:center;align-items:center}
+#quarterly-overlay.active{display:flex}
+#quarterly-popup{background:var(--panel);border:2px solid #FFD700;padding:24px;min-width:380px;max-width:480px;text-align:center}
+#quarterly-popup h2{color:#FFD700;font-size:1em;margin-bottom:16px;letter-spacing:3px}
+#quarterly-body{font-size:0.75em;color:#ccc;margin-bottom:16px}
+#quarterly-close{width:100%;padding:6px;background:transparent;border:1px solid #FFD700;color:#FFD700;font-family:inherit;cursor:pointer;font-size:0.7em;letter-spacing:1px}
+#quarterly-close:hover{background:rgba(255,215,0,0.1)}
 @keyframes godGlow{0%,100%{box-shadow:0 0 8px rgba(255,215,0,0.3)}50%{box-shadow:0 0 20px rgba(255,215,0,0.6)}}
 body.god-mode-active #header{animation:godGlow 2s infinite}
 /* Infrastructure tab */
@@ -567,6 +657,38 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <div class="tab-content" id="tab-infra">
       <div class="item-list" id="infra-list"></div>
     </div>
+  </div>
+</div>
+
+<!-- Public Mode Panels -->
+<div id="public-container">
+  <div class="pub-panel" id="pub-trading">
+    <div class="pub-panel-title">// Trading Floor</div>
+    <div class="stock-price" id="pub-stock-price">$42.00</div>
+    <div class="stock-change" id="pub-stock-change">+0.00 (0.00%)</div>
+    <div class="stock-chart" id="pub-stock-chart"></div>
+    <div style="font-size:0.65em;color:#ccc;margin-bottom:4px;text-align:center">Shares: <span id="pub-shares">10,000,000</span> | Mkt Cap: <span id="pub-mktcap">$420M</span></div>
+    <button class="pub-btn" id="pub-buyback-btn" onclick="pubBuyBack()">[ BUY BACK — stock +2% ]</button>
+    <button class="pub-btn" id="pub-issue-btn" onclick="pubIssueShares()">[ ISSUE SHARES — +$10K capital ]</button>
+    <button class="pub-btn" id="pub-dividend-btn" onclick="pubPayDividend()">[ PAY DIVIDEND — satisfaction +15 ]</button>
+    <div class="pub-log" id="pub-log"></div>
+  </div>
+  <div class="pub-panel" id="pub-departments">
+    <div class="pub-panel-title">// Departments</div>
+    <div class="item-list" id="pub-dept-list"></div>
+  </div>
+  <div class="pub-panel" id="pub-events">
+    <div class="pub-panel-title">// Events</div>
+    <div id="pub-event-active"></div>
+    <div style="font-size:0.65em;color:#ccc;margin:6px 0;letter-spacing:1px">EVENT LOG</div>
+    <div class="item-list" id="pub-event-log"></div>
+  </div>
+  <div class="pub-panel" id="pub-boardroom">
+    <div class="pub-panel-title">// Board Room</div>
+    <div id="pub-shareholders"></div>
+    <button class="pub-btn" id="pub-meeting-btn" onclick="pubCallMeeting()" style="margin-top:8px">[ CALL BOARD MEETING ]</button>
+    <div style="font-size:0.65em;color:#ccc;margin:8px 0;letter-spacing:1px">COMPETITORS</div>
+    <div id="pub-competitors" style="font-size:0.65em;color:#ccc"></div>
   </div>
 </div>
 
@@ -782,6 +904,41 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
   <h2 id="pause-title">// GAME PAUSED</h2>
   <button id="pause-resume-btn" onclick="togglePause()">RESUME</button>
 </div>
+
+<!-- IPO Transition Animation -->
+<div id="ipo-transition">
+  <h1>$BYTECORP</h1>
+  <div class="ticker-anim" id="ipo-ticker-anim">IPO PROCESSING...</div>
+</div>
+
+<!-- Shadow Ops Modal -->
+<div id="shadow-overlay"><div id="shadow-popup"><h2>// SHADOW OPS</h2>
+<div style="font-size:0.7em;color:var(--danger);margin-bottom:8px">Uses: <span id="shadow-uses">0</span>/10 — <span id="shadow-warn"></span></div>
+<div id="shadow-actions-list"></div>
+<button class="modal-close" onclick="closeShadowOps()">[ CLOSE ]</button>
+</div></div>
+
+<!-- Board Meeting Modal -->
+<div id="board-meeting-overlay"><div id="board-meeting-popup"><h2>// BOARD MEETING</h2>
+<div class="board-question" id="board-question"></div>
+<button class="board-answer" id="board-ans-a" onclick="boardAnswer('a')"></button>
+<button class="board-answer" id="board-ans-b" onclick="boardAnswer('b')"></button>
+</div></div>
+
+<!-- Quarterly Earnings -->
+<div id="quarterly-overlay"><div id="quarterly-popup"><h2>// QUARTERLY EARNINGS</h2>
+<div id="quarterly-body"></div>
+<button id="quarterly-close" onclick="closeQuarterly()">[ ACKNOWLEDGE ]</button>
+</div></div>
+
+<!-- Public Ending Overlay -->
+<div id="pub-ending-overlay"><div id="pub-ending-popup">
+<h2 id="pub-ending-title"></h2>
+<p id="pub-ending-desc"></p>
+<div id="pub-ending-stats"></div>
+<button class="eg-btn" id="pub-ending-ng" onclick="doNewGamePlus()" style="border:2px solid #FFD700;color:#FFD700">[ NEW GAME+ ]</button>
+<button class="eg-btn" id="pub-ending-dark" style="display:none;border:2px solid var(--secondary);color:var(--secondary)" onclick="pubDarkReturn()">[ DARK RETURN ]</button>
+</div></div>
 
 <script>
 // ========== LANG & THEME ==========
@@ -1155,7 +1312,36 @@ let G = {
   timeBombExpiry: 0,
   doomsdayUsed: false,
   cooldowns: {},
-  darkWebRepBoostCount: 0
+  darkWebRepBoostCount: 0,
+  // Public mode state
+  gameMode: 'hacker',
+  pubCapital: 0,
+  pubStock: 42.00,
+  pubShares: 10000000,
+  pubPublicRep: 50,
+  pubDepartments: [0,0,0,0,0,0],
+  pubShareholders: [
+    {name:'Titan Capital',satisfaction:70},
+    {name:'Apex Ventures',satisfaction:65},
+    {name:'Nova Fund',satisfaction:60},
+    {name:'Atlas Holdings',satisfaction:55},
+    {name:'Zenith Group',satisfaction:50}
+  ],
+  pubStockHistory: [],
+  pubShadowOpsCount: 0,
+  pubLastEventTime: 0,
+  pubActiveEvent: null,
+  pubEventLog: [],
+  pubLastStockUpdate: 0,
+  pubLastQuarterly: 0,
+  pubLastMeetingTime: 0,
+  pubBuybackCooldown: 0,
+  pubIssueCooldown: 0,
+  pubDividendCooldown: 0,
+  pubShadowCooldowns: {},
+  pubCompetitors: ['NovaTech','MegaCorp','DarkSec'],
+  pubTotalDividendsPaid: 0,
+  pubTotalShadowOps: 0
 };
 
 let gameRunning = false;
@@ -1510,6 +1696,7 @@ function initNPCs() {
 
 // ========== UI ==========
 function updateUI() {
+  if(G.gameMode==='public')return; // Public mode has its own UI update
   const dEl=document.getElementById('res-data'),cEl=document.getElementById('res-credits'),rEl=document.getElementById('res-rep');
   if(!dEl)return;
   const oldD=dEl.textContent,oldC=cEl.textContent,oldR=rEl.textContent;
@@ -3112,8 +3299,7 @@ const endgameLv=G.upgrades.ipoAccelerator?25:50;
 if(current.lv>=endgameLv&&!G._endgameShown){G._endgameShown=true;document.getElementById('endgame-overlay').classList.add('active');}}
 
 // ========== ENDGAME ==========
-function doIPO(){document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.add('active');
-document.getElementById('ipo-stats').innerHTML=`<p class="stat">Total DATA mined: ${fmt(G.totalDataMined)}</p><p class="stat">Total hacks: ${G.totalHacks}</p><p class="stat">Total REP: ${fmt(G.totalRep)}</p><p class="stat">Prestige level: #${G.prestige}</p><p class="stat">Achievements: ${G.achievements.length}/${ACHIEVEMENTS.length}</p><p class="stat">Missions: ${G.missions.length}/${MISSIONS.length}</p>`;}
+// doIPO is defined in the Public Mode section below
 
 function doNewGamePlus(){G.prestige++;
 const bonusPerPrestige=G.upgrades.legacyCode?0.10:0.25;
@@ -3149,10 +3335,22 @@ G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
 G.timeBombTarget='';G.timeBombExpiry=0;
 G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
 G.operatorAlias=generateAlias();G.playerIP=generateIP();
+G.gameMode='hacker';G.pubCapital=0;G.pubStock=42;G.pubShares=10000000;G.pubPublicRep=50;
+G.pubDepartments=[0,0,0,0,0,0];G.pubShareholders=[{name:'Titan Capital',satisfaction:70},{name:'Apex Ventures',satisfaction:65},{name:'Nova Fund',satisfaction:60},{name:'Atlas Holdings',satisfaction:55},{name:'Zenith Group',satisfaction:50}];
+G.pubStockHistory=[];G.pubShadowOpsCount=0;G.pubLastEventTime=0;G.pubActiveEvent=null;G.pubEventLog=[];
+G.pubLastStockUpdate=0;G.pubLastQuarterly=0;G.pubLastMeetingTime=0;
+G.pubBuybackCooldown=0;G.pubIssueCooldown=0;G.pubDividendCooldown=0;G.pubShadowCooldowns={};
+G.pubCompetitors=[];G.pubTotalDividendsPaid=0;G.pubTotalShadowOps=0;
 initNPCs();document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.remove('active');
-document.body.classList.remove('god-mode-active');
+document.getElementById('pub-ending-overlay').classList.remove('active');
+document.body.classList.remove('god-mode-active','public-mode');
+document.getElementById('main').style.display='';
+document.getElementById('public-container').classList.remove('active');
+document.querySelector('#header h1').textContent='BYTECORP';
+const _rl2=document.querySelectorAll('.res-label');if(_rl2[0])_rl2[0].textContent='DATA';if(_rl2[1])_rl2[1].textContent='CREDITS';if(_rl2[2])_rl2[2].textContent='REP';
 document.getElementById('crypto-res-wrap').style.display='none';
 document.getElementById('infra-tab-btn').style.display='none';
+restoreHackerHeader();
 addLog('NEW GAME+ #'+G.prestige+' — +'+Math.round((G.prestigeMulti-1)*100)+'% DATA/s bonus','info');saveGame();renderAll();}
 
 // ========== SAVE / LOAD ==========
@@ -3192,6 +3390,19 @@ corporateSpyActive:G.corporateSpyActive||false,corporateSpyExpiry:G.corporateSpy
 keyloggerActive:G.keyloggerActive||false,keyloggerExpiry:G.keyloggerExpiry||0,keyloggerTarget:G.keyloggerTarget||'',
 timeBombTarget:G.timeBombTarget||'',timeBombExpiry:G.timeBombExpiry||0,
 doomsdayUsed:G.doomsdayUsed||false,cooldowns:G.cooldowns||{},darkWebRepBoostCount:G.darkWebRepBoostCount||0,
+// Public mode
+gameMode:G.gameMode||'hacker',
+pubCapital:G.pubCapital||0,pubStock:G.pubStock||42,pubShares:G.pubShares||10000000,
+pubPublicRep:G.pubPublicRep||50,pubDepartments:G.pubDepartments||[0,0,0,0,0,0],
+pubShareholders:G.pubShareholders||[],pubStockHistory:G.pubStockHistory||[],
+pubShadowOpsCount:G.pubShadowOpsCount||0,pubLastEventTime:G.pubLastEventTime||0,
+pubActiveEvent:G.pubActiveEvent||null,pubEventLog:G.pubEventLog||[],
+pubLastStockUpdate:G.pubLastStockUpdate||0,pubLastQuarterly:G.pubLastQuarterly||0,
+pubLastMeetingTime:G.pubLastMeetingTime||0,
+pubBuybackCooldown:G.pubBuybackCooldown||0,pubIssueCooldown:G.pubIssueCooldown||0,
+pubDividendCooldown:G.pubDividendCooldown||0,pubShadowCooldowns:G.pubShadowCooldowns||{},
+pubCompetitors:G.pubCompetitors||[],pubTotalDividendsPaid:G.pubTotalDividendsPaid||0,
+pubTotalShadowOps:G.pubTotalShadowOps||0,
 npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
 hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
 tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti,
@@ -3237,6 +3448,19 @@ G.corporateSpyActive=s.corporateSpyActive||false;G.corporateSpyExpiry=s.corporat
 G.keyloggerActive=s.keyloggerActive||false;G.keyloggerExpiry=s.keyloggerExpiry||0;G.keyloggerTarget=s.keyloggerTarget||'';
 G.timeBombTarget=s.timeBombTarget||'';G.timeBombExpiry=s.timeBombExpiry||0;
 G.doomsdayUsed=s.doomsdayUsed||false;G.cooldowns=s.cooldowns||{};G.darkWebRepBoostCount=s.darkWebRepBoostCount||0;
+// Public mode
+G.gameMode=s.gameMode||'hacker';
+G.pubCapital=s.pubCapital||0;G.pubStock=s.pubStock||42;G.pubShares=s.pubShares||10000000;
+G.pubPublicRep=s.pubPublicRep||50;G.pubDepartments=s.pubDepartments||[0,0,0,0,0,0];
+G.pubShareholders=s.pubShareholders||[{name:'Titan Capital',satisfaction:70},{name:'Apex Ventures',satisfaction:65},{name:'Nova Fund',satisfaction:60},{name:'Atlas Holdings',satisfaction:55},{name:'Zenith Group',satisfaction:50}];
+G.pubStockHistory=s.pubStockHistory||[];G.pubShadowOpsCount=s.pubShadowOpsCount||0;
+G.pubLastEventTime=s.pubLastEventTime||0;G.pubActiveEvent=s.pubActiveEvent||null;
+G.pubEventLog=s.pubEventLog||[];G.pubLastStockUpdate=s.pubLastStockUpdate||0;
+G.pubLastQuarterly=s.pubLastQuarterly||0;G.pubLastMeetingTime=s.pubLastMeetingTime||0;
+G.pubBuybackCooldown=s.pubBuybackCooldown||0;G.pubIssueCooldown=s.pubIssueCooldown||0;
+G.pubDividendCooldown=s.pubDividendCooldown||0;G.pubShadowCooldowns=s.pubShadowCooldowns||{};
+G.pubCompetitors=s.pubCompetitors||[];G.pubTotalDividendsPaid=s.pubTotalDividendsPaid||0;
+G.pubTotalShadowOps=s.pubTotalShadowOps||0;
 G._endgameShown=false;if(s.npcs&&s.npcs.length>=15)G.npcs=s.npcs;else initNPCs();
 // Ensure NPC virus fields exist
 if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;if(!n._neuralBackdoorAlly)n._neuralBackdoorAlly=false;});
@@ -3280,9 +3504,20 @@ G.timeBombTarget='';G.timeBombExpiry=0;
 G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
 G.operatorAlias='';G.playerIP='';
 G._endgameShown=false;G.npcs=null;
-document.body.classList.remove('god-mode-active');
+G.gameMode='hacker';G.pubCapital=0;G.pubStock=42;G.pubShares=10000000;G.pubPublicRep=50;
+G.pubDepartments=[0,0,0,0,0,0];G.pubShareholders=[{name:'Titan Capital',satisfaction:70},{name:'Apex Ventures',satisfaction:65},{name:'Nova Fund',satisfaction:60},{name:'Atlas Holdings',satisfaction:55},{name:'Zenith Group',satisfaction:50}];
+G.pubStockHistory=[];G.pubShadowOpsCount=0;G.pubLastEventTime=0;G.pubActiveEvent=null;G.pubEventLog=[];
+G.pubLastStockUpdate=0;G.pubLastQuarterly=0;G.pubLastMeetingTime=0;
+G.pubBuybackCooldown=0;G.pubIssueCooldown=0;G.pubDividendCooldown=0;G.pubShadowCooldowns={};
+G.pubCompetitors=[];G.pubTotalDividendsPaid=0;G.pubTotalShadowOps=0;
+document.body.classList.remove('god-mode-active','public-mode');
+document.getElementById('main').style.display='';
+document.getElementById('public-container').classList.remove('active');
+document.querySelector('#header h1').textContent='BYTECORP';
+const _rl=document.querySelectorAll('.res-label');if(_rl[0])_rl[0].textContent='DATA';if(_rl[1])_rl[1].textContent='CREDITS';if(_rl[2])_rl[2].textContent='REP';
 document.getElementById('crypto-res-wrap').style.display='none';
 document.getElementById('infra-tab-btn').style.display='none';
+restoreHackerHeader();
 showStartScreen();}
 
 function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();renderNewsfeed();updateUI();
@@ -3433,7 +3668,8 @@ document.getElementById('btn-continue').style.display=hasSave()?'block':'none';u
 
 function continueGame(){const s=loadSaveData();if(!s)return;applySave(s);
 document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';
-startGameLoops();addLog('Save restored');}
+if(G.gameMode==='public'){switchToPublicMode();}
+else{startGameLoops();addLog('Save restored');}}
 
 function newGame(){if(hasSave()){if(!confirm('This will erase your current save. Confirm?'))return;localStorage.removeItem('bytecorp_save');}
 G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
@@ -3494,6 +3730,768 @@ document.addEventListener('keydown',(e)=>{
     togglePause();
   }
 });
+
+// =====================================================
+// ========== PUBLIC MODE — BYTECORP: PUBLIC ===========
+// =====================================================
+
+const PUB_DEPARTMENTS = [
+  {name:'R&D',desc:'Stock growth/min',effect:'stockGrowth',baseCost:5000,perLevel:[0.01,0.02,0.04,0.08,0.16]},
+  {name:'Marketing',desc:'Public rep/min',effect:'repGrowth',baseCost:3000,perLevel:[0.5,1,2,4,8]},
+  {name:'Sales',desc:'Capital/min',effect:'capitalGrowth',baseCost:4000,perLevel:[100,250,500,1000,2000]},
+  {name:'Legal',desc:'Heat reduction/min',effect:'heatReduction',baseCost:6000,perLevel:[0.5,1,2,3,5]},
+  {name:'Security',desc:'Defense %',effect:'defense',baseCost:8000,perLevel:[5,10,15,20,25]},
+  {name:'PR Crisis Team',desc:'Scandal reduction %',effect:'scandalReduce',baseCost:7000,perLevel:[10,20,30,40,50]}
+];
+
+const PUB_POSITIVE_EVENTS = [
+  {title:'Tech Breakthrough',desc:'R&D discovers a new algorithm.',optA:'Patent it (+$5K capital)',optB:'Open source it (+20 rep)',effA:{capital:5000},effB:{rep:20}},
+  {title:'Viral Campaign',desc:'Marketing campaign goes viral.',optA:'Monetize it (+$8K capital, -5 rep)',optB:'Ride the wave (+15 rep)',effA:{capital:8000,rep:-5},effB:{rep:15}},
+  {title:'Government Contract',desc:'Government wants your services.',optA:'Accept (+$15K, +10 heat)',optB:'Decline (+10 rep)',effA:{capital:15000,heat:10},effB:{rep:10}},
+  {title:'Acquisition Offer',desc:'A startup wants to merge.',optA:'Acquire them (+$10K, stock +3%)',optB:'Partner instead (+15 rep)',effA:{capital:10000,stockPct:3},effB:{rep:15}},
+  {title:'Industry Award',desc:'ByteCorp wins Best Tech Company.',optA:'Celebrate publicly (+20 rep, stock +2%)',optB:'Stay humble (+10 satisfaction)',effA:{rep:20,stockPct:2},effB:{satisfaction:10}},
+  {title:'Bull Market',desc:'The entire sector is booming.',optA:'Issue shares (+$20K, stock -2%)',optB:'Hold steady (stock +5%)',effA:{capital:20000,stockPct:-2},effB:{stockPct:5}},
+  {title:'Strategic Partnership',desc:'A major firm wants to partner.',optA:'Accept (+$12K capital)',optB:'Negotiate harder (+8 rep, +5 satisfaction)',effA:{capital:12000},effB:{rep:8,satisfaction:5}},
+  {title:'Record Earnings',desc:'This quarter exceeded projections.',optA:'Pay bonus dividends (+15 satisfaction, -$5K)',optB:'Reinvest (+$10K)',effA:{satisfaction:15,capital:-5000},effB:{capital:10000}}
+];
+
+const PUB_NEGATIVE_EVENTS = [
+  {title:'Data Breach Scandal',desc:'Customer data was leaked!',optA:'Cover it up (-10 rep, +15 heat)',optB:'Full transparency (-$10K, +5 rep)',effA:{rep:-10,heat:15},effB:{capital:-10000,rep:5}},
+  {title:'Hostile Takeover Attempt',desc:'A rival is buying your shares.',optA:'Poison pill defense (-$15K, stock -3%)',optB:'Fight in court (-$8K, +5 heat)',effA:{capital:-15000,stockPct:-3},effB:{capital:-8000,heat:5}},
+  {title:'Regulatory Investigation',desc:'The SEC is looking into your past.',optA:'Cooperate fully (+10 heat, -5 rep)',optB:'Lawyer up (-$12K)',effA:{heat:10,rep:-5},effB:{capital:-12000}},
+  {title:'Employee Walkout',desc:'Key engineers are leaving.',optA:'Raise salaries (-$8K)',optB:'Let them go (-10 satisfaction, stock -2%)',effA:{capital:-8000},effB:{satisfaction:-10,stockPct:-2}},
+  {title:'Product Recall',desc:'Critical bug found in your product.',optA:'Full recall (-$15K, +5 rep)',optB:'Patch quietly (-10 rep, +10 heat)',effA:{capital:-15000,rep:5},effB:{rep:-10,heat:10}},
+  {title:'Competitor Poaching',desc:'A rival is stealing your talent.',optA:'Counter-offer (-$10K)',optB:'Recruit replacements (-5 satisfaction)',effA:{capital:-10000},effB:{satisfaction:-5}},
+  {title:'Market Crash',desc:'Tech stocks are plummeting.',optA:'Buy the dip (-$20K, stock +4% later)',optB:'Hunker down (stock -5%)',effA:{capital:-20000,stockPct:4},effB:{stockPct:-5}},
+  {title:'Whistleblower',desc:'An employee leaks internal docs.',optA:'Settle quietly (-$12K, +8 heat)',optB:'Deny everything (-15 rep)',effA:{capital:-12000,heat:8},effB:{rep:-15}}
+];
+
+const PUB_PAST_EVENTS = [
+  {title:'Past Resurfaces',desc:'An old enemy recognizes your methods.',optA:'Bribe them (-$20K)',optB:'Threaten them (+20 heat, +5 shadow ops feel)',effA:{capital:-20000},effB:{heat:20}},
+  {title:'Dark Web Traces',desc:'Your hacker past surfaces online.',optA:'Hire fixers (-$15K, -10 heat)',optB:'Deny everything (-20 rep)',effA:{capital:-15000,heat:-10},effB:{rep:-20}},
+  {title:'Former Rival Returns',desc:'A hacked NPC is now a corporate competitor.',optA:'Acquire their company (-$25K)',optB:'Ignore them (+15 heat over time)',effA:{capital:-25000},effB:{heat:15}}
+];
+
+const PUB_SHADOW_ACTIONS = [
+  {id:'insider',name:'Insider Trading',desc:'Use hacker skills to front-run trades. +$8K capital, +8 heat.',cost:0,heat:8,effect:{capital:8000},cooldown:60000},
+  {id:'sabotage',name:'Corporate Sabotage',desc:'Hack a competitor. Their stock drops, yours rises +3%. +12 heat.',cost:0,heat:12,effect:{stockPct:3},cooldown:90000},
+  {id:'blackmail',name:'Blackmail Executive',desc:'Leverage old data. +$15K capital, +15 heat.',cost:0,heat:15,effect:{capital:15000},cooldown:120000},
+  {id:'datatheft',name:'Steal Trade Secrets',desc:'Exfiltrate competitor R&D. +20 rep, +10 heat.',cost:0,heat:10,effect:{rep:20},cooldown:90000},
+  {id:'marketmanip',name:'Market Manipulation',desc:'Bot army manipulates stock. Stock +5%, +20 heat.',cost:0,heat:20,effect:{stockPct:5},cooldown:180000}
+];
+
+const PUB_BOARD_QUESTIONS = [
+  {q:'How should we handle the next fiscal quarter?',a:'Focus on growth — invest heavily in R&D.',b:'Focus on stability — maintain current margins.',effA:{stockPct:2,satisfaction:-5},effB:{satisfaction:10,stockPct:-1}},
+  {q:'A competitor is encroaching on our market share.',a:'Launch an aggressive counter-campaign.',b:'Differentiate with premium features.',effA:{capital:-5000,rep:10},effB:{rep:5,satisfaction:5}},
+  {q:'Should we expand internationally?',a:'Yes, open offices in Asia and Europe.',b:'No, consolidate our domestic position.',effA:{capital:-15000,stockPct:4},effB:{satisfaction:8,capital:5000}}
+];
+
+let pubGameLoop = null;
+let pubSlowLoop = null;
+let pubStockLoop = null;
+
+function addPubLog(msg, cls) {
+  const el = document.getElementById('pub-log');
+  if (!el) return;
+  const e = document.createElement('div');
+  e.className = 'pub-log-entry' + (cls ? ' ' + cls : '');
+  e.textContent = ts() + ' ' + msg;
+  el.appendChild(e);
+  while (el.children.length > 8) el.removeChild(el.firstChild);
+}
+
+function pubGetDeptEffect(deptIdx) {
+  const lvl = G.pubDepartments[deptIdx];
+  if (lvl <= 0) return 0;
+  return PUB_DEPARTMENTS[deptIdx].perLevel[lvl - 1] || 0;
+}
+
+function pubGetDeptCost(deptIdx) {
+  const lvl = G.pubDepartments[deptIdx];
+  return Math.floor(PUB_DEPARTMENTS[deptIdx].baseCost * Math.pow(2, lvl));
+}
+
+function pubGetMarketCap() {
+  return G.pubStock * G.pubShares;
+}
+
+function pubGetDefenseChance() {
+  return pubGetDeptEffect(4); // Security department
+}
+
+function pubGetScandalReduction() {
+  return pubGetDeptEffect(5); // PR Crisis Team
+}
+
+// ===== IPO Transition =====
+function doIPO() {
+  document.getElementById('endgame-overlay').classList.remove('active');
+  document.getElementById('ipo-overlay').classList.remove('active');
+
+  // Calculate starting values from hacker mode
+  G.pubCapital = Math.max(1000, Math.floor(G.data / 1000));
+  G.pubStock = 42.00;
+  G.pubShares = 10000000;
+  G.pubPublicRep = 50;
+  G.heat = Math.floor(G.heat / 2);
+  G.pubDepartments = [0, 0, 0, 0, 0, 0];
+  G.pubShareholders = [
+    {name: 'Titan Capital', satisfaction: 70},
+    {name: 'Apex Ventures', satisfaction: 65},
+    {name: 'Nova Fund', satisfaction: 60},
+    {name: 'Atlas Holdings', satisfaction: 55},
+    {name: 'Zenith Group', satisfaction: 50}
+  ];
+  G.pubStockHistory = [42.00];
+  G.pubShadowOpsCount = 0;
+  G.pubLastEventTime = Date.now();
+  G.pubActiveEvent = null;
+  G.pubEventLog = [];
+  G.pubLastStockUpdate = Date.now();
+  G.pubLastQuarterly = Date.now();
+  G.pubLastMeetingTime = 0;
+  G.pubBuybackCooldown = 0;
+  G.pubIssueCooldown = 0;
+  G.pubDividendCooldown = 0;
+  G.pubShadowCooldowns = {};
+  // Carry over enemy NPCs as competitors
+  if (G.npcs) {
+    G.pubCompetitors = G.npcs.filter(n => n.relation === 'enemy').slice(0, 3).map(n => n.name);
+    if (G.pubCompetitors.length === 0) G.pubCompetitors = ['NovaTech', 'MegaCorp', 'DarkSec'];
+  }
+  G.pubTotalDividendsPaid = 0;
+  G.pubTotalShadowOps = 0;
+
+  // Show transition animation
+  const trans = document.getElementById('ipo-transition');
+  trans.classList.add('active');
+  let tickCount = 0;
+  const tickEl = document.getElementById('ipo-ticker-anim');
+  const tickInterval = setInterval(() => {
+    tickCount++;
+    const price = (42 + Math.random() * 5 - 2).toFixed(2);
+    tickEl.textContent = '$BC ' + price + ' | ' + ['PROCESSING...', 'LISTING...', 'GOING PUBLIC...'][tickCount % 3];
+  }, 500);
+
+  setTimeout(() => {
+    clearInterval(tickInterval);
+    trans.classList.remove('active');
+    G.gameMode = 'public';
+    switchToPublicMode();
+    saveGame();
+  }, 3000);
+}
+
+function switchToPublicMode() {
+  document.body.classList.add('public-mode');
+  document.getElementById('main').style.display = 'none';
+  document.getElementById('public-container').classList.add('active');
+
+  // Update header
+  document.querySelector('#header h1').textContent = '$BYTECORP';
+  document.getElementById('level-info').textContent = 'PUBLIC COMPANY';
+
+  // Update header buttons for public mode
+  updatePublicHeaderButtons();
+
+  // Update resource labels
+  const resLabels = document.querySelectorAll('.res-label');
+  const resValues = document.querySelectorAll('.res-value');
+  if (resLabels[0]) resLabels[0].textContent = 'CAPITAL';
+  if (resLabels[1]) resLabels[1].textContent = 'PUB REP';
+  if (resLabels[2]) resLabels[2].textContent = 'STOCK';
+
+  // Hide crypto
+  document.getElementById('crypto-res-wrap').style.display = 'none';
+
+  // Start public game loops
+  startPublicLoops();
+  renderPublicUI();
+  addPubLog('ByteCorp is now publicly traded.');
+  addPubLog('Starting capital: $' + fmt(G.pubCapital));
+}
+
+function updatePublicHeaderButtons() {
+  const leftActions = document.getElementById('header-actions-left');
+  leftActions.innerHTML = '';
+  const btns = [
+    {text: 'TRADING', fn: "pubShowPanel('trading')"},
+    {text: 'BOARD', fn: "pubShowPanel('boardroom')"},
+    {text: 'SHADOW', fn: 'openShadowOps()'},
+    {text: 'SAVE', fn: 'manualSave()'},
+  ];
+  btns.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'header-btn';
+    btn.textContent = b.text;
+    btn.setAttribute('onclick', b.fn);
+    leftActions.appendChild(btn);
+  });
+  const flash = document.createElement('span');
+  flash.id = 'save-flash';
+  flash.textContent = 'SAVED';
+  leftActions.appendChild(flash);
+  const pauseBtn = document.createElement('button');
+  pauseBtn.className = 'header-btn';
+  pauseBtn.id = 'btn-pause';
+  pauseBtn.textContent = 'PAUSE';
+  pauseBtn.setAttribute('onclick', 'togglePause()');
+  leftActions.appendChild(pauseBtn);
+}
+
+function pubShowPanel(panel) {
+  // All panels are always visible in 4-column layout; this is for potential mobile use
+}
+
+// ===== Public Mode UI Rendering =====
+function renderPublicUI() {
+  if (G.gameMode !== 'public') return;
+  // Resources in header
+  document.getElementById('res-data').textContent = '$' + fmt(G.pubCapital);
+  document.getElementById('res-credits').textContent = Math.floor(G.pubPublicRep);
+  document.getElementById('res-rep').textContent = '$' + G.pubStock.toFixed(2);
+
+  // Heat
+  const pct = Math.min(100, Math.max(0, G.heat));
+  const hb = document.getElementById('heat-bar');
+  hb.style.width = pct + '%';
+  hb.className = pct > 70 ? 'danger' : '';
+  document.getElementById('heat-text').textContent = Math.floor(pct) + '%';
+
+  // Stock display
+  document.getElementById('pub-stock-price').textContent = '$' + G.pubStock.toFixed(2);
+  const hist = G.pubStockHistory;
+  if (hist.length >= 2) {
+    const prev = hist[hist.length - 2];
+    const diff = G.pubStock - prev;
+    const pctChange = prev > 0 ? ((diff / prev) * 100) : 0;
+    const changeEl = document.getElementById('pub-stock-change');
+    changeEl.textContent = (diff >= 0 ? '+' : '') + diff.toFixed(2) + ' (' + (pctChange >= 0 ? '+' : '') + pctChange.toFixed(2) + '%)';
+    changeEl.className = 'stock-change ' + (diff >= 0 ? 'up' : 'down');
+  }
+
+  // Shares / market cap
+  document.getElementById('pub-shares').textContent = fmt(G.pubShares);
+  document.getElementById('pub-mktcap').textContent = '$' + fmt(pubGetMarketCap());
+
+  // Stock chart
+  renderStockChart();
+
+  // Button cooldowns
+  const now = Date.now();
+  document.getElementById('pub-buyback-btn').disabled = G.pubCapital < 5000 || now < G.pubBuybackCooldown;
+  document.getElementById('pub-issue-btn').disabled = now < G.pubIssueCooldown;
+  document.getElementById('pub-dividend-btn').disabled = G.pubCapital < G.pubCapital * 0.05 || now < G.pubDividendCooldown;
+  document.getElementById('pub-meeting-btn').disabled = now < G.pubLastMeetingTime + 300000;
+
+  // Departments
+  renderPubDepartments();
+  // Shareholders
+  renderPubShareholders();
+  // Competitors
+  renderPubCompetitors();
+  // Active event
+  renderPubActiveEvent();
+}
+
+function renderStockChart() {
+  const hist = G.pubStockHistory.slice(-30);
+  if (hist.length < 2) { document.getElementById('pub-stock-chart').textContent = 'Awaiting data...'; return; }
+  const min = Math.min(...hist) * 0.95;
+  const max = Math.max(...hist) * 1.05;
+  const range = max - min || 1;
+  const height = 10;
+  let lines = [];
+  for (let row = height - 1; row >= 0; row--) {
+    let line = '';
+    const threshold = min + (range * (row / (height - 1)));
+    for (let col = 0; col < hist.length; col++) {
+      if (hist[col] >= threshold) line += '\u2588';
+      else line += ' ';
+    }
+    const priceLabel = threshold.toFixed(0).padStart(5);
+    lines.push(priceLabel + '|' + line);
+  }
+  lines.push('     +' + '-'.repeat(hist.length));
+  document.getElementById('pub-stock-chart').textContent = lines.join('\n');
+}
+
+function renderPubDepartments() {
+  const el = document.getElementById('pub-dept-list');
+  if (!el) return;
+  el.innerHTML = '';
+  PUB_DEPARTMENTS.forEach((d, i) => {
+    const lvl = G.pubDepartments[i];
+    const maxLvl = 5;
+    const cost = pubGetDeptCost(i);
+    const eff = lvl > 0 ? pubGetDeptEffect(i) : 0;
+    const card = document.createElement('div');
+    card.className = 'dept-card';
+    card.innerHTML = '<div class="dept-name">' + d.name + ' [Lv ' + lvl + '/' + maxLvl + ']</div>' +
+      '<div class="dept-info">' + d.desc + ': ' + (eff > 0 ? '+' + eff : '0') + '</div>' +
+      (lvl < maxLvl ? '<button class="dept-upgrade" ' + (G.pubCapital < cost ? 'disabled' : '') +
+        ' onclick="pubUpgradeDept(' + i + ')">UPGRADE — $' + fmt(cost) + '</button>' :
+        '<div class="dept-info" style="color:#FFD700">MAX LEVEL</div>');
+    el.appendChild(card);
+  });
+}
+
+function pubUpgradeDept(idx) {
+  const cost = pubGetDeptCost(idx);
+  if (G.pubCapital < cost || G.pubDepartments[idx] >= 5) return;
+  G.pubCapital -= cost;
+  G.pubDepartments[idx]++;
+  addPubLog(PUB_DEPARTMENTS[idx].name + ' upgraded to Lv ' + G.pubDepartments[idx]);
+  renderPublicUI();
+}
+
+function renderPubShareholders() {
+  const el = document.getElementById('pub-shareholders');
+  if (!el) return;
+  el.innerHTML = '';
+  G.pubShareholders.forEach(sh => {
+    const sat = Math.max(0, Math.min(100, sh.satisfaction));
+    const color = sat > 60 ? '#00ff41' : sat > 30 ? '#ffaa00' : '#ff3333';
+    const card = document.createElement('div');
+    card.className = 'shareholder-card';
+    card.innerHTML = '<div class="shareholder-name">' + sh.name + '</div>' +
+      '<div class="shareholder-bar-bg"><div class="shareholder-bar" style="width:' + sat + '%;background:' + color + '"></div></div>' +
+      '<div class="shareholder-pct" style="color:' + color + '">' + Math.floor(sat) + '%</div>';
+    el.appendChild(card);
+  });
+}
+
+function renderPubCompetitors() {
+  const el = document.getElementById('pub-competitors');
+  if (!el) return;
+  el.innerHTML = G.pubCompetitors.map(c => '<div style="padding:2px 0;color:var(--warning)">' + c + '</div>').join('');
+}
+
+function renderPubActiveEvent() {
+  const el = document.getElementById('pub-event-active');
+  if (!el) return;
+  if (!G.pubActiveEvent) {
+    const nextIn = Math.max(0, Math.ceil((G.pubLastEventTime + 90000 - Date.now()) / 1000));
+    el.innerHTML = '<div style="font-size:0.7em;color:#ccc;padding:8px">Next event in ' + nextIn + 's...</div>';
+    return;
+  }
+  const ev = G.pubActiveEvent;
+  const typeClass = ev.type === 'positive' ? 'positive' : ev.type === 'past' ? 'past' : 'negative';
+  el.innerHTML = '<div class="event-card ' + typeClass + '">' +
+    '<div class="event-title">' + ev.title + '</div>' +
+    '<div class="event-desc">' + ev.desc + '</div>' +
+    '<button class="event-btn a" onclick="pubEventChoice(\'a\')">' + ev.optA + '</button>' +
+    '<button class="event-btn b" onclick="pubEventChoice(\'b\')">' + ev.optB + '</button>' +
+    '</div>';
+}
+
+// ===== Trading Actions =====
+function pubBuyBack() {
+  if (Date.now() < G.pubBuybackCooldown) return;
+  const cost = Math.floor(G.pubCapital * 0.05);
+  if (G.pubCapital < 5000) return;
+  G.pubCapital -= cost;
+  G.pubStock *= 1.02;
+  G.pubBuybackCooldown = Date.now() + 30000;
+  addPubLog('Stock buyback: -$' + fmt(cost) + ', stock +2%');
+  renderPublicUI();
+}
+
+function pubIssueShares() {
+  if (Date.now() < G.pubIssueCooldown) return;
+  G.pubCapital += 10000;
+  G.pubShares += 500000;
+  G.pubStock *= 0.97;
+  G.pubIssueCooldown = Date.now() + 45000;
+  addPubLog('Shares issued: +$10K capital, stock -3%');
+  adjustSatisfaction(-3);
+  renderPublicUI();
+}
+
+function pubPayDividend() {
+  if (Date.now() < G.pubDividendCooldown) return;
+  const cost = Math.floor(G.pubCapital * 0.05);
+  if (cost <= 0) return;
+  G.pubCapital -= cost;
+  G.pubStock *= 1.01;
+  G.pubDividendCooldown = Date.now() + 60000;
+  G.pubTotalDividendsPaid++;
+  adjustSatisfaction(15);
+  addPubLog('Dividend paid: -$' + fmt(cost) + ', satisfaction +15', 'good');
+  renderPublicUI();
+}
+
+function adjustSatisfaction(amount) {
+  G.pubShareholders.forEach(sh => {
+    sh.satisfaction = Math.max(0, Math.min(100, sh.satisfaction + amount));
+  });
+}
+
+// ===== Events System =====
+function pubCheckEvent() {
+  if (G.pubActiveEvent) return;
+  const now = Date.now();
+  if (now - G.pubLastEventTime < 90000) return;
+  G.pubLastEventTime = now;
+
+  let pool, type;
+  const roll = Math.random();
+  if (roll < 0.1 && G.pubCompetitors.length > 0) {
+    pool = PUB_PAST_EVENTS;
+    type = 'past';
+  } else if (roll < 0.55) {
+    pool = PUB_POSITIVE_EVENTS;
+    type = 'positive';
+  } else {
+    pool = PUB_NEGATIVE_EVENTS;
+    type = 'negative';
+  }
+
+  const ev = pool[Math.floor(Math.random() * pool.length)];
+  G.pubActiveEvent = { ...ev, type, effA: { ...ev.effA }, effB: { ...ev.effB } };
+  addPubLog('EVENT: ' + ev.title, type === 'negative' ? 'bad' : 'good');
+  renderPubActiveEvent();
+}
+
+function pubEventChoice(choice) {
+  if (!G.pubActiveEvent) return;
+  const eff = choice === 'a' ? G.pubActiveEvent.effA : G.pubActiveEvent.effB;
+  applyPubEffect(eff);
+  const choiceText = choice === 'a' ? G.pubActiveEvent.optA : G.pubActiveEvent.optB;
+  G.pubEventLog.unshift({ title: G.pubActiveEvent.title, choice: choiceText, time: Date.now() });
+  if (G.pubEventLog.length > 10) G.pubEventLog.pop();
+  addPubLog('Chose: ' + choiceText);
+  G.pubActiveEvent = null;
+  renderPubActiveEvent();
+  renderPubEventLog();
+  renderPublicUI();
+}
+
+function applyPubEffect(eff) {
+  if (!eff) return;
+  if (eff.capital) G.pubCapital += eff.capital;
+  if (eff.rep) G.pubPublicRep += eff.rep;
+  if (eff.heat) G.heat = Math.min(100, Math.max(0, G.heat + eff.heat));
+  if (eff.stockPct) G.pubStock *= (1 + eff.stockPct / 100);
+  if (eff.satisfaction) adjustSatisfaction(eff.satisfaction);
+  if (G.pubCapital < 0) G.pubCapital = 0;
+  if (G.pubStock < 0.01) G.pubStock = 0.01;
+}
+
+function renderPubEventLog() {
+  const el = document.getElementById('pub-event-log');
+  if (!el) return;
+  el.innerHTML = '';
+  G.pubEventLog.forEach(ev => {
+    const div = document.createElement('div');
+    div.style.cssText = 'font-size:0.65em;color:#ccc;padding:3px 0;border-bottom:1px solid #1a1a2e';
+    div.textContent = ev.title + ': ' + ev.choice;
+    el.appendChild(div);
+  });
+}
+
+// ===== Shadow Ops =====
+function openShadowOps() {
+  document.getElementById('shadow-uses').textContent = G.pubShadowOpsCount;
+  document.getElementById('shadow-warn').textContent = G.pubShadowOpsCount >= 10 ? 'DARK RETURN available!' : (10 - G.pubShadowOpsCount) + ' until Dark Return';
+  const el = document.getElementById('shadow-actions-list');
+  el.innerHTML = '';
+  const now = Date.now();
+  PUB_SHADOW_ACTIONS.forEach(sa => {
+    const onCooldown = G.pubShadowCooldowns[sa.id] && now < G.pubShadowCooldowns[sa.id];
+    const cdRemain = onCooldown ? Math.ceil((G.pubShadowCooldowns[sa.id] - now) / 1000) : 0;
+    const div = document.createElement('div');
+    div.className = 'shadow-action';
+    div.innerHTML = '<div class="shadow-action-name">' + sa.name + '</div>' +
+      '<div class="shadow-action-desc">' + sa.desc + '</div>' +
+      '<button class="shadow-action-btn" ' + (onCooldown ? 'disabled' : '') +
+      ' onclick="pubDoShadowOp(\'' + sa.id + '\')">' +
+      (onCooldown ? 'COOLDOWN: ' + cdRemain + 's' : '[ EXECUTE ]') + '</button>';
+    el.appendChild(div);
+  });
+  document.getElementById('shadow-overlay').classList.add('active');
+}
+
+function closeShadowOps() {
+  document.getElementById('shadow-overlay').classList.remove('active');
+}
+
+function pubDoShadowOp(id) {
+  const sa = PUB_SHADOW_ACTIONS.find(x => x.id === id);
+  if (!sa) return;
+  const now = Date.now();
+  if (G.pubShadowCooldowns[id] && now < G.pubShadowCooldowns[id]) return;
+
+  G.pubShadowCooldowns[id] = now + sa.cooldown;
+  G.heat = Math.min(100, G.heat + sa.heat);
+  G.pubShadowOpsCount++;
+  G.pubTotalShadowOps++;
+  applyPubEffect(sa.effect);
+  addPubLog('SHADOW OP: ' + sa.name + ' (+' + sa.heat + ' heat)', 'bad');
+  addNewsItem('Suspicious activity detected around ByteCorp stock');
+  closeShadowOps();
+  renderPublicUI();
+  pubCheckEndings();
+}
+
+// ===== Board Meeting =====
+function pubCallMeeting() {
+  const now = Date.now();
+  if (now < G.pubLastMeetingTime + 300000) return;
+  G.pubLastMeetingTime = now;
+  const q = PUB_BOARD_QUESTIONS[Math.floor(Math.random() * PUB_BOARD_QUESTIONS.length)];
+  G._currentBoardQ = q;
+  document.getElementById('board-question').textContent = q.q;
+  document.getElementById('board-ans-a').textContent = 'A: ' + q.a;
+  document.getElementById('board-ans-b').textContent = 'B: ' + q.b;
+  document.getElementById('board-meeting-overlay').classList.add('active');
+}
+
+function boardAnswer(choice) {
+  const q = G._currentBoardQ;
+  if (!q) return;
+  const eff = choice === 'a' ? q.effA : q.effB;
+  applyPubEffect(eff);
+  addPubLog('Board decision: ' + (choice === 'a' ? q.a : q.b));
+  adjustSatisfaction(3); // Board appreciates being consulted
+  document.getElementById('board-meeting-overlay').classList.remove('active');
+  renderPublicUI();
+}
+
+// ===== Quarterly Earnings =====
+function pubCheckQuarterly() {
+  const now = Date.now();
+  if (now - G.pubLastQuarterly < 600000) return; // every 10 min
+  G.pubLastQuarterly = now;
+
+  const capitalGrowth = G.pubCapital > 10000 ? 'strong' : G.pubCapital > 5000 ? 'moderate' : 'weak';
+  const stockTrend = G.pubStockHistory.length >= 2 ? (G.pubStock > G.pubStockHistory[G.pubStockHistory.length - 2] ? 'up' : 'down') : 'flat';
+  const avgSat = G.pubShareholders.reduce((s, sh) => s + sh.satisfaction, 0) / G.pubShareholders.length;
+
+  let report = 'Capital: $' + fmt(G.pubCapital) + ' (' + capitalGrowth + ')\n';
+  report += 'Stock: $' + G.pubStock.toFixed(2) + ' (trending ' + stockTrend + ')\n';
+  report += 'Market Cap: $' + fmt(pubGetMarketCap()) + '\n';
+  report += 'Board Satisfaction: ' + Math.floor(avgSat) + '%\n';
+  report += 'Public Rep: ' + Math.floor(G.pubPublicRep) + '\n';
+  report += 'Heat: ' + Math.floor(G.heat) + '%';
+
+  document.getElementById('quarterly-body').textContent = report;
+  document.getElementById('quarterly-overlay').classList.add('active');
+
+  // Quarterly effects on satisfaction
+  if (stockTrend === 'up') adjustSatisfaction(5);
+  else adjustSatisfaction(-5);
+  if (G.pubTotalDividendsPaid > 0) adjustSatisfaction(3);
+
+  addPubLog('Quarterly earnings report issued');
+}
+
+function closeQuarterly() {
+  document.getElementById('quarterly-overlay').classList.remove('active');
+}
+
+// ===== Stock Price Updates =====
+function pubUpdateStock() {
+  const now = Date.now();
+  if (now - G.pubLastStockUpdate < 5000) return;
+  G.pubLastStockUpdate = now;
+
+  // Base fluctuation
+  let change = (Math.random() - 0.48) * 0.5; // slight upward bias
+
+  // R&D department effect
+  change += pubGetDeptEffect(0) / 60; // per 5 seconds
+
+  // Public rep effect
+  if (G.pubPublicRep > 70) change += 0.05;
+  else if (G.pubPublicRep < 30) change -= 0.1;
+
+  // Heat effect
+  if (G.heat > 50) change -= 0.05 * (G.heat / 100);
+
+  // Satisfaction effect
+  const avgSat = G.pubShareholders.reduce((s, sh) => s + sh.satisfaction, 0) / G.pubShareholders.length;
+  if (avgSat < 40) change -= 0.1;
+
+  G.pubStock = Math.max(0.01, G.pubStock + change);
+  G.pubStockHistory.push(G.pubStock);
+  if (G.pubStockHistory.length > 60) G.pubStockHistory.shift();
+}
+
+// ===== Public Mode Game Loop =====
+function pubGameTick() {
+  if (!gameRunning || gamePaused || G.gameMode !== 'public') return;
+
+  // Department passive effects per second (called 10x/sec)
+  // Sales: capital/min
+  const salesPerTick = pubGetDeptEffect(2) / 600; // per 100ms
+  G.pubCapital += salesPerTick;
+
+  // Marketing: rep/min
+  const mktPerTick = pubGetDeptEffect(1) / 600;
+  G.pubPublicRep = Math.min(100, G.pubPublicRep + mktPerTick);
+
+  // Legal: heat reduction/min
+  const legalPerTick = pubGetDeptEffect(3) / 600;
+  if (G.heat > 0) G.heat = Math.max(0, G.heat - legalPerTick);
+
+  // Satisfaction natural drift based on stock and rep
+  // Very slow: every tick adjust very slightly
+  const avgSat = G.pubShareholders.reduce((s, sh) => s + sh.satisfaction, 0) / G.pubShareholders.length;
+  if (G.pubStock > 50 && avgSat < 70) adjustSatisfaction(0.002);
+  if (G.pubStock < 30 && avgSat > 30) adjustSatisfaction(-0.003);
+  if (G.pubPublicRep > 70) adjustSatisfaction(0.001);
+  if (G.heat > 70) adjustSatisfaction(-0.005);
+
+  renderPublicUI();
+}
+
+function pubSlowTick() {
+  if (!gameRunning || gamePaused || G.gameMode !== 'public') return;
+  pubUpdateStock();
+  pubCheckEvent();
+  pubCheckQuarterly();
+  pubCheckEndings();
+
+  // Heat from past - slow ambient increase if heat > 0
+  if (G.heat > 0 && G.heat < 5) {
+    // Natural decay for low heat
+    G.heat = Math.max(0, G.heat - 0.1);
+  }
+}
+
+function startPublicLoops() {
+  // Stop hacker loops first
+  gameIntervals.forEach(id => clearInterval(id));
+  gameIntervals = [];
+
+  gameRunning = true;
+  pubGameLoop = setInterval(pubGameTick, 100);
+  pubSlowLoop = setInterval(pubSlowTick, 1000);
+  gameIntervals.push(pubGameLoop);
+  gameIntervals.push(pubSlowLoop);
+  gameIntervals.push(setInterval(saveGame, 10000));
+  gameIntervals.push(setInterval(() => { if (G.gameMode === 'public') renderPublicUI(); }, 2000));
+  renderPubEventLog();
+}
+
+// ===== Endings =====
+function pubCheckEndings() {
+  // TECH GIANT: Market cap >= $1B
+  if (pubGetMarketCap() >= 1000000000) {
+    pubShowEnding('tech_giant');
+    return;
+  }
+  // EXPOSED: Heat >= 100 or all shareholders < 30%
+  if (G.heat >= 100) {
+    pubShowEnding('exposed');
+    return;
+  }
+  const allLow = G.pubShareholders.every(sh => sh.satisfaction < 30);
+  if (allLow) {
+    pubShowEnding('exposed_board');
+    return;
+  }
+}
+
+function pubShowEnding(type) {
+  const overlay = document.getElementById('pub-ending-overlay');
+  const title = document.getElementById('pub-ending-title');
+  const desc = document.getElementById('pub-ending-desc');
+  const stats = document.getElementById('pub-ending-stats');
+  const darkBtn = document.getElementById('pub-ending-dark');
+
+  if (type === 'tech_giant') {
+    title.textContent = 'TECH GIANT';
+    title.style.color = '#FFD700';
+    desc.textContent = 'ByteCorp has achieved a market cap of $1 BILLION. You are now one of the most powerful tech companies on Earth. The shadows of your past are buried under mountains of gold.';
+  } else if (type === 'exposed') {
+    title.textContent = 'EXPOSED';
+    title.style.color = 'var(--danger)';
+    desc.textContent = 'Your heat reached critical levels. Federal investigators have uncovered ByteCorp\'s criminal origins. The stock crashes to zero. Your empire crumbles.';
+  } else if (type === 'exposed_board') {
+    title.textContent = 'BOARD VOTE: REMOVED';
+    title.style.color = 'var(--danger)';
+    desc.textContent = 'All board members have lost confidence. A unanimous vote removes you as CEO. ByteCorp continues without you.';
+  }
+
+  stats.innerHTML = '<p style="color:#FFD700">Final Stock: $' + G.pubStock.toFixed(2) + '</p>' +
+    '<p style="color:#FFD700">Market Cap: $' + fmt(pubGetMarketCap()) + '</p>' +
+    '<p style="color:#FFD700">Shadow Ops Used: ' + G.pubShadowOpsCount + '</p>' +
+    '<p style="color:#FFD700">Dividends Paid: ' + G.pubTotalDividendsPaid + '</p>';
+
+  // Dark Return option
+  if (G.pubShadowOpsCount >= 10) {
+    darkBtn.style.display = '';
+  } else {
+    darkBtn.style.display = 'none';
+  }
+
+  overlay.classList.add('active');
+  // Stop game
+  gameIntervals.forEach(id => clearInterval(id));
+  gameIntervals = [];
+  gameRunning = false;
+}
+
+function pubDarkReturn() {
+  document.getElementById('pub-ending-overlay').classList.remove('active');
+  // Return to hacker mode with bonuses
+  G.gameMode = 'hacker';
+  G.data += G.pubCapital * 100;
+  G.credits += Math.floor(G.pubCapital / 10);
+  G.heat = Math.floor(G.heat / 2);
+  G._endgameShown = false;
+
+  document.body.classList.remove('public-mode');
+  document.getElementById('main').style.display = '';
+  document.getElementById('public-container').classList.remove('active');
+  document.querySelector('#header h1').textContent = 'BYTECORP';
+
+  // Restore hacker header buttons
+  restoreHackerHeader();
+
+  // Restore resource labels
+  const resLabels = document.querySelectorAll('.res-label');
+  if (resLabels[0]) resLabels[0].textContent = 'DATA';
+  if (resLabels[1]) resLabels[1].textContent = 'CREDITS';
+  if (resLabels[2]) resLabels[2].textContent = 'REP';
+
+  addLog('DARK RETURN: Back to hacking with $' + fmt(G.data) + ' DATA', 'info');
+  saveGame();
+  startGameLoops();
+}
+
+function restoreHackerHeader() {
+  const leftActions = document.getElementById('header-actions-left');
+  leftActions.innerHTML = '';
+  const hackerBtns = [
+    {text: 'CORP ID', fn: 'openCorpID()'},
+    {text: 'MARKET', fn: 'openBlackMarket()', id: 'bmarket-header-btn'},
+    {text: 'MISSIONS', fn: 'openMissions()'},
+    {text: 'SKILLS', fn: 'openSkills()'},
+    {text: 'ACH', fn: 'openAchievements()'},
+    {text: 'SAVE', fn: 'manualSave()'},
+  ];
+  hackerBtns.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'header-btn';
+    btn.textContent = b.text;
+    btn.setAttribute('onclick', b.fn);
+    if (b.id) { btn.id = b.id; btn.style.display = G.upgrades.darkweb ? '' : 'none'; }
+    leftActions.appendChild(btn);
+  });
+  const flash = document.createElement('span');
+  flash.id = 'save-flash';
+  flash.textContent = 'SAVED';
+  leftActions.appendChild(flash);
+  const pauseBtn = document.createElement('button');
+  pauseBtn.className = 'header-btn';
+  pauseBtn.id = 'btn-pause';
+  pauseBtn.textContent = 'PAUSE';
+  pauseBtn.setAttribute('onclick', 'togglePause()');
+  leftActions.appendChild(pauseBtn);
+}
 
 applyTheme();applyLang();showStartScreen();
 </script>
