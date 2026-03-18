@@ -2142,7 +2142,7 @@ const MAN_WINDOWS = [
 
 function getMasteryLevel(cmd){const uses=G.commandMastery[cmd]||0;if(uses>=15)return 3;if(uses>=8)return 2;if(uses>=3)return 1;return 0;}
 function getMasteryStars(cmd){const lv=getMasteryLevel(cmd);return '\u2605'.repeat(lv)+'\u2606'.repeat(3-lv);}
-function getMasteryStarsHtml(cmd){const lv=getMasteryLevel(cmd);return '<span style="color:#FFD700">\u2605</span>'.repeat(lv)+'<span style="color:#555555">\u2606</span>'.repeat(3-lv);}
+function getMasteryStarsHtml(cmd){const lv=getMasteryLevel(cmd);return '<span style="color:#FFD700">\u2605</span>'.repeat(lv)+'<span style="color:#888888">\u2606</span>'.repeat(3-lv);}
 function getOsAffinityBonus(os){const aff=os==='Linux'?G.linuxAffinity:G.windowsAffinity;let timerBonus=0,rewardMult=1;
 if(aff>90){timerBonus=15;rewardMult=1.3;}else if(aff>60){timerBonus=10;rewardMult=1.2;}else if(aff>30){timerBonus=5;rewardMult=1;}
 return{timerBonus,rewardMult};}
