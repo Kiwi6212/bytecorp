@@ -974,7 +974,7 @@ const SFX={
   bid(){this._osc('sine',700,800,0.1,0.2);},
   missionComplete(){[300,400,500,600,800].forEach((f,i)=>this._osc('sine',f,f,0.12,0.3,i*0.14));},
   achievement(){this.init();const t=this.ctx.currentTime;[523,659,784].forEach(f=>{const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.2,t);g.gain.linearRampToValueAtTime(0,t+0.4);o.connect(g);g.connect(this.ctx.destination);o.start(t);o.stop(t+0.41);});},
-  keyPress(){this.init();const sz=Math.floor(this.ctx.sampleRate*0.03),buf=this.ctx.createBuffer(1,sz,this.ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=(Math.random()*2-1)*0.3;const src=this.ctx.createBufferSource();src.buffer=buf;const gn=this.ctx.createGain();gn.gain.setValueAtTime(0.15,this.ctx.currentTime);gn.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+0.03);src.connect(gn);gn.connect(this.ctx.destination);src.start();}
+  keyPress(){this.init();const sz=Math.floor(this.ctx.sampleRate*0.03),buf=this.ctx.createBuffer(1,sz,this.ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=(Math.random()*2-1)*0.6;const src=this.ctx.createBufferSource();src.buffer=buf;const gn=this.ctx.createGain();gn.gain.setValueAtTime(0.4,this.ctx.currentTime);gn.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+0.03);src.connect(gn);gn.connect(this.ctx.destination);src.start();}
 };
 
 function toggleSound(){
