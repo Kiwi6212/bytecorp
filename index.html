@@ -575,6 +575,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <button class="header-btn" onclick="manualSave()">SAVE</button>
     <span id="save-flash">SAVED</span>
     <button class="header-btn" id="btn-pause" onclick="togglePause()">PAUSE</button>
+    <button class="header-btn" id="btn-sound" onclick="toggleSound()">🔇</button>
   </div>
   <div id="header-actions-right">
     <button class="header-btn" onclick="openHelp()">?</button>
@@ -941,9 +942,54 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 </div></div>
 
 <script>
-// ========== LANG & THEME ==========
+// ========== LANG & THEME & SOUND ==========
 let currentLang = localStorage.getItem('bytecorp_lang') || 'en';
 let currentTheme = localStorage.getItem('bytecorp_theme') || 'dark';
+
+// ========== SFX (Web Audio API) ==========
+const SFX={
+  ctx:null,muted:localStorage.getItem('bytecorp_sound')!=='on',
+  init(){if(!this.ctx)this.ctx=new(window.AudioContext||window.webkitAudioContext)();if(this.ctx.state==='suspended')this.ctx.resume();},
+  play(type){if(this.muted)return;this.init();this[type]?.();},
+  _osc(type,f0,f1,dur,gain,delay){
+    delay=delay||0;const o=this.ctx.createOscillator(),g=this.ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f0,this.ctx.currentTime+delay);
+    if(f1!==f0)o.frequency.linearRampToValueAtTime(f1,this.ctx.currentTime+delay+dur);
+    g.gain.setValueAtTime(gain,this.ctx.currentTime+delay);
+    g.gain.linearRampToValueAtTime(0,this.ctx.currentTime+delay+dur);
+    o.connect(g);g.connect(this.ctx.destination);
+    o.start(this.ctx.currentTime+delay);o.stop(this.ctx.currentTime+delay+dur+0.01);
+  },
+  mine(){this._osc('sawtooth',800,200,0.08,0.3);},
+  cmdOk(){this._osc('sine',600,900,0.1,0.2);},
+  cmdFail(){this._osc('square',200,100,0.3,0.4);},
+  hackSuccess(){this._osc('sine',400,400,0.1,0.3,0);this._osc('sine',600,600,0.1,0.3,0.12);this._osc('sine',800,800,0.1,0.3,0.24);},
+  hackFail(){this._osc('sawtooth',400,100,0.5,0.4);},
+  raid(){this._osc('square',150,150,0.15,0.5,0);this._osc('square',150,150,0.15,0.5,0.2);this._osc('square',150,150,0.15,0.5,0.4);},
+  buy(){this._osc('sine',500,700,0.15,0.2);},
+  incomingAttack(){this._osc('square',300,300,0.2,0.4,0);this._osc('square',200,200,0.2,0.4,0.25);},
+  ddos(){for(let i=0;i<5;i++)this._osc('square',100,100,0.1,0.4,i*0.15);},
+  levelUp(){[400,500,600,800].forEach((f,i)=>this._osc('sine',f,f,0.15,0.3,i*0.17));},
+  downloadTick(){this._osc('sine',1000,1000,0.05,0.1);},
+  bid(){this._osc('sine',700,800,0.1,0.2);},
+  missionComplete(){[300,400,500,600,800].forEach((f,i)=>this._osc('sine',f,f,0.12,0.3,i*0.14));},
+  achievement(){this.init();const t=this.ctx.currentTime;[523,659,784].forEach(f=>{const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.2,t);g.gain.linearRampToValueAtTime(0,t+0.4);o.connect(g);g.connect(this.ctx.destination);o.start(t);o.stop(t+0.41);});}
+};
+
+function toggleSound(){
+  SFX.muted=!SFX.muted;
+  localStorage.setItem('bytecorp_sound',SFX.muted?'off':'on');
+  const btn=document.getElementById('btn-sound');
+  if(btn)btn.textContent=SFX.muted?'🔇':'🔊';
+  if(!SFX.muted){
+    SFX.init();
+    const flash=document.getElementById('save-flash');
+    if(flash){flash.textContent='SOUND ON';flash.style.color='var(--accent)';flash.classList.add('show');
+      setTimeout(()=>{flash.classList.remove('show');flash.textContent=L('saved');flash.style.color='';},1000);}
+  }
+}
+
+function initSoundBtn(){const btn=document.getElementById('btn-sound');if(btn)btn.textContent=SFX.muted?'🔇':'🔊';}
 
 const LANG = {
   en: {
@@ -2258,6 +2304,7 @@ function getSkillCost(baseCost){
 // ========== MINE ==========
 document.getElementById('mine-btn').addEventListener('click',()=>{
   if(!gameRunning)return;
+  SFX.play('mine');
   const gain=getClickPower();G.data+=gain;G.totalDataMined+=gain;
   if(G.upgrades.neuralInterface&&G.neuralInterfaceOn)addHeat(2);
   addLog(LF('logMined',fmt(gain)));
@@ -2277,7 +2324,7 @@ card.innerHTML=`<div class="item-header"><span class="item-name">${LP(b,'name')}
 <div class="item-stats">+${fmt(b.dps)} ${L('dpsPerSec')} | ${L('costLabel')}: ${fmt(cost)} DATA</div>${hijackInfo}
 <button class="buy-btn" ${G.data<cost?'disabled':''} onclick="buyBot(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
-function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;addLog(LF('logBought',LP(BOTS[i],'name')));renderBots();}}
+function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;SFX.play('buy');addLog(LF('logBought',LP(BOTS[i],'name')));renderBots();}}
 
 function purgeBot(i){
   if(G.data<200)return;
@@ -2294,7 +2341,7 @@ card.innerHTML=`<div class="item-header"><span class="item-name">${LP(d,'name')}
 <div class="item-stats">+${fmt(d.cps)} ${L('crPerSec')} | ${L('costLabel')}: ${fmt(cost)} CR</div>
 <button class="buy-btn" ${G.credits<cost?'disabled':''} onclick="buyDev(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
-function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;addLog(LF('logHired',LP(DEVS[i],'name')));renderDevs();}}
+function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;SFX.play('buy');addLog(LF('logHired',LP(DEVS[i],'name')));renderDevs();}}
 
 // ========== UPGRADES ==========
 function renderUpgrades(){const el=document.getElementById('upgrade-list');if(!el)return;el.innerHTML='';
@@ -2353,7 +2400,7 @@ if(u.requires&&!G.upgrades[u.requires])return;
 if(u.multi)return;// multi-purchase handled separately
 if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
 else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
-else return;G.upgrades[id]=true;addLog(LF('logUpgrade',LP(u,'name')),'info');
+else return;G.upgrades[id]=true;SFX.play('buy');addLog(LF('logUpgrade',LP(u,'name')),'info');
 // Special on-buy effects
 if(id==='theArchitect'){document.getElementById('infra-tab-btn').style.display='';renderInfraList();}
 if(id==='doomsdayProtocol'&&!G.doomsdayUsed){G.doomsdayUsed=true;if(G.npcs)G.npcs.forEach(n=>{n.securityLevel=1;n.relation='enemy';n.tracerExpiry=Date.now()+600000;});G.heat=95;addLog(L('logDoomsday'),'alert');}
@@ -2370,6 +2417,7 @@ function buyMultiUpgrade(id){
   else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
   else return;
   if(id==='darkWebRepBoost'){G.darkWebRep+=200;G.darkWebRepBoostCount=(G.darkWebRepBoostCount||0)+1;addLog(L('logDwRep'),'info');}
+  SFX.play('buy');
   renderUpgrades();
 }
 
@@ -2649,6 +2697,7 @@ document.getElementById('hack-session-header').textContent='';}
 
 function failHack(msg,heatAmount){
   hackActive=false;cleanupHackTimers();
+  SFX.play('hackFail');
   const mg=document.getElementById('hack-minigame'),input=document.getElementById('hack-input'),resultMsg=document.getElementById('hack-result-msg');
   input.disabled=true;resultMsg.textContent=msg;resultMsg.style.color='var(--danger)';resultMsg.classList.add('active');mg.classList.add('hack-fail-flash');
   if(hackUsedSpoof&&hackSpoofDecoy){
@@ -2667,6 +2716,7 @@ function failHack(msg,heatAmount){
 
 function succeedHack(){
   hackActive=false;cleanupHackTimers();
+  SFX.play('hackSuccess');
   const n=currentTarget,diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
   const reward=getReward(diffName);
   // Check speed hack achievement
@@ -2684,6 +2734,7 @@ function succeedHack(){
   const durations=[3000,6000,10000,15000];downloadDuration=durations[diff];downloadProgress=0;downloadActive=true;
   const startTime=Date.now();updateDownloadDisplay(0);
   downloadInterval=setInterval(()=>{const elapsed=Date.now()-startTime;downloadProgress=Math.min(100,(elapsed/downloadDuration)*100);updateDownloadDisplay(downloadProgress);
+  const pctInt=Math.floor(downloadProgress);if(pctInt>0&&pctInt%10===0&&pctInt!==(G._lastDlTick||0)){G._lastDlTick=pctInt;SFX.play('downloadTick');}
   if(downloadProgress>=100){clearInterval(downloadInterval);downloadInterval=null;completeDownload(100);}},50);
   addLog(LF('logExfil',n.name),'info');
 }
@@ -2844,7 +2895,7 @@ renderBlackMarket();}
 
 function updateAuctions(){if(G.activeAuctions.length===0)return;const now=Date.now();const completed=[];
 G.activeAuctions.forEach((auc,i)=>{
-  if(now-auc.lastBidTime>=30000&&now<auc.endTime){let bidMult=1+0.1+Math.random()*0.2;if(G.upgrades.blackMarketMonopoly)bidMult=1+(bidMult-1)*0.5;auc.currentBid=Math.floor(auc.currentBid*bidMult);auc.lastBidTime=now;}
+  if(now-auc.lastBidTime>=30000&&now<auc.endTime){let bidMult=1+0.1+Math.random()*0.2;if(G.upgrades.blackMarketMonopoly)bidMult=1+(bidMult-1)*0.5;auc.currentBid=Math.floor(auc.currentBid*bidMult);auc.lastBidTime=now;SFX.play('bid');}
   if((auc.rarity==='epic'||auc.rarity==='legendary')&&now<auc.endTime)addHeat(0.017);
   if(now>=auc.endTime)completed.push(i);
 });
@@ -2871,13 +2922,13 @@ if(document.getElementById('bmarket-overlay').classList.contains('active'))rende
 document.getElementById('hack-input').addEventListener('keydown',(e)=>{
   if(e.key==='Enter'&&hackActive){const input=e.target,typed=input.value.trim(),expected=hackCmds[hackCmdIndex].cmd;
   if(typed.toLowerCase()===expected.toLowerCase()){
-    hackCmdIndex++;input.value='';
+    hackCmdIndex++;SFX.play('cmdOk');input.value='';
     // Flash green on correct command
     const prevLine=document.querySelectorAll('.cmd-line')[hackCmdIndex-1];
     if(prevLine){prevLine.classList.add('cmd-success-flash');setTimeout(()=>prevLine.classList.remove('cmd-success-flash'),300);}
     if(hackCmdIndex>=hackCmds.length)succeedHack();else renderHackCmds();
   } else {
-    input.value='';
+    SFX.play('cmdFail');input.value='';
     const lines=document.querySelectorAll('.cmd-line');
     if(lines[hackCmdIndex]){lines[hackCmdIndex].classList.add('failed','cmd-fail-flash');
       lines[hackCmdIndex].textContent=L('logWrongCmd');}
@@ -2917,7 +2968,7 @@ function addHeat(amount){
 }
 
 function triggerRaid(){const lossPercent=G.upgrades.encryptedBackup?(G.upgrades.legal?0.05:0.1):(G.upgrades.legal?0.1:0.3);const lost=Math.floor(G.data*lossPercent);G.data-=lost;G.heat=0;
-addLog(LF('logRaid',fmt(lost),lossPercent*100),'alert');
+addLog(LF('logRaid',fmt(lost),lossPercent*100),'alert');SFX.play('raid');
 document.body.classList.add('raid-flash');setTimeout(()=>document.body.classList.remove('raid-flash'),1000);}
 
 // ========== NPC BEHAVIOR ==========
@@ -3042,7 +3093,7 @@ function triggerIncomingAttack(npc){
   document.getElementById('defense-attacker').textContent=LF('attemptBreach',npc.name);
   document.getElementById('defense-risk').textContent=L('threatLabel')+': '+DIFFICULTIES[defenseDifficulty]+' | '+L('dataAtRisk')+': '+defenseDataRisk+'%';
   defenseTimeLeft=30;document.getElementById('defense-timer-bar').style.width='100%';document.getElementById('defense-timer-text').textContent='30s';
-  document.getElementById('defense-overlay').classList.add('active');addLog(LF('logIncomingAttack',npc.name),'alert');
+  document.getElementById('defense-overlay').classList.add('active');SFX.play('incomingAttack');addLog(LF('logIncomingAttack',npc.name),'alert');
   defenseTimer=setInterval(()=>{defenseTimeLeft--;document.getElementById('defense-timer-bar').style.width=(defenseTimeLeft/30*100)+'%';
   document.getElementById('defense-timer-text').textContent=defenseTimeLeft+'s';
   if(defenseTimeLeft<=0){clearInterval(defenseTimer);defenseTimer=null;triggerAutoDefense();}},1000);
@@ -3117,6 +3168,7 @@ function triggerDDoS(){
   ddosTimeLeft=30;
   document.getElementById('ddos-countdown').textContent=L('botsOffline60');
   document.getElementById('ddos-overlay').classList.add('active');
+  SFX.play('ddos');
   addLog(L('logDdosOffline'),'alert');
   ddosTimer=setInterval(()=>{ddosTimeLeft--;
   document.getElementById('ddos-countdown').textContent=LF('respondWithin',ddosTimeLeft);
@@ -3496,6 +3548,7 @@ function claimMission(id){
     addLog(L('logClassified'),'info');
   }
   addLog(LF('logMissionComplete',LP(m,'name'),LP(m,'rewardText')),'info');
+  SFX.play('missionComplete');
   // Initialize M10 targets if M9 just completed
   if(id==='m9'&&G.m10Targets.length===0){
     const available=G.npcs.filter(n=>n.relation!=='ally');
@@ -3668,6 +3721,7 @@ function checkAchievements(){
     if(!G.achievements.includes(a.id)&&a.check()){
       G.achievements.push(a.id);
       addLog(LF('logAchUnlock',LP(a,'name'),a.icon),'info');
+      SFX.play('achievement');
       newUnlock=true;
     }
   });
@@ -3711,6 +3765,8 @@ function updateNewsfeed(){
 
 // ========== LEVELS ==========
 function updateLevel(){let current=LEVELS[0];for(const l of LEVELS){if(G.rep>=l.rep)current=l;else break;}
+if(!G._prevLevel)G._prevLevel=current.lv;
+if(current.lv>G._prevLevel){SFX.play('levelUp');G._prevLevel=current.lv;}
 const el=document.getElementById('level-info');
 if(el){
   let title=LP(current,'title');
@@ -4072,7 +4128,7 @@ G.lastCoalitionCheck=G.lastCoalitionCheck||Date.now();
 G.lastBotHijackCheck=G.lastBotHijackCheck||Date.now();
 G.lastNpcWarCheck=G.lastNpcWarCheck||Date.now();
 G.lastUrgentContractCheck=G.lastUrgentContractCheck||Date.now();
-renderAll();addLog(L('logInit'));addLog(LF('logWelcome',G.operatorAlias));
+renderAll();initSoundBtn();addLog(L('logInit'));addLog(LF('logWelcome',G.operatorAlias));
 gameIntervals.push(setInterval(gameLoop,100));gameIntervals.push(setInterval(slowLoop,1000));
 pickTarget();gameIntervals.push(setInterval(pickTarget,45000));gameIntervals.push(setInterval(checkAllianceProposals,120000));
 gameIntervals.push(setInterval(randomNPCEvent,180000));
@@ -4359,6 +4415,7 @@ function updatePublicHeaderButtons() {
   pauseBtn.textContent = gamePaused ? L('resume') : L('pause');
   pauseBtn.setAttribute('onclick', 'togglePause()');
   leftActions.appendChild(pauseBtn);
+  const soundBtn=document.createElement('button');soundBtn.className='header-btn';soundBtn.id='btn-sound';soundBtn.textContent=SFX.muted?'🔇':'🔊';soundBtn.setAttribute('onclick','toggleSound()');leftActions.appendChild(soundBtn);
 }
 
 function pubShowPanel(panel) {
@@ -4461,6 +4518,7 @@ function renderPubDepartments() {
 function pubUpgradeDept(idx) {
   const cost = pubGetDeptCost(idx);
   if (G.pubCapital < cost || G.pubDepartments[idx] >= 5) return;
+  SFX.play('buy');
   G.pubCapital -= cost;
   G.pubDepartments[idx]++;
   addPubLog(LP(PUB_DEPARTMENTS[idx],'name') + ' ' + L('pubLogUpgradedTo') + ' ' + G.pubDepartments[idx]);
@@ -4579,6 +4637,9 @@ function pubEventChoice(choice) {
   if (!G.pubActiveEvent) return;
   const eff = choice === 'a' ? G.pubActiveEvent.effA : G.pubActiveEvent.effB;
   applyPubEffect(eff);
+  if (eff && ((eff.capital && eff.capital > 0) || (eff.rep && eff.rep > 0) || (eff.stockPct && eff.stockPct > 0) || (eff.satisfaction && eff.satisfaction > 0))) {
+    SFX.play('hackSuccess');
+  }
   const choiceText = choice === 'a' ? LP(G.pubActiveEvent,'optA') : LP(G.pubActiveEvent,'optB');
   G.pubEventLog.unshift({ title: LP(G.pubActiveEvent,'title'), choice: choiceText, time: Date.now() });
   if (G.pubEventLog.length > 10) G.pubEventLog.pop();
@@ -4765,6 +4826,8 @@ function pubGameTick() {
   if (G.pubPublicRep > 70) adjustSatisfaction(0.001);
   if (G.heat > 70) adjustSatisfaction(-0.005);
 
+  const mc=pubGetMarketCap();const milestones=[10000000,100000000,500000000];
+  milestones.forEach(m=>{if(mc>=m&&!(G._pubMilestones||[]).includes(m)){if(!G._pubMilestones)G._pubMilestones=[];G._pubMilestones.push(m);SFX.play('levelUp');}});
   renderPublicUI();
 }
 
@@ -4801,16 +4864,19 @@ function startPublicLoops() {
 function pubCheckEndings() {
   // TECH GIANT: Market cap >= $1B
   if (pubGetMarketCap() >= 1000000000) {
+    SFX.play('achievement');
     pubShowEnding('tech_giant');
     return;
   }
   // EXPOSED: Heat >= 100 or all shareholders < 30%
   if (G.heat >= 100) {
+    SFX.play('raid');
     pubShowEnding('exposed');
     return;
   }
   const allLow = G.pubShareholders.every(sh => sh.satisfaction < 30);
   if (allLow) {
+    SFX.play('raid');
     pubShowEnding('exposed_board');
     return;
   }
