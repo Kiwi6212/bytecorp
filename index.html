@@ -907,26 +907,26 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 </div></div>
 
 <!-- Loadout Modal -->
-<div class="modal-overlay" id="loadout-overlay"><div class="modal-popup" id="loadout-popup" style="max-width:600px"><h2>// LOADOUT</h2>
+<div class="modal-overlay" id="loadout-overlay"><div class="modal-popup" id="loadout-popup" style="max-width:600px"><h2 id="loadout-title">// LOADOUT</h2>
 <div style="display:flex;gap:16px">
-<div style="flex:1"><div style="color:var(--accent);font-size:0.75em;margin-bottom:6px;letter-spacing:2px">LINUX DECK</div><div id="loadout-linux"></div></div>
-<div style="flex:1"><div style="color:#4a9eff;font-size:0.75em;margin-bottom:6px;letter-spacing:2px">WINDOWS DECK</div><div id="loadout-windows"></div></div>
+<div style="flex:1"><div id="loadout-linux-label" style="color:var(--accent);font-size:0.75em;margin-bottom:6px;letter-spacing:2px">LINUX DECK</div><div id="loadout-linux"></div></div>
+<div style="flex:1"><div id="loadout-windows-label" style="color:#4a9eff;font-size:0.75em;margin-bottom:6px;letter-spacing:2px">WINDOWS DECK</div><div id="loadout-windows"></div></div>
 </div>
 <div style="border-top:1px solid var(--accent);margin-top:12px;padding-top:8px;text-align:center;font-size:11px;color:#cccccc">
-<div style="color:var(--accent);letter-spacing:2px;margin-bottom:4px">MASTERY LEGEND</div>
-<div>☆☆☆ &nbsp;Level 0 — Type full command</div>
-<div>★☆☆ &nbsp;Level 1 — Tab autocomplete after 4 chars</div>
-<div>★★☆ &nbsp;Level 2 — Tab autocomplete after 2 chars</div>
-<div>★★★ &nbsp;Level 3 — One-click button</div>
+<div id="loadout-legend-title" style="color:var(--accent);letter-spacing:2px;margin-bottom:4px">MASTERY LEGEND</div>
+<div id="loadout-lv0">☆☆☆ &nbsp;Level 0 — Type full command</div>
+<div id="loadout-lv1">★☆☆ &nbsp;Level 1 — Tab autocomplete after 4 chars</div>
+<div id="loadout-lv2">★★☆ &nbsp;Level 2 — Tab autocomplete after 2 chars</div>
+<div id="loadout-lv3">★★★ &nbsp;Level 3 — One-click button</div>
 </div>
 <button class="modal-close" onclick="closeLoadout()">[ CLOSE ]</button>
 </div></div>
 
 <!-- MAN Page Modal -->
-<div class="modal-overlay" id="man-overlay"><div class="modal-popup" id="man-popup" style="max-width:550px"><h2>// TERMINAL DOCS — Command Reference</h2>
+<div class="modal-overlay" id="man-overlay"><div class="modal-popup" id="man-popup" style="max-width:550px"><h2 id="man-title-h2">// TERMINAL DOCS — Command Reference</h2>
 <div class="tab-bar" id="man-tab-bar">
-<button class="tab-btn active" onclick="switchManTab('linux')">LINUX</button>
-<button class="tab-btn" onclick="switchManTab('windows')">POWERSHELL</button>
+<button class="tab-btn active" id="man-tab-linux" onclick="switchManTab('linux')">LINUX</button>
+<button class="tab-btn" id="man-tab-windows" onclick="switchManTab('windows')">POWERSHELL</button>
 </div>
 <div class="item-list" id="man-content" style="max-height:400px;overflow-y:auto"></div>
 <button class="modal-close" onclick="closeManPage()">[ CLOSE ]</button>
@@ -1249,7 +1249,30 @@ const LANG = {
     scanConnected:'> Connected to [target IP: {0}]',scanExploit:'> Deploying exploit...',
     scanAccess:'> ACCESS POINT FOUND — Awaiting commands',
     helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus\n\n[ COMMANDS ]    Buy commands in CORP > COMMANDS tab.\n                Assign them to your Linux/Windows deck via [ LOADOUT ].\n                Use commands repeatedly to gain mastery \u2014 autocomplete then one-click.\n[ OS AFFINITY ] Specializing in Linux or Windows gives timer bonuses and reward boosts.\n[ 0-DAYS ]      Ultra-rare loot (0.5%). Skip commands or auto-succeed a hack. One use only.\n[ MAN PAGE ]    [ MAN ] button in header \u2014 full command reference with real explanations.',
-    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les \u00e0 votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en ma\u00eetrise \u2014 auto-compl\u00e9tion puis un clic.\n[ AFFINIT\u00c9 OS ] Se sp\u00e9cialiser en Linux ou Windows donne des bonus de temps et r\u00e9compenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-r\u00e9ussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 r\u00e9f\u00e9rence compl\u00e8te des commandes avec explications.'
+    helpContent_fr:'',
+    // Command system
+    cmdsTab:'CMDS',linuxSection:'// LINUX',powershellSection:'// POWERSHELL',
+    unlockBtn:'[ UNLOCK — {0} DATA ]',cmdUnlocked:'Command unlocked: {0}',
+    loadoutTitle:'// LOADOUT',linuxDeckLabel:'LINUX DECK',windowsDeckLabel:'WINDOWS DECK',
+    availableLabel:'Available:',emptySlot:'[ empty slot ]',
+    masteryLegend:'MASTERY LEGEND',
+    masteryLv0:'Level 0 — Type full command',masteryLv1:'Level 1 — Tab autocomplete after 4 chars',
+    masteryLv2:'Level 2 — Tab autocomplete after 2 chars',masteryLv3:'Level 3 — One-click button',
+    masteryToggle:'[ ? MASTERY ]',
+    manTitle:'// TERMINAL DOCS — Command Reference',manLinux:'LINUX',manPowershell:'POWERSHELL',
+    osAffinityLabel:'OS AFFINITY',linuxMaster:'Linux Master',windowsMaster:'Windows Master',
+    rarZeroday:'ZERO-DAY',
+    zdSshBypass:'0-day: SSH Bypass',zdSshDesc:'Skips all SSH-related commands in one hack',
+    zdWinAuth:'0-day: Windows Auth',zdWinDesc:'Skips all PowerShell auth commands in one hack',
+    zdKernel:'0-day: Kernel Exploit',zdKernelDesc:'Skip any single command during a hack',
+    zdRoot:'0-day: Root Access',zdRootDesc:'Auto-succeed entire hack (one use)',
+    useZeroday:'[ USE {0} ]',zdNoAuction:'Dark web won\'t touch this',
+    hackAborted:'HACK ABORTED — Load more {0} commands into your deck',
+    noCommands:'NO {0} COMMANDS — Visit CORP > COMMANDS to unlock',
+    insufficientCmds:'INSUFFICIENT COMMANDS — Unlock more commands for this difficulty',
+    logZdRoot:'0-DAY: Root Access — auto-hack!',logZdSsh:'0-DAY: SSH Bypass activated',
+    logZdWin:'0-DAY: Windows Auth bypass activated',logZdKernel:'0-DAY: Kernel Exploit — command skipped',
+    oneClick:'[ ONE-CLICK ]'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1475,7 +1498,30 @@ const LANG = {
     scanConnected:'> Connecté à [IP cible : {0}]',scanExploit:'> Déploiement de l\'exploit...',
     scanAccess:'> POINT D\'ACCÈS TROUVÉ — En attente de commandes',
     helpContent:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les à votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en maîtrise \u2014 auto-complétion puis un clic.\n[ AFFINITÉ OS ] Se spécialiser en Linux ou Windows donne des bonus de temps et récompenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-réussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 référence complète des commandes avec explications.',
-    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les à votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en maîtrise \u2014 auto-complétion puis un clic.\n[ AFFINITÉ OS ] Se spécialiser en Linux ou Windows donne des bonus de temps et récompenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-réussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 référence complète des commandes avec explications.'
+    helpContent_fr:'',
+    // Command system
+    cmdsTab:'CMDS',linuxSection:'// LINUX',powershellSection:'// POWERSHELL',
+    unlockBtn:'[ DÉBLOQUER — {0} DATA ]',cmdUnlocked:'Commande débloquée : {0}',
+    loadoutTitle:'// CHARGEMENT',linuxDeckLabel:'DECK LINUX',windowsDeckLabel:'DECK WINDOWS',
+    availableLabel:'Disponible :',emptySlot:'[ emplacement vide ]',
+    masteryLegend:'LÉGENDE MAÎTRISE',
+    masteryLv0:'Niveau 0 — Taper la commande complète',masteryLv1:'Niveau 1 — Auto-complétion après 4 caractères',
+    masteryLv2:'Niveau 2 — Auto-complétion après 2 caractères',masteryLv3:'Niveau 3 — Bouton un clic',
+    masteryToggle:'[ ? MAÎTRISE ]',
+    manTitle:'// DOCS TERMINAL — Référence des Commandes',manLinux:'LINUX',manPowershell:'POWERSHELL',
+    osAffinityLabel:'AFFINITÉ OS',linuxMaster:'Maître Linux',windowsMaster:'Maître Windows',
+    rarZeroday:'ZERO-DAY',
+    zdSshBypass:'0-day : Bypass SSH',zdSshDesc:'Saute toutes les commandes SSH dans un hack',
+    zdWinAuth:'0-day : Auth Windows',zdWinDesc:'Saute toutes les commandes auth PowerShell dans un hack',
+    zdKernel:'0-day : Exploit Kernel',zdKernelDesc:'Sauter une commande au choix pendant un hack',
+    zdRoot:'0-day : Accès Root',zdRootDesc:'Auto-réussir le hack entier (usage unique)',
+    useZeroday:'[ UTILISER {0} ]',zdNoAuction:'Le dark web ne touche pas à ça',
+    hackAborted:'HACK ANNULÉ — Chargez plus de commandes {0} dans votre deck',
+    noCommands:'AUCUNE COMMANDE {0} — Visitez CORP > COMMANDES pour débloquer',
+    insufficientCmds:'COMMANDES INSUFFISANTES — Débloquez plus de commandes pour cette difficulté',
+    logZdRoot:'0-DAY : Accès Root — auto-hack !',logZdSsh:'0-DAY : Bypass SSH activé',
+    logZdWin:'0-DAY : Bypass Auth Windows activé',logZdKernel:'0-DAY : Exploit Kernel — commande sautée',
+    oneClick:'[ UN CLIC ]'
   }
 };
 
@@ -1671,8 +1717,25 @@ function applyLang(){
   const ucDecline=document.querySelector('.uc-decline');if(ucDecline)ucDecline.textContent=L('decline');
   // Coalition title (inline element)
   const coaTitleInline=document.querySelector('#coalition-overlay > div:first-child');if(coaTitleInline)coaTitleInline.textContent=L('coalitionTitle');
+  // Loadout modal
+  const loadT=document.getElementById('loadout-title');if(loadT)loadT.textContent=L('loadoutTitle');
+  const loadLL=document.getElementById('loadout-linux-label');if(loadLL)loadLL.textContent=L('linuxDeckLabel');
+  const loadWL=document.getElementById('loadout-windows-label');if(loadWL)loadWL.textContent=L('windowsDeckLabel');
+  const loadLeg=document.getElementById('loadout-legend-title');if(loadLeg)loadLeg.textContent=L('masteryLegend');
+  const loadLv0=document.getElementById('loadout-lv0');if(loadLv0)loadLv0.innerHTML='☆☆☆ &nbsp;'+L('masteryLv0');
+  const loadLv1=document.getElementById('loadout-lv1');if(loadLv1)loadLv1.innerHTML='★☆☆ &nbsp;'+L('masteryLv1');
+  const loadLv2=document.getElementById('loadout-lv2');if(loadLv2)loadLv2.innerHTML='★★☆ &nbsp;'+L('masteryLv2');
+  const loadLv3=document.getElementById('loadout-lv3');if(loadLv3)loadLv3.innerHTML='★★★ &nbsp;'+L('masteryLv3');
+  // MAN page
+  const manTH=document.getElementById('man-title-h2');if(manTH)manTH.textContent=L('manTitle');
+  const manTabL=document.getElementById('man-tab-linux');if(manTabL)manTabL.textContent=L('manLinux');
+  const manTabW=document.getElementById('man-tab-windows');if(manTabW)manTabW.textContent=L('manPowershell');
+  // CMDS tab
+  const cmdsTabBtn=document.getElementById('cmds-tab-btn');if(cmdsTabBtn)cmdsTabBtn.textContent=L('cmdsTab');
+  // Loadout button
+  const loadBtn=document.getElementById('loadout-btn');if(loadBtn)loadBtn.textContent='LOADOUT';
   // Re-render dynamic content
-  if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();renderVirusList();renderInfraList();}
+  if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();renderVirusList();renderInfraList();renderCmdShop();}
 }
 
 // Apply theme on load
@@ -2733,8 +2796,8 @@ function startHack(){
   // Loadout-based command selection
   const deck=n.os==='Linux'?G.linuxDeck:G.windowsDeck;
   const minReq=[3,4,5,6,6][diff]||3;
-  if(deck.length<minReq){hackActive=false;addLog('HACK ABORTED \u2014 Load more '+(n.os==='Linux'?'Linux':'Windows')+' commands into your deck','alert');document.getElementById('hack-btn').disabled=false;return;}
-  if(deck.length===0){hackActive=false;addLog('NO '+(n.os==='Linux'?'LINUX':'WINDOWS')+' COMMANDS \u2014 Visit CORP > COMMANDS to unlock','alert');document.getElementById('hack-btn').disabled=false;return;}
+  if(deck.length<minReq){hackActive=false;addLog(LF('hackAborted',n.os),'alert');document.getElementById('hack-btn').disabled=false;return;}
+  if(deck.length===0){hackActive=false;addLog(LF('noCommands',n.os),'alert');document.getElementById('hack-btn').disabled=false;return;}
   let count;if(diff===0)count=3;else if(diff===1)count=4;else if(diff===2)count=5;else if(diff===3)count=n.os==='Windows'?6:7;else count=8;
   if(G.skills.exploitkit)count=Math.max(2,count-1);
   if(G.upgrades.exploitFramework)count=Math.max(1,count-1);
@@ -2765,7 +2828,7 @@ function startHack(){
     zdEl.style.display='';
     G.zeroDaysInventory.forEach((zd,i)=>{
       const btn=document.createElement('button');btn.style.cssText='background:transparent;border:1px solid #ffd700;color:#ffd700;font-family:inherit;font-size:0.65em;padding:2px 6px;margin-right:4px;cursor:pointer';
-      btn.textContent='[ USE '+zd.name+' ]';
+      btn.textContent=LF('useZeroday',zd.name);
       btn.onclick=()=>useZeroDay(i);
       zdEl.appendChild(btn);
     });
@@ -2838,7 +2901,7 @@ hackCmds.forEach((c,i)=>{
   line.className='cmd-line'+(i<hackCmdIndex?' done':i===hackCmdIndex?' current':'');
   if(i<hackCmdIndex){line.textContent='\u2713 '+c.cmd+' '+stars;}
   else if(i===hackCmdIndex&&mastery>=3){
-    line.innerHTML='<span class="current">'+c.cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+stars+'</span> <button style="background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;padding:1px 6px;margin-left:4px" onclick="oneClickCmd('+i+')">[ ONE-CLICK ]</button>';
+    line.innerHTML='<span class="current">'+c.cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+stars+'</span> <button style="background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;padding:1px 6px;margin-left:4px" onclick="oneClickCmd('+i+')">'+L('oneClick')+'</button>';
   } else {
     line.textContent=(i===hackCmdIndex?'> ':'')+c.cmd+' '+stars;
   }
@@ -3070,7 +3133,7 @@ function renderBlackMarket(){
 function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;G.totalItemsSold++;addLog(LF('logSold',item.name,fmt(item.value)),'info');renderBlackMarket();checkMissionProgress();checkAchievements();}
 
 function bmarketStartAuction(i){if(i<0||i>=G.lootInventory.length)return;
-if(G.lootInventory[i].name.startsWith('0-day:')){addLog('Dark web won\'t touch this','warning');return;}
+if(G.lootInventory[i].name.startsWith('0-day:')){addLog(L('zdNoAuction'),'warning');return;}
 const item=G.lootInventory.splice(i,1)[0];
 const duration=(AUCTION_DURATIONS[item.rarity]||180)*1000;
 G.activeAuctions.push({name:item.name,rarity:item.rarity,value:item.value,currentBid:item.value,startTime:Date.now(),endTime:Date.now()+duration,lastBidTime:Date.now()});
@@ -3231,9 +3294,9 @@ ${protections}
 <div id="corpid-trace-bar-bg"><div id="corpid-trace-bar" style="width:${trace}%;background:${traceColor}"></div></div>
 <div id="corpid-trace-pct" style="color:${traceColor}">${trace}%</div></div>
 <div class="corpid-dwrep"><span class="corpid-label">${L('darkWebStatus')}: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>
-<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">OS AFFINITY</div>
-<div class="corpid-row"><span class="corpid-label">LINUX</span><span class="corpid-value"><span style="color:var(--accent)">${'\u2588'.repeat(Math.floor((G.linuxAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.linuxAffinity||0)/10))}</span> ${G.linuxAffinity||0}%${(G.linuxAffinity||0)>90?' \u2014 Linux Master':''}</span></div>
-<div class="corpid-row"><span class="corpid-label">WINDOWS</span><span class="corpid-value"><span style="color:#4a9eff">${'\u2588'.repeat(Math.floor((G.windowsAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.windowsAffinity||0)/10))}</span> ${G.windowsAffinity||0}%${(G.windowsAffinity||0)>90?' \u2014 Windows Master':''}</span></div>`;
+<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">${L('osAffinityLabel')}</div>
+<div class="corpid-row"><span class="corpid-label">LINUX</span><span class="corpid-value"><span style="color:var(--accent)">${'\u2588'.repeat(Math.floor((G.linuxAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.linuxAffinity||0)/10))}</span> ${G.linuxAffinity||0}%${(G.linuxAffinity||0)>90?' \u2014 '+L('linuxMaster'):''}</span></div>
+<div class="corpid-row"><span class="corpid-label">WINDOWS</span><span class="corpid-value"><span style="color:#4a9eff">${'\u2588'.repeat(Math.floor((G.windowsAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.windowsAffinity||0)/10))}</span> ${G.windowsAffinity||0}%${(G.windowsAffinity||0)>90?' \u2014 '+L('windowsMaster'):''}</span></div>`;
   document.getElementById('corpid-changeip').style.display=(G.usurpationActive||G.falseFlagActive)?'block':'none';
   document.getElementById('corpid-overlay').classList.add('active');
 }
@@ -4265,20 +4328,20 @@ function renderCmdShop(){
   // Mastery legend toggle
   const legendWrap=document.createElement('div');legendWrap.style.cssText='margin-bottom:6px';
   const legendBtn=document.createElement('button');legendBtn.style.cssText='background:transparent;border:1px solid var(--border);color:#cccccc;font-family:inherit;font-size:0.65em;cursor:pointer;padding:2px 8px;letter-spacing:1px;width:100%';
-  legendBtn.textContent='[ ? MASTERY ]';
+  legendBtn.textContent=L('masteryToggle');
   const legendBody=document.createElement('div');legendBody.style.cssText='display:none;font-size:11px;color:#cccccc;border:1px solid var(--border);border-top:none;padding:6px;text-align:center';
-  legendBody.innerHTML='<div style="color:var(--accent);letter-spacing:2px;margin-bottom:3px">MASTERY LEGEND</div><div>☆☆☆ Level 0 — Type full command</div><div>★☆☆ Level 1 — Tab autocomplete after 4 chars</div><div>★★☆ Level 2 — Tab autocomplete after 2 chars</div><div>★★★ Level 3 — One-click button</div>';
+  legendBody.innerHTML='<div style="color:var(--accent);letter-spacing:2px;margin-bottom:3px">'+L('masteryLegend')+'</div><div>☆☆☆ '+L('masteryLv0')+'</div><div>★☆☆ '+L('masteryLv1')+'</div><div>★★☆ '+L('masteryLv2')+'</div><div>★★★ '+L('masteryLv3')+'</div>';
   legendBtn.onclick=()=>{legendBody.style.display=legendBody.style.display==='none'?'block':'none';};
   legendWrap.appendChild(legendBtn);legendWrap.appendChild(legendBody);el.appendChild(legendWrap);
   ['linux','windows'].forEach(os=>{
     const hdr=document.createElement('div');hdr.className='upgrade-section-header';
-    hdr.textContent=os==='linux'?'// LINUX':'// POWERSHELL';el.appendChild(hdr);
+    hdr.textContent=os==='linux'?L('linuxSection'):L('powershellSection');el.appendChild(hdr);
     CMD_SHOP[os].forEach(c=>{
       const owned=G.unlockedCommands.includes(c.cmd);
       const card=document.createElement('div');card.className='item-card'+(owned?' bought':'');
       const mastery=getMasteryStars(c.cmd);
       const reqTag=c.reqFor?' <span style="color:var(--warning);font-size:0.85em">['+c.reqFor+']</span>':'';
-      card.innerHTML='<div class="item-header"><span class="item-name" style="font-size:0.7em">'+c.cmd+reqTag+'</span><span style="color:var(--warning);font-size:0.65em">'+mastery+'</span></div>\n<div class="item-stats">'+c.desc+'</div>\n<button class="buy-btn" '+(owned||(!c.starter&&G.data<c.cost)?'disabled':'')+' onclick="buyCommand(\''+os+'\',\''+c.cmd.replace(/'/g,"\\'").replace(/\\/g,"\\\\")+'\')">'+( owned?L('owned'):c.starter?L('owned'):'[ UNLOCK \u2014 '+fmt(c.cost)+' DATA ]')+'</button>';
+      card.innerHTML='<div class="item-header"><span class="item-name" style="font-size:0.7em">'+c.cmd+reqTag+'</span><span style="color:var(--warning);font-size:0.65em">'+mastery+'</span></div>\n<div class="item-stats">'+c.desc+'</div>\n<button class="buy-btn" '+(owned||(!c.starter&&G.data<c.cost)?'disabled':'')+' onclick="buyCommand(\''+os+'\',\''+c.cmd.replace(/'/g,"\\'").replace(/\\/g,"\\\\")+'\')">'+( owned?L('owned'):c.starter?L('owned'):LF('unlockBtn',fmt(c.cost)))+'</button>';
       el.appendChild(card);
     });
   });
@@ -4289,7 +4352,7 @@ function buyCommand(os,cmd){
   if(c.cost>0&&G.data<c.cost)return;
   if(c.cost>0)G.data-=c.cost;
   G.unlockedCommands.push(cmd);SFX.play('buy');
-  addLog('Command unlocked: '+cmd,'info');
+  addLog(LF('cmdUnlocked',cmd),'info');
   renderCmdShop();
 }
 
@@ -4304,11 +4367,15 @@ function renderLoadout(){
     const maxSlots=6;
     for(let i=0;i<maxSlots;i++){
       const cmd=deck[i]||null;
-      const slot=document.createElement('div');slot.className='item-card';slot.style.cssText='padding:4px 6px;margin-bottom:4px;cursor:pointer;font-size:0.7em';
+      const slot=document.createElement('div');slot.className='item-card';slot.style.cssText='padding:4px 6px;margin-bottom:4px;font-size:0.7em';
       if(cmd){
-        slot.innerHTML='<span style="color:var(--accent)">'+cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+getMasteryStars(cmd)+'</span> <span style="color:var(--danger);cursor:pointer;float:right" onclick="removeFromDeck(\''+os+'\','+i+')">\u2715</span>';
+        const cmdSpan=document.createElement('span');cmdSpan.style.color='var(--accent)';cmdSpan.textContent=cmd;
+        const starSpan=document.createElement('span');starSpan.style.cssText='color:var(--warning);font-size:0.85em;margin-left:4px';starSpan.textContent=getMasteryStars(cmd);
+        const removeBtn=document.createElement('span');removeBtn.style.cssText='color:var(--danger);cursor:pointer;float:right';removeBtn.textContent='\u2715';
+        const osRef=os,idxRef=i;removeBtn.onclick=()=>{removeFromDeck(osRef,idxRef);};
+        slot.appendChild(cmdSpan);slot.appendChild(starSpan);slot.appendChild(removeBtn);
       } else {
-        slot.innerHTML='<span style="color:#555">[ empty slot ]</span>';
+        slot.innerHTML='<span style="color:#555">'+L('emptySlot')+'</span>';
       }
       el.appendChild(slot);
     }
@@ -4319,7 +4386,7 @@ function renderLoadout(){
     });
     if(avail.length>0&&deck.length<maxSlots){
       const addDiv=document.createElement('div');addDiv.style.cssText='margin-top:6px;font-size:0.65em;color:#cccccc';
-      addDiv.textContent='Available:';el.appendChild(addDiv);
+      addDiv.textContent=L('availableLabel');el.appendChild(addDiv);
       avail.forEach(c=>{
         const btn=document.createElement('div');btn.style.cssText='font-size:0.65em;color:var(--accent);cursor:pointer;padding:2px 0';
         btn.textContent='+ '+c;btn.onclick=()=>{addToDeck(os,c);};
@@ -4366,21 +4433,21 @@ function useZeroDay(idx){
   if(!hackActive||!G.zeroDaysInventory[idx])return;
   const zd=G.zeroDaysInventory.splice(idx,1)[0];
   if(zd.id==='zd_root'){
-    addLog('0-DAY: Root Access \u2014 auto-hack!','info');
+    addLog(L('logZdRoot'),'info');
     hackCmdIndex=hackCmds.length;succeedHack();
   } else if(zd.id==='zd_ssh'){
     hackCmds=hackCmds.filter(c=>!c.cmd.toLowerCase().includes('ssh'));
     if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
-    addLog('0-DAY: SSH Bypass activated','info');
+    addLog(L('logZdSsh'),'info');
   } else if(zd.id==='zd_winauth'){
     hackCmds=hackCmds.filter(c=>!c.cmd.match(/Get-LocalUser|Get-ADUser|whoami|net user/i));
     if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
-    addLog('0-DAY: Windows Auth bypass activated','info');
+    addLog(L('logZdWin'),'info');
   } else if(zd.id==='zd_kernel'){
     const masteredCmd=hackCmds[hackCmdIndex].cmd;G.commandMastery[masteredCmd]=(G.commandMastery[masteredCmd]||0)+1;
     hackCmdIndex++;
     if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
-    addLog('0-DAY: Kernel Exploit \u2014 command skipped','info');
+    addLog(L('logZdKernel'),'info');
   }
   document.getElementById('zeroday-actions').style.display='none';
 }
