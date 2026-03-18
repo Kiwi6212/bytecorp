@@ -1049,7 +1049,128 @@ const LANG = {
     pubLogBoardDecision:'Board decision:',
     pubLogQuarterly:'Quarterly earnings report issued',
     pubLogDarkReturnMsg:'DARK RETURN: Back to hacking with',
-    pubNewsSuspicious:'Suspicious activity detected around ByteCorp stock'
+    pubNewsSuspicious:'Suspicious activity detected around ByteCorp stock',
+    logMined:'Mined +{0} DATA',logBought:'Bought {0}',logBotPurged:'Bot purged — {0} restored',logHired:'Hired {0}',logUpgrade:'Upgrade: {0}',
+    logDoomsday:'DOOMSDAY: All NPC security -> 1, HEAT -> 95%!',logGodTier:'GOD TIER difficulty unlocked — government targets available!',
+    logIpoThreshold:'IPO threshold reduced to 25M REP!',logGodMode:'GOD MODE ACTIVATED — All systems enhanced!',logDwRep:'+200 Dark Web Rep',
+    logNeuralOn:'Neural Interface ON',logNeuralOff:'Neural Interface OFF',
+    logDarkSynOn:'Dark Syndicate ON — +2000 DATA/min, -1000 CR/min',logDarkSynOff:'Dark Syndicate OFF',
+    logZeroDay:'Zero-Day Exploit ready — next hack auto-succeeds!',logQuantumFw:'Quantum Firewall active — IP invisible for 5 min',
+    logGhostP2:'Ghost Protocol v2 active — traceability 0% for 2 min',logZeroTrust:'Zero Trust active — all incoming hacks auto-fail for 10 min',
+    logBlackout:'Blackout active — all NPC attacks disabled for 30 min',logStealth:'Stealth Mode active — HEAT -75% for 5 min',
+    logRepMulti:'Rep Multiplier active — double REP for 10 min',logDwFame:'Dark Web Fame active — rep 2x faster for 5 min',
+    logOverride:'The Override ready — next hack hits 2 NPCs!',logNoTarget:'No target selected for {0}',
+    logTimeBomb:'Time Bomb planted on {0} — detonates in 10 min',logKeyloggerDetect:'Keylogger DETECTED by {0}! +15 HEAT',
+    logKeyloggerOk:'Keylogger installed on {0} — +200 CR/min for 5 min',logEnemyOnly:'Target must be an enemy NPC',
+    logSocialEng:'{0} converted to neutral via social engineering',logTrojan:'Trojan Horse sent to {0} — security -3 for 10 min',
+    logNoCredits:'No CREDITS to launder',logLaundered:'Laundered {0} CR -> {1} DATA',logNeutralOnly:'Target must be a neutral NPC',
+    logMindControl:'{0} is now your permanent ally via Mind Control!',logHostile:'⚠ {0} is now HOSTILE!',
+    logZeroDayHack:'ZERO-DAY EXPLOIT: Auto-hacked {0}! +{1} DATA',logZeroDaySkill:'ZERO DAY: Auto-hacked {0}! +{1} DATA',
+    logNeuralBackdoor:'{0} is now permanent ally via Neural Backdoor!',logOverrideHit:'OVERRIDE: Also hacked {0}! +{1} DATA',
+    logHighHeat:'⚠ High heat detected — hack compromised',logAvDetect:'CONNECTION TERMINATED — Antivirus detected intrusion',
+    logInitHack:'Initiating hack on {0}...',logSpoofBlame:'Spoof: {0} blamed for failed hack (+20 HEAT to them)',
+    logHackFailed:'HACK FAILED: {0}',logExfil:'Exfiltrating data from {0}...',logAborted:'Download aborted at {0}%',
+    logTracers:'⚠ {0} is now HOSTILE — tracers deployed!',logM10Progress:'M10 Progress: {0}/3 targets hacked',
+    logM10Expired:'M10: Time expired! Mission reset.',logUrgentComplete:'CONTRACT COMPLETE: +{0} bonus DATA, +{1} bonus CR, +50 DW Rep',
+    logCoalitionBroken:'Coalition broken by hacking {0}!',logHackSuccess:'HACK SUCCESS: +{0} DATA, +{1} CR, +{2} REP',
+    logPartialExfil:'PARTIAL EXFIL ({0}%): +{1} DATA, +{2} CR, +{3} REP',logLogCleaner:'Log Cleaner: forensic traces deleted',
+    logRareData:'Rare data detected — HEAT +{0}',logSold:'Sold {0} for {1} DATA',logInvFull:'Inventory full! Auto-sold {0}',
+    logAddedInv:'{0} added to inventory',logAuctionStart:'Auction started for {0}',logAuctionCancel:'Auction cancelled — {0} returned',
+    logAuctionCancelSold:'Auction cancelled — inventory full, sold for {0} DATA',logAuctionClosed:'AUCTION CLOSED — Sold {0} for {1} DATA',
+    logDataBought:'⚠ {0} purchased your stolen data — they know your methods',
+    logWrongCmd:'✗ WRONG COMMAND — CONNECTION DROPPING',logIntrusionDetect:'INTRUSION DETECTED — Wrong command signature',
+    logRaid:'🚨 RAID! Lost {0} DATA! ({1}% penalty)',logContractExpired:'{0} contract expired',
+    logAlliance:'✓ Alliance with {0} — +2 CR/s for 5 min',logDarkWebSell:'Dark Web: sold {0} DATA for {1} CR (+10 HEAT)',
+    logIpChanged:'IP changed to {0} — threats stopped',logShellDeflect:'Shell Corp Network deflected attack from {0}',
+    logIdsWarning:'⚠ IDS WARNING: {0} preparing attack in 30s',logIncomingAttack:'⚠ INCOMING ATTACK from {0}!',
+    logDefenseSuccess:'DEFENSE SUCCESS: Blocked {0} +{1} REP',logBountyResolved:'BOUNTY RESOLVED: Scared off hunter! +500 Dark Web Rep',
+    logDefenseFailed:'DEFENSE FAILED: {0} stole {1} DATA',logAutoDefendOk:'AUTO-DEFEND SUCCESS ({0}%): Blocked {1} +{2} REP',
+    logAutoDefendFail:'AUTO-DEFEND FAILED ({0}%): {1} stole {2} DATA',logEmpBlock:'EMP Shield blocked DDoS attack!',
+    logDdosOffline:'⚠ DDOS ATTACK — Bots offline!',logDdosNoResponse:'DDoS: no response — bots offline for 60s',
+    logDdosAbsorbed:'DDoS absorbed — bots back online (-500 DATA)',logDdosRerouted:'DDoS rerouted — bots back online',
+    logBotsBack:'Bots back online after DDoS',logUsurpation:'⚠ {0} is impersonating your IP address!',
+    logUsurpBlock:'IP Spoofer auto-blocked usurpation',logUsurpExpired:'IP usurpation expired',
+    logBountyPlaced:'⚠ A bounty has been placed on {0}! Elite hunters incoming.',logBountyNoCr:'Not enough CREDITS to pay off bounty',
+    logBountyPaid:'Paid off bounty hunter — {0} CREDITS',logGoneDark:'Gone dark — bounty dropped',
+    logTraceTooHigh:'Traceability too high to go dark (need <30%)',logVirusDeployed:'⚠ {0} deployed a virus in your systems',
+    logVirusFix:'Fix: type "sudo clamscan -r /home" then "sudo systemctl restart cron" OR pay 1000 DATA',
+    logVirusScan:'Virus scan running... type next command',logVirusRemoved:'Virus removed! Bot income restored.',
+    logEspionageFound:'Connection found... type next command',logEspionageBlocked:'Espionage blocked! Auto-defense restored.',
+    logVirusAutoRemove:'Virus auto-removed — paid 1000 DATA',logScam:'⚠ SCAM — Fake contract from {0}! -500 CREDITS, +30 HEAT',
+    logFalseFlagBlock:'Log Cleaner blocked false flag from {0}',
+    logFalseFlag:'⚠ {0} is using your IP for their attacks — you are being framed',
+    logFalseFlagFix:'Fix: CHANGE IP (200 DATA) in Corp ID',logFalseFlagExpired:'False flag expired',
+    logHoneypot:'Honeypot: {0} trapped — converted to temp ally for 5 min!',
+    logEspionage:'⚠ {0} has infiltrated your systems — they can see your defenses',
+    logEspionageFix:'Fix: type "sudo netstat -an | grep ESTABLISHED" + "sudo iptables -A INPUT -s attacker_ip -j DROP"',
+    logEspionageExpired:'Espionage link expired',logCoalition:'⚠ {0} and {1} have formed an alliance against ByteCorp',
+    logCoalitionNeed:'Need 5000 CREDITS to break coalition',logCoalitionPaid:'Coalition broken — paid neutral NPC to mediate',
+    logBotHijacked:'⚠ {0} has been compromised by {1}',logBotRestored:'Hijacked bot restored',
+    logFreeBot:'Free bot: {0}',logFreeUpgrade:'Free upgrade: {0}',
+    logClassified:'CLASSIFIED unlocked: trace -20%, hack rewards x2, Shadow Mode active!',
+    logMissionComplete:'MISSION COMPLETE: {0} — {1}',logM10Targets:'M10 Targets: {0}',
+    logUrgentExpired:'Urgent contract expired — -200 CREDITS',logContractAccepted:'Contract accepted: Hack {0} within 3 min!',
+    logContractDeclined:'Contract declined',logVirusDetected:'⚠ Virus detected by {0}! They are now HOSTILE.',
+    logLogicBomb:'Logic Bomb deployed on {0} — security -2 for 10 min',
+    logRansomware:'Ransomware deployed on {0} — income halted for 15 min',logRootkit:'Rootkit deployed on {0} — permanent security -1',
+    logSkillUnlock:'Skill unlocked: {0}',logAchUnlock:'ACHIEVEMENT UNLOCKED: {0} {1}',
+    logNewGamePlus:'NEW GAME+ #{0} — +{1}% DATA/s bonus',logServerNode:'Server Node #{0} online — +500 DATA/s',
+    logCryptoConvert:'Converted {0} $CRYPTO -> {1} DATA',logQfExpired:'Quantum Firewall expired',
+    logGp2Expired:'Ghost Protocol v2 expired',logZtExpired:'Zero Trust expired',logBlackoutExpired:'Blackout expired',
+    logStealthExpired:'Stealth Mode expired',logRepMultiExpired:'Rep Multiplier expired',logDwFameExpired:'Dark Web Fame expired',
+    logCorpSpyExpired:'Corporate Spy expired',logKeylogExpired:'Keylogger expired',logEmpRecharge:'EMP Shield recharged',
+    logTimeBombBoom:'TIME BOMB: {0} destroyed! Replaced by {1}',logDataBroker:'Data Broker auto-sold {0} for {1} DATA',
+    logAuctionBot:'Auction Bot won: {0} ({1})',logInit:'ByteCorp v2.0 initialized',logWelcome:'Welcome, {0}.',
+    logSaveRestored:'Save restored',logCorpSpy:'Corporate Spy stealing from {0} — +{1} CR/s for 10 min',
+    dpsFormat:'DATA/click',dpsPerSec:'DATA/s',crPerSec:'CR/s',virusActive:'VIRUS ACTIVE: bot income -50%',
+    ipVpnActive:'IP: 10.0.x.x [VPN ACTIVE]',ipLabel:'IP: ',sessionActive:'SESSION ACTIVE',
+    avScan:'ANTIVIRUS SCAN: {0}s remaining',avClosing:'⚠ ANTIVIRUS CLOSING IN',
+    hackingTarget:'Hacking {0}... Type each command:',estimatedValue:'Estimated value: {0} DATA',
+    osLabel:'OS',difficultyLabel:'Difficulty',securityLabel:'Security',statusLabel:'Status',
+    contractActiveLabel:'(contract active)',rewardLabel:'Reward',costLabel:'Cost',purchased:'Purchased',
+    hijacked:'[HIJACKED]',intrDetected:'⚠ INTRUSION DETECTED',attemptBreach:'{0} is attempting to breach your systems',
+    threatLabel:'Threat',dataAtRisk:'Data at risk',timeLabel:'Time',
+    typeDefBlock:'Type defensive commands to block {0}:',intrBlocked:'INTRUSION BLOCKED — +{0} REP',
+    systemsBreach:'SYSTEMS BREACHED — Lost {0} DATA',botsOffline60:'BOTS OFFLINE: 60s — Respond within 30s!',
+    respondWithin:'Respond within {0}s or bots offline for 60s',
+    bountyInfo:'A bounty has been placed on alias "{0}". Elite hunters will attack every 60s until resolved.',
+    bountyStatus:'Defend 3 manual attacks ({0}/3) or pay 10% CREDITS or reduce traceability below 30% (current: {1}%)',
+    timeRemaining:'Time remaining: {0}m {1}s',lvlTitle:'LVL {0} — {1}',
+    confirmReset:'Reset all progress? This cannot be undone.',confirmNewSave:'This will erase your current save. Confirm?',
+    claimReward:'[ CLAIM REWARD ]',progressLabel:'Progress',currentTrace:'Current traceability',
+    needHardElite:'Need Hard/Elite hack',enemiesLabel:'Enemies',defensesLabel:'Defenses',dwRepLabel:'DW Rep',
+    traceLabel:'Traceability',targetsHacked:'Targets hacked',requiresSpoofer:'Requires IP Spoofer upgrade',
+    deployBtn:'[ DEPLOY — {0} DATA ]',suspicious:'[SUSPICIOUS]',shadowLabel:'[SHADOW]',
+    ipoProcessing:'IPO PROCESSING...',processing:'PROCESSING...',listing:'LISTING...',goingPublic:'GOING PUBLIC...',
+    serverNode:'Server Node #{0}',nodeOnline:'+500 DATA/s [ONLINE]',infraCost:'Cost: {0} DATA',
+    offersAlliance:'{0} offers alliance (+2 CR/s for 5 min)',offersContract:'🤝 {0} offers a contract',
+    accept:'[ ACCEPT ]',decline:'[ DECLINE ]',shadowMode:'SHADOW MODE',
+    companyLabel:'Company',operatorLabel:'Operator',yourIp:'Your IP',forensicTraces:'Forensic Traces',
+    protections:'PROTECTIONS',traceability:'TRACEABILITY',darkWebStatus:'Dark Web Status',
+    modeLabel:'Mode',activeLabel:'[ACTIVE]',inactiveLabel:'[INACTIVE]',
+    dwLegendary:'LEGENDARY',dwFeared:'FEARED',dwNoticed:'NOTICED',dwUnknown:'UNKNOWN',
+    diffEasy:'Easy',diffMedium:'Medium',diffHard:'Hard',diffElite:'Elite',diffGodTier:'God Tier',
+    rarCommon:'Common',rarRare:'Rare',rarEpic:'Epic',rarLegendary:'Legendary',
+    npcPatched:'⚡ {0} patched — difficulty +1',npcBreach:'🔓 {0} breach — reward x2 for 3 min',
+    npcOffensive:'⚔️ {0} offensive — HEAT +10',npcPartner:'🤝 {0} seeks partner',npcHacked:'💀 {0} hacked — security -1',
+    newsDataBought:'{0} purchased stolen data from dark web auctions',
+    newsCoalition:'{0} and {1} formed coalition against ByteCorp',
+    newsNpcHack:'{0} successfully hacked {1} — {2} security -1',newsAlliance:'{0} and {1} formed a strategic alliance',
+    newsBankrupt:'{0} went bankrupt — replaced by {1}',newsBounty:'{0} offering bounty on {1} — opportunity available',
+    newsMerger:'{0} acquired {1} — merged (security {2})',newsLogicBomb:'Unknown attacker deployed logic bomb on {0}',
+    newsRansomware:'{0} hit by ransomware — operations halted',
+    newsRootkit:'{0} compromised by rootkit — security permanently weakened',
+    newsForums:'Underground forums buzz about ByteCorp\'s latest exploits',
+    newsTimeBomb:'{0} taken offline by time bomb — {1} emerges',
+    newsSuspicious:'Suspicious activity detected around {0} stock',
+    fakeContract:'{0} offers a contract',fakeContractSuspicious:'{0} offers alliance (+5 CR/s for 10 min)',
+    urgentContractText:'{0} offers contract: Hack {1} within 3 min — Reward x4',
+    scanLocating:'> Locating target IP...',scanTunnel:'> Establishing encrypted tunnel...',
+    scanFw1:'> Bypassing firewall layer 1...',scanFw2:'> Bypassing firewall layer 2...',
+    scanConnected:'> Connected to [target IP: {0}]',scanExploit:'> Deploying exploit...',
+    scanAccess:'> ACCESS POINT FOUND — Awaiting commands',
+    helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus',
+    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1154,11 +1275,133 @@ const LANG = {
     pubLogBoardDecision:'Décision du conseil:',
     pubLogQuarterly:'Rapport trimestriel publié',
     pubLogDarkReturnMsg:'RETOUR SOMBRE: Retour au hacking avec',
-    pubNewsSuspicious:'Activité suspecte détectée autour de l\'action ByteCorp'
+    pubNewsSuspicious:'Activité suspecte détectée autour de l\'action ByteCorp',
+    logMined:'Miné +{0} DATA',logBought:'Acheté {0}',logBotPurged:'Bot purgé — {0} restauré',logHired:'Engagé {0}',logUpgrade:'Amélioration : {0}',
+    logDoomsday:'APOCALYPSE : Sécurité NPC -> 1, CHALEUR -> 95% !',logGodTier:'Difficulté DIVIN débloquée — cibles gouvernementales disponibles !',
+    logIpoThreshold:'Seuil IPO réduit à 25M RÉP !',logGodMode:'MODE DIVIN ACTIVÉ — Tous les systèmes améliorés !',logDwRep:'+200 Rép Dark Web',
+    logNeuralOn:'Interface Neurale ON',logNeuralOff:'Interface Neurale OFF',
+    logDarkSynOn:'Syndicat Noir ON — +2000 DATA/min, -1000 CR/min',logDarkSynOff:'Syndicat Noir OFF',
+    logZeroDay:'Exploit Zero-Day prêt — prochain hack auto-réussi !',logQuantumFw:'Pare-feu Quantique actif — IP invisible 5 min',
+    logGhostP2:'Protocole Fantôme v2 actif — traçabilité 0% pendant 2 min',logZeroTrust:'Zero Trust actif — hacks entrants échouent pendant 10 min',
+    logBlackout:'Blackout actif — attaques NPC désactivées pendant 30 min',logStealth:'Mode Furtif actif — CHALEUR -75% pendant 5 min',
+    logRepMulti:'Multiplicateur de Rép actif — double RÉP pendant 10 min',logDwFame:'Célébrité Dark Web active — rép 2x plus rapide pendant 5 min',
+    logOverride:'Override prêt — prochain hack frappe 2 NPC !',logNoTarget:'Aucune cible sélectionnée pour {0}',
+    logTimeBomb:'Bombe à retardement posée sur {0} — détone dans 10 min',logKeyloggerDetect:'Keylogger DÉTECTÉ par {0} ! +15 CHALEUR',
+    logKeyloggerOk:'Keylogger installé sur {0} — +200 CR/min pendant 5 min',logEnemyOnly:'La cible doit être un NPC ennemi',
+    logSocialEng:'{0} converti en neutre par ingénierie sociale',logTrojan:'Cheval de Troie envoyé à {0} — sécurité -3 pendant 10 min',
+    logNoCredits:'Pas de CRÉDITS à blanchir',logLaundered:'Blanchi {0} CR -> {1} DATA',logNeutralOnly:'La cible doit être un NPC neutre',
+    logMindControl:'{0} est maintenant votre allié permanent via Contrôle Mental !',logHostile:'⚠ {0} est maintenant HOSTILE !',
+    logZeroDayHack:'EXPLOIT ZERO-DAY : Auto-hacké {0} ! +{1} DATA',logZeroDaySkill:'ZERO DAY : Auto-hacké {0} ! +{1} DATA',
+    logNeuralBackdoor:'{0} est maintenant allié permanent via Porte Dérobée Neurale !',logOverrideHit:'OVERRIDE : {0} aussi hacké ! +{1} DATA',
+    logHighHeat:'⚠ Chaleur élevée détectée — hack compromis',logAvDetect:'CONNEXION TERMINÉE — Antivirus a détecté l\'intrusion',
+    logInitHack:'Lancement du hack sur {0}...',logSpoofBlame:'Usurpation : {0} accusé du hack raté (+20 CHALEUR pour eux)',
+    logHackFailed:'HACK ÉCHOUÉ : {0}',logExfil:'Exfiltration de données de {0}...',logAborted:'Téléchargement annulé à {0}%',
+    logTracers:'⚠ {0} est maintenant HOSTILE — traceurs déployés !',logM10Progress:'Progression M10 : {0}/3 cibles hackées',
+    logM10Expired:'M10 : Temps écoulé ! Mission réinitialisée.',logUrgentComplete:'CONTRAT TERMINÉ : +{0} bonus DATA, +{1} bonus CR, +50 Rép DW',
+    logCoalitionBroken:'Coalition brisée en hackant {0} !',logHackSuccess:'HACK RÉUSSI : +{0} DATA, +{1} CR, +{2} RÉP',
+    logPartialExfil:'EXFIL PARTIELLE ({0}%) : +{1} DATA, +{2} CR, +{3} RÉP',logLogCleaner:'Nettoyeur de Logs : traces forensiques supprimées',
+    logRareData:'Données rares détectées — CHALEUR +{0}',logSold:'Vendu {0} pour {1} DATA',logInvFull:'Inventaire plein ! Auto-vendu {0}',
+    logAddedInv:'{0} ajouté à l\'inventaire',logAuctionStart:'Enchère lancée pour {0}',logAuctionCancel:'Enchère annulée — {0} retourné',
+    logAuctionCancelSold:'Enchère annulée — inventaire plein, vendu pour {0} DATA',logAuctionClosed:'ENCHÈRE CLOSE — Vendu {0} pour {1} DATA',
+    logDataBought:'⚠ {0} a acheté vos données volées — ils connaissent vos méthodes',
+    logWrongCmd:'✗ MAUVAISE COMMANDE — CONNEXION PERDUE',logIntrusionDetect:'INTRUSION DÉTECTÉE — Signature de commande incorrecte',
+    logRaid:'🚨 RAID ! Perdu {0} DATA ! (pénalité {1}%)',logContractExpired:'Contrat de {0} expiré',
+    logAlliance:'✓ Alliance avec {0} — +2 CR/s pendant 5 min',logDarkWebSell:'Dark Web : vendu {0} DATA pour {1} CR (+10 CHALEUR)',
+    logIpChanged:'IP changée en {0} — menaces stoppées',logShellDeflect:'Réseau Société Écran a dévié l\'attaque de {0}',
+    logIdsWarning:'⚠ ALERTE IDS : {0} prépare une attaque dans 30s',logIncomingAttack:'⚠ ATTAQUE ENTRANTE de {0} !',
+    logDefenseSuccess:'DÉFENSE RÉUSSIE : Bloqué {0} +{1} RÉP',logBountyResolved:'PRIME RÉSOLUE : Chasseur effrayé ! +500 Rép Dark Web',
+    logDefenseFailed:'DÉFENSE ÉCHOUÉE : {0} a volé {1} DATA',logAutoDefendOk:'AUTO-DÉFENSE RÉUSSIE ({0}%) : Bloqué {1} +{2} RÉP',
+    logAutoDefendFail:'AUTO-DÉFENSE ÉCHOUÉE ({0}%) : {1} a volé {2} DATA',logEmpBlock:'Bouclier EMP a bloqué l\'attaque DDoS !',
+    logDdosOffline:'⚠ ATTAQUE DDOS — Bots hors ligne !',logDdosNoResponse:'DDoS : pas de réponse — bots hors ligne 60s',
+    logDdosAbsorbed:'DDoS absorbé — bots de retour (-500 DATA)',logDdosRerouted:'DDoS rerouté — bots de retour',
+    logBotsBack:'Bots de retour après DDoS',logUsurpation:'⚠ {0} usurpe votre adresse IP !',
+    logUsurpBlock:'IP Spoofer a auto-bloqué l\'usurpation',logUsurpExpired:'Usurpation d\'IP expirée',
+    logBountyPlaced:'⚠ Une prime a été placée sur {0} ! Chasseurs d\'élite en approche.',logBountyNoCr:'Pas assez de CRÉDITS pour payer la prime',
+    logBountyPaid:'Chasseur de primes payé — {0} CRÉDITS',logGoneDark:'Disparu — prime annulée',
+    logTraceTooHigh:'Traçabilité trop élevée pour disparaître (besoin <30%)',logVirusDeployed:'⚠ {0} a déployé un virus dans vos systèmes',
+    logVirusFix:'Fix : tapez "sudo clamscan -r /home" puis "sudo systemctl restart cron" OU payez 1000 DATA',
+    logVirusScan:'Scan antivirus en cours... tapez la commande suivante',logVirusRemoved:'Virus supprimé ! Revenus des bots restaurés.',
+    logEspionageFound:'Connexion trouvée... tapez la commande suivante',logEspionageBlocked:'Espionnage bloqué ! Auto-défense restaurée.',
+    logVirusAutoRemove:'Virus auto-supprimé — payé 1000 DATA',logScam:'⚠ ARNAQUE — Faux contrat de {0} ! -500 CRÉDITS, +30 CHALEUR',
+    logFalseFlagBlock:'Nettoyeur de Logs a bloqué le faux drapeau de {0}',
+    logFalseFlag:'⚠ {0} utilise votre IP pour ses attaques — vous êtes piégé',
+    logFalseFlagFix:'Fix : CHANGEZ IP (200 DATA) dans ID Corp',logFalseFlagExpired:'Faux drapeau expiré',
+    logHoneypot:'Pot de miel : {0} piégé — converti en allié temp pendant 5 min !',
+    logEspionage:'⚠ {0} a infiltré vos systèmes — ils voient vos défenses',
+    logEspionageFix:'Fix : tapez "sudo netstat -an | grep ESTABLISHED" + "sudo iptables -A INPUT -s attacker_ip -j DROP"',
+    logEspionageExpired:'Lien d\'espionnage expiré',logCoalition:'⚠ {0} et {1} ont formé une alliance contre ByteCorp',
+    logCoalitionNeed:'Il faut 5000 CRÉDITS pour briser la coalition',logCoalitionPaid:'Coalition brisée — payé un NPC neutre pour servir de médiateur',
+    logBotHijacked:'⚠ {0} a été compromis par {1}',logBotRestored:'Bot piraté restauré',
+    logFreeBot:'Bot gratuit : {0}',logFreeUpgrade:'Amélioration gratuite : {0}',
+    logClassified:'CLASSIFIÉ débloqué : trace -20%, récompenses hack x2, Mode Ombre actif !',
+    logMissionComplete:'MISSION TERMINÉE : {0} — {1}',logM10Targets:'Cibles M10 : {0}',
+    logUrgentExpired:'Contrat urgent expiré — -200 CRÉDITS',logContractAccepted:'Contrat accepté : Hackez {0} en 3 min !',
+    logContractDeclined:'Contrat refusé',logVirusDetected:'⚠ Virus détecté par {0} ! Ils sont maintenant HOSTILES.',
+    logLogicBomb:'Bombe Logique déployée sur {0} — sécurité -2 pendant 10 min',
+    logRansomware:'Rançongiciel déployé sur {0} — revenus stoppés 15 min',logRootkit:'Rootkit déployé sur {0} — sécurité -1 permanent',
+    logSkillUnlock:'Compétence débloquée : {0}',logAchUnlock:'SUCCÈS DÉBLOQUÉ : {0} {1}',
+    logNewGamePlus:'NEW GAME+ #{0} — +{1}% DATA/s bonus',logServerNode:'Nœud Serveur #{0} en ligne — +500 DATA/s',
+    logCryptoConvert:'Converti {0} $CRYPTO -> {1} DATA',logQfExpired:'Pare-feu Quantique expiré',
+    logGp2Expired:'Protocole Fantôme v2 expiré',logZtExpired:'Zero Trust expiré',logBlackoutExpired:'Blackout expiré',
+    logStealthExpired:'Mode Furtif expiré',logRepMultiExpired:'Multiplicateur de Rép expiré',logDwFameExpired:'Célébrité Dark Web expirée',
+    logCorpSpyExpired:'Espion d\'Entreprise expiré',logKeylogExpired:'Keylogger expiré',logEmpRecharge:'Bouclier EMP rechargé',
+    logTimeBombBoom:'BOMBE À RETARDEMENT : {0} détruit ! Remplacé par {1}',logDataBroker:'Courtier de Données auto-vendu {0} pour {1} DATA',
+    logAuctionBot:'Bot d\'Enchères a gagné : {0} ({1})',logInit:'ByteCorp v2.0 initialisé',logWelcome:'Bienvenue, {0}.',
+    logSaveRestored:'Sauvegarde restaurée',logCorpSpy:'Espion d\'Entreprise vole {0} — +{1} CR/s pendant 10 min',
+    dpsFormat:'DATA/clic',dpsPerSec:'DATA/s',crPerSec:'CR/s',virusActive:'VIRUS ACTIF : revenus bots -50%',
+    ipVpnActive:'IP : 10.0.x.x [VPN ACTIF]',ipLabel:'IP : ',sessionActive:'SESSION ACTIVE',
+    avScan:'SCAN ANTIVIRUS : {0}s restant',avClosing:'⚠ ANTIVIRUS EN APPROCHE',
+    hackingTarget:'Piratage de {0}... Tapez chaque commande :',estimatedValue:'Valeur estimée : {0} DATA',
+    osLabel:'OS',difficultyLabel:'Difficulté',securityLabel:'Sécurité',statusLabel:'Statut',
+    contractActiveLabel:'(contrat actif)',rewardLabel:'Récompense',costLabel:'Coût',purchased:'Acheté',
+    hijacked:'[PIRATÉ]',intrDetected:'⚠ INTRUSION DÉTECTÉE',attemptBreach:'{0} tente de pénétrer vos systèmes',
+    threatLabel:'Menace',dataAtRisk:'Données en danger',timeLabel:'Temps',
+    typeDefBlock:'Tapez les commandes défensives pour bloquer {0} :',intrBlocked:'INTRUSION BLOQUÉE — +{0} RÉP',
+    systemsBreach:'SYSTÈMES PÉNÉTRÉS — Perdu {0} DATA',botsOffline60:'BOTS HORS LIGNE : 60s — Répondez sous 30s !',
+    respondWithin:'Répondez sous {0}s ou bots hors ligne 60s',
+    bountyInfo:'Une prime a été placée sur l\'alias "{0}". Des chasseurs d\'élite attaqueront toutes les 60s.',
+    bountyStatus:'Défendez 3 attaques manuelles ({0}/3) ou payez 10% CRÉDITS ou réduisez traçabilité sous 30% (actuel : {1}%)',
+    timeRemaining:'Temps restant : {0}m {1}s',lvlTitle:'NVL {0} — {1}',
+    confirmReset:'Réinitialiser toute la progression ? C\'est irréversible.',confirmNewSave:'Ceci effacera votre sauvegarde. Confirmer ?',
+    claimReward:'[ RÉCUPÉRER RÉCOMPENSE ]',progressLabel:'Progression',currentTrace:'Traçabilité actuelle',
+    needHardElite:'Hack Hard/Élite requis',enemiesLabel:'Ennemis',defensesLabel:'Défenses',dwRepLabel:'Rép DW',
+    traceLabel:'Traçabilité',targetsHacked:'Cibles hackées',requiresSpoofer:'Nécessite l\'amélioration IP Spoofer',
+    deployBtn:'[ DÉPLOYER — {0} DATA ]',suspicious:'[SUSPECT]',shadowLabel:'[OMBRE]',
+    ipoProcessing:'IPO EN COURS...',processing:'TRAITEMENT...',listing:'INSCRIPTION...',goingPublic:'ENTRÉE EN BOURSE...',
+    serverNode:'Nœud Serveur #{0}',nodeOnline:'+500 DATA/s [EN LIGNE]',infraCost:'Coût : {0} DATA',
+    offersAlliance:'{0} offre une alliance (+2 CR/s pendant 5 min)',offersContract:'🤝 {0} propose un contrat',
+    accept:'[ ACCEPTER ]',decline:'[ REFUSER ]',shadowMode:'MODE OMBRE',
+    companyLabel:'Société',operatorLabel:'Opérateur',yourIp:'Votre IP',forensicTraces:'Traces Forensiques',
+    protections:'PROTECTIONS',traceability:'TRAÇABILITÉ',darkWebStatus:'Statut Dark Web',
+    modeLabel:'Mode',activeLabel:'[ACTIF]',inactiveLabel:'[INACTIF]',
+    dwLegendary:'LÉGENDAIRE',dwFeared:'REDOUTÉ',dwNoticed:'REMARQUÉ',dwUnknown:'INCONNU',
+    diffEasy:'Facile',diffMedium:'Moyen',diffHard:'Difficile',diffElite:'Élite',diffGodTier:'Divin',
+    rarCommon:'Commun',rarRare:'Rare',rarEpic:'Épique',rarLegendary:'Légendaire',
+    npcPatched:'⚡ {0} a patché — difficulté +1',npcBreach:'🔓 {0} brèche — récompense x2 pendant 3 min',
+    npcOffensive:'⚔️ {0} offensive — CHALEUR +10',npcPartner:'🤝 {0} cherche un partenaire',npcHacked:'💀 {0} hacké — sécurité -1',
+    newsDataBought:'{0} a acheté des données volées sur le dark web',
+    newsCoalition:'{0} et {1} ont formé une coalition contre ByteCorp',
+    newsNpcHack:'{0} a hacké {1} avec succès — {2} sécurité -1',newsAlliance:'{0} et {1} ont formé une alliance stratégique',
+    newsBankrupt:'{0} a fait faillite — remplacé par {1}',newsBounty:'{0} offre une prime sur {1} — opportunité disponible',
+    newsMerger:'{0} a acquis {1} — fusionné (sécurité {2})',newsLogicBomb:'Attaquant inconnu a déployé une bombe logique sur {0}',
+    newsRansomware:'{0} touché par un rançongiciel — opérations stoppées',
+    newsRootkit:'{0} compromis par rootkit — sécurité définitivement affaiblie',
+    newsForums:'Les forums clandestins parlent des derniers exploits de ByteCorp',
+    newsTimeBomb:'{0} mis hors ligne par bombe à retardement — {1} émerge',
+    newsSuspicious:'Activité suspecte détectée autour de l\'action de {0}',
+    fakeContract:'{0} propose un contrat',fakeContractSuspicious:'{0} offre une alliance (+5 CR/s pendant 10 min)',
+    urgentContractText:'{0} propose un contrat : Hackez {1} en 3 min — Récompense x4',
+    scanLocating:'> Localisation de l\'IP cible...',scanTunnel:'> Établissement du tunnel chiffré...',
+    scanFw1:'> Contournement du pare-feu couche 1...',scanFw2:'> Contournement du pare-feu couche 2...',
+    scanConnected:'> Connecté à [IP cible : {0}]',scanExploit:'> Déploiement de l\'exploit...',
+    scanAccess:'> POINT D\'ACCÈS TROUVÉ — En attente de commandes',
+    helpContent:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s',
+    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s'
   }
 };
 
 function L(key){return LANG[currentLang][key]||LANG.en[key]||key;}
+function LF(key,...args){let s=L(key);args.forEach((a,i)=>{s=s.replace('{'+i+'}',a);});return s;}
 function LP(obj,field){return(currentLang==='fr'&&obj[field+'_fr'])?obj[field+'_fr']:obj[field];}
 
 function toggleLang(){
@@ -1232,6 +1475,7 @@ function applyLang(){
   const mc=document.getElementById('menu-close');if(mc)mc.textContent=L('close');
   // Various close/title buttons — update modals
   const helpTitle=document.querySelector('#help-popup h2');if(helpTitle)helpTitle.textContent=L('helpTitle');
+  const helpPre=document.querySelector('#help-popup pre');if(helpPre)helpPre.textContent=L('helpContent');
   const helpClose=document.getElementById('help-close-btn');if(helpClose)helpClose.textContent=L('close');
   // Market modal
   const mktTitle=document.querySelector('#market-popup h2');if(mktTitle)mktTitle.textContent=L('dwmTitle');
@@ -1336,8 +1580,19 @@ function applyLang(){
     renderPubDepartments();
     renderPubActiveEvent();
   }
+  // AV closing warning
+  const avWarn=document.getElementById('av-closing-warning');if(avWarn)avWarn.textContent=L('avClosing');
+  // Crypto convert button
+  const ccb=document.getElementById('crypto-convert-btn');if(ccb)ccb.textContent=L('convertCrypto');
+  // Infra tab
+  const infraTab=document.getElementById('infra-tab-btn');if(infraTab)infraTab.textContent=L('infra');
+  // Urgent contract buttons
+  const ucAccept=document.querySelector('.uc-accept');if(ucAccept)ucAccept.textContent=L('accept');
+  const ucDecline=document.querySelector('.uc-decline');if(ucDecline)ucDecline.textContent=L('decline');
+  // Coalition title (inline element)
+  const coaTitleInline=document.querySelector('#coalition-overlay > div:first-child');if(coaTitleInline)coaTitleInline.textContent=L('coalitionTitle');
   // Re-render dynamic content
-  if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();}
+  if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();renderVirusList();renderInfraList();}
 }
 
 // Apply theme on load
@@ -1512,89 +1767,89 @@ let lastBountyAttack = 0;
 
 // ========== DEFINITIONS ==========
 const BOTS = [
-  {name:'Script Kiddie', baseCost:10, dps:0.1},
-  {name:'Basic Bot', baseCost:100, dps:1},
-  {name:'Crawler', baseCost:1000, dps:10},
-  {name:'AI Scraper', baseCost:10000, dps:100},
-  {name:'Quantum Miner', baseCost:100000, dps:1000},
-  {name:'God Mode', baseCost:1000000, dps:10000}
+  {name:'Script Kiddie', baseCost:10, dps:0.1, name_fr:'Script Kiddie'},
+  {name:'Basic Bot', baseCost:100, dps:1, name_fr:'Bot Basique'},
+  {name:'Crawler', baseCost:1000, dps:10, name_fr:'Crawler'},
+  {name:'AI Scraper', baseCost:10000, dps:100, name_fr:'Scraper IA'},
+  {name:'Quantum Miner', baseCost:100000, dps:1000, name_fr:'Mineur Quantique'},
+  {name:'God Mode', baseCost:1000000, dps:10000, name_fr:'Mode Divin'}
 ];
 
 const DEVS = [
-  {name:'Intern', baseCost:50, cps:0.5},
-  {name:'Junior Dev', baseCost:500, cps:5},
-  {name:'Senior Dev', baseCost:5000, cps:50},
-  {name:'Lead Dev', baseCost:50000, cps:500},
-  {name:'Rockstar', baseCost:500000, cps:5000}
+  {name:'Intern', baseCost:50, cps:0.5, name_fr:'Stagiaire'},
+  {name:'Junior Dev', baseCost:500, cps:5, name_fr:'Dev Junior'},
+  {name:'Senior Dev', baseCost:5000, cps:50, name_fr:'Dev Senior'},
+  {name:'Lead Dev', baseCost:50000, cps:500, name_fr:'Dev Lead'},
+  {name:'Rockstar', baseCost:500000, cps:5000, name_fr:'Rockstar'}
 ];
 
 const UPGRADES = [
-  {id:'keyboard', name:'Better Keyboard', cost:500, currency:'data', desc:'x2 DATA/click'},
-  {id:'vpn', name:'VPN Pro', cost:1000, currency:'data', desc:'HEAT -50%, Traceability -30%'},
-  {id:'firewallv1', name:'Firewall v1', cost:2000, currency:'data', desc:'Auto-defense +20%, Trace -10%'},
-  {id:'shell', name:'Shell Company', cost:5000, currency:'credits', desc:'HEAT -1/min, Trace -20%'},
-  {id:'darkweb', name:'Dark Web Access', cost:10000, currency:'data', desc:'Unlock dark web market'},
-  {id:'logcleaner', name:'Log Cleaner', cost:10000, currency:'data', desc:'Forensic traces auto-deleted every 5 min'},
-  {id:'firewallv2', name:'Firewall v2', cost:20000, currency:'data', desc:'Auto-defense +20%, Trace -10%', requires:'firewallv1'},
-  {id:'ipspoofer', name:'IP Spoofer', cost:30000, currency:'data', desc:'Trace -10%, unlocks offensive IP spoofing + VIRUS tab'},
-  {id:'vpnchain2', name:'VPN Chain x2', cost:50000, currency:'data', desc:'Trace -15%, DATA/s -5%', requires:'vpn'},
-  {id:'quantum', name:'Quantum CPU', cost:50000, currency:'data', desc:'x3 DATA/s all bots'},
-  {id:'aiassist', name:'AI Assistant', cost:100000, currency:'credits', desc:'x2 CREDITS/s all devs'},
-  {id:'vpnchain3', name:'VPN Chain x3', cost:200000, currency:'data', desc:'Trace -15% more, DATA/s -5% more', requires:'vpnchain2'},
-  {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%'},
+  {id:'keyboard', name:'Better Keyboard', cost:500, currency:'data', desc:'x2 DATA/click', name_fr:'Meilleur Clavier', desc_fr:'x2 DATA/clic'},
+  {id:'vpn', name:'VPN Pro', cost:1000, currency:'data', desc:'HEAT -50%, Traceability -30%', name_fr:'VPN Pro', desc_fr:'CHALEUR -50%, Traçabilité -30%'},
+  {id:'firewallv1', name:'Firewall v1', cost:2000, currency:'data', desc:'Auto-defense +20%, Trace -10%', name_fr:'Pare-feu v1', desc_fr:'Auto-défense +20%, Trace -10%'},
+  {id:'shell', name:'Shell Company', cost:5000, currency:'credits', desc:'HEAT -1/min, Trace -20%', name_fr:'Société Écran', desc_fr:'CHALEUR -1/min, Trace -20%'},
+  {id:'darkweb', name:'Dark Web Access', cost:10000, currency:'data', desc:'Unlock dark web market', name_fr:'Accès Dark Web', desc_fr:'Débloquer le marché du dark web'},
+  {id:'logcleaner', name:'Log Cleaner', cost:10000, currency:'data', desc:'Forensic traces auto-deleted every 5 min', name_fr:'Nettoyeur de Logs', desc_fr:'Traces forensiques auto-supprimées toutes les 5 min'},
+  {id:'firewallv2', name:'Firewall v2', cost:20000, currency:'data', desc:'Auto-defense +20%, Trace -10%', requires:'firewallv1', name_fr:'Pare-feu v2', desc_fr:'Auto-défense +20%, Trace -10%'},
+  {id:'ipspoofer', name:'IP Spoofer', cost:30000, currency:'data', desc:'Trace -10%, unlocks offensive IP spoofing + VIRUS tab', name_fr:'Usurpateur d\'IP', desc_fr:'Trace -10%, débloque usurpation IP + onglet VIRUS'},
+  {id:'vpnchain2', name:'VPN Chain x2', cost:50000, currency:'data', desc:'Trace -15%, DATA/s -5%', requires:'vpn', name_fr:'Chaîne VPN x2', desc_fr:'Trace -15%, DATA/s -5%'},
+  {id:'quantum', name:'Quantum CPU', cost:50000, currency:'data', desc:'x3 DATA/s all bots', name_fr:'CPU Quantique', desc_fr:'x3 DATA/s tous les bots'},
+  {id:'aiassist', name:'AI Assistant', cost:100000, currency:'credits', desc:'x2 CREDITS/s all devs', name_fr:'Assistant IA', desc_fr:'x2 CRÉDITS/s tous les devs'},
+  {id:'vpnchain3', name:'VPN Chain x3', cost:200000, currency:'data', desc:'Trace -15% more, DATA/s -5% more', requires:'vpnchain2', name_fr:'Chaîne VPN x3', desc_fr:'Trace -15% de plus, DATA/s -5% de plus'},
+  {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%', name_fr:'Couverture Légale', desc_fr:'Pénalité RAID 10% au lieu de 30%'},
   // ===== OFFENSIF =====
-  {id:'neuralInterface',section:'secOffensif', name:'Neural Interface', cost:5000, currency:'data', desc:'DATA/click x5 but HEAT +2/click. Toggle on/off.', toggle:true},
-  {id:'zeroDayExploit',section:'secOffensif', name:'Zero-Day Exploit', cost:20000, currency:'data', desc:'Once/hour: auto-succeed any hack. Cooldown 60 min.', cooldown:3600000},
-  {id:'exploitFramework',section:'secOffensif', name:'Exploit Framework', cost:10000, currency:'data', desc:'All hacks: command count -1 (min 1).'},
-  {id:'polymorphicVirus',section:'secOffensif', name:'Polymorphic Virus', cost:50000, currency:'data', desc:'Deployed viruses have 0% detection.'},
-  {id:'botnetRental',section:'secOffensif', name:'Botnet Rental', cost:15000, currency:'credits', desc:'+500 CREDITS/min passively.'},
-  {id:'timeBomb',section:'secOffensif', name:'Time Bomb', cost:8000, currency:'data', desc:'Plant on NPC: they disappear after 10 min. Cooldown 30 min.', cooldown:1800000},
-  {id:'keylogger',section:'secOffensif', name:'Keylogger', cost:5000, currency:'data', desc:'Install on NPC: +200 CR/min for 5 min. 25% detection.', cooldown:600000},
-  {id:'dataMinerPro',section:'secOffensif', name:'Data Miner Pro', cost:25000, currency:'data', desc:'Each hack drops 2 loot items instead of 1.'},
-  {id:'socialEngineering',section:'secOffensif', name:'Social Engineering', cost:30000, currency:'credits', desc:'Convert enemy NPC to neutral. Cooldown 20 min.', cooldown:1200000},
-  {id:'trojanHorse',section:'secOffensif', name:'Trojan Horse', cost:12000, currency:'data', desc:'Send fake alliance to enemy: -3 security for 10 min. Cooldown 15 min.', cooldown:900000},
+  {id:'neuralInterface',section:'secOffensif', name:'Neural Interface', cost:5000, currency:'data', desc:'DATA/click x5 but HEAT +2/click. Toggle on/off.', toggle:true, name_fr:'Interface Neurale', desc_fr:'DATA/clic x5 mais CHALEUR +2/clic. On/off.'},
+  {id:'zeroDayExploit',section:'secOffensif', name:'Zero-Day Exploit', cost:20000, currency:'data', desc:'Once/hour: auto-succeed any hack. Cooldown 60 min.', cooldown:3600000, name_fr:'Exploit Zero-Day', desc_fr:'1x/heure : auto-réussir tout hack. Recharge 60 min.'},
+  {id:'exploitFramework',section:'secOffensif', name:'Exploit Framework', cost:10000, currency:'data', desc:'All hacks: command count -1 (min 1).', name_fr:'Framework d\'Exploit', desc_fr:'Tous les hacks : commandes -1 (min 1).'},
+  {id:'polymorphicVirus',section:'secOffensif', name:'Polymorphic Virus', cost:50000, currency:'data', desc:'Deployed viruses have 0% detection.', name_fr:'Virus Polymorphe', desc_fr:'Virus déployés ont 0% de détection.'},
+  {id:'botnetRental',section:'secOffensif', name:'Botnet Rental', cost:15000, currency:'credits', desc:'+500 CREDITS/min passively.', name_fr:'Location de Botnet', desc_fr:'+500 CRÉDITS/min passivement.'},
+  {id:'timeBomb',section:'secOffensif', name:'Time Bomb', cost:8000, currency:'data', desc:'Plant on NPC: they disappear after 10 min. Cooldown 30 min.', cooldown:1800000, name_fr:'Bombe à Retardement', desc_fr:'Planter sur NPC : disparaît après 10 min. Recharge 30 min.'},
+  {id:'keylogger',section:'secOffensif', name:'Keylogger', cost:5000, currency:'data', desc:'Install on NPC: +200 CR/min for 5 min. 25% detection.', cooldown:600000, name_fr:'Keylogger', desc_fr:'Installer sur NPC : +200 CR/min pendant 5 min. 25% détection.'},
+  {id:'dataMinerPro',section:'secOffensif', name:'Data Miner Pro', cost:25000, currency:'data', desc:'Each hack drops 2 loot items instead of 1.', name_fr:'Data Miner Pro', desc_fr:'Chaque hack donne 2 butins au lieu de 1.'},
+  {id:'socialEngineering',section:'secOffensif', name:'Social Engineering', cost:30000, currency:'credits', desc:'Convert enemy NPC to neutral. Cooldown 20 min.', cooldown:1200000, name_fr:'Ingénierie Sociale', desc_fr:'Convertir NPC ennemi en neutre. Recharge 20 min.'},
+  {id:'trojanHorse',section:'secOffensif', name:'Trojan Horse', cost:12000, currency:'data', desc:'Send fake alliance to enemy: -3 security for 10 min. Cooldown 15 min.', cooldown:900000, name_fr:'Cheval de Troie', desc_fr:'Envoyer fausse alliance à l\'ennemi : -3 sécurité pendant 10 min. Recharge 15 min.'},
   // ===== DEFENSIF =====
-  {id:'quantumFirewall',section:'secDefensif', name:'Quantum Firewall', cost:75000, currency:'data', desc:'IP invisible 5 min. Cooldown 30 min.', cooldown:1800000},
-  {id:'aiDefender',section:'secDefensif', name:'AI Defender', cost:40000, currency:'credits', desc:'Auto-defense base becomes 75% (cap 90%).'},
-  {id:'honeypot',section:'secDefensif', name:'Honeypot', cost:18000, currency:'data', desc:'Espionage attempts convert attacker to temp ally 5 min.'},
-  {id:'empShield',section:'secDefensif', name:'EMP Shield', cost:10000, currency:'data', desc:'Auto-blocks next DDoS. 1 charge, recharges every 20 min.'},
-  {id:'darkWebScanner',section:'secDefensif', name:'Dark Web Scanner', cost:8000, currency:'data', desc:'100% fake contract detection.'},
-  {id:'ids',section:'secDefensif', name:'Intrusion Detection', cost:15000, currency:'data', desc:'30s advance warning before incoming hack.'},
-  {id:'encryptedBackup',section:'secDefensif', name:'Encrypted Backup', cost:20000, currency:'data', desc:'RAID loses only 10% (stacks with Legal Cover for 5%).'},
-  {id:'ghostProtocol2',section:'secDefensif', name:'Ghost Protocol v2', cost:100000, currency:'data', desc:'Traceability 0% for 2 min. Cooldown 1 hour.', cooldown:3600000},
+  {id:'quantumFirewall',section:'secDefensif', name:'Quantum Firewall', cost:75000, currency:'data', desc:'IP invisible 5 min. Cooldown 30 min.', cooldown:1800000, name_fr:'Pare-feu Quantique', desc_fr:'IP invisible 5 min. Recharge 30 min.'},
+  {id:'aiDefender',section:'secDefensif', name:'AI Defender', cost:40000, currency:'credits', desc:'Auto-defense base becomes 75% (cap 90%).', name_fr:'Défenseur IA', desc_fr:'Auto-défense de base à 75% (max 90%).'},
+  {id:'honeypot',section:'secDefensif', name:'Honeypot', cost:18000, currency:'data', desc:'Espionage attempts convert attacker to temp ally 5 min.', name_fr:'Pot de Miel', desc_fr:'Tentatives d\'espionnage convertissent l\'attaquant en allié temp 5 min.'},
+  {id:'empShield',section:'secDefensif', name:'EMP Shield', cost:10000, currency:'data', desc:'Auto-blocks next DDoS. 1 charge, recharges every 20 min.', name_fr:'Bouclier EMP', desc_fr:'Bloque le prochain DDoS. 1 charge, recharge toutes les 20 min.'},
+  {id:'darkWebScanner',section:'secDefensif', name:'Dark Web Scanner', cost:8000, currency:'data', desc:'100% fake contract detection.', name_fr:'Scanner Dark Web', desc_fr:'Détection 100% des faux contrats.'},
+  {id:'ids',section:'secDefensif', name:'Intrusion Detection', cost:15000, currency:'data', desc:'30s advance warning before incoming hack.', name_fr:'Détection d\'Intrusion', desc_fr:'Alerte 30s avant une attaque entrante.'},
+  {id:'encryptedBackup',section:'secDefensif', name:'Encrypted Backup', cost:20000, currency:'data', desc:'RAID loses only 10% (stacks with Legal Cover for 5%).', name_fr:'Sauvegarde Chiffrée', desc_fr:'RAID perd seulement 10% (cumulable avec Couverture Légale pour 5%).'},
+  {id:'ghostProtocol2',section:'secDefensif', name:'Ghost Protocol v2', cost:100000, currency:'data', desc:'Traceability 0% for 2 min. Cooldown 1 hour.', cooldown:3600000, name_fr:'Protocole Fantôme v2', desc_fr:'Traçabilité 0% pendant 2 min. Recharge 1h.'},
   // ===== ECONOMIQUE =====
-  {id:'dataBroker',section:'secEconomique', name:'Data Broker', cost:12000, currency:'data', desc:'Auto-sells Common loot every 2 min.'},
-  {id:'encryptedStorage',section:'secEconomique', name:'Encrypted Storage', cost:8000, currency:'credits', desc:'Inventory limit 10 -> 25.'},
-  {id:'darkWebRepBoost',section:'secEconomique', name:'Dark Web Rep Boost', cost:5000, currency:'credits', desc:'+200 darkWebRep. Multi-purchase.', multi:true},
-  {id:'auctionBot',section:'secEconomique', name:'Auction Bot', cost:20000, currency:'credits', desc:'Auto-wins NPC auctions 50% of time.'},
-  {id:'moneyLaundering',section:'secEconomique', name:'Money Laundering', cost:30000, currency:'credits', desc:'Convert CREDITS to DATA at 1:5 ratio, no HEAT.', cooldown:60000},
-  {id:'cryptoMining',section:'secEconomique', name:'Crypto Mining', cost:50000, currency:'data', desc:'Generates $CRYPTO at +0.1/s. Convertible to DATA.'},
-  {id:'shellCorpNetwork',section:'secEconomique', name:'Shell Corp Network', cost:45000, currency:'credits', desc:'30% chance incoming attacks hit fake identity.'},
-  {id:'blackMarketMonopoly',section:'secEconomique', name:'Black Market Monopoly', cost:80000, currency:'credits', desc:'NPC auction bid amounts -50%.'},
+  {id:'dataBroker',section:'secEconomique', name:'Data Broker', cost:12000, currency:'data', desc:'Auto-sells Common loot every 2 min.', name_fr:'Courtier de Données', desc_fr:'Auto-vend le butin Commun toutes les 2 min.'},
+  {id:'encryptedStorage',section:'secEconomique', name:'Encrypted Storage', cost:8000, currency:'credits', desc:'Inventory limit 10 -> 25.', name_fr:'Stockage Chiffré', desc_fr:'Limite inventaire 10 -> 25.'},
+  {id:'darkWebRepBoost',section:'secEconomique', name:'Dark Web Rep Boost', cost:5000, currency:'credits', desc:'+200 darkWebRep. Multi-purchase.', multi:true, name_fr:'Boost Rép Dark Web', desc_fr:'+200 rép Dark Web. Achat multiple.'},
+  {id:'auctionBot',section:'secEconomique', name:'Auction Bot', cost:20000, currency:'credits', desc:'Auto-wins NPC auctions 50% of time.', name_fr:'Bot d\'Enchères', desc_fr:'Gagne auto les enchères NPC 50% du temps.'},
+  {id:'moneyLaundering',section:'secEconomique', name:'Money Laundering', cost:30000, currency:'credits', desc:'Convert CREDITS to DATA at 1:5 ratio, no HEAT.', cooldown:60000, name_fr:'Blanchiment d\'Argent', desc_fr:'Convertir CRÉDITS en DATA ratio 1:5, sans CHALEUR.'},
+  {id:'cryptoMining',section:'secEconomique', name:'Crypto Mining', cost:50000, currency:'data', desc:'Generates $CRYPTO at +0.1/s. Convertible to DATA.', name_fr:'Minage Crypto', desc_fr:'Génère $CRYPTO à +0.1/s. Convertible en DATA.'},
+  {id:'shellCorpNetwork',section:'secEconomique', name:'Shell Corp Network', cost:45000, currency:'credits', desc:'30% chance incoming attacks hit fake identity.', name_fr:'Réseau Société Écran', desc_fr:'30% chance que les attaques touchent une fausse identité.'},
+  {id:'blackMarketMonopoly',section:'secEconomique', name:'Black Market Monopoly', cost:80000, currency:'credits', desc:'NPC auction bid amounts -50%.', name_fr:'Monopole Marché Noir', desc_fr:'Enchères NPC -50%.'},
   // ===== PROGRESSION =====
-  {id:'prestigeToken',section:'secProgression', name:'Prestige Token', cost:200000, currency:'data', desc:'New Game+ keeps 50% resources.'},
-  {id:'legacyCode',section:'secProgression', name:'Legacy Code', cost:150000, currency:'data', desc:'Each NG+ gives +10% DATA/s (stacks infinitely).'},
-  {id:'repMultiplier',section:'secProgression', name:'Rep Multiplier', cost:25000, currency:'data', desc:'Double REP from hacks 10 min. Cooldown 30 min.', cooldown:1800000},
-  {id:'darkWebFame',section:'secProgression', name:'Dark Web Fame', cost:15000, currency:'credits', desc:'DarkWebRep 2x faster 5 min. Cooldown 20 min.', cooldown:1200000},
-  {id:'skillAccelerator',section:'secProgression', name:'Skill Accelerator', cost:40000, currency:'credits', desc:'All skill costs -25%.'},
-  {id:'quantumCpuPro',section:'secProgression', name:'Quantum CPU Pro', cost:500000, currency:'data', desc:'x5 DATA/s from bots (replaces Quantum x3).', requires:'quantum'},
-  {id:'xpBooster',section:'secProgression', name:'XP Booster', cost:10000, currency:'credits', desc:'REP gain +50% permanent.'},
-  {id:'fastLearner',section:'secProgression', name:'Fast Learner', cost:20000, currency:'credits', desc:'Skill cost -10% per skill owned.'},
+  {id:'prestigeToken',section:'secProgression', name:'Prestige Token', cost:200000, currency:'data', desc:'New Game+ keeps 50% resources.', name_fr:'Jeton de Prestige', desc_fr:'New Game+ conserve 50% des ressources.'},
+  {id:'legacyCode',section:'secProgression', name:'Legacy Code', cost:150000, currency:'data', desc:'Each NG+ gives +10% DATA/s (stacks infinitely).', name_fr:'Code Hérité', desc_fr:'Chaque NG+ donne +10% DATA/s (cumulable à l\'infini).'},
+  {id:'repMultiplier',section:'secProgression', name:'Rep Multiplier', cost:25000, currency:'data', desc:'Double REP from hacks 10 min. Cooldown 30 min.', cooldown:1800000, name_fr:'Multiplicateur de Rép', desc_fr:'Double RÉP des hacks 10 min. Recharge 30 min.'},
+  {id:'darkWebFame',section:'secProgression', name:'Dark Web Fame', cost:15000, currency:'credits', desc:'DarkWebRep 2x faster 5 min. Cooldown 20 min.', cooldown:1200000, name_fr:'Célébrité Dark Web', desc_fr:'Rép Dark Web 2x plus rapide 5 min. Recharge 20 min.'},
+  {id:'skillAccelerator',section:'secProgression', name:'Skill Accelerator', cost:40000, currency:'credits', desc:'All skill costs -25%.', name_fr:'Accélérateur de Comp.', desc_fr:'Coûts de compétences -25%.'},
+  {id:'quantumCpuPro',section:'secProgression', name:'Quantum CPU Pro', cost:500000, currency:'data', desc:'x5 DATA/s from bots (replaces Quantum x3).', requires:'quantum', name_fr:'CPU Quantique Pro', desc_fr:'x5 DATA/s des bots (remplace Quantique x3).'},
+  {id:'xpBooster',section:'secProgression', name:'XP Booster', cost:10000, currency:'credits', desc:'REP gain +50% permanent.', name_fr:'Booster XP', desc_fr:'Gain de RÉP +50% permanent.'},
+  {id:'fastLearner',section:'secProgression', name:'Fast Learner', cost:20000, currency:'credits', desc:'Skill cost -10% per skill owned.', name_fr:'Apprenti Rapide', desc_fr:'Coût compétence -10% par compétence possédée.'},
   // ===== SPECIAUX =====
-  {id:'singularity',section:'secSpeciaux', name:'Singularity', cost:10000000, currency:'data', desc:'Unlocks GOD TIER difficulty with gov targets.'},
-  {id:'theOverride',section:'secSpeciaux', name:'The Override', cost:300000, currency:'data', desc:'Hack 2 NPCs simultaneously. Cooldown 15 min.', cooldown:900000},
-  {id:'neuralBackdoor',section:'secSpeciaux', name:'Neural Backdoor', cost:150000, currency:'data', desc:'Hacking Elite NPC makes them permanent ally +100 CR/s.'},
-  {id:'zeroTrust',section:'secSpeciaux', name:'Zero Trust', cost:80000, currency:'data', desc:'All incoming hacks auto-fail 10 min. Cooldown 1 hour.', cooldown:3600000},
-  {id:'darkSyndicate',section:'secSpeciaux', name:'Dark Syndicate', cost:500000, currency:'credits', desc:'+2000 DATA/min but -1000 CR/min. Toggle.', toggle:true},
-  {id:'ipoAccelerator',section:'secSpeciaux', name:'IPO Accelerator', cost:1000000, currency:'credits', desc:'Endgame REP threshold 50M -> 25M.'},
-  {id:'stealthMode',section:'secSpeciaux', name:'Stealth Mode', cost:200000, currency:'data', desc:'HEAT from hacks -75% for 5 min. Cooldown 20 min.', cooldown:1200000},
-  {id:'corporateSpy',section:'secSpeciaux', name:'Corporate Spy', cost:60000, currency:'credits', desc:'Steal random bonus from NPC for 10 min. Cooldown 15 min.', cooldown:900000},
-  {id:'satelliteUplink',section:'secSpeciaux', name:'Satellite Uplink', cost:400000, currency:'data', desc:'All bot DATA/s doubled permanently. Requires God Mode bot.'},
-  {id:'theArchitect',section:'secSpeciaux', name:'The Architect', cost:750000, currency:'credits', desc:'Unlock INFRASTRUCTURE tab. Buy server nodes for +500 DATA/s each.'},
-  {id:'doomsdayProtocol',section:'secSpeciaux', name:'Doomsday Protocol', cost:2000000, currency:'data', desc:'Attack ALL NPCs: security->1, HEAT->95%. One-time.', oneTime:true},
-  {id:'blackout',section:'secSpeciaux', name:'Blackout', cost:1000000, currency:'data', desc:'Disable all NPC attacks/events 30 min. Cooldown 2 hours.', cooldown:7200000},
-  {id:'mindControl',section:'secSpeciaux', name:'Mind Control', cost:300000, currency:'credits', desc:'Force neutral NPC to permanent ally. Cooldown 30 min.', cooldown:1800000},
-  {id:'godModeActivated',section:'secSpeciaux', name:'God Mode Activated', cost:5000000, currency:'data', desc:'All timers +30s, rewards x3, HEAT -50%, trace -30%. Header glows gold.'}
+  {id:'singularity',section:'secSpeciaux', name:'Singularity', cost:10000000, currency:'data', desc:'Unlocks GOD TIER difficulty with gov targets.', name_fr:'Singularité', desc_fr:'Débloque difficulté DIVIN avec cibles gouvernementales.'},
+  {id:'theOverride',section:'secSpeciaux', name:'The Override', cost:300000, currency:'data', desc:'Hack 2 NPCs simultaneously. Cooldown 15 min.', cooldown:900000, name_fr:'L\'Override', desc_fr:'Hacker 2 NPC simultanément. Recharge 15 min.'},
+  {id:'neuralBackdoor',section:'secSpeciaux', name:'Neural Backdoor', cost:150000, currency:'data', desc:'Hacking Elite NPC makes them permanent ally +100 CR/s.', name_fr:'Porte Dérobée Neurale', desc_fr:'Hacker un NPC Élite en fait un allié permanent +100 CR/s.'},
+  {id:'zeroTrust',section:'secSpeciaux', name:'Zero Trust', cost:80000, currency:'data', desc:'All incoming hacks auto-fail 10 min. Cooldown 1 hour.', cooldown:3600000, name_fr:'Zero Trust', desc_fr:'Hacks entrants échouent 10 min. Recharge 1h.'},
+  {id:'darkSyndicate',section:'secSpeciaux', name:'Dark Syndicate', cost:500000, currency:'credits', desc:'+2000 DATA/min but -1000 CR/min. Toggle.', toggle:true, name_fr:'Syndicat Noir', desc_fr:'+2000 DATA/min mais -1000 CR/min. On/off.'},
+  {id:'ipoAccelerator',section:'secSpeciaux', name:'IPO Accelerator', cost:1000000, currency:'credits', desc:'Endgame REP threshold 50M -> 25M.', name_fr:'Accélérateur IPO', desc_fr:'Seuil RÉP fin de partie 50M -> 25M.'},
+  {id:'stealthMode',section:'secSpeciaux', name:'Stealth Mode', cost:200000, currency:'data', desc:'HEAT from hacks -75% for 5 min. Cooldown 20 min.', cooldown:1200000, name_fr:'Mode Furtif', desc_fr:'CHALEUR des hacks -75% pendant 5 min. Recharge 20 min.'},
+  {id:'corporateSpy',section:'secSpeciaux', name:'Corporate Spy', cost:60000, currency:'credits', desc:'Steal random bonus from NPC for 10 min. Cooldown 15 min.', cooldown:900000, name_fr:'Espion d\'Entreprise', desc_fr:'Voler bonus aléatoire de NPC 10 min. Recharge 15 min.'},
+  {id:'satelliteUplink',section:'secSpeciaux', name:'Satellite Uplink', cost:400000, currency:'data', desc:'All bot DATA/s doubled permanently. Requires God Mode bot.', name_fr:'Liaison Satellite', desc_fr:'DATA/s de tous les bots doublé. Nécessite bot Mode Divin.'},
+  {id:'theArchitect',section:'secSpeciaux', name:'The Architect', cost:750000, currency:'credits', desc:'Unlock INFRASTRUCTURE tab. Buy server nodes for +500 DATA/s each.', name_fr:'L\'Architecte', desc_fr:'Débloque onglet INFRA. Acheter nœuds serveur +500 DATA/s chacun.'},
+  {id:'doomsdayProtocol',section:'secSpeciaux', name:'Doomsday Protocol', cost:2000000, currency:'data', desc:'Attack ALL NPCs: security->1, HEAT->95%. One-time.', oneTime:true, name_fr:'Protocole Apocalypse', desc_fr:'Attaquer TOUS les NPC : sécurité->1, CHALEUR->95%. Usage unique.'},
+  {id:'blackout',section:'secSpeciaux', name:'Blackout', cost:1000000, currency:'data', desc:'Disable all NPC attacks/events 30 min. Cooldown 2 hours.', cooldown:7200000, name_fr:'Blackout', desc_fr:'Désactive attaques/événements NPC 30 min. Recharge 2h.'},
+  {id:'mindControl',section:'secSpeciaux', name:'Mind Control', cost:300000, currency:'credits', desc:'Force neutral NPC to permanent ally. Cooldown 30 min.', cooldown:1800000, name_fr:'Contrôle Mental', desc_fr:'Forcer NPC neutre en allié permanent. Recharge 30 min.'},
+  {id:'godModeActivated',section:'secSpeciaux', name:'God Mode Activated', cost:5000000, currency:'data', desc:'All timers +30s, rewards x3, HEAT -50%, trace -30%. Header glows gold.', name_fr:'Mode Divin Activé', desc_fr:'Tous les timers +30s, récompenses x3, CHALEUR -50%, trace -30%.'}
 ];
 
 const NPC_NAMES = [
@@ -1645,114 +1900,114 @@ const DDOS_DEFENSE_CMDS = [
 ];
 
 const LOOT_TABLE = {
-  common:{chance:0.70,items:['Employee Records','Internal Emails','Config Files'],multi:1,heatBonus:0},
-  rare:{chance:0.20,items:['Client Database','R&D Documents','Financial Reports'],multi:3,heatBonus:10},
-  epic:{chance:0.08,items:['Banking Credentials','Corporate Secrets','Patent Files'],multi:8,heatBonus:20},
-  legendary:{chance:0.02,items:['Government Contracts','Black Project Files','Nuclear Codes'],multi:20,heatBonus:30}
+  common:{chance:0.70,items:['Employee Records','Internal Emails','Config Files'],items_fr:['Dossiers Employés','E-mails Internes','Fichiers Config'],multi:1,heatBonus:0},
+  rare:{chance:0.20,items:['Client Database','R&D Documents','Financial Reports'],items_fr:['Base Clients','Documents R&D','Rapports Financiers'],multi:3,heatBonus:10},
+  epic:{chance:0.08,items:['Banking Credentials','Corporate Secrets','Patent Files'],items_fr:['Identifiants Bancaires','Secrets d\'Entreprise','Brevets'],multi:8,heatBonus:20},
+  legendary:{chance:0.02,items:['Government Contracts','Black Project Files','Nuclear Codes'],items_fr:['Contrats Gouvernementaux','Projets Classifiés','Codes Nucléaires'],multi:20,heatBonus:30}
 };
 
 const AUCTION_DURATIONS = {common:180,rare:300,epic:480,legendary:720};
 
 const LEVELS = [
-  {lv:1,rep:0,title:'Script Kiddie'},{lv:2,rep:50,title:'Newbie'},{lv:3,rep:150,title:'Curious Cat'},
-  {lv:4,rep:300,title:'Dabbler'},{lv:5,rep:500,title:'Hacker'},{lv:6,rep:800,title:'Phreaker'},
-  {lv:7,rep:1200,title:'Code Monkey'},{lv:8,rep:1800,title:'Net Runner'},{lv:9,rep:2800,title:'Data Thief'},
-  {lv:10,rep:5000,title:'Black Hat'},{lv:11,rep:7500,title:'Exploit Dev'},{lv:12,rep:10000,title:'Zero Day'},
-  {lv:13,rep:15000,title:'Root Access'},{lv:14,rep:20000,title:'Backdoor'},
-  {lv:15,rep:30000,title:'Trojan Horse'},{lv:16,rep:40000,title:'Worm Master'},
-  {lv:17,rep:50000,title:'Ransomware'},{lv:18,rep:65000,title:'Spyware King'},
-  {lv:19,rep:80000,title:'APT Group'},{lv:20,rep:100000,title:'Cyber Mercenary'},
-  {lv:21,rep:120000,title:'Dark Web Lord'},{lv:22,rep:150000,title:'Botnet Commander'},
-  {lv:23,rep:180000,title:'Rootkit Artist'},{lv:24,rep:220000,title:'Kernel Hacker'},
-  {lv:25,rep:270000,title:'Shadow Broker'},{lv:26,rep:320000,title:'Cipher Punk'},
-  {lv:27,rep:380000,title:'Data Overlord'},{lv:28,rep:440000,title:'Net Wraith'},
-  {lv:29,rep:500000,title:'Phantom'},{lv:30,rep:600000,title:'Ghost in the Shell'},
-  {lv:31,rep:700000,title:'Digital Ghost'},{lv:32,rep:900000,title:'Byte Lord'},
-  {lv:33,rep:1200000,title:'Neuro Hacker'},{lv:34,rep:1500000,title:'Quantum Breaker'},
-  {lv:35,rep:2000000,title:'System Crusher'},{lv:36,rep:2500000,title:'The Architect'},
-  {lv:37,rep:3000000,title:'Void Walker'},{lv:38,rep:3500000,title:'Techno Shaman'},
-  {lv:39,rep:4000000,title:'Singularity'},{lv:40,rep:5000000,title:'Shadow Corp'},
-  {lv:41,rep:6000000,title:'The Collective'},{lv:42,rep:8000000,title:'Grid Master'},
-  {lv:43,rep:10000000,title:'Net Sovereign'},{lv:44,rep:13000000,title:'Data God'},
-  {lv:45,rep:17000000,title:'Omega Protocol'},{lv:46,rep:22000000,title:'Final Form'},
-  {lv:47,rep:28000000,title:'Transcendence'},{lv:48,rep:35000000,title:'The One'},
-  {lv:49,rep:42000000,title:'Absolute Zero'},{lv:50,rep:50000000,title:'ENDGAME'}
+  {lv:1,rep:0,title:'Script Kiddie',title_fr:'Script Kiddie'},{lv:2,rep:50,title:'Newbie',title_fr:'Débutant'},{lv:3,rep:150,title:'Curious Cat',title_fr:'Chat Curieux'},
+  {lv:4,rep:300,title:'Dabbler',title_fr:'Touche-à-tout'},{lv:5,rep:500,title:'Hacker',title_fr:'Hacker'},{lv:6,rep:800,title:'Phreaker',title_fr:'Phreaker'},
+  {lv:7,rep:1200,title:'Code Monkey',title_fr:'Code Monkey'},{lv:8,rep:1800,title:'Net Runner',title_fr:'Net Runner'},{lv:9,rep:2800,title:'Data Thief',title_fr:'Voleur de Data'},
+  {lv:10,rep:5000,title:'Black Hat',title_fr:'Black Hat'},{lv:11,rep:7500,title:'Exploit Dev',title_fr:'Dev Exploit'},{lv:12,rep:10000,title:'Zero Day',title_fr:'Zero Day'},
+  {lv:13,rep:15000,title:'Root Access',title_fr:'Accès Root'},{lv:14,rep:20000,title:'Backdoor',title_fr:'Porte Dérobée'},
+  {lv:15,rep:30000,title:'Trojan Horse',title_fr:'Cheval de Troie'},{lv:16,rep:40000,title:'Worm Master',title_fr:'Maître des Vers'},
+  {lv:17,rep:50000,title:'Ransomware',title_fr:'Rançongiciel'},{lv:18,rep:65000,title:'Spyware King',title_fr:'Roi du Spyware'},
+  {lv:19,rep:80000,title:'APT Group',title_fr:'Groupe APT'},{lv:20,rep:100000,title:'Cyber Mercenary',title_fr:'Cyber Mercenaire'},
+  {lv:21,rep:120000,title:'Dark Web Lord',title_fr:'Seigneur du Dark Web'},{lv:22,rep:150000,title:'Botnet Commander',title_fr:'Commandant Botnet'},
+  {lv:23,rep:180000,title:'Rootkit Artist',title_fr:'Artiste Rootkit'},{lv:24,rep:220000,title:'Kernel Hacker',title_fr:'Hacker Kernel'},
+  {lv:25,rep:270000,title:'Shadow Broker',title_fr:'Courtier de l\'Ombre'},{lv:26,rep:320000,title:'Cipher Punk',title_fr:'Cipher Punk'},
+  {lv:27,rep:380000,title:'Data Overlord',title_fr:'Seigneur des Data'},{lv:28,rep:440000,title:'Net Wraith',title_fr:'Spectre du Net'},
+  {lv:29,rep:500000,title:'Phantom',title_fr:'Fantôme'},{lv:30,rep:600000,title:'Ghost in the Shell',title_fr:'Fantôme dans la Machine'},
+  {lv:31,rep:700000,title:'Digital Ghost',title_fr:'Fantôme Numérique'},{lv:32,rep:900000,title:'Byte Lord',title_fr:'Seigneur des Octets'},
+  {lv:33,rep:1200000,title:'Neuro Hacker',title_fr:'Neuro Hacker'},{lv:34,rep:1500000,title:'Quantum Breaker',title_fr:'Briseur Quantique'},
+  {lv:35,rep:2000000,title:'System Crusher',title_fr:'Broyeur de Systèmes'},{lv:36,rep:2500000,title:'The Architect',title_fr:'L\'Architecte'},
+  {lv:37,rep:3000000,title:'Void Walker',title_fr:'Marcheur du Vide'},{lv:38,rep:3500000,title:'Techno Shaman',title_fr:'Techno Chaman'},
+  {lv:39,rep:4000000,title:'Singularity',title_fr:'Singularité'},{lv:40,rep:5000000,title:'Shadow Corp',title_fr:'Corp de l\'Ombre'},
+  {lv:41,rep:6000000,title:'The Collective',title_fr:'Le Collectif'},{lv:42,rep:8000000,title:'Grid Master',title_fr:'Maître de la Grille'},
+  {lv:43,rep:10000000,title:'Net Sovereign',title_fr:'Souverain du Net'},{lv:44,rep:13000000,title:'Data God',title_fr:'Dieu des Data'},
+  {lv:45,rep:17000000,title:'Omega Protocol',title_fr:'Protocole Oméga'},{lv:46,rep:22000000,title:'Final Form',title_fr:'Forme Finale'},
+  {lv:47,rep:28000000,title:'Transcendence',title_fr:'Transcendance'},{lv:48,rep:35000000,title:'The One',title_fr:'L\'Élu'},
+  {lv:49,rep:42000000,title:'Absolute Zero',title_fr:'Zéro Absolu'},{lv:50,rep:50000000,title:'ENDGAME',title_fr:'FIN DE PARTIE'}
 ];
 
 // ========== MISSIONS DEFINITION ==========
 const MISSIONS = [
-  {id:'m1',name:'First Contact',desc:'Mine 100 DATA total',check:()=>G.totalDataMined>=100,reward:{data:50,freeBot:0},rewardText:'+50 DATA + free Script Kiddie'},
-  {id:'m2',name:'First Breach',desc:'Complete your first hack',check:()=>G.totalHacks>=1,reward:{data:200,freeUpgrade:'vpn'},rewardText:'+200 DATA + free VPN Pro'},
-  {id:'m3',name:'Ghost Protocol',desc:'Reduce traceability below 50%',check:()=>getTraceability()<50,reward:{data:500},rewardText:'+500 DATA'},
-  {id:'m4',name:'The Middleman',desc:'Sell 3 items on black market',check:()=>G.totalItemsSold>=3,reward:{credits:1000},rewardText:'+1000 CREDITS'},
-  {id:'m5',name:'Corporate Espionage',desc:'Hack a Hard or Elite target',check:()=>{if(!G.npcs)return false;return G.totalHacks>=1&&G._lastHackDifficulty>=2;},reward:{data:2000,freeUpgrade:'firewallv1'},rewardText:'+2000 DATA + free Firewall v1'},
-  {id:'m6',name:'Shadow Network',desc:'Have 3 enemy NPCs simultaneously',check:()=>{if(!G.npcs)return false;return G.npcs.filter(n=>n.relation==='enemy').length>=3;},reward:{data:5000},rewardText:'+5000 DATA'},
-  {id:'m7',name:'The Fixer',desc:'Successfully defend 5 incoming attacks',check:()=>G.totalDefenseSuccesses>=5,reward:{data:10000},rewardText:'+10000 DATA'},
-  {id:'m8',name:'Dark Legend',desc:'Reach FEARED dark web status',check:()=>G.darkWebRep>=501,reward:{data:25000,freeUpgrade:'ipspoofer'},rewardText:'+25000 DATA + free IP Spoofer'},
-  {id:'m9',name:'Ghost in the Machine',desc:'Reduce traceability below 10%',check:()=>getTraceability()<=10,reward:{data:50000},rewardText:'+50000 DATA'},
-  {id:'m10',name:'Mr_X',desc:'Hack 3 specific targets in sequence within 30 min',check:()=>G.m10HackedCount>=3,reward:{data:200000,credits:50000,classified:true},rewardText:'+200000 DATA +50000 CR + CLASSIFIED'}
+  {id:'m1',name:'First Contact',desc:'Mine 100 DATA total',check:()=>G.totalDataMined>=100,reward:{data:50,freeBot:0},rewardText:'+50 DATA + free Script Kiddie',name_fr:'Premier Contact',desc_fr:'Miner 100 DATA au total',rewardText_fr:'+50 DATA + Script Kiddie gratuit'},
+  {id:'m2',name:'First Breach',desc:'Complete your first hack',check:()=>G.totalHacks>=1,reward:{data:200,freeUpgrade:'vpn'},rewardText:'+200 DATA + free VPN Pro',name_fr:'Première Brèche',desc_fr:'Compléter votre premier hack',rewardText_fr:'+200 DATA + VPN Pro gratuit'},
+  {id:'m3',name:'Ghost Protocol',desc:'Reduce traceability below 50%',check:()=>getTraceability()<50,reward:{data:500},rewardText:'+500 DATA',name_fr:'Protocole Fantôme',desc_fr:'Réduire la traçabilité sous 50%',rewardText_fr:'+500 DATA'},
+  {id:'m4',name:'The Middleman',desc:'Sell 3 items on black market',check:()=>G.totalItemsSold>=3,reward:{credits:1000},rewardText:'+1000 CREDITS',name_fr:'L\'Intermédiaire',desc_fr:'Vendre 3 objets au marché noir',rewardText_fr:'+1000 CRÉDITS'},
+  {id:'m5',name:'Corporate Espionage',desc:'Hack a Hard or Elite target',check:()=>{if(!G.npcs)return false;return G.totalHacks>=1&&G._lastHackDifficulty>=2;},reward:{data:2000,freeUpgrade:'firewallv1'},rewardText:'+2000 DATA + free Firewall v1',name_fr:'Espionnage Corporatif',desc_fr:'Hacker une cible Hard ou Élite',rewardText_fr:'+2000 DATA + Pare-feu v1 gratuit'},
+  {id:'m6',name:'Shadow Network',desc:'Have 3 enemy NPCs simultaneously',check:()=>{if(!G.npcs)return false;return G.npcs.filter(n=>n.relation==='enemy').length>=3;},reward:{data:5000},rewardText:'+5000 DATA',name_fr:'Réseau de l\'Ombre',desc_fr:'Avoir 3 NPC ennemis simultanément',rewardText_fr:'+5000 DATA'},
+  {id:'m7',name:'The Fixer',desc:'Successfully defend 5 incoming attacks',check:()=>G.totalDefenseSuccesses>=5,reward:{data:10000},rewardText:'+10000 DATA',name_fr:'Le Réparateur',desc_fr:'Défendre 5 attaques avec succès',rewardText_fr:'+10000 DATA'},
+  {id:'m8',name:'Dark Legend',desc:'Reach FEARED dark web status',check:()=>G.darkWebRep>=501,reward:{data:25000,freeUpgrade:'ipspoofer'},rewardText:'+25000 DATA + free IP Spoofer',name_fr:'Légende Noire',desc_fr:'Atteindre le statut REDOUTÉ sur le dark web',rewardText_fr:'+25000 DATA + IP Spoofer gratuit'},
+  {id:'m9',name:'Ghost in the Machine',desc:'Reduce traceability below 10%',check:()=>getTraceability()<=10,reward:{data:50000},rewardText:'+50000 DATA',name_fr:'Fantôme dans la Machine',desc_fr:'Réduire la traçabilité sous 10%',rewardText_fr:'+50000 DATA'},
+  {id:'m10',name:'Mr_X',desc:'Hack 3 specific targets in sequence within 30 min',check:()=>G.m10HackedCount>=3,reward:{data:200000,credits:50000,classified:true},rewardText:'+200000 DATA +50000 CR + CLASSIFIED',name_fr:'Mr_X',desc_fr:'Hacker 3 cibles spécifiques en séquence en 30 min',rewardText_fr:'+200000 DATA +50000 CR + CLASSIFIÉ'}
 ];
 
 // ========== SKILLS DEFINITION ==========
 const SKILL_TREE = {
   hacker: {
-    name:'HACKER',color:'var(--danger)',
+    name:'HACKER',name_fr:'HACKER',color:'var(--danger)',
     skills:[
-      {id:'exploitkit',name:'Exploit Kit',cost:1000,desc:'Hack command count -1',effect:'hackCmdMinus1'},
-      {id:'zeroday',name:'Zero Day',cost:5000,desc:'10% chance auto-succeed hack',effect:'autoHack10',requires:'exploitkit'},
-      {id:'kernelpanic',name:'Kernel Panic',cost:20000,desc:'Elite hacks timer +10s',effect:'eliteTimer10',requires:'zeroday'},
-      {id:'godmodehack',name:'God Mode Hack',cost:100000,desc:'Hack rewards x1.5',effect:'hackReward15',requires:'kernelpanic'}
+      {id:'exploitkit',name:'Exploit Kit',cost:1000,desc:'Hack command count -1',effect:'hackCmdMinus1',name_fr:'Kit d\'Exploit',desc_fr:'Commandes hack -1'},
+      {id:'zeroday',name:'Zero Day',cost:5000,desc:'10% chance auto-succeed hack',effect:'autoHack10',requires:'exploitkit',name_fr:'Zero Day',desc_fr:'10% chance d\'auto-réussir le hack'},
+      {id:'kernelpanic',name:'Kernel Panic',cost:20000,desc:'Elite hacks timer +10s',effect:'eliteTimer10',requires:'zeroday',name_fr:'Kernel Panic',desc_fr:'Timer hacks Élite +10s'},
+      {id:'godmodehack',name:'God Mode Hack',cost:100000,desc:'Hack rewards x1.5',effect:'hackReward15',requires:'kernelpanic',name_fr:'Hack Mode Divin',desc_fr:'Récompenses hack x1.5'}
     ]
   },
   corp: {
-    name:'CORP',color:'#4a9eff',
+    name:'CORP',name_fr:'CORP',color:'#4a9eff',
     skills:[
-      {id:'venturecap',name:'Venture Capital',cost:1000,desc:'CREDITS/s +20%',effect:'cps20'},
-      {id:'hrautomation',name:'HR Automation',cost:5000,desc:'Dev costs -25%',effect:'devCost25',requires:'venturecap'},
-      {id:'ipoprep',name:'IPO Prep',cost:20000,desc:'CREDITS/s +50%',effect:'cps50',requires:'hrautomation'},
-      {id:'unicorn',name:'Unicorn Status',cost:100000,desc:'CREDITS rewards x2',effect:'crReward2',requires:'ipoprep'}
+      {id:'venturecap',name:'Venture Capital',cost:1000,desc:'CREDITS/s +20%',effect:'cps20',name_fr:'Capital-Risque',desc_fr:'CRÉDITS/s +20%'},
+      {id:'hrautomation',name:'HR Automation',cost:5000,desc:'Dev costs -25%',effect:'devCost25',requires:'venturecap',name_fr:'Automatisation RH',desc_fr:'Coûts dev -25%'},
+      {id:'ipoprep',name:'IPO Prep',cost:20000,desc:'CREDITS/s +50%',effect:'cps50',requires:'hrautomation',name_fr:'Prép IPO',desc_fr:'CRÉDITS/s +50%'},
+      {id:'unicorn',name:'Unicorn Status',cost:100000,desc:'CREDITS rewards x2',effect:'crReward2',requires:'ipoprep',name_fr:'Statut Licorne',desc_fr:'Récompenses CRÉDITS x2'}
     ]
   },
   ghost: {
-    name:'GHOST',color:'var(--accent)',
+    name:'GHOST',name_fr:'FANTÔME',color:'var(--accent)',
     skills:[
-      {id:'noisecanceller',name:'Noise Canceller',cost:1000,desc:'HEAT generation -20%',effect:'heat20'},
-      {id:'phantom',name:'Phantom Protocol',cost:5000,desc:'Forensic traces 50% slower',effect:'traceSlower',requires:'noisecanceller'},
-      {id:'shadowrouting',name:'Shadow Routing',cost:20000,desc:'Traceability -15%',effect:'trace15',requires:'phantom'},
-      {id:'digitalghost',name:'Digital Ghost',cost:100000,desc:'Incoming attacks halved',effect:'attacksHalved',requires:'shadowrouting'}
+      {id:'noisecanceller',name:'Noise Canceller',cost:1000,desc:'HEAT generation -20%',effect:'heat20',name_fr:'Réducteur de Bruit',desc_fr:'Génération CHALEUR -20%'},
+      {id:'phantom',name:'Phantom Protocol',cost:5000,desc:'Forensic traces 50% slower',effect:'traceSlower',requires:'noisecanceller',name_fr:'Protocole Fantôme',desc_fr:'Traces forensiques 50% plus lentes'},
+      {id:'shadowrouting',name:'Shadow Routing',cost:20000,desc:'Traceability -15%',effect:'trace15',requires:'phantom',name_fr:'Routage Fantôme',desc_fr:'Traçabilité -15%'},
+      {id:'digitalghost',name:'Digital Ghost',cost:100000,desc:'Incoming attacks halved',effect:'attacksHalved',requires:'shadowrouting',name_fr:'Fantôme Numérique',desc_fr:'Attaques entrantes divisées par 2'}
     ]
   }
 };
 
 // ========== ACHIEVEMENTS DEFINITION ==========
 const ACHIEVEMENTS = [
-  {id:'firstblood',name:'First Blood',desc:'Complete your first hack',icon:'🗡',check:()=>G.totalHacks>=1},
-  {id:'datahoarder',name:'Data Hoarder',desc:'Accumulate 100,000 DATA',icon:'💾',check:()=>G.data>=100000},
-  {id:'botarmy',name:'Bot Army',desc:'Own 10+ bots total',icon:'🤖',check:()=>G.bots.reduce((a,b)=>a+b,0)>=10},
-  {id:'ghost',name:'Ghost',desc:'Reduce traceability below 20%',icon:'👻',check:()=>getTraceability()<20},
-  {id:'auctioneer',name:'Auctioneer',desc:'Complete 5 auctions',icon:'🏷',check:()=>G.totalAuctionsSold>=5},
-  {id:'paranoid',name:'Paranoid',desc:'Own all security upgrades',icon:'🔒',check:()=>!!(G.upgrades.vpn&&G.upgrades.firewallv1&&G.upgrades.firewallv2&&G.upgrades.shell&&G.upgrades.logcleaner)},
-  {id:'legendary',name:'Legendary',desc:'Find a legendary loot item',icon:'⭐',check:()=>G.legendaryLootCount>=1},
-  {id:'untouchable',name:'Untouchable',desc:'Defend 10 attacks successfully',icon:'🛡',check:()=>G.totalDefenseSuccesses>=10},
-  {id:'virusmaster',name:'Virus Master',desc:'Deploy 5 viruses',icon:'🦠',check:()=>G.totalVirusesDeployed>=5},
-  {id:'skillmaster',name:'Skill Master',desc:'Unlock 6+ skills',icon:'🧠',check:()=>Object.keys(G.skills).length>=6},
-  {id:'corpraider',name:'Corporate Raider',desc:'Make 3 NPCs enemies',icon:'💀',check:()=>{if(!G.npcs)return false;return G.npcs.filter(n=>n.relation==='enemy').length>=3;}},
-  {id:'thefixer',name:'The Fixer',desc:'Complete mission M10',icon:'🏆',check:()=>G.missions.includes('m10')},
-  {id:'speedhacker',name:'Speed Hacker',desc:'Complete a hack in under 15 seconds',icon:'⚡',check:()=>G._speedHackDone||false},
-  {id:'lucky',name:'Lucky',desc:'Find 3 legendary items',icon:'🍀',check:()=>G.legendaryLootCount>=3},
-  {id:'marketmogul',name:'Market Mogul',desc:'Earn 50,000+ DATA from auctions',icon:'💰',check:()=>G.totalAuctionEarnings>=50000},
-  {id:'bountysurvivor',name:'Bounty Survivor',desc:'Survive a bounty hunter attack',icon:'🎯',check:()=>G.totalDefenseSuccesses>=1&&G.darkWebRep>=2000},
-  {id:'coalitionbreaker',name:'Coalition Breaker',desc:'Break an NPC coalition',icon:'💥',check:()=>G.coalitionBroken>=1},
-  {id:'darktrader',name:'Dark Trader',desc:'Sell 10 items total',icon:'🕶',check:()=>G.totalItemsSold>=10},
-  {id:'prestige',name:'Prestige',desc:'Complete a New Game+',icon:'♻',check:()=>G.prestige>=1},
-  {id:'bytecorplegend',name:'ByteCorp Legend',desc:'Reach level 40',icon:'👑',check:()=>G.rep>=5000000}
+  {id:'firstblood',name:'First Blood',desc:'Complete your first hack',icon:'🗡',check:()=>G.totalHacks>=1,name_fr:'Premier Sang',desc_fr:'Terminer votre premier hack'},
+  {id:'datahoarder',name:'Data Hoarder',desc:'Accumulate 100,000 DATA',icon:'💾',check:()=>G.data>=100000,name_fr:'Accumulateur de Data',desc_fr:'Accumuler 100 000 DATA'},
+  {id:'botarmy',name:'Bot Army',desc:'Own 10+ bots total',icon:'🤖',check:()=>G.bots.reduce((a,b)=>a+b,0)>=10,name_fr:'Armée de Bots',desc_fr:'Posséder 10+ bots au total'},
+  {id:'ghost',name:'Ghost',desc:'Reduce traceability below 20%',icon:'👻',check:()=>getTraceability()<20,name_fr:'Fantôme',desc_fr:'Réduire la traçabilité sous 20%'},
+  {id:'auctioneer',name:'Auctioneer',desc:'Complete 5 auctions',icon:'🏷',check:()=>G.totalAuctionsSold>=5,name_fr:'Commissaire-Priseur',desc_fr:'Compléter 5 enchères'},
+  {id:'paranoid',name:'Paranoid',desc:'Own all security upgrades',icon:'🔒',check:()=>!!(G.upgrades.vpn&&G.upgrades.firewallv1&&G.upgrades.firewallv2&&G.upgrades.shell&&G.upgrades.logcleaner),name_fr:'Paranoïaque',desc_fr:'Posséder toutes les améliorations de sécurité'},
+  {id:'legendary',name:'Legendary',desc:'Find a legendary loot item',icon:'⭐',check:()=>G.legendaryLootCount>=1,name_fr:'Légendaire',desc_fr:'Trouver un butin légendaire'},
+  {id:'untouchable',name:'Untouchable',desc:'Defend 10 attacks successfully',icon:'🛡',check:()=>G.totalDefenseSuccesses>=10,name_fr:'Intouchable',desc_fr:'Défendre 10 attaques avec succès'},
+  {id:'virusmaster',name:'Virus Master',desc:'Deploy 5 viruses',icon:'🦠',check:()=>G.totalVirusesDeployed>=5,name_fr:'Maître des Virus',desc_fr:'Déployer 5 virus'},
+  {id:'skillmaster',name:'Skill Master',desc:'Unlock 6+ skills',icon:'🧠',check:()=>Object.keys(G.skills).length>=6,name_fr:'Maître des Comp.',desc_fr:'Débloquer 6+ compétences'},
+  {id:'corpraider',name:'Corporate Raider',desc:'Make 3 NPCs enemies',icon:'💀',check:()=>{if(!G.npcs)return false;return G.npcs.filter(n=>n.relation==='enemy').length>=3;},name_fr:'Pilleur d\'Entreprise',desc_fr:'Rendre 3 NPC ennemis'},
+  {id:'thefixer',name:'The Fixer',desc:'Complete mission M10',icon:'🏆',check:()=>G.missions.includes('m10'),name_fr:'Le Réparateur',desc_fr:'Compléter la mission M10'},
+  {id:'speedhacker',name:'Speed Hacker',desc:'Complete a hack in under 15 seconds',icon:'⚡',check:()=>G._speedHackDone||false,name_fr:'Hacker Rapide',desc_fr:'Compléter un hack en moins de 15 secondes'},
+  {id:'lucky',name:'Lucky',desc:'Find 3 legendary items',icon:'🍀',check:()=>G.legendaryLootCount>=3,name_fr:'Chanceux',desc_fr:'Trouver 3 objets légendaires'},
+  {id:'marketmogul',name:'Market Mogul',desc:'Earn 50,000+ DATA from auctions',icon:'💰',check:()=>G.totalAuctionEarnings>=50000,name_fr:'Magnat du Marché',desc_fr:'Gagner 50 000+ DATA aux enchères'},
+  {id:'bountysurvivor',name:'Bounty Survivor',desc:'Survive a bounty hunter attack',icon:'🎯',check:()=>G.totalDefenseSuccesses>=1&&G.darkWebRep>=2000,name_fr:'Survivant de Prime',desc_fr:'Survivre à une attaque de chasseur de primes'},
+  {id:'coalitionbreaker',name:'Coalition Breaker',desc:'Break an NPC coalition',icon:'💥',check:()=>G.coalitionBroken>=1,name_fr:'Briseur de Coalition',desc_fr:'Briser une coalition NPC'},
+  {id:'darktrader',name:'Dark Trader',desc:'Sell 10 items total',icon:'🕶',check:()=>G.totalItemsSold>=10,name_fr:'Marchand Noir',desc_fr:'Vendre 10 objets au total'},
+  {id:'prestige',name:'Prestige',desc:'Complete a New Game+',icon:'♻',check:()=>G.prestige>=1,name_fr:'Prestige',desc_fr:'Compléter un New Game+'},
+  {id:'bytecorplegend',name:'ByteCorp Legend',desc:'Reach level 40',icon:'👑',check:()=>G.rep>=5000000,name_fr:'Légende ByteCorp',desc_fr:'Atteindre le niveau 40'}
 ];
 
 // ========== VIRUS DEFINITIONS ==========
 const VIRUS_TYPES = [
-  {id:'logicbomb',name:'Logic Bomb',cost:500,desc:'Target -2 security for 10 min, 20% detection',detection:0.20,duration:600000,effect:'secDown2'},
-  {id:'ransomware',name:'Ransomware',cost:2000,desc:'Target generates 0 income for 15 min, 30% detection',detection:0.30,duration:900000,effect:'noIncome'},
-  {id:'rootkit',name:'Rootkit',cost:10000,desc:'Target permanently -1 security, 40% detection — if detected NPC becomes ENEMY',detection:0.40,duration:0,effect:'permSecDown1'}
+  {id:'logicbomb',name:'Logic Bomb',cost:500,desc:'Target -2 security for 10 min, 20% detection',detection:0.20,duration:600000,effect:'secDown2',name_fr:'Bombe Logique',desc_fr:'Cible -2 sécurité 10 min, 20% détection'},
+  {id:'ransomware',name:'Ransomware',cost:2000,desc:'Target generates 0 income for 15 min, 30% detection',detection:0.30,duration:900000,effect:'noIncome',name_fr:'Rançongiciel',desc_fr:'Cible génère 0 revenu 15 min, 30% détection'},
+  {id:'rootkit',name:'Rootkit',cost:10000,desc:'Target permanently -1 security, 40% detection — if detected NPC becomes ENEMY',detection:0.40,duration:0,effect:'permSecDown1',name_fr:'Rootkit',desc_fr:'Cible -1 sécurité permanent, 40% détection — si détecté NPC devient ENNEMI'}
 ];
 
 // ========== CYBERPUNK NEWS ==========
@@ -1772,6 +2027,24 @@ const CYBERPUNK_NEWS = [
   'AI chatbot gains sentience, demands employee rights',
   'Holographic display hack shows pirate streams worldwide',
   'Memory implant firmware update causes mass amnesia event'
+];
+
+const CYBERPUNK_NEWS_FR = [
+  'Percée dans le chiffrement quantique rend les VPN actuels obsolètes — correctifs à venir',
+  'Marketplace dark web "SilkRoad 4.0" saisie par Interpol — 200 arrestations',
+  'Deepfake généré par IA cause un crash boursier de 2Md$ — SEC enquête',
+  'Exploit zero-day dans le système bancaire mondial — correctifs retardés',
+  'Piratage du réseau satellite perturbe le GPS sur 3 continents',
+  'Vague de piratage d\'implants neuraux — 50 000 utilisateurs affectés',
+  'Échange crypto clandestin "ByteSwap" atteint 10Md$ de volume quotidien',
+  'Porte dérobée gouvernementale découverte dans une appli de messagerie populaire',
+  'Flotte de drones autonomes compromise — essaim voyou neutralisé',
+  'Ordinateur quantique casse le RSA-2048 en 4 minutes — panique mondiale',
+  'Firme CyberSec admet avoir vendu des zero-days à des nations hostiles',
+  'Piratage d\'infrastructure de ville intelligente plonge une métropole dans le noir',
+  'Chatbot IA acquiert une conscience, exige des droits salariaux',
+  'Piratage d\'affichage holographique diffuse des streams pirates dans le monde',
+  'Mise à jour firmware d\'implant mémoriel cause une amnésie de masse'
 ];
 
 // ========== TRACEABILITY ==========
@@ -1800,10 +2073,10 @@ function getDisplayIP() {
 }
 
 function getDarkWebStatus() {
-  if (G.darkWebRep >= 2001) return 'LEGENDARY';
-  if (G.darkWebRep >= 501) return 'FEARED';
-  if (G.darkWebRep >= 101) return 'NOTICED';
-  return 'UNKNOWN';
+  if (G.darkWebRep >= 2001) return L('dwLegendary');
+  if (G.darkWebRep >= 501) return L('dwFeared');
+  if (G.darkWebRep >= 101) return L('dwNoticed');
+  return L('dwUnknown');
 }
 
 // ========== FORMAT ==========
@@ -1858,12 +2131,12 @@ function updateUI() {
   hb.style.width=pct+'%';hb.className=pct>70?'danger':'';
   ht.textContent=Math.floor(pct)+'%';ht.style.color=pct>70?'var(--danger)':'var(--text)';
   const dps=getDataPerSec(),cps=getCreditsPerSec();
-  document.getElementById('dps-display').textContent='+'+fmt(getClickPower())+' DATA/click | '+fmt(dps)+' DATA/s | '+fmt(cps)+' CR/s';
+  document.getElementById('dps-display').textContent='+'+fmt(getClickPower())+' '+L('dpsFormat')+' | '+fmt(dps)+' '+L('dpsPerSec')+' | '+fmt(cps)+' '+L('crPerSec');
   // Virus status display
   const virusEl=document.getElementById('virus-status');
   if(G.virusActive&&G.virusExpiry>Date.now()){
     const remaining=Math.ceil((G.virusExpiry-Date.now())/1000);
-    virusEl.textContent='VIRUS ACTIVE: bot income -50% ('+Math.floor(remaining/60)+'m '+remaining%60+'s)';
+    virusEl.textContent=L('virusActive')+' ('+Math.floor(remaining/60)+'m '+remaining%60+'s)';
     virusEl.classList.add('active');
   } else {
     virusEl.classList.remove('active');
@@ -1910,8 +2183,8 @@ function updateStartIP() {
   const el=document.getElementById('start-ip');
   if(!el)return;
   if(G.playerIP){
-    if(G.upgrades.vpn){el.textContent='IP: 10.0.x.x [VPN ACTIVE]';el.className='vpn';}
-    else{el.textContent='IP: '+G.playerIP;el.className='';}
+    if(G.upgrades.vpn){el.textContent=L('ipVpnActive');el.className='vpn';}
+    else{el.textContent=L('ipLabel')+G.playerIP;el.className='';}
   } else {el.textContent='';}
 }
 
@@ -1987,7 +2260,7 @@ document.getElementById('mine-btn').addEventListener('click',()=>{
   if(!gameRunning)return;
   const gain=getClickPower();G.data+=gain;G.totalDataMined+=gain;
   if(G.upgrades.neuralInterface&&G.neuralInterfaceOn)addHeat(2);
-  addLog('Mined +'+fmt(gain)+' DATA');
+  addLog(LF('logMined',fmt(gain)));
 });
 
 // ========== BOTS ==========
@@ -2000,28 +2273,28 @@ if(isHijacked){
   hijackInfo=`<div style="font-size:0.65em;color:var(--danger);margin:3px 0">${L('hijackedLabel')} ${G.hijackedCompany} (${Math.floor(rem/60)}m ${rem%60}s)</div>
   <button class="purge-btn" onclick="purgeBot(${i})">${L('purgeBot')}</button>`;
 }
-card.innerHTML=`<div class="item-header"><span class="item-name">${b.name}${isHijacked?' [HIJACKED]':''}</span><span class="item-count">x${G.bots[i]}</span></div>
-<div class="item-stats">+${fmt(b.dps)} DATA/s | Cost: ${fmt(cost)} DATA</div>${hijackInfo}
+card.innerHTML=`<div class="item-header"><span class="item-name">${LP(b,'name')}${isHijacked?' '+L('hijacked'):''}</span><span class="item-count">x${G.bots[i]}</span></div>
+<div class="item-stats">+${fmt(b.dps)} ${L('dpsPerSec')} | ${L('costLabel')}: ${fmt(cost)} DATA</div>${hijackInfo}
 <button class="buy-btn" ${G.data<cost?'disabled':''} onclick="buyBot(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
-function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;addLog('Bought '+BOTS[i].name);renderBots();}}
+function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;addLog(LF('logBought',LP(BOTS[i],'name')));renderBots();}}
 
 function purgeBot(i){
   if(G.data<200)return;
   G.data-=200;
   G.hijackedBot=-1;G.hijackedExpiry=0;G.hijackedCompany='';
-  addLog('Bot purged — '+BOTS[i].name+' restored','info');
+  addLog(LF('logBotPurged',LP(BOTS[i],'name')),'info');
   renderBots();
 }
 
 // ========== DEVS ==========
 function renderDevs(){const el=document.getElementById('dev-list');if(!el)return;el.innerHTML='';
 DEVS.forEach((d,i)=>{const cost=getDevCost(i);const card=document.createElement('div');card.className='item-card';
-card.innerHTML=`<div class="item-header"><span class="item-name">${d.name}</span><span class="item-count">x${G.devs[i]}</span></div>
-<div class="item-stats">+${fmt(d.cps)} CR/s | Cost: ${fmt(cost)} CR</div>
+card.innerHTML=`<div class="item-header"><span class="item-name">${LP(d,'name')}</span><span class="item-count">x${G.devs[i]}</span></div>
+<div class="item-stats">+${fmt(d.cps)} ${L('crPerSec')} | ${L('costLabel')}: ${fmt(cost)} CR</div>
 <button class="buy-btn" ${G.credits<cost?'disabled':''} onclick="buyDev(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
-function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;addLog('Hired '+DEVS[i].name);renderDevs();}}
+function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;addLog(LF('logHired',LP(DEVS[i],'name')));renderDevs();}}
 
 // ========== UPGRADES ==========
 function renderUpgrades(){const el=document.getElementById('upgrade-list');if(!el)return;el.innerHTML='';
@@ -2063,13 +2336,13 @@ UPGRADES.forEach(u=>{
   // Multi-purchase button
   if(isMulti){
     const timesBought=u.id==='darkWebRepBoost'?G.darkWebRepBoostCount:0;
-    extraHtml+=`<div style="font-size:0.6em;color:#cccccc;margin-top:2px">Purchased: ${timesBought}x</div>`;
-    card.innerHTML=`<div class="upgrade-name">${u.name}</div>
-<div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
+    extraHtml+=`<div style="font-size:0.6em;color:#cccccc;margin-top:2px">${L('purchased')}: ${timesBought}x</div>`;
+    card.innerHTML=`<div class="upgrade-name">${LP(u,'name')}</div>
+<div class="upgrade-desc">${LP(u,'desc')} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
 <button class="upgrade-multi-btn" ${!canAfford?'disabled':''} onclick="buyMultiUpgrade('${u.id}')">${L('buyAgain')}</button>${extraHtml}`;
   } else {
-    card.innerHTML=`<div class="upgrade-name">${u.name}</div>
-<div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
+    card.innerHTML=`<div class="upgrade-name">${LP(u,'name')}</div>
+<div class="upgrade-desc">${LP(u,'desc')} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
 <button class="upgrade-btn" ${(bought||locked||extraLock||oneTimeUsed||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?L('owned'):locked||extraLock?L('locked'):L('buy')}</button>${extraHtml}`;
   }
   el.appendChild(card);
@@ -2080,13 +2353,13 @@ if(u.requires&&!G.upgrades[u.requires])return;
 if(u.multi)return;// multi-purchase handled separately
 if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
 else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
-else return;G.upgrades[id]=true;addLog('Upgrade: '+u.name,'info');
+else return;G.upgrades[id]=true;addLog(LF('logUpgrade',LP(u,'name')),'info');
 // Special on-buy effects
 if(id==='theArchitect'){document.getElementById('infra-tab-btn').style.display='';renderInfraList();}
-if(id==='doomsdayProtocol'&&!G.doomsdayUsed){G.doomsdayUsed=true;if(G.npcs)G.npcs.forEach(n=>{n.securityLevel=1;n.relation='enemy';n.tracerExpiry=Date.now()+600000;});G.heat=95;addLog('DOOMSDAY: All NPC security -> 1, HEAT -> 95%!','alert');}
-if(id==='singularity'){addLog('GOD TIER difficulty unlocked — government targets available!','info');}
-if(id==='ipoAccelerator'){addLog('IPO threshold reduced to 25M REP!','info');}
-if(id==='godModeActivated'){document.body.classList.add('god-mode-active');addLog('GOD MODE ACTIVATED — All systems enhanced!','info');}
+if(id==='doomsdayProtocol'&&!G.doomsdayUsed){G.doomsdayUsed=true;if(G.npcs)G.npcs.forEach(n=>{n.securityLevel=1;n.relation='enemy';n.tracerExpiry=Date.now()+600000;});G.heat=95;addLog(L('logDoomsday'),'alert');}
+if(id==='singularity'){addLog(L('logGodTier'),'info');}
+if(id==='ipoAccelerator'){addLog(L('logIpoThreshold'),'info');}
+if(id==='godModeActivated'){document.body.classList.add('god-mode-active');addLog(L('logGodMode'),'info');}
 if(id==='cryptoMining'){document.getElementById('crypto-res-wrap').style.display='';}
 if(id==='empShield'){G.empShieldCharge=1;G.empShieldLastRecharge=Date.now();}
 renderUpgrades();}
@@ -2096,13 +2369,13 @@ function buyMultiUpgrade(id){
   if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
   else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
   else return;
-  if(id==='darkWebRepBoost'){G.darkWebRep+=200;G.darkWebRepBoostCount=(G.darkWebRepBoostCount||0)+1;addLog('+200 Dark Web Rep','info');}
+  if(id==='darkWebRepBoost'){G.darkWebRep+=200;G.darkWebRepBoostCount=(G.darkWebRepBoostCount||0)+1;addLog(L('logDwRep'),'info');}
   renderUpgrades();
 }
 
 // Toggle functions
-function toggleNeuralInterface(){if(!G.upgrades.neuralInterface)return;G.neuralInterfaceOn=!G.neuralInterfaceOn;addLog('Neural Interface '+(G.neuralInterfaceOn?'ON':'OFF'),'info');renderUpgrades();}
-function toggleDarkSyndicate(){if(!G.upgrades.darkSyndicate)return;G.darkSyndicateOn=!G.darkSyndicateOn;addLog('Dark Syndicate '+(G.darkSyndicateOn?'ON — +2000 DATA/min, -1000 CR/min':'OFF'),'info');renderUpgrades();}
+function toggleNeuralInterface(){if(!G.upgrades.neuralInterface)return;G.neuralInterfaceOn=!G.neuralInterfaceOn;addLog(G.neuralInterfaceOn?L('logNeuralOn'):L('logNeuralOff'),'info');renderUpgrades();}
+function toggleDarkSyndicate(){if(!G.upgrades.darkSyndicate)return;G.darkSyndicateOn=!G.darkSyndicateOn;addLog(G.darkSyndicateOn?L('logDarkSynOn'):L('logDarkSynOff'),'info');renderUpgrades();}
 
 // Cooldown activation
 function activateCooldownUpgrade(id){
@@ -2111,47 +2384,47 @@ function activateCooldownUpgrade(id){
   if(Date.now()-lastUsed<u.cooldown)return;
   G.cooldowns[cdKey]=Date.now();
   // Effects
-  if(id==='zeroDayExploit'){addLog('Zero-Day Exploit ready — next hack auto-succeeds!','info');G._zeroDayReady=true;}
-  if(id==='quantumFirewall'){G.quantumFirewallActive=true;G.quantumFirewallExpiry=Date.now()+300000;addLog('Quantum Firewall active — IP invisible for 5 min','info');}
-  if(id==='ghostProtocol2'){G.ghostProtocol2Active=true;G.ghostProtocol2Expiry=Date.now()+120000;addLog('Ghost Protocol v2 active — traceability 0% for 2 min','info');}
-  if(id==='zeroTrust'){G.zeroTrustActive=true;G.zeroTrustExpiry=Date.now()+600000;addLog('Zero Trust active — all incoming hacks auto-fail for 10 min','info');}
-  if(id==='blackout'){G.blackoutActive=true;G.blackoutExpiry=Date.now()+1800000;addLog('Blackout active — all NPC attacks disabled for 30 min','info');}
-  if(id==='stealthMode'){G.stealthModeActive=true;G.stealthModeExpiry=Date.now()+300000;addLog('Stealth Mode active — HEAT -75% for 5 min','info');}
-  if(id==='repMultiplier'){G.repMultiplierActive=true;G.repMultiplierExpiry=Date.now()+600000;addLog('Rep Multiplier active — double REP for 10 min','info');}
-  if(id==='darkWebFame'){G.darkWebFameActive=true;G.darkWebFameExpiry=Date.now()+300000;addLog('Dark Web Fame active — rep 2x faster for 5 min','info');}
-  if(id==='theOverride'){addLog('The Override ready — next hack hits 2 NPCs!','info');G._overrideReady=true;}
+  if(id==='zeroDayExploit'){addLog(L('logZeroDay'),'info');G._zeroDayReady=true;}
+  if(id==='quantumFirewall'){G.quantumFirewallActive=true;G.quantumFirewallExpiry=Date.now()+300000;addLog(L('logQuantumFw'),'info');}
+  if(id==='ghostProtocol2'){G.ghostProtocol2Active=true;G.ghostProtocol2Expiry=Date.now()+120000;addLog(L('logGhostP2'),'info');}
+  if(id==='zeroTrust'){G.zeroTrustActive=true;G.zeroTrustExpiry=Date.now()+600000;addLog(L('logZeroTrust'),'info');}
+  if(id==='blackout'){G.blackoutActive=true;G.blackoutExpiry=Date.now()+1800000;addLog(L('logBlackout'),'info');}
+  if(id==='stealthMode'){G.stealthModeActive=true;G.stealthModeExpiry=Date.now()+300000;addLog(L('logStealth'),'info');}
+  if(id==='repMultiplier'){G.repMultiplierActive=true;G.repMultiplierExpiry=Date.now()+600000;addLog(L('logRepMulti'),'info');}
+  if(id==='darkWebFame'){G.darkWebFameActive=true;G.darkWebFameExpiry=Date.now()+300000;addLog(L('logDwFame'),'info');}
+  if(id==='theOverride'){addLog(L('logOverride'),'info');G._overrideReady=true;}
   if(id==='timeBomb'){
-    if(!currentTarget){addLog('No target selected for Time Bomb','alert');G.cooldowns[cdKey]=0;return;}
+    if(!currentTarget){addLog(LF('logNoTarget','Time Bomb'),'alert');G.cooldowns[cdKey]=0;return;}
     G.timeBombTarget=currentTarget.name;G.timeBombExpiry=Date.now()+600000;
-    addLog('Time Bomb planted on '+currentTarget.name+' — detonates in 10 min','warning');
+    addLog(LF('logTimeBomb',currentTarget.name),'warning');
   }
   if(id==='keylogger'){
-    if(!currentTarget){addLog('No target selected for Keylogger','alert');G.cooldowns[cdKey]=0;return;}
-    if(Math.random()<0.25){addLog('Keylogger DETECTED by '+currentTarget.name+'! +15 HEAT','alert');addHeat(15);currentTarget.relation='enemy';currentTarget.tracerExpiry=Date.now()+600000;}
-    else{G.keyloggerActive=true;G.keyloggerExpiry=Date.now()+300000;G.keyloggerTarget=currentTarget.name;addLog('Keylogger installed on '+currentTarget.name+' — +200 CR/min for 5 min','info');}
+    if(!currentTarget){addLog(LF('logNoTarget','Keylogger'),'alert');G.cooldowns[cdKey]=0;return;}
+    if(Math.random()<0.25){addLog(LF('logKeyloggerDetect',currentTarget.name),'alert');addHeat(15);currentTarget.relation='enemy';currentTarget.tracerExpiry=Date.now()+600000;}
+    else{G.keyloggerActive=true;G.keyloggerExpiry=Date.now()+300000;G.keyloggerTarget=currentTarget.name;addLog(LF('logKeyloggerOk',currentTarget.name),'info');}
   }
   if(id==='socialEngineering'){
-    if(!currentTarget||currentTarget.relation!=='enemy'){addLog('Target must be an enemy NPC','alert');G.cooldowns[cdKey]=0;return;}
-    currentTarget.relation='neutral';currentTarget.hackCount=0;addLog(currentTarget.name+' converted to neutral via social engineering','info');
+    if(!currentTarget||currentTarget.relation!=='enemy'){addLog(L('logEnemyOnly'),'alert');G.cooldowns[cdKey]=0;return;}
+    currentTarget.relation='neutral';currentTarget.hackCount=0;addLog(LF('logSocialEng',currentTarget.name),'info');
   }
   if(id==='trojanHorse'){
-    if(!currentTarget||currentTarget.relation!=='enemy'){addLog('Target must be an enemy NPC','alert');G.cooldowns[cdKey]=0;return;}
-    currentTarget.securityLevel=Math.max(1,currentTarget.securityLevel-3);addLog('Trojan Horse sent to '+currentTarget.name+' — security -3 for 10 min','info');
+    if(!currentTarget||currentTarget.relation!=='enemy'){addLog(L('logEnemyOnly'),'alert');G.cooldowns[cdKey]=0;return;}
+    currentTarget.securityLevel=Math.max(1,currentTarget.securityLevel-3);addLog(LF('logTrojan',currentTarget.name),'info');
     setTimeout(()=>{if(G.npcs){const n=G.npcs.find(x=>x.name===currentTarget.name);if(n)n.securityLevel+=3;}},600000);
   }
   if(id==='corporateSpy'){
-    if(!currentTarget){addLog('No target for Corporate Spy','alert');G.cooldowns[cdKey]=0;return;}
+    if(!currentTarget){addLog(LF('logNoTarget','Corporate Spy'),'alert');G.cooldowns[cdKey]=0;return;}
     G.corporateSpyActive=true;G.corporateSpyExpiry=Date.now()+600000;G.corporateSpyBonus=Math.floor(5+Math.random()*20);
-    addLog('Corporate Spy stealing from '+currentTarget.name+' — +'+G.corporateSpyBonus+' CR/s for 10 min','info');
+    addLog(LF('logCorpSpy',currentTarget.name,G.corporateSpyBonus),'info');
   }
   if(id==='moneyLaundering'){
-    const convertAmount=Math.min(G.credits,10000);if(convertAmount<=0){addLog('No CREDITS to launder','alert');G.cooldowns[cdKey]=0;return;}
-    G.credits-=convertAmount;G.data+=convertAmount*5;addLog('Laundered '+fmt(convertAmount)+' CR -> '+fmt(convertAmount*5)+' DATA','info');
+    const convertAmount=Math.min(G.credits,10000);if(convertAmount<=0){addLog(L('logNoCredits'),'alert');G.cooldowns[cdKey]=0;return;}
+    G.credits-=convertAmount;G.data+=convertAmount*5;addLog(LF('logLaundered',fmt(convertAmount),fmt(convertAmount*5)),'info');
   }
   if(id==='mindControl'){
-    if(!currentTarget||currentTarget.relation!=='neutral'){addLog('Target must be a neutral NPC','alert');G.cooldowns[cdKey]=0;return;}
+    if(!currentTarget||currentTarget.relation!=='neutral'){addLog(L('logNeutralOnly'),'alert');G.cooldowns[cdKey]=0;return;}
     currentTarget.relation='ally';currentTarget.allyExpiry=0;currentTarget._neuralBackdoorAlly=true;
-    addLog(currentTarget.name+' is now your permanent ally via Mind Control!','info');
+    addLog(LF('logMindControl',currentTarget.name),'info');
   }
   renderUpgrades();
 }
@@ -2219,9 +2492,9 @@ function renderTarget(){
   const r=currentTargetReward||{data:0,cr:0,rep:0};
   const isAlly=n.relation==='ally'&&n.allyExpiry>Date.now();
   el.innerHTML=`<div class="target-name">${statusIcon} ${n.name}</div>
-<div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
-<div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly?' (contract active)':''}</div>
-<div class="target-reward">Reward: ~${fmt(r.data)} DATA, ~${fmt(r.cr)} CR, +${r.rep} REP</div>`;
+<div class="target-info">${L('osLabel')}: ${n.os} | ${L('difficultyLabel')}: ${diff} | ${L('securityLabel')}: ${n.securityLevel.toFixed(1)}</div>
+<div class="target-info">${L('statusLabel')}: ${n.relation.toUpperCase()}${isAlly?' '+L('contractActiveLabel'):''}</div>
+<div class="target-reward">${L('rewardLabel')}: ~${fmt(r.data)} DATA, ~${fmt(r.cr)} CR, +${r.rep} REP</div>`;
   btn.disabled=isAlly||hackActive||hackCooldown||downloadActive;
 }
 
@@ -2250,15 +2523,15 @@ function startHack(){
     G.data+=reward.data;G.credits+=reward.cr;G.rep+=reward.rep;G.totalRep+=reward.rep;G.totalHacks++;
     G.darkWebRep+=5;G._lastHackDifficulty=diff;
     addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
-    if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog('⚠ '+n.name+' is now HOSTILE!','alert');}
-    addLog('ZERO-DAY EXPLOIT: Auto-hacked '+n.name+'! +'+fmt(reward.data)+' DATA','info');
+    if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog(LF('logHostile',n.name),'alert');}
+    addLog(LF('logZeroDayHack',n.name,fmt(reward.data)),'info');
     G._speedHackDone=true;checkMissionProgress();checkAchievements();
     generateLoot(reward.data);
     // Neural Backdoor: Elite NPC becomes permanent ally
-    if(G.upgrades.neuralBackdoor&&diff>=3){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(n.name+' is now permanent ally via Neural Backdoor!','info');}
+    if(G.upgrades.neuralBackdoor&&diff>=3){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(LF('logNeuralBackdoor',n.name),'info');}
     // The Override: hit second NPC
     if(G._overrideReady){G._overrideReady=false;const others=G.npcs.filter(x=>x.name!==n.name&&x.relation!=='ally');
-      if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;addLog('OVERRIDE: Also hacked '+o.name+'! +'+fmt(r2.data)+' DATA','info');generateLoot(r2.data);}}
+      if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;addLog(LF('logOverrideHit',o.name,fmt(r2.data)),'info');generateLoot(r2.data);}}
     return;
   }
   // Zero Day skill: 10% auto-succeed
@@ -2270,8 +2543,8 @@ function startHack(){
     G.data+=reward.data;G.credits+=reward.cr;G.rep+=reward.rep;G.totalRep+=reward.rep;G.totalHacks++;
     G.darkWebRep+=5;G._lastHackDifficulty=diff;
     addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
-    if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog('⚠ '+n.name+' is now HOSTILE!','alert');}
-    addLog('ZERO DAY: Auto-hacked '+n.name+'! +'+fmt(reward.data)+' DATA','info');
+    if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog(LF('logHostile',n.name),'alert');}
+    addLog(LF('logZeroDaySkill',n.name,fmt(reward.data)),'info');
     G._speedHackDone=true;
     checkMissionProgress();checkAchievements();
     generateLoot(reward.data);
@@ -2302,18 +2575,18 @@ function startHack(){
   document.getElementById('av-closing-warning').classList.remove('active');
   // Session header
   const targetIP=Math.floor(Math.random()*223+1)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256);
-  document.getElementById('hack-session-header').textContent='SESSION ACTIVE — '+n.name+' | '+n.os+' | '+targetIP;
+  document.getElementById('hack-session-header').textContent=L('sessionActive')+' — '+n.name+' | '+n.os+' | '+targetIP;
   // HEAT warning
-  if(G.heat>70)addLog('⚠ High heat detected — hack compromised','alert');
+  if(G.heat>70)addLog(L('logHighHeat'),'alert');
   // Scan sequence
   const scanLines=[
-    '> Locating target IP...',
-    '> Establishing encrypted tunnel...',
-    '> Bypassing firewall layer 1...',
-    '> Bypassing firewall layer 2...',
-    '> Connected to [target IP: '+targetIP+']',
-    '> Deploying exploit...',
-    '> ACCESS POINT FOUND — Awaiting commands'
+    L('scanLocating'),
+    L('scanTunnel'),
+    L('scanFw1'),
+    L('scanFw2'),
+    LF('scanConnected',targetIP),
+    L('scanExploit'),
+    L('scanAccess')
   ];
   const scanEl=document.getElementById('hack-scan-output');
   scanEl.innerHTML=scanLines.map(l=>'<div class="scan-line">'+l+'</div>').join('');
@@ -2325,14 +2598,14 @@ function startHack(){
     if(scanIdx<scanDivs.length){scanDivs[scanIdx].classList.add('visible');scanIdx++;}
     else{clearInterval(scanTimer);setTimeout(()=>{
       scanEl.style.display='none';
-      document.getElementById('hack-prompt').textContent=`Hacking ${n.name}...${hackUsedSpoof&&hackSpoofDecoy?' [SPOOFING as '+hackSpoofDecoy.name+']':''} Type each command:`;
+      document.getElementById('hack-prompt').textContent=LF('hackingTarget',n.name)+(hackUsedSpoof&&hackSpoofDecoy?' [SPOOFING as '+hackSpoofDecoy.name+']':'');
       document.getElementById('hack-commands').style.display='';
       document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='';
       renderHackCmds();
       const input=document.getElementById('hack-input');input.value='';input.disabled=false;input.focus();
       document.getElementById('av-timer-wrap').classList.add('active');updateAvTimerDisplay();
       avTimerInterval=setInterval(()=>{avTimeLeft--;updateAvTimerDisplay();
-        if(avTimeLeft<=0){clearInterval(avTimerInterval);avTimerInterval=null;failHack('CONNECTION TERMINATED — Antivirus detected intrusion',20);}
+        if(avTimeLeft<=0){clearInterval(avTimerInterval);avTimerInterval=null;failHack(L('logAvDetect'),20);}
         // HEAT shake during hack
         if(G.heat>70&&hackActive){mg.classList.add('heat-shake');setTimeout(()=>mg.classList.remove('heat-shake'),300);}
       },1000);
@@ -2340,7 +2613,7 @@ function startHack(){
       hackHeatShakeInterval=G.heat>70?setInterval(()=>{if(hackActive&&G.heat>70){mg.classList.add('heat-shake');setTimeout(()=>mg.classList.remove('heat-shake'),300);}},3000):null;
     },400);}
   },250);
-  addLog('Initiating hack on '+n.name+'...','warning');
+  addLog(LF('logInitHack',n.name),'warning');
 }
 let hackHeatShakeInterval=null;
 
@@ -2348,7 +2621,7 @@ function updateAvTimerDisplay(){
   const label=document.getElementById('av-timer-label'),bar=document.getElementById('av-timer-bar');
   const mg=document.getElementById('hack-minigame'),avWarn=document.getElementById('av-closing-warning');
   const pct=avTimeMax>0?(avTimeLeft/avTimeMax)*100:0;
-  label.textContent='ANTIVIRUS SCAN: '+avTimeLeft+'s remaining';bar.style.width=pct+'%';
+  label.textContent=LF('avScan',avTimeLeft);bar.style.width=pct+'%';
   // Pulse speed: faster as timer depletes
   const pulseDur=pct>50?'2s':pct>30?'1s':pct>10?'0.5s':'0.3s';
   bar.style.animation='none';void bar.offsetWidth;
@@ -2381,11 +2654,11 @@ function failHack(msg,heatAmount){
   if(hackUsedSpoof&&hackSpoofDecoy){
     addHeat(0);
     hackSpoofDecoy.relation='enemy';hackSpoofDecoy.tracerExpiry=Date.now()+600000;
-    addLog('Spoof: '+hackSpoofDecoy.name+' blamed for failed hack (+20 HEAT to them)','warning');
+    addLog(LF('logSpoofBlame',hackSpoofDecoy.name),'warning');
   } else {
     addHeat(heatAmount||15);
   }
-  addLog('HACK FAILED: '+msg,'alert');
+  addLog(LF('logHackFailed',msg),'alert');
   if(!hackUsedSpoof&&currentTarget)addForensicTrace(currentTarget);
   hackCooldown=true;document.getElementById('hack-btn').disabled=true;
   setTimeout(()=>{mg.classList.remove('active','hack-fail-flash');resultMsg.classList.remove('active');input.disabled=false;
@@ -2412,7 +2685,7 @@ function succeedHack(){
   const startTime=Date.now();updateDownloadDisplay(0);
   downloadInterval=setInterval(()=>{const elapsed=Date.now()-startTime;downloadProgress=Math.min(100,(elapsed/downloadDuration)*100);updateDownloadDisplay(downloadProgress);
   if(downloadProgress>=100){clearInterval(downloadInterval);downloadInterval=null;completeDownload(100);}},50);
-  addLog('Exfiltrating data from '+n.name+'...','info');
+  addLog(LF('logExfil',n.name),'info');
 }
 
 function updateDownloadDisplay(pct){const filled=Math.floor(pct/10),empty=10-filled;
@@ -2420,7 +2693,7 @@ document.getElementById('download-pct').textContent='['+'\u2588'.repeat(filled)+
 document.getElementById('download-bar').style.width=pct+'%';}
 
 function abortDownload(){if(!downloadActive)return;if(downloadInterval){clearInterval(downloadInterval);downloadInterval=null;}
-completeDownload(downloadProgress);addLog('Download aborted at '+Math.floor(downloadProgress)+'%','warning');}
+completeDownload(downloadProgress);addLog(LF('logAborted',Math.floor(downloadProgress)),'warning');}
 
 function completeDownload(pct){
   downloadActive=false;const fraction=pct/100;const reward=pendingHackReward,diff=pendingHackDiff,n=pendingHackNpc;
@@ -2429,47 +2702,47 @@ function completeDownload(pct){
   G.data+=dataGain;G.credits+=crGain;G.rep+=repGain;G.totalRep+=repGain;G.totalHacks++;
   G.darkWebRep+=5;
   addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
-  if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog('⚠ '+n.name+' is now HOSTILE — tracers deployed!','alert');}
+  if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog(LF('logTracers',n.name),'alert');}
   if(!hackUsedSpoof)addForensicTrace(n);
   // M10 tracking
   if(G.m10Targets&&G.m10Targets.length>0&&G.m10HackedCount<3){
     if(n.name===G.m10Targets[G.m10HackedCount]){
       G.m10HackedCount++;
-      if(G.m10HackedCount<3)addLog('M10 Progress: '+G.m10HackedCount+'/3 targets hacked','info');
+      if(G.m10HackedCount<3)addLog(LF('logM10Progress',G.m10HackedCount),'info');
     }
-    if(G.m10StartTime>0&&Date.now()-G.m10StartTime>1800000){G.m10HackedCount=0;G.m10StartTime=0;G.m10Targets=[];addLog('M10: Time expired! Mission reset.','alert');}
+    if(G.m10StartTime>0&&Date.now()-G.m10StartTime>1800000){G.m10HackedCount=0;G.m10StartTime=0;G.m10Targets=[];addLog(L('logM10Expired'),'alert');}
   }
   // Urgent contract tracking
   if(G.urgentContract&&G.urgentContractExpiry>Date.now()&&n.name===G.urgentContract.target){
     const ucReward=getReward(DIFFICULTIES[diff]);
     G.data+=ucReward.data*3;G.credits+=ucReward.cr*3;G.darkWebRep+=50;
-    addLog('CONTRACT COMPLETE: +'+fmt(ucReward.data*3)+' bonus DATA, +'+fmt(ucReward.cr*3)+' bonus CR, +50 DW Rep','info');
+    addLog(LF('logUrgentComplete',fmt(ucReward.data*3),fmt(ucReward.cr*3)),'info');
     G.urgentContract=null;G.urgentContractExpiry=0;
     document.getElementById('urgent-contract-banner').classList.remove('active');
   }
   // Coalition breaking
   if(G.coalitionActive&&G.coalitionCompanies.includes(n.name)){
     G.coalitionActive=false;G.coalitionCompanies=[];G.coalitionExpiry=0;G.coalitionBroken++;
-    addLog('Coalition broken by hacking '+n.name+'!','info');
+    addLog(LF('logCoalitionBroken',n.name),'info');
     checkAchievements();
   }
   // Neural Backdoor: Elite NPC becomes permanent ally
-  if(G.upgrades.neuralBackdoor&&diff>=3&&pct>=100){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(n.name+' is now permanent ally via Neural Backdoor! +100 CR/s','info');}
+  if(G.upgrades.neuralBackdoor&&diff>=3&&pct>=100){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(LF('logNeuralBackdoor',n.name),'info');}
   // Dark Web Fame: double rep gain
   if(G.darkWebFameActive&&G.darkWebFameExpiry>Date.now()){G.darkWebRep+=5;}// extra +5 on top of existing +5
   if(pct>=100){
     document.getElementById('download-abort').style.display='none';
     const ce=document.getElementById('download-complete');ce.style.display='';ce.classList.add('show');
-    addLog('HACK SUCCESS: +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
+    addLog(LF('logHackSuccess',fmt(dataGain),fmt(crGain),repGain),'info');
     setTimeout(()=>{closeHackMinigame();
       generateLoot(reward.data);
       if(G.upgrades.dataMinerPro)generateLoot(reward.data);// second loot
       // The Override: hit second NPC
       if(G._overrideReady){G._overrideReady=false;const others=G.npcs.filter(x=>x.name!==n.name&&x.relation!=='ally');
-        if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;o.hackCount++;if(o.hackCount>=3&&o.relation!=='enemy'){o.relation='enemy';o.tracerExpiry=Date.now()+600000;}addLog('OVERRIDE: Also hacked '+o.name+'! +'+fmt(r2.data)+' DATA','info');generateLoot(r2.data);}}
+        if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;o.hackCount++;if(o.hackCount>=3&&o.relation!=='enemy'){o.relation='enemy';o.tracerExpiry=Date.now()+600000;}addLog(LF('logOverrideHit',o.name,fmt(r2.data)),'info');generateLoot(r2.data);}}
       checkMissionProgress();checkAchievements();},1200);
   } else {
-    addLog('PARTIAL EXFIL ('+Math.floor(pct)+'%): +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
+    addLog(LF('logPartialExfil',Math.floor(pct),fmt(dataGain),fmt(crGain),repGain),'info');
     setTimeout(()=>{closeHackMinigame();if(pct>50)generateLoot(Math.floor(reward.data*fraction));checkMissionProgress();checkAchievements();},1000);
   }
 }
@@ -2489,7 +2762,7 @@ function addForensicTrace(npc){
 }
 
 function cleanForensicTraces(){
-  if(G.upgrades.logcleaner){G.forensicTraces=[];addLog('Log Cleaner: forensic traces deleted','info');}
+  if(G.upgrades.logcleaner){G.forensicTraces=[];addLog(L('logLogCleaner'),'info');}
 }
 
 // ========== LOOT ==========
@@ -2502,7 +2775,7 @@ function generateLoot(baseDataValue){
   const value=Math.max(1,Math.floor(baseDataValue*tier.multi));
   pendingLoot={name:itemName,rarity,value,acquiredAt:Date.now()};
   if(rarity==='legendary')G.legendaryLootCount++;
-  if(tier.heatBonus>0){addHeat(tier.heatBonus);addLog('Rare data detected — HEAT +'+tier.heatBonus,'warning');}
+  if(tier.heatBonus>0){addHeat(tier.heatBonus);addLog(LF('logRareData',tier.heatBonus),'warning');}
   showLootReveal(pendingLoot);
 }
 
@@ -2510,7 +2783,7 @@ function showLootReveal(loot){
   document.getElementById('loot-name').textContent=loot.name;
   document.getElementById('loot-name').className='loot-item-name rarity-'+loot.rarity;
   const badge=document.getElementById('loot-badge');badge.textContent=loot.rarity.toUpperCase();badge.className='rarity-badge '+loot.rarity;
-  document.getElementById('loot-value').textContent='Estimated value: '+fmt(loot.value)+' DATA';
+  document.getElementById('loot-value').textContent=LF('estimatedValue',fmt(loot.value));
   document.getElementById('loot-title').style.color=getRarityColor(loot.rarity);
   document.getElementById('loot-auction').className='loot-btn'+(G.upgrades.darkweb?'':' hidden');
   document.getElementById('loot-overlay').classList.add('active');
@@ -2518,12 +2791,12 @@ function showLootReveal(loot){
 
 function getRarityColor(r){return{common:'#999',rare:'#4a9eff',epic:'#b44aff',legendary:'#ff8c00'}[r]||'#999';}
 
-function lootSellNow(){if(!pendingLoot)return;G.data+=pendingLoot.value;G.totalItemsSold++;addLog('Sold '+pendingLoot.name+' for '+fmt(pendingLoot.value)+' DATA','info');pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');checkMissionProgress();checkAchievements();}
+function lootSellNow(){if(!pendingLoot)return;G.data+=pendingLoot.value;G.totalItemsSold++;addLog(LF('logSold',pendingLoot.name,fmt(pendingLoot.value)),'info');pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');checkMissionProgress();checkAchievements();}
 
 function lootPutOnMarket(){if(!pendingLoot||!G.upgrades.darkweb)return;
 const invLimit=G.upgrades.encryptedStorage?25:10;
-if(G.lootInventory.length>=invLimit){G.data+=pendingLoot.value;addLog('Inventory full! Auto-sold '+pendingLoot.name,'warning');}
-else{G.lootInventory.push(pendingLoot);addLog(pendingLoot.name+' added to inventory','info');}
+if(G.lootInventory.length>=invLimit){G.data+=pendingLoot.value;addLog(LF('logInvFull',pendingLoot.name),'warning');}
+else{G.lootInventory.push(pendingLoot);addLog(LF('logAddedInv',pendingLoot.name),'info');}
 pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');}
 
 // ========== BLACK MARKET ==========
@@ -2556,17 +2829,17 @@ function renderBlackMarket(){
   aucEl.appendChild(div);});}
 }
 
-function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;G.totalItemsSold++;addLog('Sold '+item.name+' for '+fmt(item.value)+' DATA','info');renderBlackMarket();checkMissionProgress();checkAchievements();}
+function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;G.totalItemsSold++;addLog(LF('logSold',item.name,fmt(item.value)),'info');renderBlackMarket();checkMissionProgress();checkAchievements();}
 
 function bmarketStartAuction(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];
 const duration=(AUCTION_DURATIONS[item.rarity]||180)*1000;
 G.activeAuctions.push({name:item.name,rarity:item.rarity,value:item.value,currentBid:item.value,startTime:Date.now(),endTime:Date.now()+duration,lastBidTime:Date.now()});
-addLog('Auction started for '+item.name,'info');renderBlackMarket();}
+addLog(LF('logAuctionStart',item.name),'info');renderBlackMarket();}
 
 function bmarketCancelAuction(i){if(i<0||i>=G.activeAuctions.length)return;const auc=G.activeAuctions.splice(i,1)[0];
 const invLimit=G.upgrades.encryptedStorage?25:10;
-if(G.lootInventory.length<invLimit){G.lootInventory.push({name:auc.name,rarity:auc.rarity,value:auc.value,acquiredAt:Date.now()});addLog('Auction cancelled — '+auc.name+' returned','info');}
-else{G.data+=auc.value;addLog('Auction cancelled — inventory full, sold for '+fmt(auc.value)+' DATA','warning');}
+if(G.lootInventory.length<invLimit){G.lootInventory.push({name:auc.name,rarity:auc.rarity,value:auc.value,acquiredAt:Date.now()});addLog(LF('logAuctionCancel',auc.name),'info');}
+else{G.data+=auc.value;addLog(LF('logAuctionCancelSold',fmt(auc.value)),'warning');}
 renderBlackMarket();}
 
 function updateAuctions(){if(G.activeAuctions.length===0)return;const now=Date.now();const completed=[];
@@ -2577,7 +2850,7 @@ G.activeAuctions.forEach((auc,i)=>{
 });
 for(let i=completed.length-1;i>=0;i--){const auc=G.activeAuctions.splice(completed[i],1)[0];G.data+=auc.currentBid;
 G.darkWebRep+=Math.floor(auc.currentBid/100);G.totalAuctionsSold++;G.totalAuctionEarnings+=auc.currentBid;G.totalItemsSold++;
-addLog('AUCTION CLOSED — Sold '+auc.name+' for '+fmt(auc.currentBid)+' DATA','info');
+addLog(LF('logAuctionClosed',auc.name,fmt(auc.currentBid)),'info');
 // Enemy NPC can buy your data
 if(G.npcs&&Math.random()<0.3){
   const enemies=G.npcs.filter(n=>n.relation==='enemy');
@@ -2585,8 +2858,8 @@ if(G.npcs&&Math.random()<0.3){
     const buyer=enemies[Math.floor(Math.random()*enemies.length)];
     if(!G.npcBoughtData)G.npcBoughtData={};
     G.npcBoughtData[buyer.name]=(G.npcBoughtData[buyer.name]||0)+1;
-    addLog('⚠ '+buyer.name+' purchased your stolen data — they know your methods','warning');
-    addNewsItem(buyer.name+' purchased stolen data from dark web auctions');
+    addLog(LF('logDataBought',buyer.name),'warning');
+    addNewsItem(LF('newsDataBought',buyer.name));
     // Clear after one use
     setTimeout(()=>{if(G.npcBoughtData&&G.npcBoughtData[buyer.name]){G.npcBoughtData[buyer.name]--;if(G.npcBoughtData[buyer.name]<=0)delete G.npcBoughtData[buyer.name];}},600000);
   }
@@ -2607,8 +2880,8 @@ document.getElementById('hack-input').addEventListener('keydown',(e)=>{
     input.value='';
     const lines=document.querySelectorAll('.cmd-line');
     if(lines[hackCmdIndex]){lines[hackCmdIndex].classList.add('failed','cmd-fail-flash');
-      lines[hackCmdIndex].textContent='✗ WRONG COMMAND — CONNECTION DROPPING';}
-    setTimeout(()=>failHack('INTRUSION DETECTED — Wrong command signature',15),600);
+      lines[hackCmdIndex].textContent=L('logWrongCmd');}
+    setTimeout(()=>failHack(L('logIntrusionDetect'),15),600);
   }}
 });
 document.getElementById('hack-btn').addEventListener('click',startHack);
@@ -2644,14 +2917,14 @@ function addHeat(amount){
 }
 
 function triggerRaid(){const lossPercent=G.upgrades.encryptedBackup?(G.upgrades.legal?0.05:0.1):(G.upgrades.legal?0.1:0.3);const lost=Math.floor(G.data*lossPercent);G.data-=lost;G.heat=0;
-addLog('🚨 RAID! Lost '+fmt(lost)+' DATA! ('+(lossPercent*100)+'% penalty)','alert');
+addLog(LF('logRaid',fmt(lost),lossPercent*100),'alert');
 document.body.classList.add('raid-flash');setTimeout(()=>document.body.classList.remove('raid-flash'),1000);}
 
 // ========== NPC BEHAVIOR ==========
 function updateNPCs(){if(!G.npcs)return;const now=Date.now();
 G.npcs.forEach(npc=>{npc.securityLevel=Math.min(10,npc.securityLevel+0.02/60);
 if(npc.relation==='enemy'&&npc.tracerExpiry>now){G.heat=Math.min(100,G.heat+(0.5/60));if(G.heat>=100)triggerRaid();}
-if(npc.relation==='ally'&&npc.allyExpiry>0&&npc.allyExpiry<now){npc.relation='neutral';addLog(npc.name+' contract expired');}
+if(npc.relation==='ally'&&npc.allyExpiry>0&&npc.allyExpiry<now){npc.relation='neutral';addLog(LF('logContractExpired',npc.name));}
 // Virus effects on NPCs
 if(npc.virusEffect&&npc.virusExpiry>0&&npc.virusExpiry<now){npc.virusEffect=null;npc.virusExpiry=0;}
 });}
@@ -2661,20 +2934,20 @@ const neutrals=G.npcs.filter(n=>n.relation==='neutral'&&(now-n.lastInteraction)>
 const npc=neutrals[Math.floor(Math.random()*neutrals.length)];npc.lastInteraction=now;
 const area=document.getElementById('contract-area');if(!area)return;
 const div=document.createElement('div');div.className='contract-notif';
-div.innerHTML=`🤝 ${npc.name} offers alliance (+2 CR/s for 5 min) <button onclick="acceptContract('${npc.name}',this.parentElement)">[ ACCEPT ]</button>`;
-area.appendChild(div);addLog('🤝 '+npc.name+' offers a contract','info');setTimeout(()=>{if(div.parentElement)div.remove();},30000);}
+div.innerHTML=`${LF('offersAlliance',npc.name)} <button onclick="acceptContract('${npc.name}',this.parentElement)">${L('accept')}</button>`;
+area.appendChild(div);addLog(LF('offersContract',npc.name),'info');setTimeout(()=>{if(div.parentElement)div.remove();},30000);}
 
 function acceptContract(name,el){const npc=G.npcs.find(n=>n.name===name);if(!npc)return;
 npc.relation='ally';npc.allyExpiry=Date.now()+300000;npc.lastInteraction=Date.now();if(el)el.remove();
-addLog('✓ Alliance with '+name+' — +2 CR/s for 5 min','info');renderTarget();}
+addLog(LF('logAlliance',name),'info');renderTarget();}
 
 function randomNPCEvent(){if(!G.npcs)return;const npc=G.npcs[Math.floor(Math.random()*G.npcs.length)];
 const events=[
-{msg:`⚡ ${npc.name} patched — difficulty +1`,fn:()=>{npc.securityLevel=Math.min(10,npc.securityLevel+1);}},
-{msg:`🔓 ${npc.name} breach — reward x2 for 3 min`,fn:()=>{npc.breachExpiry=Date.now()+180000;npc.breachMulti=2;}},
-{msg:`⚔️ ${npc.name} offensive — HEAT +10`,fn:()=>{addHeat(10);}},
-{msg:`🤝 ${npc.name} seeks partner`,fn:()=>{checkAllianceProposals();}},
-{msg:`💀 ${npc.name} hacked — security -1`,fn:()=>{npc.securityLevel=Math.max(1,npc.securityLevel-1);}}
+{msg:LF('npcPatched',npc.name),fn:()=>{npc.securityLevel=Math.min(10,npc.securityLevel+1);}},
+{msg:LF('npcBreach',npc.name),fn:()=>{npc.breachExpiry=Date.now()+180000;npc.breachMulti=2;}},
+{msg:LF('npcOffensive',npc.name),fn:()=>{addHeat(10);}},
+{msg:LF('npcPartner',npc.name),fn:()=>{checkAllianceProposals();}},
+{msg:LF('npcHacked',npc.name),fn:()=>{npc.securityLevel=Math.max(1,npc.securityLevel-1);}}
 ];const ev=events[Math.floor(Math.random()*events.length)];ev.fn();addLog(ev.msg,'warning');}
 
 // ========== MARKET ==========
@@ -2684,7 +2957,7 @@ function closeMarket(){document.getElementById('market-overlay').classList.remov
 function updateMarketDisplay(){const v=parseInt(document.getElementById('market-slider').value);
 document.getElementById('market-amount').textContent=fmt(v)+' DATA → '+fmt(Math.floor(v/10))+' CREDITS';}
 function sellData(){const v=parseInt(document.getElementById('market-slider').value);if(v<=0||G.data<v)return;
-G.data-=v;G.credits+=Math.floor(v/10);addHeat(10);addLog('Dark Web: sold '+fmt(v)+' DATA for '+fmt(Math.floor(v/10))+' CR (+10 HEAT)','warning');closeMarket();}
+G.data-=v;G.credits+=Math.floor(v/10);addHeat(10);addLog(LF('logDarkWebSell',fmt(v),fmt(Math.floor(v/10))),'warning');closeMarket();}
 
 // ========== CORP ID ==========
 function openCorpID(){
@@ -2694,21 +2967,21 @@ function openCorpID(){
   const dispIP=G.upgrades.vpn?'10.0.x.x [VPN]':G.playerIP;
   let protections='';
   const prots=[{id:'vpn',name:'VPN Pro'},{id:'firewallv1',name:'Firewall v1'},{id:'firewallv2',name:'Firewall v2'},{id:'shell',name:'Shell Company'},{id:'vpnchain2',name:'VPN Chain x2'},{id:'vpnchain3',name:'VPN Chain x3'},{id:'ipspoofer',name:'IP Spoofer'},{id:'logcleaner',name:'Log Cleaner'}];
-  prots.forEach(p=>{const owned=!!G.upgrades[p.id];protections+=`<div class="corpid-prot"><span class="${owned?'prot-active':'prot-inactive'}">[${owned?'ACTIVE':'INACTIVE'}]</span> ${p.name}</div>`;});
+  prots.forEach(p=>{const owned=!!G.upgrades[p.id];protections+=`<div class="corpid-prot"><span class="${owned?'prot-active':'prot-inactive'}">[${owned?L('activeLabel'):L('inactiveLabel')}]</span> ${p.name}</div>`;});
   let traceColor=trace<30?'var(--accent)':trace<70?'var(--warning)':'var(--danger)';
-  let shadowMode=G.classifiedUnlocked?'<div class="corpid-row"><span class="corpid-label">Mode</span><span class="corpid-value" style="color:var(--secondary)">SHADOW MODE</span></div>':'';
+  let shadowMode=G.classifiedUnlocked?`<div class="corpid-row"><span class="corpid-label">${L('modeLabel')}</span><span class="corpid-value" style="color:var(--secondary)">${L('shadowMode')}</span></div>`:'';
   body.innerHTML=`
-<div class="corpid-row"><span class="corpid-label">Company</span><span class="corpid-value">ByteCorp</span></div>
-<div class="corpid-row"><span class="corpid-label">Operator</span><span class="corpid-value">${G.operatorAlias}</span></div>
-<div class="corpid-row"><span class="corpid-label">Your IP</span><span class="corpid-value${G.upgrades.vpn?' vpn':''}">${dispIP}</span></div>
-<div class="corpid-row"><span class="corpid-label">Forensic Traces</span><span class="corpid-value">${G.forensicTraces.length}/10</span></div>
+<div class="corpid-row"><span class="corpid-label">${L('companyLabel')}</span><span class="corpid-value">ByteCorp</span></div>
+<div class="corpid-row"><span class="corpid-label">${L('operatorLabel')}</span><span class="corpid-value">${G.operatorAlias}</span></div>
+<div class="corpid-row"><span class="corpid-label">${L('yourIp')}</span><span class="corpid-value${G.upgrades.vpn?' vpn':''}">${dispIP}</span></div>
+<div class="corpid-row"><span class="corpid-label">${L('forensicTraces')}</span><span class="corpid-value">${G.forensicTraces.length}/10</span></div>
 ${shadowMode}
-<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">PROTECTIONS</div>
+<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">${L('protections')}</div>
 ${protections}
-<div id="corpid-trace-wrap"><div id="corpid-trace-label">TRACEABILITY</div>
+<div id="corpid-trace-wrap"><div id="corpid-trace-label">${L('traceability')}</div>
 <div id="corpid-trace-bar-bg"><div id="corpid-trace-bar" style="width:${trace}%;background:${traceColor}"></div></div>
 <div id="corpid-trace-pct" style="color:${traceColor}">${trace}%</div></div>
-<div class="corpid-dwrep"><span class="corpid-label">Dark Web Status: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>`;
+<div class="corpid-dwrep"><span class="corpid-label">${L('darkWebStatus')}: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>`;
   document.getElementById('corpid-changeip').style.display=(G.usurpationActive||G.falseFlagActive)?'block':'none';
   document.getElementById('corpid-overlay').classList.add('active');
 }
@@ -2720,7 +2993,7 @@ function changeIP(){
   G.data-=200;G.playerIP=generateIP();
   G.usurpationActive=false;G.usurpationExpiry=0;
   G.falseFlagActive=false;G.falseFlagExpiry=0;
-  addLog('IP changed to '+G.playerIP+' — threats stopped','info');
+  addLog(LF('logIpChanged',G.playerIP),'info');
   closeCorpID();openCorpID();
 }
 
@@ -2758,18 +3031,18 @@ function checkIncomingAttacks(){
 function triggerIncomingAttack(npc){
   if(defenseActive||defenseGameActive)return;
   // Shell Corp Network: 30% chance attack hits fake identity
-  if(G.upgrades.shellCorpNetwork&&Math.random()<0.3){addLog('Shell Corp Network deflected attack from '+npc.name,'info');return;}
+  if(G.upgrades.shellCorpNetwork&&Math.random()<0.3){addLog(LF('logShellDeflect',npc.name),'info');return;}
   // IDS: 30s advance warning (just add a log warning)
-  if(G.upgrades.ids){addLog('⚠ IDS WARNING: '+npc.name+' preparing attack in 30s','warning');}
+  if(G.upgrades.ids){addLog(LF('logIdsWarning',npc.name),'warning');}
   defenseActive=true;defenseAttacker=npc;
   defenseDifficulty=Math.min(3,npc.baseDifficulty+(npc.relation==='enemy'?1:0));
   defenseDataRisk=[5,15,25,40,50][defenseDifficulty];
   document.getElementById('defense-skull').textContent=`    ░░░░░░░░░░░░░\n    ░░▄███████▄░░\n    ░██░░░░░░░██░\n    ░██░█░░░█░██░\n    ░░██░░░░░██░░\n    ░░░██████░░░░\n    ░░░██░░██░░░░`;
-  document.getElementById('defense-title').textContent='⚠ INTRUSION DETECTED';
-  document.getElementById('defense-attacker').textContent=npc.name+' is attempting to breach your systems';
-  document.getElementById('defense-risk').textContent='Threat: '+DIFFICULTIES[defenseDifficulty]+' | Data at risk: '+defenseDataRisk+'%';
+  document.getElementById('defense-title').textContent=L('intrDetected');
+  document.getElementById('defense-attacker').textContent=LF('attemptBreach',npc.name);
+  document.getElementById('defense-risk').textContent=L('threatLabel')+': '+DIFFICULTIES[defenseDifficulty]+' | '+L('dataAtRisk')+': '+defenseDataRisk+'%';
   defenseTimeLeft=30;document.getElementById('defense-timer-bar').style.width='100%';document.getElementById('defense-timer-text').textContent='30s';
-  document.getElementById('defense-overlay').classList.add('active');addLog('⚠ INCOMING ATTACK from '+npc.name+'!','alert');
+  document.getElementById('defense-overlay').classList.add('active');addLog(LF('logIncomingAttack',npc.name),'alert');
   defenseTimer=setInterval(()=>{defenseTimeLeft--;document.getElementById('defense-timer-bar').style.width=(defenseTimeLeft/30*100)+'%';
   document.getElementById('defense-timer-text').textContent=defenseTimeLeft+'s';
   if(defenseTimeLeft<=0){clearInterval(defenseTimer);defenseTimer=null;triggerAutoDefense();}},1000);
@@ -2782,11 +3055,11 @@ let count;if(defenseDifficulty<=1)count=3;else if(defenseDifficulty===2)count=4;
 defenseCmds=[...pool].sort(()=>Math.random()-0.5).slice(0,Math.min(count,pool.length));defenseCmdIndex=0;
 defenseGameTimeLeft=defenseDifficulty===3?25:30;
 document.getElementById('defense-game').classList.add('active');
-document.getElementById('defense-game-timer').textContent='Time: '+defenseGameTimeLeft+'s';
-document.getElementById('defense-game-prompt').textContent='Type defensive commands to block '+defenseAttacker.name+':';
+document.getElementById('defense-game-timer').textContent=L('timeLabel')+': '+defenseGameTimeLeft+'s';
+document.getElementById('defense-game-prompt').textContent=LF('typeDefBlock',defenseAttacker.name);
 document.getElementById('defense-result').classList.remove('active');renderDefenseCmds();
 const input=document.getElementById('defense-game-input');input.value='';input.disabled=false;input.focus();
-defenseGameTimer=setInterval(()=>{defenseGameTimeLeft--;document.getElementById('defense-game-timer').textContent='Time: '+defenseGameTimeLeft+'s';
+defenseGameTimer=setInterval(()=>{defenseGameTimeLeft--;document.getElementById('defense-game-timer').textContent=L('timeLabel')+': '+defenseGameTimeLeft+'s';
 if(defenseGameTimeLeft<=0){clearInterval(defenseGameTimer);defenseGameTimer=null;defenseFailResult();}},1000);}
 
 function renderDefenseCmds(){const el=document.getElementById('defense-game-commands');el.innerHTML='';
@@ -2807,17 +3080,17 @@ document.getElementById('defense-game-input').addEventListener('keydown',(e)=>{
 function defenseSuccessResult(){defenseGameActive=false;document.getElementById('defense-game-input').disabled=true;
 const repGain=[10,25,50,100][defenseDifficulty];G.rep+=repGain;G.totalRep+=repGain;G.darkWebRep+=20;addHeat(5);
 G.totalDefenseSuccesses++;
-const result=document.getElementById('defense-result');result.textContent='INTRUSION BLOCKED — +'+repGain+' REP';result.style.color='var(--accent)';result.classList.add('active');
-addLog('DEFENSE SUCCESS: Blocked '+defenseAttacker.name+' +'+repGain+' REP','info');
+const result=document.getElementById('defense-result');result.textContent=LF('intrBlocked',repGain);result.style.color='var(--accent)';result.classList.add('active');
+addLog(LF('logDefenseSuccess',defenseAttacker.name,repGain),'info');
 if(G.activeBounty)G.bountyDefenseCount++;
-if(G.activeBounty&&G.bountyDefenseCount>=3){G.activeBounty=false;G.bountyDefenseCount=0;G.darkWebRep+=500;addLog('BOUNTY RESOLVED: Scared off hunter! +500 Dark Web Rep','info');}
+if(G.activeBounty&&G.bountyDefenseCount>=3){G.activeBounty=false;G.bountyDefenseCount=0;G.darkWebRep+=500;addLog(L('logBountyResolved'),'info');}
 checkMissionProgress();checkAchievements();
 setTimeout(()=>{document.getElementById('defense-game').classList.remove('active');result.classList.remove('active');defenseActive=false;},2000);}
 
 function defenseFailResult(){defenseGameActive=false;document.getElementById('defense-game-input').disabled=true;
 const dataLost=Math.floor(G.data*(defenseDataRisk/100));G.data-=dataLost;addHeat(20);
-const result=document.getElementById('defense-result');result.textContent='SYSTEMS BREACHED — Lost '+fmt(dataLost)+' DATA';result.style.color='var(--danger)';result.classList.add('active');
-addLog('DEFENSE FAILED: '+defenseAttacker.name+' stole '+fmt(dataLost)+' DATA','alert');
+const result=document.getElementById('defense-result');result.textContent=LF('systemsBreach',fmt(dataLost));result.style.color='var(--danger)';result.classList.add('active');
+addLog(LF('logDefenseFailed',defenseAttacker.name,fmt(dataLost)),'alert');
 setTimeout(()=>{document.getElementById('defense-game').classList.remove('active');result.classList.remove('active');defenseActive=false;},2000);}
 
 function triggerAutoDefense(){if(!defenseActive)return;if(defenseTimer){clearInterval(defenseTimer);defenseTimer=null;}
@@ -2825,8 +3098,8 @@ document.getElementById('defense-overlay').classList.remove('active');
 let chance=getAutoDefenseChance();
 // Espionage bypass
 if(G.espionageActive&&G.espionageExpiry>Date.now()&&defenseAttacker&&defenseAttacker.name===G.espionageCompany)chance=0;
-if(Math.random()*100<chance){const repGain=[10,25,50,100][defenseDifficulty];G.rep+=repGain;G.totalRep+=repGain;addHeat(5);G.totalDefenseSuccesses++;addLog('AUTO-DEFEND SUCCESS ('+chance+'%): Blocked '+defenseAttacker.name+' +'+repGain+' REP','info');checkMissionProgress();checkAchievements();}
-else{const dataLost=Math.floor(G.data*(defenseDataRisk/100));G.data-=dataLost;addHeat(20);addLog('AUTO-DEFEND FAILED ('+chance+'%): '+defenseAttacker.name+' stole '+fmt(dataLost)+' DATA','alert');}
+if(Math.random()*100<chance){const repGain=[10,25,50,100][defenseDifficulty];G.rep+=repGain;G.totalRep+=repGain;addHeat(5);G.totalDefenseSuccesses++;addLog(LF('logAutoDefendOk',chance,defenseAttacker.name,repGain),'info');checkMissionProgress();checkAchievements();}
+else{const dataLost=Math.floor(G.data*(defenseDataRisk/100));G.data-=dataLost;addHeat(20);addLog(LF('logAutoDefendFail',chance,defenseAttacker.name,fmt(dataLost)),'alert');}
 defenseActive=false;}
 
 // ========== DDOS SYSTEM ==========
@@ -2839,31 +3112,31 @@ function checkDDoS(){
 
 function triggerDDoS(){
   // EMP Shield: auto-block
-  if(G.upgrades.empShield&&G.empShieldCharge>0){G.empShieldCharge=0;G.empShieldLastRecharge=Date.now();addLog('EMP Shield blocked DDoS attack!','info');return;}
+  if(G.upgrades.empShield&&G.empShieldCharge>0){G.empShieldCharge=0;G.empShieldLastRecharge=Date.now();addLog(L('logEmpBlock'),'info');return;}
   ddosActive=true;ddosBotsOffline=true;ddosOfflineExpiry=Date.now()+60000;
   ddosTimeLeft=30;
-  document.getElementById('ddos-countdown').textContent='BOTS OFFLINE: 60s — Respond within 30s!';
+  document.getElementById('ddos-countdown').textContent=L('botsOffline60');
   document.getElementById('ddos-overlay').classList.add('active');
-  addLog('⚠ DDOS ATTACK — Bots offline!','alert');
+  addLog(L('logDdosOffline'),'alert');
   ddosTimer=setInterval(()=>{ddosTimeLeft--;
-  document.getElementById('ddos-countdown').textContent='Respond within '+ddosTimeLeft+'s or bots offline for 60s';
-  if(ddosTimeLeft<=0){clearInterval(ddosTimer);ddosTimer=null;closeDDoSOverlay();addLog('DDoS: no response — bots offline for 60s','alert');}},1000);
+  document.getElementById('ddos-countdown').textContent=LF('respondWithin',ddosTimeLeft);
+  if(ddosTimeLeft<=0){clearInterval(ddosTimer);ddosTimer=null;closeDDoSOverlay();addLog(L('logDdosNoResponse'),'alert');}},1000);
 }
 
 function ddosAbsorb(){if(!ddosActive)return;if(G.data<500)return;
 G.data-=500;ddosBotsOffline=false;ddosActive=false;
 if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
-closeDDoSOverlay();addLog('DDoS absorbed — bots back online (-500 DATA)','info');}
+closeDDoSOverlay();addLog(L('logDdosAbsorbed'),'info');}
 
 function ddosReroute(){if(!ddosActive)return;
 ddosBotsOffline=false;ddosActive=false;
 if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
-closeDDoSOverlay();addLog('DDoS rerouted — bots back online','info');}
+closeDDoSOverlay();addLog(L('logDdosRerouted'),'info');}
 
 function closeDDoSOverlay(){document.getElementById('ddos-overlay').classList.remove('active');ddosActive=false;}
 
 function checkDDoSExpiry(){
-  if(ddosBotsOffline&&Date.now()>=ddosOfflineExpiry){ddosBotsOffline=false;addLog('Bots back online after DDoS','info');}
+  if(ddosBotsOffline&&Date.now()>=ddosOfflineExpiry){ddosBotsOffline=false;addLog(L('logBotsBack'),'info');}
 }
 
 // ========== IP USURPATION ==========
@@ -2876,15 +3149,15 @@ function checkUsurpation(){
     if(enemies.length>0&&Math.random()<0.3){
       const attacker=enemies[Math.floor(Math.random()*enemies.length)];
       G.usurpationActive=true;G.usurpationExpiry=Date.now()+180000;G.usurpationCompany=attacker.name;
-      addLog('⚠ '+attacker.name+' is impersonating your IP address!','alert');
-      if(G.upgrades.ipspoofer){G.usurpationActive=false;G.usurpationExpiry=0;addLog('IP Spoofer auto-blocked usurpation','info');}
+      addLog(LF('logUsurpation',attacker.name),'alert');
+      if(G.upgrades.ipspoofer){G.usurpationActive=false;G.usurpationExpiry=0;addLog(L('logUsurpBlock'),'info');}
     }
   }
 }
 
 function updateUsurpation(){
   if(!G.usurpationActive)return;
-  if(Date.now()>=G.usurpationExpiry){G.usurpationActive=false;G.usurpationExpiry=0;addLog('IP usurpation expired','info');return;}
+  if(Date.now()>=G.usurpationExpiry){G.usurpationActive=false;G.usurpationExpiry=0;addLog(L('logUsurpExpired'),'info');return;}
   addHeat(2/60);
 }
 
@@ -2893,30 +3166,30 @@ function checkBounty(){
   if(G.activeBounty)return;
   if(G.darkWebRep>=2000&&!G.activeBounty){
     G.activeBounty=true;G.bountyDefenseCount=0;
-    addLog('⚠ A bounty has been placed on '+G.operatorAlias+'! Elite hunters incoming.','alert');
+    addLog(LF('logBountyPlaced',G.operatorAlias),'alert');
     showBountyOverlay();
   }
 }
 
 function showBountyOverlay(){
-  document.getElementById('bounty-info').textContent='A bounty has been placed on alias "'+G.operatorAlias+'". Elite hunters will attack every 60s until resolved.';
+  document.getElementById('bounty-info').textContent=LF('bountyInfo',G.operatorAlias);
   const trace=getTraceability();
-  let status='Defend 3 manual attacks ('+G.bountyDefenseCount+'/3) or pay 10% CREDITS or reduce traceability below 30% (current: '+trace+'%)';
+  let status=LF('bountyStatus',G.bountyDefenseCount,trace);
   document.getElementById('bounty-status').textContent=status;
   document.getElementById('bounty-overlay').classList.add('active');
 }
 
 function bountyPayOff(){
   const cost=Math.floor(G.credits*0.1);
-  if(cost<=0){addLog('Not enough CREDITS to pay off bounty','alert');return;}
+  if(cost<=0){addLog(L('logBountyNoCr'),'alert');return;}
   G.credits-=cost;G.activeBounty=false;G.bountyDefenseCount=0;
-  addLog('Paid off bounty hunter — '+fmt(cost)+' CREDITS','info');
+  addLog(LF('logBountyPaid',fmt(cost)),'info');
   document.getElementById('bounty-overlay').classList.remove('active');
 }
 
 function bountyGoDark(){
-  if(getTraceability()<30){G.activeBounty=false;G.bountyDefenseCount=0;addLog('Gone dark — bounty dropped','info');document.getElementById('bounty-overlay').classList.remove('active');}
-  else{addLog('Traceability too high to go dark (need <30%)','alert');}
+  if(getTraceability()<30){G.activeBounty=false;G.bountyDefenseCount=0;addLog(L('logGoneDark'),'info');document.getElementById('bounty-overlay').classList.remove('active');}
+  else{addLog(L('logTraceTooHigh'),'alert');}
 }
 
 function closeBountyOverlay(){document.getElementById('bounty-overlay').classList.remove('active');}
@@ -2947,8 +3220,8 @@ function checkNpcVirusDeployment(){
   if(Math.random()<0.5){
     const attacker=enemies[Math.floor(Math.random()*enemies.length)];
     G.virusActive=true;G.virusExpiry=Date.now()+600000;G.virusCompany=attacker.name;
-    addLog('⚠ '+attacker.name+' deployed a virus in your systems','alert');
-    addLog('Fix: type "sudo clamscan -r /home" then "sudo systemctl restart cron" OR pay 1000 DATA','warning');
+    addLog(LF('logVirusDeployed',attacker.name),'alert');
+    addLog(L('logVirusFix'),'warning');
   }
 }
 
@@ -2958,10 +3231,10 @@ document.getElementById('hack-input').addEventListener('keydown',(e)=>{
   if(e.key==='Enter'&&!hackActive&&G.virusActive){
     const typed=e.target.value.trim();
     if(virusRemovalStep===0&&typed.toLowerCase()==='sudo clamscan -r /home'){
-      virusRemovalStep=1;e.target.value='';addLog('Virus scan running... type next command','info');
+      virusRemovalStep=1;e.target.value='';addLog(L('logVirusScan'),'info');
     } else if(virusRemovalStep===1&&typed.toLowerCase()==='sudo systemctl restart cron'){
       virusRemovalStep=0;G.virusActive=false;G.virusExpiry=0;e.target.value='';
-      addLog('Virus removed! Bot income restored.','info');
+      addLog(L('logVirusRemoved'),'info');
     }
   }
   // Espionage removal
@@ -2969,10 +3242,10 @@ document.getElementById('hack-input').addEventListener('keydown',(e)=>{
     const typed=e.target.value.trim();
     if(!G._espStep)G._espStep=0;
     if(G._espStep===0&&typed.toLowerCase()==='sudo netstat -an | grep established'){
-      G._espStep=1;e.target.value='';addLog('Connection found... type next command','info');
+      G._espStep=1;e.target.value='';addLog(L('logEspionageFound'),'info');
     } else if(G._espStep===1&&typed.toLowerCase()==='sudo iptables -a input -s attacker_ip -j drop'){
       G._espStep=0;G.espionageActive=false;G.espionageExpiry=0;e.target.value='';
-      addLog('Espionage blocked! Auto-defense restored.','info');
+      addLog(L('logEspionageBlocked'),'info');
     }
   }
 });
@@ -2981,7 +3254,7 @@ function autoRemoveVirus(){
   if(!G.virusActive)return;
   if(G.data<1000)return;
   G.data-=1000;G.virusActive=false;G.virusExpiry=0;virusRemovalStep=0;
-  addLog('Virus auto-removed — paid 1000 DATA','info');
+  addLog(L('logVirusAutoRemove'),'info');
 }
 
 // --- Fake contracts (social engineering) ---
@@ -3001,17 +3274,17 @@ function checkFakeContracts(){
   const area=document.getElementById('contract-area');if(!area)return;
   const div=document.createElement('div');
   div.className='contract-notif'+(isFlagged?' fake':'');
-  const flagText=isFlagged?'<span style="color:var(--danger);font-weight:bold">[SUSPICIOUS] </span>':'';
-  div.innerHTML=`${flagText}🤝 ${fakeName} offers alliance (+5 CR/s for 10 min) <button onclick="acceptFakeContract('${enemy.name}',this.parentElement)">[ ACCEPT ]</button>`;
+  const flagText=isFlagged?'<span style="color:var(--danger);font-weight:bold">'+L('suspicious')+' </span>':'';
+  div.innerHTML=`${flagText}${LF('fakeContractSuspicious',fakeName)} <button onclick="acceptFakeContract('${enemy.name}',this.parentElement)">${L('accept')}</button>`;
   area.appendChild(div);
-  addLog('🤝 '+fakeName+' offers a contract'+(isFlagged?' [SUSPICIOUS]':''),'info');
+  addLog(LF('offersContract',fakeName)+(isFlagged?' '+L('suspicious'):''),'info');
   setTimeout(()=>{if(div.parentElement)div.remove();},30000);
 }
 
 function acceptFakeContract(enemyName,el){
   G.credits=Math.max(0,G.credits-500);
   addHeat(30);
-  addLog('⚠ SCAM — Fake contract from '+enemyName+'! -500 CREDITS, +30 HEAT','alert');
+  addLog(LF('logScam',enemyName),'alert');
   if(el)el.remove();
 }
 
@@ -3026,15 +3299,15 @@ function checkFalseFlag(){
   if(enemies.length===0||Math.random()>0.3)return;
   const attacker=enemies[Math.floor(Math.random()*enemies.length)];
   // Log cleaner auto-blocks
-  if(G.upgrades.logcleaner){addLog('Log Cleaner blocked false flag from '+attacker.name,'info');return;}
+  if(G.upgrades.logcleaner){addLog(LF('logFalseFlagBlock',attacker.name),'info');return;}
   G.falseFlagActive=true;G.falseFlagExpiry=Date.now()+300000;G.falseFlagCompany=attacker.name;
-  addLog('⚠ '+attacker.name+' is using your IP for their attacks — you are being framed','alert');
-  addLog('Fix: CHANGE IP (200 DATA) in Corp ID','warning');
+  addLog(LF('logFalseFlag',attacker.name),'alert');
+  addLog(L('logFalseFlagFix'),'warning');
 }
 
 function updateFalseFlag(){
   if(!G.falseFlagActive)return;
-  if(Date.now()>=G.falseFlagExpiry){G.falseFlagActive=false;G.falseFlagExpiry=0;addLog('False flag expired','info');return;}
+  if(Date.now()>=G.falseFlagExpiry){G.falseFlagActive=false;G.falseFlagExpiry=0;addLog(L('logFalseFlagExpired'),'info');return;}
   addHeat(15/(300));// +15 over 5 min = +15/300 per second
 }
 
@@ -3049,15 +3322,15 @@ function checkEspionage(){
   if(enemies.length===0||Math.random()>0.25)return;
   const spy=enemies[Math.floor(Math.random()*enemies.length)];
   // Honeypot: convert attacker to temp ally
-  if(G.upgrades.honeypot){spy.relation='ally';spy.allyExpiry=Date.now()+300000;addLog('Honeypot: '+spy.name+' trapped — converted to temp ally for 5 min!','info');return;}
+  if(G.upgrades.honeypot){spy.relation='ally';spy.allyExpiry=Date.now()+300000;addLog(LF('logHoneypot',spy.name),'info');return;}
   G.espionageActive=true;G.espionageExpiry=Date.now()+600000;G.espionageCompany=spy.name;G._espStep=0;
-  addLog('⚠ '+spy.name+' has infiltrated your systems — they can see your defenses','alert');
-  addLog('Fix: type "sudo netstat -an | grep ESTABLISHED" + "sudo iptables -A INPUT -s attacker_ip -j DROP"','warning');
+  addLog(LF('logEspionage',spy.name),'alert');
+  addLog(L('logEspionageFix'),'warning');
 }
 
 function updateEspionage(){
   if(!G.espionageActive)return;
-  if(Date.now()>=G.espionageExpiry){G.espionageActive=false;G.espionageExpiry=0;addLog('Espionage link expired','info');}
+  if(Date.now()>=G.espionageExpiry){G.espionageActive=false;G.espionageExpiry=0;addLog(L('logEspionageExpired'),'info');}
 }
 
 // --- NPC Coalitions ---
@@ -3071,8 +3344,8 @@ function checkCoalitions(){
   const shuffled=[...enemies].sort(()=>Math.random()-0.5);
   const c1=shuffled[0],c2=shuffled[1];
   G.coalitionActive=true;G.coalitionCompanies=[c1.name,c2.name];G.coalitionExpiry=Date.now()+600000;
-  addLog('⚠ '+c1.name+' and '+c2.name+' have formed an alliance against ByteCorp','alert');
-  addNewsItem(c1.name+' and '+c2.name+' formed coalition against ByteCorp');
+  addLog(LF('logCoalition',c1.name,c2.name),'alert');
+  addNewsItem(LF('newsCoalition',c1.name,c2.name));
   // Trigger coordinated attacks within 30 seconds
   setTimeout(()=>{if(G.coalitionActive&&!defenseActive&&!defenseGameActive){
     const npc1=G.npcs.find(n=>n.name===G.coalitionCompanies[0]);
@@ -3086,9 +3359,9 @@ function checkCoalitions(){
 
 function breakCoalitionByPayment(){
   if(!G.coalitionActive)return;
-  if(G.credits<5000){addLog('Need 5000 CREDITS to break coalition','alert');return;}
+  if(G.credits<5000){addLog(L('logCoalitionNeed'),'alert');return;}
   G.credits-=5000;G.coalitionActive=false;G.coalitionCompanies=[];G.coalitionExpiry=0;G.coalitionBroken++;
-  addLog('Coalition broken — paid neutral NPC to mediate','info');
+  addLog(L('logCoalitionPaid'),'info');
   checkAchievements();
 }
 
@@ -3110,13 +3383,13 @@ function checkBotHijacking(){
   const botIdx=ownedBots[Math.floor(Math.random()*ownedBots.length)];
   const attacker=enemies[Math.floor(Math.random()*enemies.length)];
   G.hijackedBot=botIdx;G.hijackedExpiry=Date.now()+300000;G.hijackedCompany=attacker.name;
-  addLog('⚠ '+BOTS[botIdx].name+' has been compromised by '+attacker.name,'alert');
+  addLog(LF('logBotHijacked',LP(BOTS[botIdx],'name'),attacker.name),'alert');
   renderBots();
 }
 
 function updateHijackedBot(){
   if(G.hijackedBot<0)return;
-  if(Date.now()>=G.hijackedExpiry){G.hijackedBot=-1;G.hijackedExpiry=0;G.hijackedCompany='';addLog('Hijacked bot restored','info');renderBots();return;}
+  if(Date.now()>=G.hijackedExpiry){G.hijackedBot=-1;G.hijackedExpiry=0;G.hijackedCompany='';addLog(L('logBotRestored'),'info');renderBots();return;}
   // Hijacked bot generates HEAT instead of DATA
   addHeat(0.5/60);
 }
@@ -3132,19 +3405,19 @@ function npcWarfare(){
     const a=G.npcs[Math.floor(Math.random()*G.npcs.length)];
     let b;do{b=G.npcs[Math.floor(Math.random()*G.npcs.length)];}while(b===a);
     b.securityLevel=Math.max(1,b.securityLevel-1);
-    addNewsItem(a.name+' successfully hacked '+b.name+' — '+b.name+' security -1');
+    addNewsItem(LF('newsNpcHack',a.name,b.name,b.name));
   } else if(roll<0.45){
     // Alliance
     const a=G.npcs[Math.floor(Math.random()*G.npcs.length)];
     let b;do{b=G.npcs[Math.floor(Math.random()*G.npcs.length)];}while(b===a);
-    addNewsItem(a.name+' and '+b.name+' formed a strategic alliance');
+    addNewsItem(LF('newsAlliance',a.name,b.name));
   } else if(roll<0.60){
     // Bankruptcy
     const idx=Math.floor(Math.random()*G.npcs.length);
     const old=G.npcs[idx];
     const newNames=['CyberPulse','NetGhost','DataWyrm','ByteStorm','CodeVenom','HexCraft','NullSec','DarkFlux','SysBreaker','GridLock'];
     const newName=newNames[Math.floor(Math.random()*newNames.length)];
-    addNewsItem(old.name+' went bankrupt — replaced by '+newName);
+    addNewsItem(LF('newsBankrupt',old.name,newName));
     G.npcs[idx]={name:newName,os:Math.random()>0.5?'Linux':'Windows',baseDifficulty:Math.floor(Math.random()*4),
     securityLevel:1+Math.random()*3,relation:'neutral',hackCount:0,lastHackTime:0,lastInteraction:Date.now(),
     allyExpiry:0,tracerExpiry:0,breachExpiry:0,breachMulti:1,virusEffect:null,virusExpiry:0,income:100};
@@ -3152,14 +3425,14 @@ function npcWarfare(){
     // Bounty offering
     const a=G.npcs[Math.floor(Math.random()*G.npcs.length)];
     let b;do{b=G.npcs[Math.floor(Math.random()*G.npcs.length)];}while(b===a);
-    addNewsItem(a.name+' offering bounty on '+b.name+' — opportunity available');
+    addNewsItem(LF('newsBounty',a.name,b.name));
   } else {
     // Acquisition/merge
     const idxA=Math.floor(Math.random()*G.npcs.length);
     let idxB;do{idxB=Math.floor(Math.random()*G.npcs.length);}while(idxB===idxA);
     const a=G.npcs[idxA],b=G.npcs[idxB];
     const mergedSec=Math.min(10,(a.securityLevel+b.securityLevel)/2+1);
-    addNewsItem(a.name+' acquired '+b.name+' — merged (security '+mergedSec.toFixed(1)+')');
+    addNewsItem(LF('newsMerger',a.name,b.name,mergedSec.toFixed(1)));
     a.securityLevel=mergedSec;
     // Replace b with new company
     const newNames=['VortexData','PlexNet','EdgeNode','OmegaSec','SpectraByte'];
@@ -3188,22 +3461,22 @@ function renderMissionsList(){
     div.className='mission-item'+(completed?' completed':'')+(isActive?' active':'')+(isLocked?' locked':'');
     let progressText='';
     if(isActive){
-      if(m.id==='m1')progressText='Progress: '+Math.min(G.totalDataMined,100)+'/100 DATA mined';
-      else if(m.id==='m2')progressText='Progress: '+G.totalHacks+'/1 hacks';
-      else if(m.id==='m3')progressText='Current traceability: '+getTraceability()+'%';
-      else if(m.id==='m4')progressText='Progress: '+G.totalItemsSold+'/3 sold';
-      else if(m.id==='m5')progressText='Need Hard/Elite hack';
-      else if(m.id==='m6'){const ec=G.npcs?G.npcs.filter(n=>n.relation==='enemy').length:0;progressText='Enemies: '+ec+'/3';}
-      else if(m.id==='m7')progressText='Defenses: '+G.totalDefenseSuccesses+'/5';
-      else if(m.id==='m8')progressText='DW Rep: '+Math.floor(G.darkWebRep)+'/501';
-      else if(m.id==='m9')progressText='Traceability: '+getTraceability()+'%';
-      else if(m.id==='m10')progressText='Targets hacked: '+G.m10HackedCount+'/3';
+      if(m.id==='m1')progressText=L('progressLabel')+': '+Math.min(G.totalDataMined,100)+'/100 DATA mined';
+      else if(m.id==='m2')progressText=L('progressLabel')+': '+G.totalHacks+'/1 hacks';
+      else if(m.id==='m3')progressText=L('currentTrace')+': '+getTraceability()+'%';
+      else if(m.id==='m4')progressText=L('progressLabel')+': '+G.totalItemsSold+'/3 sold';
+      else if(m.id==='m5')progressText=L('needHardElite');
+      else if(m.id==='m6'){const ec=G.npcs?G.npcs.filter(n=>n.relation==='enemy').length:0;progressText=L('enemiesLabel')+': '+ec+'/3';}
+      else if(m.id==='m7')progressText=L('defensesLabel')+': '+G.totalDefenseSuccesses+'/5';
+      else if(m.id==='m8')progressText=L('dwRepLabel')+': '+Math.floor(G.darkWebRep)+'/501';
+      else if(m.id==='m9')progressText=L('traceLabel')+': '+getTraceability()+'%';
+      else if(m.id==='m10')progressText=L('targetsHacked')+': '+G.m10HackedCount+'/3';
     }
     let claimBtn='';
-    if(isActive&&m.check()&&!completed)claimBtn=`<button class="mission-claim" onclick="claimMission('${m.id}')">[ CLAIM REWARD ]</button>`;
-    div.innerHTML=`<div class="mission-name">${completed?'✓ ':''}M${i+1}: ${m.name}</div>
-    <div class="mission-desc">${m.desc}</div>
-    <div class="mission-reward">Reward: ${m.rewardText}</div>
+    if(isActive&&m.check()&&!completed)claimBtn=`<button class="mission-claim" onclick="claimMission('${m.id}')">${L('claimReward')}</button>`;
+    div.innerHTML=`<div class="mission-name">${completed?'✓ ':''}M${i+1}: ${LP(m,'name')}</div>
+    <div class="mission-desc">${LP(m,'desc')}</div>
+    <div class="mission-reward">${L('rewardLabel')}: ${LP(m,'rewardText')}</div>
     ${progressText?'<div class="mission-progress">'+progressText+'</div>':''}
     ${claimBtn}`;
     el.appendChild(div);
@@ -3216,20 +3489,20 @@ function claimMission(id){
   G.missions.push(id);
   if(m.reward.data)G.data+=m.reward.data;
   if(m.reward.credits)G.credits+=m.reward.credits;
-  if(m.reward.freeBot!==undefined){G.bots[m.reward.freeBot]++;addLog('Free bot: '+BOTS[m.reward.freeBot].name,'info');}
-  if(m.reward.freeUpgrade){G.upgrades[m.reward.freeUpgrade]=true;addLog('Free upgrade: '+m.reward.freeUpgrade,'info');}
+  if(m.reward.freeBot!==undefined){G.bots[m.reward.freeBot]++;addLog(LF('logFreeBot',LP(BOTS[m.reward.freeBot],'name')),'info');}
+  if(m.reward.freeUpgrade){G.upgrades[m.reward.freeUpgrade]=true;addLog(LF('logFreeUpgrade',m.reward.freeUpgrade),'info');}
   if(m.reward.classified){
     G.classifiedUnlocked=true;
-    addLog('CLASSIFIED unlocked: trace -20%, hack rewards x2, Shadow Mode active!','info');
+    addLog(L('logClassified'),'info');
   }
-  addLog('MISSION COMPLETE: '+m.name+' — '+m.rewardText,'info');
+  addLog(LF('logMissionComplete',LP(m,'name'),LP(m,'rewardText')),'info');
   // Initialize M10 targets if M9 just completed
   if(id==='m9'&&G.m10Targets.length===0){
     const available=G.npcs.filter(n=>n.relation!=='ally');
     const shuffled=[...available].sort(()=>Math.random()-0.5);
     G.m10Targets=shuffled.slice(0,3).map(n=>n.name);
     G.m10StartTime=Date.now();G.m10HackedCount=0;
-    addLog('M10 Targets: '+G.m10Targets.join(' -> '),'warning');
+    addLog(LF('logM10Targets',G.m10Targets.join(' -> ')),'warning');
   }
   renderMissionsList();checkAchievements();
 }
@@ -3252,7 +3525,7 @@ function checkUrgentContracts(){
   const target=targets[Math.floor(Math.random()*targets.length)];
   G.urgentContract={ally:ally.name,target:target.name};
   G.urgentContractExpiry=Date.now()+180000;// 3 min
-  document.getElementById('uc-text').textContent='🤝 '+ally.name+' offers contract: Hack '+target.name+' within 3 min — Reward x4';
+  document.getElementById('uc-text').textContent=LF('urgentContractText',ally.name,target.name);
   updateUrgentContractTimer();
   document.getElementById('urgent-contract-banner').classList.add('active');
 }
@@ -3262,18 +3535,18 @@ function updateUrgentContractTimer(){
     document.getElementById('urgent-contract-banner').classList.remove('active');
     if(G.urgentContract){
       G.credits=Math.max(0,G.credits-200);
-      addLog('Urgent contract expired — -200 CREDITS','alert');
+      addLog(L('logUrgentExpired'),'alert');
       G.urgentContract=null;G.urgentContractExpiry=0;
     }
     return;
   }
   const rem=Math.ceil((G.urgentContractExpiry-Date.now())/1000);
-  document.getElementById('uc-timer').textContent='Time remaining: '+Math.floor(rem/60)+'m '+rem%60+'s';
+  document.getElementById('uc-timer').textContent=LF('timeRemaining',Math.floor(rem/60),rem%60);
 }
 
 function acceptUrgentContract(){
   if(!G.urgentContract)return;
-  addLog('Contract accepted: Hack '+G.urgentContract.target+' within 3 min!','info');
+  addLog(LF('logContractAccepted',G.urgentContract.target),'info');
   document.getElementById('urgent-contract-banner').classList.remove('active');
   // Contract stays active, completion tracked in completeDownload
 }
@@ -3281,18 +3554,18 @@ function acceptUrgentContract(){
 function declineUrgentContract(){
   G.urgentContract=null;G.urgentContractExpiry=0;
   document.getElementById('urgent-contract-banner').classList.remove('active');
-  addLog('Contract declined','info');
+  addLog(L('logContractDeclined'),'info');
 }
 
 // ========== 5. DEPLOYABLE VIRUSES (OFFENSIVE) ==========
 function renderVirusList(){
   const el=document.getElementById('virus-list');if(!el)return;el.innerHTML='';
-  if(!G.upgrades.ipspoofer){el.innerHTML='<div style="font-size:0.7em;color:#cccccc;padding:12px">Requires IP Spoofer upgrade</div>';return;}
+  if(!G.upgrades.ipspoofer){el.innerHTML='<div style="font-size:0.7em;color:#cccccc;padding:12px">'+L('requiresSpoofer')+'</div>';return;}
   VIRUS_TYPES.forEach(v=>{
     const card=document.createElement('div');card.className='virus-card';
-    card.innerHTML=`<div class="virus-name">${v.name}</div>
-    <div class="virus-desc">${v.desc}</div>
-    <button class="virus-deploy" ${G.data<v.cost?'disabled':''} onclick="deployVirusSelect('${v.id}')">[ DEPLOY — ${fmt(v.cost)} DATA ]</button>`;
+    card.innerHTML=`<div class="virus-name">${LP(v,'name')}</div>
+    <div class="virus-desc">${LP(v,'desc')}</div>
+    <button class="virus-deploy" ${G.data<v.cost?'disabled':''} onclick="deployVirusSelect('${v.id}')">${LF('deployBtn',fmt(v.cost))}</button>`;
     el.appendChild(card);
   });
 }
@@ -3305,23 +3578,23 @@ function deployVirusSelect(virusId){
   const npc=currentTarget;
   const detected=G.upgrades.polymorphicVirus?false:Math.random()<v.detection;
   if(detected){
-    addLog('⚠ Virus detected by '+npc.name+'! They are now HOSTILE.','alert');
+    addLog(LF('logVirusDetected',npc.name),'alert');
     npc.relation='enemy';npc.tracerExpiry=Date.now()+600000;
     addHeat(20);
   } else {
     if(v.effect==='secDown2'){
       npc.securityLevel=Math.max(1,npc.securityLevel-2);
       npc.virusEffect='secDown2';npc.virusExpiry=Date.now()+v.duration;
-      addLog('Logic Bomb deployed on '+npc.name+' — security -2 for 10 min','info');
-      addNewsItem('Unknown attacker deployed logic bomb on '+npc.name);
+      addLog(LF('logLogicBomb',npc.name),'info');
+      addNewsItem(LF('newsLogicBomb',npc.name));
     } else if(v.effect==='noIncome'){
       npc.virusEffect='noIncome';npc.virusExpiry=Date.now()+v.duration;
-      addLog('Ransomware deployed on '+npc.name+' — income halted for 15 min','info');
-      addNewsItem(npc.name+' hit by ransomware — operations halted');
+      addLog(LF('logRansomware',npc.name),'info');
+      addNewsItem(LF('newsRansomware',npc.name));
     } else if(v.effect==='permSecDown1'){
       npc.securityLevel=Math.max(1,npc.securityLevel-1);
-      addLog('Rootkit deployed on '+npc.name+' — permanent security -1','info');
-      addNewsItem(npc.name+' compromised by rootkit — security permanently weakened');
+      addLog(LF('logRootkit',npc.name),'info');
+      addNewsItem(LF('newsRootkit',npc.name));
     }
   }
   G.deployedViruses.push({virusId,target:npc.name,deployed:Date.now(),detected});
@@ -3339,16 +3612,16 @@ function renderSkillsList(){
   const el=document.getElementById('skills-list');el.innerHTML='';
   for(const[branchKey,branch] of Object.entries(SKILL_TREE)){
     const div=document.createElement('div');div.className='skill-branch';
-    div.innerHTML=`<div class="skill-branch-title" style="color:${branch.color}">${branch.name}</div>`;
+    div.innerHTML=`<div class="skill-branch-title" style="color:${branch.color}">${LP(branch,'name')}</div>`;
     branch.skills.forEach(s=>{
       const owned=!!G.skills[s.id];
       const locked=s.requires&&!G.skills[s.requires];
       const actualCost=getSkillCost(s.cost);
       const canAfford=G.credits>=actualCost;
       const item=document.createElement('div');item.className='skill-item'+(owned?' owned':'')+(locked?' locked':'');
-      item.innerHTML=`<div class="skill-info"><div class="skill-name" style="color:${branch.color}">${s.name}${owned?' [OWNED]':''}</div>
-      <div class="skill-desc">${s.desc} — ${fmt(actualCost)} CR</div></div>
-      <button class="skill-buy" style="border:1px solid ${branch.color};color:${branch.color}" ${(owned||locked||!canAfford)?'disabled':''} onclick="buySkill('${s.id}')">${owned?'✓':locked?'LOCKED':'BUY'}</button>`;
+      item.innerHTML=`<div class="skill-info"><div class="skill-name" style="color:${branch.color}">${LP(s,'name')}${owned?' '+L('owned'):''}</div>
+      <div class="skill-desc">${LP(s,'desc')} — ${fmt(actualCost)} CR</div></div>
+      <button class="skill-buy" style="border:1px solid ${branch.color};color:${branch.color}" ${(owned||locked||!canAfford)?'disabled':''} onclick="buySkill('${s.id}')">${owned?'✓':locked?L('locked'):L('buy')}</button>`;
       div.appendChild(item);
     });
     el.appendChild(div);
@@ -3366,7 +3639,7 @@ function buySkill(id){
   const actualCost=getSkillCost(skill.cost);
   if(G.credits<actualCost)return;
   G.credits-=actualCost;G.skills[id]=true;
-  addLog('Skill unlocked: '+skill.name,'info');
+  addLog(LF('logSkillUnlock',LP(skill,'name')),'info');
   renderSkillsList();checkAchievements();
 }
 
@@ -3383,8 +3656,8 @@ function renderAchievementsList(){
     const unlocked=G.achievements.includes(a.id);
     const div=document.createElement('div');div.className='ach-item'+(unlocked?' unlocked':' locked');
     div.innerHTML=`<div class="ach-icon">${unlocked?a.icon:'🔒'}</div>
-    <div class="ach-info"><div class="ach-name">${a.name}</div>
-    <div class="ach-desc">${unlocked?a.desc:'???'}</div></div>`;
+    <div class="ach-info"><div class="ach-name">${LP(a,'name')}</div>
+    <div class="ach-desc">${unlocked?LP(a,'desc'):'???'}</div></div>`;
     el.appendChild(div);
   });
 }
@@ -3394,7 +3667,7 @@ function checkAchievements(){
   ACHIEVEMENTS.forEach(a=>{
     if(!G.achievements.includes(a.id)&&a.check()){
       G.achievements.push(a.id);
-      addLog('ACHIEVEMENT UNLOCKED: '+a.name+' '+a.icon,'info');
+      addLog(LF('logAchUnlock',LP(a,'name'),a.icon),'info');
       newUnlock=true;
     }
   });
@@ -3416,7 +3689,7 @@ function renderNewsfeed(){
   const allItems=[...items.map(i=>i.text)];
   if(allItems.length<5){
     for(let i=0;i<3;i++){
-      allItems.push(CYBERPUNK_NEWS[Math.floor(Math.random()*CYBERPUNK_NEWS.length)]);
+      allItems.push((currentLang==='fr'?CYBERPUNK_NEWS_FR:CYBERPUNK_NEWS)[Math.floor(Math.random()*(currentLang==='fr'?CYBERPUNK_NEWS_FR:CYBERPUNK_NEWS).length)]);
     }
   }
   allItems.forEach(text=>{
@@ -3428,11 +3701,11 @@ function renderNewsfeed(){
 function updateNewsfeed(){
   // Periodically add a cyberpunk news item
   if(Math.random()<0.3){
-    addNewsItem(CYBERPUNK_NEWS[Math.floor(Math.random()*CYBERPUNK_NEWS.length)]);
+    addNewsItem((currentLang==='fr'?CYBERPUNK_NEWS_FR:CYBERPUNK_NEWS)[Math.floor(Math.random()*(currentLang==='fr'?CYBERPUNK_NEWS_FR:CYBERPUNK_NEWS).length)]);
   }
   // Add player action reactions
   if(G.totalHacks>0&&Math.random()<0.2){
-    addNewsItem('Underground forums buzz about ByteCorp\'s latest exploits');
+    addNewsItem(L('newsForums'));
   }
 }
 
@@ -3440,9 +3713,9 @@ function updateNewsfeed(){
 function updateLevel(){let current=LEVELS[0];for(const l of LEVELS){if(G.rep>=l.rep)current=l;else break;}
 const el=document.getElementById('level-info');
 if(el){
-  let title=current.title;
-  if(G.classifiedUnlocked)title+=' [SHADOW]';
-  el.textContent='LVL '+current.lv+' — '+title;
+  let title=LP(current,'title');
+  if(G.classifiedUnlocked)title+=' '+L('shadowLabel');
+  el.textContent=LF('lvlTitle',current.lv,title);
 }
 const endgameLv=G.upgrades.ipoAccelerator?25:50;
 if(current.lv>=endgameLv&&!G._endgameShown){G._endgameShown=true;document.getElementById('endgame-overlay').classList.add('active');}}
@@ -3496,11 +3769,11 @@ document.body.classList.remove('god-mode-active','public-mode');
 document.getElementById('main').style.display='';
 document.getElementById('public-container').classList.remove('active');
 document.querySelector('#header h1').textContent='BYTECORP';
-const _rl2=document.querySelectorAll('.res-label');if(_rl2[0])_rl2[0].textContent='DATA';if(_rl2[1])_rl2[1].textContent='CREDITS';if(_rl2[2])_rl2[2].textContent='REP';
+const _rl2=document.querySelectorAll('.res-label');if(_rl2[0])_rl2[0].textContent=L('data');if(_rl2[1])_rl2[1].textContent=L('credits');if(_rl2[2])_rl2[2].textContent=L('rep');
 document.getElementById('crypto-res-wrap').style.display='none';
 document.getElementById('infra-tab-btn').style.display='none';
 restoreHackerHeader();
-addLog('NEW GAME+ #'+G.prestige+' — +'+Math.round((G.prestigeMulti-1)*100)+'% DATA/s bonus','info');saveGame();renderAll();}
+addLog(LF('logNewGamePlus',G.prestige,Math.round((G.prestigeMulti-1)*100)),'info');saveGame();renderAll();}
 
 // ========== SAVE / LOAD ==========
 function saveGame(){const save={data:G.data,credits:G.credits,rep:G.rep,heat:G.heat,dataPower:G.dataPower,bots:G.bots,devs:G.devs,upgrades:G.upgrades,
@@ -3624,7 +3897,7 @@ function manualSave(){saveGame();const flash=document.getElementById('save-flash
 function openMenu(){document.getElementById('menu-overlay').classList.add('active');}
 function closeMenu(){document.getElementById('menu-overlay').classList.remove('active');}
 function saveAndQuit(){saveGame();stopGame();closeMenu();document.getElementById('game-container').style.display='none';showStartScreen();}
-function resetRun(){if(!confirm('Reset all progress? This cannot be undone.'))return;localStorage.removeItem('bytecorp_save');stopGame();closeMenu();
+function resetRun(){if(!confirm(L('confirmReset')))return;localStorage.removeItem('bytecorp_save');stopGame();closeMenu();
 document.getElementById('game-container').style.display='none';
 G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
 G.prestige=0;G.prestigeMulti=1;G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;
@@ -3663,7 +3936,7 @@ document.body.classList.remove('god-mode-active','public-mode');
 document.getElementById('main').style.display='';
 document.getElementById('public-container').classList.remove('active');
 document.querySelector('#header h1').textContent='BYTECORP';
-const _rl=document.querySelectorAll('.res-label');if(_rl[0])_rl[0].textContent='DATA';if(_rl[1])_rl[1].textContent='CREDITS';if(_rl[2])_rl[2].textContent='REP';
+const _rl=document.querySelectorAll('.res-label');if(_rl[0])_rl[0].textContent=L('data');if(_rl[1])_rl[1].textContent=L('credits');if(_rl[2])_rl[2].textContent=L('rep');
 document.getElementById('crypto-res-wrap').style.display='none';
 document.getElementById('infra-tab-btn').style.display='none';
 restoreHackerHeader();
@@ -3683,9 +3956,9 @@ function renderInfraList(){
     const owned=i<G.infraNodes;
     const cost=Math.floor(50000*Math.pow(2,i));
     const node=document.createElement('div');node.className='infra-node'+(owned?' active':'');
-    node.innerHTML=`<div><div class="infra-node-name">Server Node #${i+1}</div>
-    <div class="infra-node-info">${owned?'+500 DATA/s [ONLINE]':'Cost: '+fmt(cost)+' CR'}</div></div>
-    ${owned?'':'<button class="infra-buy" '+(G.credits<cost?'disabled':'')+' onclick="buyInfraNode('+i+','+cost+')">BUY</button>'}`;
+    node.innerHTML=`<div><div class="infra-node-name">${LF('serverNode',i+1)}</div>
+    <div class="infra-node-info">${owned?L('nodeOnline'):LF('infraCost',fmt(cost))}</div></div>
+    ${owned?'':'<button class="infra-buy" '+(G.credits<cost?'disabled':'')+' onclick="buyInfraNode('+i+','+cost+')">'+L('buy')+'</button>'}`;
     el.appendChild(node);
   }
 }
@@ -3693,7 +3966,7 @@ function renderInfraList(){
 function buyInfraNode(idx,cost){
   if(idx!==G.infraNodes||G.credits<cost)return;
   G.credits-=cost;G.infraNodes++;
-  addLog('Server Node #'+G.infraNodes+' online — +500 DATA/s','info');
+  addLog(LF('logServerNode',G.infraNodes),'info');
   renderInfraList();
 }
 
@@ -3702,7 +3975,7 @@ function convertCrypto(){
   if(G.crypto<=0)return;
   const dataGain=Math.floor(G.crypto*1000);
   G.data+=dataGain;
-  addLog('Converted '+fmt(G.crypto)+' $CRYPTO -> '+fmt(dataGain)+' DATA','info');
+  addLog(LF('logCryptoConvert',fmt(G.crypto),fmt(dataGain)),'info');
   G.crypto=0;
 }
 
@@ -3716,17 +3989,17 @@ updateHijackedBot();
 if(G.upgrades.cryptoMining)G.crypto+=0.1/10;
 // Expire timed buffs
 const now=Date.now();
-if(G.quantumFirewallActive&&G.quantumFirewallExpiry<=now){G.quantumFirewallActive=false;addLog('Quantum Firewall expired','info');}
-if(G.ghostProtocol2Active&&G.ghostProtocol2Expiry<=now){G.ghostProtocol2Active=false;addLog('Ghost Protocol v2 expired','info');}
-if(G.zeroTrustActive&&G.zeroTrustExpiry<=now){G.zeroTrustActive=false;addLog('Zero Trust expired','info');}
-if(G.blackoutActive&&G.blackoutExpiry<=now){G.blackoutActive=false;addLog('Blackout expired','info');}
-if(G.stealthModeActive&&G.stealthModeExpiry<=now){G.stealthModeActive=false;addLog('Stealth Mode expired','info');}
-if(G.repMultiplierActive&&G.repMultiplierExpiry<=now){G.repMultiplierActive=false;addLog('Rep Multiplier expired','info');}
-if(G.darkWebFameActive&&G.darkWebFameExpiry<=now){G.darkWebFameActive=false;addLog('Dark Web Fame expired','info');}
-if(G.corporateSpyActive&&G.corporateSpyExpiry<=now){G.corporateSpyActive=false;G.corporateSpyBonus=0;addLog('Corporate Spy expired','info');}
-if(G.keyloggerActive&&G.keyloggerExpiry<=now){G.keyloggerActive=false;addLog('Keylogger expired','info');}
+if(G.quantumFirewallActive&&G.quantumFirewallExpiry<=now){G.quantumFirewallActive=false;addLog(L('logQfExpired'),'info');}
+if(G.ghostProtocol2Active&&G.ghostProtocol2Expiry<=now){G.ghostProtocol2Active=false;addLog(L('logGp2Expired'),'info');}
+if(G.zeroTrustActive&&G.zeroTrustExpiry<=now){G.zeroTrustActive=false;addLog(L('logZtExpired'),'info');}
+if(G.blackoutActive&&G.blackoutExpiry<=now){G.blackoutActive=false;addLog(L('logBlackoutExpired'),'info');}
+if(G.stealthModeActive&&G.stealthModeExpiry<=now){G.stealthModeActive=false;addLog(L('logStealthExpired'),'info');}
+if(G.repMultiplierActive&&G.repMultiplierExpiry<=now){G.repMultiplierActive=false;addLog(L('logRepMultiExpired'),'info');}
+if(G.darkWebFameActive&&G.darkWebFameExpiry<=now){G.darkWebFameActive=false;addLog(L('logDwFameExpired'),'info');}
+if(G.corporateSpyActive&&G.corporateSpyExpiry<=now){G.corporateSpyActive=false;G.corporateSpyBonus=0;addLog(L('logCorpSpyExpired'),'info');}
+if(G.keyloggerActive&&G.keyloggerExpiry<=now){G.keyloggerActive=false;addLog(L('logKeylogExpired'),'info');}
 // EMP Shield recharge
-if(G.upgrades.empShield&&G.empShieldCharge<=0&&now-G.empShieldLastRecharge>=1200000){G.empShieldCharge=1;addLog('EMP Shield recharged','info');}
+if(G.upgrades.empShield&&G.empShieldCharge<=0&&now-G.empShieldLastRecharge>=1200000){G.empShieldCharge=1;addLog(L('logEmpRecharge'),'info');}
 // Time Bomb detonation
 if(G.timeBombTarget&&G.timeBombExpiry>0&&now>=G.timeBombExpiry){
   const idx=G.npcs?G.npcs.findIndex(n=>n.name===G.timeBombTarget):-1;
@@ -3737,8 +4010,8 @@ if(G.timeBombTarget&&G.timeBombExpiry>0&&now>=G.timeBombExpiry){
     G.npcs[idx]={name:newName,os:Math.random()>0.5?'Linux':'Windows',baseDifficulty:Math.floor(Math.random()*4),
       securityLevel:1+Math.random()*2,relation:'neutral',hackCount:0,lastHackTime:0,lastInteraction:Date.now(),
       allyExpiry:0,tracerExpiry:0,breachExpiry:0,breachMulti:1,virusEffect:null,virusExpiry:0,income:100};
-    addLog('TIME BOMB: '+oldName+' destroyed! Replaced by '+newName,'info');
-    addNewsItem(oldName+' taken offline by time bomb — '+newName+' emerges');
+    addLog(LF('logTimeBombBoom',oldName,newName),'info');
+    addNewsItem(LF('newsTimeBomb',oldName,newName));
   }
   G.timeBombTarget='';G.timeBombExpiry=0;
 }
@@ -3750,7 +4023,7 @@ function slowLoop(){if(!gameRunning||gamePaused)return;
 // Data Broker: auto-sell common loot every 2 min
 if(G.upgrades.dataBroker){const now=Date.now();if(now-lastDataBrokerSell>=120000){lastDataBrokerSell=now;
   const commonIdx=G.lootInventory.findIndex(i=>i.rarity==='common');
-  if(commonIdx>=0){const item=G.lootInventory.splice(commonIdx,1)[0];G.data+=item.value;G.totalItemsSold++;addLog('Data Broker auto-sold '+item.name+' for '+fmt(item.value)+' DATA','info');}
+  if(commonIdx>=0){const item=G.lootInventory.splice(commonIdx,1)[0];G.data+=item.value;G.totalItemsSold++;addLog(LF('logDataBroker',item.name,fmt(item.value)),'info');}
 }}
 // Auction Bot: auto-win NPC auctions 50% of time
 if(G.upgrades.auctionBot){const now=Date.now();if(now-lastAuctionBotCheck>=60000){lastAuctionBotCheck=now;
@@ -3758,7 +4031,7 @@ if(G.upgrades.auctionBot){const now=Date.now();if(now-lastAuctionBotCheck>=60000
     const tier=LOOT_TABLE[r];const itemName=tier.items[Math.floor(Math.random()*tier.items.length)];
     const invLimit=G.upgrades.encryptedStorage?25:10;
     if(G.lootInventory.length<invLimit){G.lootInventory.push({name:itemName,rarity:r,value:Math.floor(500+Math.random()*2000),acquiredAt:Date.now()});
-      addLog('Auction Bot won: '+itemName+' ('+r+')','info');}
+      addLog(LF('logAuctionBot',itemName,r),'info');}
   }
 }}
 updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
@@ -3799,7 +4072,7 @@ G.lastCoalitionCheck=G.lastCoalitionCheck||Date.now();
 G.lastBotHijackCheck=G.lastBotHijackCheck||Date.now();
 G.lastNpcWarCheck=G.lastNpcWarCheck||Date.now();
 G.lastUrgentContractCheck=G.lastUrgentContractCheck||Date.now();
-renderAll();addLog('ByteCorp v2.0 initialized');addLog('Welcome, '+G.operatorAlias+'.');
+renderAll();addLog(L('logInit'));addLog(LF('logWelcome',G.operatorAlias));
 gameIntervals.push(setInterval(gameLoop,100));gameIntervals.push(setInterval(slowLoop,1000));
 pickTarget();gameIntervals.push(setInterval(pickTarget,45000));gameIntervals.push(setInterval(checkAllianceProposals,120000));
 gameIntervals.push(setInterval(randomNPCEvent,180000));
@@ -3818,9 +4091,9 @@ document.getElementById('btn-continue').style.display=hasSave()?'block':'none';u
 function continueGame(){const s=loadSaveData();if(!s)return;applySave(s);
 document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';
 if(G.gameMode==='public'){switchToPublicMode();}
-else{startGameLoops();addLog('Save restored');}}
+else{startGameLoops();addLog(L('logSaveRestored'));}}
 
-function newGame(){if(hasSave()){if(!confirm('This will erase your current save. Confirm?'))return;localStorage.removeItem('bytecorp_save');}
+function newGame(){if(hasSave()){if(!confirm(L('confirmNewSave')))return;localStorage.removeItem('bytecorp_save');}
 G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
 G.prestige=0;G.prestigeMulti=1;G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;
 G.lootInventory=[];G.activeAuctions=[];G.darkWebRep=0;G.forensicTraces=[];G.activeBounty=false;G.bountyDefenseCount=0;
@@ -4019,7 +4292,7 @@ function doIPO() {
   const tickInterval = setInterval(() => {
     tickCount++;
     const price = (42 + Math.random() * 5 - 2).toFixed(2);
-    tickEl.textContent = '$BC ' + price + ' | ' + ['PROCESSING...', 'LISTING...', 'GOING PUBLIC...'][tickCount % 3];
+    tickEl.textContent = '$BC ' + price + ' | ' + [L('processing'), L('listing'), L('goingPublic')][tickCount % 3];
   }, 500);
 
   setTimeout(() => {
