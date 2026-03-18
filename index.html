@@ -7,7 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--accent:#00ff41;--secondary:#ff0066;--text:#c0c0c0;--panel:#0d0d14;--border:#1a1a2e;--danger:#ff3333;--warning:#ffaa00}
+:root{--bg:#0a0a0f;--accent:#00ff41;--secondary:#ff0066;--text:#c0c0c0;--panel:#0d0d14;--border:#1a1a2e;--danger:#ff3333;--warning:#ffaa00;--header-bg:#080810;--btn-bg:transparent;--log-bg:transparent}
+body.light-mode{--bg:#f0f0f0;--accent:#007a20;--secondary:#cc0044;--text:#0a0a0f;--panel:#e0e0e0;--border:#999;--danger:#cc0000;--warning:#cc8800;--header-bg:#e0e0e0;--btn-bg:#d0d0d0;--log-bg:#d8d8d8}
+body.light-mode::after{display:none}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Share Tech Mono',monospace;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
 body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px)}
@@ -27,7 +29,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #start-version{position:absolute;bottom:16px;right:24px;font-size:0.7em;color:#333}
 #start-ip{position:absolute;bottom:16px;left:24px;font-size:0.7em;color:#555}
 #start-ip.vpn{color:var(--accent)}
-#header{background:#080810;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 #header h1{color:var(--accent);font-size:1.4em;animation:glitch 3s infinite,glitchSkew 4s infinite;letter-spacing:3px}
 #prestige-badge{color:var(--secondary);font-size:0.8em;margin-left:8px}
 #header-left{display:flex;align-items:center;gap:12px}
@@ -432,7 +434,9 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <button class="header-btn" onclick="manualSave()">[ SAVE ]</button>
     <span id="save-flash">SAVED</span>
     <button class="header-btn" onclick="openHelp()">[ ? ]</button>
-    <button class="header-btn" onclick="openMenu()">[ MENU ]</button>
+    <button class="header-btn" id="btn-lang" onclick="toggleLang()">[ EN ]</button>
+    <button class="header-btn" id="btn-theme" onclick="toggleTheme()">[ DARK ]</button>
+    <button class="header-btn" id="btn-menu" onclick="openMenu()">[ MENU ]</button>
   </div>
   <div id="resources">
     <div class="res"><div class="res-label">DATA</div><div class="res-value" id="res-data">0</div></div>
@@ -711,6 +715,241 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 </div></div>
 
 <script>
+// ========== LANG & THEME ==========
+let currentLang = localStorage.getItem('bytecorp_lang') || 'en';
+let currentTheme = localStorage.getItem('bytecorp_theme') || 'dark';
+
+const LANG = {
+  en: {
+    mineData:'[ MINE DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
+    initiateHack:'[ INITIATE HACK ]', save:'[ SAVE ]', menu:'[ MENU ]', corpId:'[ CORP ID ]',
+    market:'[ MARKET ]', missions:'[ MISSIONS ]', skills:'[ SKILLS ]', ach:'[ ACH ]',
+    saved:'SAVED', continue_:'[ CONTINUE ]', newGame:'[ NEW GAME ]',
+    darkWebMarket:'[ DARK WEB MARKET ]', devs:'DEVS', upgrades:'UPGRADES', virus:'VIRUS',
+    saveQuit:'[ SAVE & QUIT TO MENU ]', resetRun:'[ RESET RUN ]', close:'[ CLOSE ]',
+    menuTitle:'// MENU', dwmTitle:'// DARK WEB MARKET',
+    exchangeRate:'Exchange rate: 10 DATA → 1 CREDIT (+10 HEAT per transaction)',
+    sellData:'[ SELL DATA ]', endgameTitle:'LEVEL 50 — ENDGAME',
+    endgameDesc:'ByteCorp has reached critical mass. Choose your destiny.',
+    goLegit:'[ GO LEGIT — IPO ]', burnIt:'[ BURN IT ALL — NEW GAME+ ]',
+    ipoTitle:'ByteCorp is now public.', ipoSub:'You won. For now.', ipoRestart:'[ NEW GAME+ ]',
+    helpTitle:'// HELP — BYTECORP v2.0',
+    lootTitle:'// LOOT ACQUIRED', lootSell:'[ SELL NOW ]', lootAuction:'[ PUT ON MARKET ]',
+    blackMarketTitle:'// BLACK MARKET', inventory:'INVENTORY', activeAuctions:'ACTIVE AUCTIONS',
+    defenseManual:'[ DEFEND MANUALLY ]', defenseAuto:'[ AUTO-DEFEND ]',
+    manualDefenseTitle:'// MANUAL DEFENSE', typeDefCmds:'Type defensive commands:',
+    corpIdTitle:'// CORP ID', changeIp:'[ CHANGE IP — 200 DATA ]',
+    ddosTitle:'⚠ DDOS ATTACK DETECTED', ddosInfo:'Your systems are being flooded — all bot income paused!',
+    ddosAbsorb:'[ ABSORB — 500 DATA ]', ddosReroute:'[ REROUTE TRAFFIC ]',
+    bountyTitle:'⚠ BOUNTY PLACED ON YOUR ALIAS', bountyPay:'[ BUY OFF HUNTER ]',
+    bountyDark:'[ GO DARK ]',
+    missionsTitle:'// MISSIONS', skillsTitle:'// SKILL TREE', achTitle:'// ACHIEVEMENTS',
+    coalitionTitle:'⚠ NPC COALITION FORMED',
+    exfilTitle:'EXFILTRATING DATA...', downloadComplete:'DOWNLOAD COMPLETE',
+    abortDownload:'[ ABORT DOWNLOAD ]',
+    spoofLabel:'SPOOF IP — use another company\'s identity',
+    scanning:'Scanning for targets...',
+    typeCmd:'type command...',
+    data:'DATA', credits:'CREDITS', rep:'REP', heat:'HEAT',
+    sellBtn:'SELL', auctionBtn:'AUCTION', cancelBtn:'CANCEL',
+    noItems:'No items in inventory', noAuctions:'No active auctions',
+    deploy:'[ DEPLOY ]', selectTarget:'-- Select Target --', selectVirus:'-- Select Virus --',
+    logicBomb:'Logic Bomb', ransomware:'Ransomware', rootkit:'Rootkit',
+    hacker:'HACKER', corpBranch:'CORP', ghost:'GHOST',
+    locked:'[ LOCKED ]', owned:'[ OWNED ]', buy:'[ BUY ]',
+    purgeBot:'[ PURGE — 200 DATA ]',
+    removeVirus:'[ REMOVE VIRUS — 1000 DATA ]',
+    acceptContract:'[ ACCEPT CONTRACT ]', declineContract:'[ DECLINE ]',
+    virusCountdown:'VIRUS ACTIVE: bots -50% — ',
+    hijackedLabel:'⚠ COMPROMISED',
+    claim:'[ CLAIM ]', completed:'COMPLETED', active:'ACTIVE'
+  },
+  fr: {
+    mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
+    initiateHack:'[ LANCER LE HACK ]', save:'[ SAUVEGARDER ]', menu:'[ MENU ]', corpId:'[ IDENTITÉ ]',
+    market:'[ MARCHÉ ]', missions:'[ MISSIONS ]', skills:'[ COMPÉTENCES ]', ach:'[ SUCCÈS ]',
+    saved:'SAUVEGARDÉ', continue_:'[ CONTINUER ]', newGame:'[ NOUVELLE PARTIE ]',
+    darkWebMarket:'[ MARCHÉ DU DARK WEB ]', devs:'DEVS', upgrades:'AMÉLIORATIONS', virus:'VIRUS',
+    saveQuit:'[ SAUVEGARDER & QUITTER ]', resetRun:'[ RÉINITIALISER ]', close:'[ FERMER ]',
+    menuTitle:'// MENU', dwmTitle:'// MARCHÉ DU DARK WEB',
+    exchangeRate:'Taux : 10 DATA → 1 CRÉDIT (+10 CHALEUR par transaction)',
+    sellData:'[ VENDRE DATA ]', endgameTitle:'NIVEAU 50 — FIN DE PARTIE',
+    endgameDesc:'ByteCorp a atteint sa masse critique. Choisis ton destin.',
+    goLegit:'[ LÉGALISER — IPO ]', burnIt:'[ TOUT BRÛLER — NEW GAME+ ]',
+    ipoTitle:'ByteCorp est maintenant cotée.', ipoSub:'Tu as gagné. Pour l\'instant.', ipoRestart:'[ NEW GAME+ ]',
+    helpTitle:'// AIDE — BYTECORP v2.0',
+    lootTitle:'// BUTIN RÉCUPÉRÉ', lootSell:'[ VENDRE ]', lootAuction:'[ METTRE EN VENTE ]',
+    blackMarketTitle:'// MARCHÉ NOIR', inventory:'INVENTAIRE', activeAuctions:'ENCHÈRES ACTIVES',
+    defenseManual:'[ DÉFENSE MANUELLE ]', defenseAuto:'[ DÉFENSE AUTO ]',
+    manualDefenseTitle:'// DÉFENSE MANUELLE', typeDefCmds:'Tapez les commandes défensives :',
+    corpIdTitle:'// IDENTITÉ CORP', changeIp:'[ CHANGER IP — 200 DATA ]',
+    ddosTitle:'⚠ ATTAQUE DDOS DÉTECTÉE', ddosInfo:'Vos systèmes sont inondés — revenus des bots suspendus !',
+    ddosAbsorb:'[ ABSORBER — 500 DATA ]', ddosReroute:'[ REROUTER LE TRAFIC ]',
+    bountyTitle:'⚠ PRIME SUR VOTRE ALIAS', bountyPay:'[ PAYER LE CHASSEUR ]',
+    bountyDark:'[ DISPARAÎTRE ]',
+    missionsTitle:'// MISSIONS', skillsTitle:'// ARBRE DE COMPÉTENCES', achTitle:'// SUCCÈS',
+    coalitionTitle:'⚠ COALITION NPC FORMÉE',
+    exfilTitle:'EXFILTRATION EN COURS...', downloadComplete:'TÉLÉCHARGEMENT TERMINÉ',
+    abortDownload:'[ ANNULER ]',
+    spoofLabel:'USURPER IP — utiliser l\'identité d\'une autre société',
+    scanning:'Recherche de cibles...',
+    typeCmd:'tapez la commande...',
+    data:'DATA', credits:'CRÉDITS', rep:'RÉP', heat:'CHALEUR',
+    sellBtn:'VENDRE', auctionBtn:'ENCHÈRE', cancelBtn:'ANNULER',
+    noItems:'Aucun objet en inventaire', noAuctions:'Aucune enchère active',
+    deploy:'[ DÉPLOYER ]', selectTarget:'-- Choisir Cible --', selectVirus:'-- Choisir Virus --',
+    logicBomb:'Bombe Logique', ransomware:'Rançongiciel', rootkit:'Rootkit',
+    hacker:'HACKER', corpBranch:'CORP', ghost:'FANTÔME',
+    locked:'[ VERROUILLÉ ]', owned:'[ POSSÉDÉ ]', buy:'[ ACHETER ]',
+    purgeBot:'[ PURGER — 200 DATA ]',
+    removeVirus:'[ SUPPRIMER VIRUS — 1000 DATA ]',
+    acceptContract:'[ ACCEPTER CONTRAT ]', declineContract:'[ REFUSER ]',
+    virusCountdown:'VIRUS ACTIF : bots -50% — ',
+    hijackedLabel:'⚠ COMPROMIS',
+    claim:'[ RÉCUPÉRER ]', completed:'TERMINÉ', active:'EN COURS'
+  }
+};
+
+function L(key){return LANG[currentLang][key]||LANG.en[key]||key;}
+
+function toggleLang(){
+  currentLang=currentLang==='en'?'fr':'en';
+  localStorage.setItem('bytecorp_lang',currentLang);
+  document.getElementById('btn-lang').textContent='[ '+(currentLang==='en'?'EN':'FR')+' ]';
+  applyLang();
+}
+
+function toggleTheme(){
+  currentTheme=currentTheme==='dark'?'light':'dark';
+  localStorage.setItem('bytecorp_theme',currentTheme);
+  applyTheme();
+}
+
+function applyTheme(){
+  document.body.classList.toggle('light-mode',currentTheme==='light');
+  const btn=document.getElementById('btn-theme');
+  if(btn)btn.textContent='[ '+(currentTheme==='dark'?'DARK':'LIGHT')+' ]';
+}
+
+function applyLang(){
+  // Start screen
+  const btnCont=document.getElementById('btn-continue');if(btnCont)btnCont.textContent=L('continue_');
+  const btnNew=document.getElementById('btn-newgame-start');if(btnNew)btnNew.textContent=L('newGame');
+  // Header buttons
+  const ha=document.getElementById('header-actions');
+  if(ha){
+    const btns=ha.querySelectorAll('.header-btn');
+    btns.forEach(b=>{
+      const oc=b.getAttribute('onclick')||'';
+      if(oc.includes('openCorpID'))b.textContent=L('corpId');
+      else if(oc.includes('openBlackMarket'))b.textContent=L('market');
+      else if(oc.includes('openMissions'))b.textContent=L('missions');
+      else if(oc.includes('openSkills'))b.textContent=L('skills');
+      else if(oc.includes('openAchievements'))b.textContent=L('ach');
+      else if(oc.includes('manualSave'))b.textContent=L('save');
+      else if(oc.includes('openHelp'))b.textContent='[ ? ]';
+      else if(b.id==='btn-menu')b.textContent=L('menu');
+    });
+  }
+  document.getElementById('save-flash').textContent=L('saved');
+  // Panel titles
+  const panels=[['panel-terminal','terminal'],['panel-bots','bots'],['panel-hack','hack'],['panel-corp','corp']];
+  panels.forEach(([id,key])=>{const el=document.querySelector('#'+id+' .panel-title');if(el)el.textContent=L(key);});
+  // Mine button
+  document.getElementById('mine-btn').textContent=L('mineData');
+  // Hack button
+  document.getElementById('hack-btn').textContent=L('initiateHack');
+  // Market button
+  const mb=document.getElementById('market-btn');if(mb)mb.textContent=L('darkWebMarket');
+  // Corp tabs
+  const tabBar=document.getElementById('corp-tab-bar');
+  if(tabBar){const tabs=tabBar.querySelectorAll('.tab-btn');
+    if(tabs[0])tabs[0].textContent=L('devs');if(tabs[1])tabs[1].textContent=L('upgrades');if(tabs[2])tabs[2].textContent=L('virus');}
+  // Resource labels
+  const rl=document.querySelectorAll('.res-label');
+  const rlKeys=['data','credits','rep','heat'];
+  rl.forEach((el,i)=>{if(rlKeys[i])el.textContent=L(rlKeys[i]);});
+  // Download screen
+  const dlTitle=document.getElementById('download-title');if(dlTitle)dlTitle.textContent=L('exfilTitle');
+  const dlComplete=document.getElementById('download-complete');if(dlComplete)dlComplete.textContent=L('downloadComplete');
+  const dlAbort=document.getElementById('download-abort');if(dlAbort)dlAbort.textContent=L('abortDownload');
+  // Spoof label
+  const spoofWrap=document.getElementById('spoof-checkbox-wrap');
+  if(spoofWrap){const lbl=spoofWrap.querySelector('label');if(lbl){const cb=lbl.querySelector('input');
+    lbl.textContent='';if(cb)lbl.appendChild(cb);lbl.appendChild(document.createTextNode(' '+L('spoofLabel')));}}
+  // Hack input placeholder
+  const hi=document.getElementById('hack-input');if(hi)hi.placeholder=L('typeCmd');
+  // Defense input placeholder
+  const di=document.getElementById('defense-game-input');if(di)di.placeholder=L('typeCmd');
+  // Menu
+  const msq=document.getElementById('menu-save-quit');if(msq)msq.textContent=L('saveQuit');
+  const mr=document.getElementById('menu-reset');if(mr)mr.textContent=L('resetRun');
+  const mc=document.getElementById('menu-close');if(mc)mc.textContent=L('close');
+  // Various close/title buttons — update modals
+  const helpTitle=document.querySelector('#help-popup h2');if(helpTitle)helpTitle.textContent=L('helpTitle');
+  const helpClose=document.getElementById('help-close-btn');if(helpClose)helpClose.textContent=L('close');
+  // Market modal
+  const mktTitle=document.querySelector('#market-popup h2');if(mktTitle)mktTitle.textContent=L('dwmTitle');
+  const mktInfo=document.getElementById('market-info');if(mktInfo)mktInfo.textContent=L('exchangeRate');
+  const mktSell=document.getElementById('market-sell-btn');if(mktSell)mktSell.textContent=L('sellData');
+  const mktClose=document.getElementById('market-close');if(mktClose)mktClose.textContent=L('close');
+  // Endgame
+  const egTitle=document.querySelector('#endgame-popup h2');if(egTitle)egTitle.textContent=L('endgameTitle');
+  const egDesc=document.querySelector('#endgame-popup p');if(egDesc)egDesc.textContent=L('endgameDesc');
+  const egIpo=document.getElementById('btn-ipo');if(egIpo)egIpo.textContent=L('goLegit');
+  const egNg=document.getElementById('btn-newgame');if(egNg)egNg.textContent=L('burnIt');
+  // IPO
+  const ipoH=document.querySelector('#ipo-overlay h1');if(ipoH)ipoH.textContent=L('ipoTitle');
+  const ipoP=document.querySelector('#ipo-overlay p');if(ipoP)ipoP.textContent=L('ipoSub');
+  const ipoR=document.getElementById('ipo-restart');if(ipoR)ipoR.textContent=L('ipoRestart');
+  // Loot
+  const lootT=document.getElementById('loot-title');if(lootT)lootT.textContent=L('lootTitle');
+  const lootS=document.getElementById('loot-sell');if(lootS)lootS.textContent=L('lootSell');
+  const lootA=document.getElementById('loot-auction');if(lootA&&!lootA.classList.contains('hidden'))lootA.textContent=L('lootAuction');
+  // Black market
+  const bmT=document.querySelector('#bmarket-popup h2');if(bmT)bmT.textContent=L('blackMarketTitle');
+  const bmClose=document.getElementById('bmarket-close');if(bmClose)bmClose.textContent=L('close');
+  const bmTabs=document.querySelectorAll('.bmarket-tab');if(bmTabs[0])bmTabs[0].textContent=L('inventory');if(bmTabs[1])bmTabs[1].textContent=L('activeAuctions');
+  // Defense
+  const defMan=document.getElementById('btn-defend-manual');if(defMan)defMan.textContent=L('defenseManual');
+  const defAuto=document.getElementById('btn-defend-auto');if(defAuto)defAuto.textContent=L('defenseAuto');
+  const defGameT=document.querySelector('#defense-game-popup h2');if(defGameT)defGameT.textContent=L('manualDefenseTitle');
+  const defGameP=document.getElementById('defense-game-prompt');if(defGameP&&!defenseGameActive)defGameP.textContent=L('typeDefCmds');
+  // Corp ID
+  const cidT=document.querySelector('#corpid-popup h2');if(cidT)cidT.textContent=L('corpIdTitle');
+  const cidClose=document.getElementById('corpid-close');if(cidClose)cidClose.textContent=L('close');
+  const cidChange=document.getElementById('corpid-changeip');if(cidChange)cidChange.textContent=L('changeIp');
+  // DDoS
+  const ddosT=document.getElementById('ddos-title');if(ddosT)ddosT.textContent=L('ddosTitle');
+  const ddosI=document.getElementById('ddos-info');if(ddosI)ddosI.textContent=L('ddosInfo');
+  const ddosAb=document.getElementById('btn-ddos-absorb');if(ddosAb)ddosAb.textContent=L('ddosAbsorb');
+  const ddosRe=document.getElementById('btn-ddos-reroute');if(ddosRe)ddosRe.textContent=L('ddosReroute');
+  // Bounty
+  const bouT=document.getElementById('bounty-title');if(bouT)bouT.textContent=L('bountyTitle');
+  const bouPay=document.getElementById('btn-bounty-pay');if(bouPay)bouPay.textContent=L('bountyPay');
+  const bouDark=document.getElementById('btn-bounty-dark');if(bouDark)bouDark.textContent=L('bountyDark');
+  const bouClose=document.getElementById('bounty-close');if(bouClose)bouClose.textContent=L('close');
+  // Missions
+  const misT=document.querySelector('#missions-popup h2');if(misT)misT.textContent=L('missionsTitle');
+  const misClose=document.querySelector('#missions-overlay .modal-close');if(misClose)misClose.textContent=L('close');
+  // Skills
+  const skiT=document.querySelector('#skills-popup h2');if(skiT)skiT.textContent=L('skillsTitle');
+  const skiClose=document.querySelector('#skills-overlay .modal-close');if(skiClose)skiClose.textContent=L('close');
+  // Achievements
+  const achT=document.querySelector('#achievements-popup h2');if(achT)achT.textContent=L('achTitle');
+  const achClose=document.querySelector('#achievements-overlay .modal-close');if(achClose)achClose.textContent=L('close');
+  // Coalition
+  const coaT=document.getElementById('coalition-title');if(coaT)coaT.textContent=L('coalitionTitle');
+  const coaClose=document.getElementById('btn-coalition-close');if(coaClose)coaClose.textContent=L('close');
+  // Lang button itself
+  document.getElementById('btn-lang').textContent='[ '+(currentLang==='en'?'EN':'FR')+' ]';
+  // Re-render dynamic content
+  if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();}
+}
+
+// Apply theme on load
+if(currentTheme==='light')document.body.classList.add('light-mode');
+
 // ========== HACKER ALIASES ==========
 const HACKER_ALIASES = [
   'gh0st_k1w1','null_byte','d4rk_r00t','v01d_h4x','sh4d0w_c0d3',
@@ -1208,12 +1447,12 @@ const isHijacked=G.hijackedBot===i&&G.hijackedExpiry>Date.now();
 let hijackInfo='';
 if(isHijacked){
   const rem=Math.ceil((G.hijackedExpiry-Date.now())/1000);
-  hijackInfo=`<div style="font-size:0.65em;color:var(--danger);margin:3px 0">COMPROMISED by ${G.hijackedCompany} (${Math.floor(rem/60)}m ${rem%60}s) — generating HEAT!</div>
-  <button class="purge-btn" onclick="purgeBot(${i})">[ PURGE BOT — 200 DATA ]</button>`;
+  hijackInfo=`<div style="font-size:0.65em;color:var(--danger);margin:3px 0">${L('hijackedLabel')} ${G.hijackedCompany} (${Math.floor(rem/60)}m ${rem%60}s)</div>
+  <button class="purge-btn" onclick="purgeBot(${i})">${L('purgeBot')}</button>`;
 }
 card.innerHTML=`<div class="item-header"><span class="item-name">${b.name}${isHijacked?' [HIJACKED]':''}</span><span class="item-count">x${G.bots[i]}</span></div>
 <div class="item-stats">+${fmt(b.dps)} DATA/s | Cost: ${fmt(cost)} DATA</div>${hijackInfo}
-<button class="buy-btn" ${G.data<cost?'disabled':''} onclick="buyBot(${i})">[ BUY ]</button>`;el.appendChild(card);});}
+<button class="buy-btn" ${G.data<cost?'disabled':''} onclick="buyBot(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
 function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;addLog('Bought '+BOTS[i].name);renderBots();}}
 
@@ -1230,7 +1469,7 @@ function renderDevs(){const el=document.getElementById('dev-list');if(!el)return
 DEVS.forEach((d,i)=>{const cost=getDevCost(i);const card=document.createElement('div');card.className='item-card';
 card.innerHTML=`<div class="item-header"><span class="item-name">${d.name}</span><span class="item-count">x${G.devs[i]}</span></div>
 <div class="item-stats">+${fmt(d.cps)} CR/s | Cost: ${fmt(cost)} CR</div>
-<button class="buy-btn" ${G.credits<cost?'disabled':''} onclick="buyDev(${i})">[ BUY ]</button>`;el.appendChild(card);});}
+<button class="buy-btn" ${G.credits<cost?'disabled':''} onclick="buyDev(${i})">${L('buy')}</button>`;el.appendChild(card);});}
 
 function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;addLog('Hired '+DEVS[i].name);renderDevs();}}
 
@@ -1241,7 +1480,7 @@ const canAfford=u.currency==='data'?G.data>=u.cost:G.credits>=u.cost;
 const card=document.createElement('div');card.className='upgrade-card'+(bought?' bought':'')+(locked?' locked':'');
 card.innerHTML=`<div class="upgrade-name">${u.name}</div>
 <div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
-<button class="upgrade-btn" ${(bought||locked||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?'[ OWNED ]':locked?'[ LOCKED ]':'[ BUY ]'}</button>`;
+<button class="upgrade-btn" ${(bought||locked||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?L('owned'):locked?L('locked'):L('buy')}</button>`;
 el.appendChild(card);});}
 
 function buyUpgrade(id){const u=UPGRADES.find(x=>x.id===id);if(!u||G.upgrades[id])return;
@@ -1299,7 +1538,7 @@ function pickTarget(){
 
 function renderTarget(){
   const el=document.getElementById('hack-target'),btn=document.getElementById('hack-btn');if(!el)return;
-  if(!currentTarget){el.innerHTML='<span style="color:#555">Scanning for targets...</span>';btn.disabled=true;return;}
+  if(!currentTarget){el.innerHTML='<span style="color:#555">'+L('scanning')+'</span>';btn.disabled=true;return;}
   const n=currentTarget,diff=DIFFICULTIES[getEffectiveDifficulty(n)];
   const statusIcon=n.relation==='ally'?'🟢':n.relation==='enemy'?'🔴':'🟡';
   const r=currentTargetReward||{data:0,cr:0,rep:0};
@@ -1543,19 +1782,19 @@ function switchBMarketTab(tab){
 
 function renderBlackMarket(){
   const invEl=document.getElementById('bmarket-inventory');
-  if(G.lootInventory.length===0)invEl.innerHTML='<div class="bmarket-empty">No items in inventory</div>';
+  if(G.lootInventory.length===0)invEl.innerHTML='<div class="bmarket-empty">'+L('noItems')+'</div>';
   else{invEl.innerHTML='';G.lootInventory.forEach((item,i)=>{const div=document.createElement('div');div.className='bmarket-item';
   div.innerHTML=`<div class="bmarket-item-info"><div class="bmarket-item-name rarity-${item.rarity}">${item.name} <span class="rarity-badge ${item.rarity}" style="font-size:0.6em">${item.rarity.toUpperCase()}</span></div>
   <div class="bmarket-item-value">Value: ${fmt(item.value)} DATA</div></div>
-  <div class="bmarket-item-actions"><button class="bm-btn bm-sell" onclick="bmarketSell(${i})">SELL</button><button class="bm-btn bm-auction" onclick="bmarketStartAuction(${i})">AUCTION</button></div>`;
+  <div class="bmarket-item-actions"><button class="bm-btn bm-sell" onclick="bmarketSell(${i})">${L('sellBtn')}</button><button class="bm-btn bm-auction" onclick="bmarketStartAuction(${i})">${L('auctionBtn')}</button></div>`;
   invEl.appendChild(div);});}
   const aucEl=document.getElementById('bmarket-auctions');
-  if(G.activeAuctions.length===0)aucEl.innerHTML='<div class="bmarket-empty">No active auctions</div>';
+  if(G.activeAuctions.length===0)aucEl.innerHTML='<div class="bmarket-empty">'+L('noAuctions')+'</div>';
   else{aucEl.innerHTML='';const now=Date.now();G.activeAuctions.forEach((auc,i)=>{const remaining=Math.max(0,Math.ceil((auc.endTime-now)/1000));
   const div=document.createElement('div');div.className='bmarket-item';
   div.innerHTML=`<div class="bmarket-item-info"><div class="bmarket-item-name rarity-${auc.rarity}">${auc.name} <span class="rarity-badge ${auc.rarity}" style="font-size:0.6em">${auc.rarity.toUpperCase()}</span></div>
   <div class="auction-info"><span class="auction-bid">Current bid: ${fmt(auc.currentBid)} DATA</span> | <span class="auction-time">${Math.floor(remaining/60)}m ${remaining%60}s</span></div></div>
-  <div class="bmarket-item-actions"><button class="bm-btn bm-cancel" onclick="bmarketCancelAuction(${i})">CANCEL</button></div>`;
+  <div class="bmarket-item-actions"><button class="bm-btn bm-cancel" onclick="bmarketCancelAuction(${i})">${L('cancelBtn')}</button></div>`;
   aucEl.appendChild(div);});}
 }
 
@@ -2591,7 +2830,7 @@ document.getElementById('start-screen').classList.add('hidden');document.getElem
 function openHelp(){document.getElementById('help-overlay').classList.add('active');}
 function closeHelp(){document.getElementById('help-overlay').classList.remove('active');}
 
-showStartScreen();
+applyTheme();applyLang();showStartScreen();
 </script>
 </body>
 </html>
