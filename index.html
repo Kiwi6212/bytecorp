@@ -578,6 +578,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <button class="header-btn" id="btn-sound" onclick="toggleSound()">🔇</button>
   </div>
   <div id="header-actions-right">
+    <button class="header-btn" onclick="openManPage()">MAN</button>
     <button class="header-btn" onclick="openHelp()">?</button>
     <button class="header-btn" id="btn-lang" onclick="toggleLang()">EN</button>
     <button class="header-btn" id="btn-theme" onclick="toggleTheme()">DARK</button>
@@ -611,7 +612,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <div class="item-list" id="bot-list"></div>
   </div>
   <div class="panel" id="panel-hack">
-    <div class="panel-title">// Hack</div>
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">// Hack <button class="header-btn" style="font-size:0.7em;padding:1px 6px" onclick="openLoadout()">LOADOUT</button></div>
     <div id="hack-target"><span style="color:#cccccc">Scanning for targets...</span></div>
     <div id="spoof-checkbox-wrap"><label><input type="checkbox" id="spoof-checkbox"> SPOOF IP — use another company's identity</label><span class="spoof-cooldown" id="spoof-cooldown-text"></span></div>
     <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
@@ -626,6 +627,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
       <div id="hack-prompt"></div>
       <div id="hack-scan-output"></div>
       <div id="hack-commands"></div>
+      <div id="zeroday-actions" style="display:none;margin-bottom:4px"></div>
       <div style="display:flex;align-items:center"><span style="color:var(--accent);margin-right:4px">$</span><input id="hack-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
       <div id="hack-result-msg"></div>
       <div id="download-screen">
@@ -645,6 +647,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
       <button class="tab-btn" onclick="switchTab('upgrades')">UPGRADES</button>
       <button class="tab-btn" id="virus-tab-btn" style="display:none" onclick="switchTab('viruses')">VIRUS</button>
       <button class="tab-btn" id="infra-tab-btn" style="display:none" onclick="switchTab('infra')">INFRA</button>
+      <button class="tab-btn" id="cmds-tab-btn" onclick="switchTab('cmds')">CMDS</button>
     </div>
     <div class="tab-content active" id="tab-devs">
       <div class="item-list" id="dev-list"></div>
@@ -657,6 +660,9 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     </div>
     <div class="tab-content" id="tab-infra">
       <div class="item-list" id="infra-list"></div>
+    </div>
+    <div class="tab-content" id="tab-cmds">
+      <div class="item-list" id="cmds-list"></div>
     </div>
   </div>
 </div>
@@ -898,6 +904,25 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <div id="coalition-info" style="font-size:0.8em;color:var(--text);margin-bottom:16px;text-align:center;max-width:400px"></div>
 <div style="display:flex;gap:8px">
 <button class="bounty-btn" id="btn-coalition-close" onclick="closeCoalitionOverlay()" style="border:1px solid #555;color:#cccccc">[ CLOSE ]</button>
+</div></div>
+
+<!-- Loadout Modal -->
+<div class="modal-overlay" id="loadout-overlay"><div class="modal-popup" id="loadout-popup" style="max-width:600px"><h2>// LOADOUT</h2>
+<div style="display:flex;gap:16px">
+<div style="flex:1"><div style="color:var(--accent);font-size:0.75em;margin-bottom:6px;letter-spacing:2px">LINUX DECK</div><div id="loadout-linux"></div></div>
+<div style="flex:1"><div style="color:#4a9eff;font-size:0.75em;margin-bottom:6px;letter-spacing:2px">WINDOWS DECK</div><div id="loadout-windows"></div></div>
+</div>
+<button class="modal-close" onclick="closeLoadout()">[ CLOSE ]</button>
+</div></div>
+
+<!-- MAN Page Modal -->
+<div class="modal-overlay" id="man-overlay"><div class="modal-popup" id="man-popup" style="max-width:550px"><h2>// TERMINAL DOCS — Command Reference</h2>
+<div class="tab-bar" id="man-tab-bar">
+<button class="tab-btn active" onclick="switchManTab('linux')">LINUX</button>
+<button class="tab-btn" onclick="switchManTab('windows')">POWERSHELL</button>
+</div>
+<div class="item-list" id="man-content" style="max-height:400px;overflow-y:auto"></div>
+<button class="modal-close" onclick="closeManPage()">[ CLOSE ]</button>
 </div></div>
 
 <!-- Pause Overlay -->
@@ -1216,8 +1241,8 @@ const LANG = {
     scanFw1:'> Bypassing firewall layer 1...',scanFw2:'> Bypassing firewall layer 2...',
     scanConnected:'> Connected to [target IP: {0}]',scanExploit:'> Deploying exploit...',
     scanAccess:'> ACCESS POINT FOUND — Awaiting commands',
-    helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus',
-    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s'
+    helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus\n\n[ COMMANDS ]    Buy commands in CORP > COMMANDS tab.\n                Assign them to your Linux/Windows deck via [ LOADOUT ].\n                Use commands repeatedly to gain mastery \u2014 autocomplete then one-click.\n[ OS AFFINITY ] Specializing in Linux or Windows gives timer bonuses and reward boosts.\n[ 0-DAYS ]      Ultra-rare loot (0.5%). Skip commands or auto-succeed a hack. One use only.\n[ MAN PAGE ]    [ MAN ] button in header \u2014 full command reference with real explanations.',
+    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les \u00e0 votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en ma\u00eetrise \u2014 auto-compl\u00e9tion puis un clic.\n[ AFFINIT\u00c9 OS ] Se sp\u00e9cialiser en Linux ou Windows donne des bonus de temps et r\u00e9compenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-r\u00e9ussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 r\u00e9f\u00e9rence compl\u00e8te des commandes avec explications.'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1442,8 +1467,8 @@ const LANG = {
     scanFw1:'> Contournement du pare-feu couche 1...',scanFw2:'> Contournement du pare-feu couche 2...',
     scanConnected:'> Connecté à [IP cible : {0}]',scanExploit:'> Déploiement de l\'exploit...',
     scanAccess:'> POINT D\'ACCÈS TROUVÉ — En attente de commandes',
-    helpContent:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s',
-    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s'
+    helpContent:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les à votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en maîtrise \u2014 auto-complétion puis un clic.\n[ AFFINITÉ OS ] Se spécialiser en Linux ou Windows donne des bonus de temps et récompenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-réussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 référence complète des commandes avec explications.',
+    helpContent_fr:'[ DATA ]      Monnaie principale. Minez manuellement ou achetez des BOTS.\n[ CRÉDITS ]   Monnaie corp. Engagez des DEVS pour générer passivement.\n[ RÉP ]       Réputation. Gagnée en hackant. Débloque des niveaux.\n[ CHALEUR ]   Niveau de menace. Atteint 100% = RAID (-30% DATA).\n\n[ MINER DATA ] Cliquez pour gagner des DATA manuellement.\n[ BOTS ]      Achetez des bots pour du DATA/s passif. Coût x1.15 par achat.\n[ HACK ]      Tapez de vraies commandes Linux/PowerShell pour hacker des serveurs NPC.\n              Mauvaise commande ou timeout = pénalité CHALEUR + hack échoué.\n[ DEVS ]      Engagez des développeurs pour des CRÉDITS/s passifs.\n[ AMÉLIORATIONS ] Bonus uniques. VPN réduit CHALEUR. Dark Web débloque le marché.\n\n[ STATUT NPC ]\n  NEUTRE   — peut être hacké\n  ALLIÉ    — propose des contrats, ne peut pas être hacké\n  ENNEMI   — récompenses plus élevées mais envoie des traceurs (+CHALEUR/min)\n  Hacker la même cible 3x = devient ENNEMI\n  Laisser une cible neutre tranquille = peut proposer une ALLIANCE\n\n[ BUTIN ]     Après chaque hack, un fichier est exfiltré. Rareté : Commun/Rare/Épique/Légendaire.\n              Vendez instantanément ou mettez aux enchères sur le Dark Web.\n\n[ DÉFENSE ]   Les sociétés NPC vous attaquent selon votre niveau de CHALEUR.\n              Défendez manuellement avec des commandes Linux ou utilisez AUTO-DÉFENSE.\n              Le taux de réussite dépend de vos améliorations de sécurité.\n\n[ IDENTITÉ ]  Votre identité de hacker. IP, alias, compteur de traçabilité.\n\n[ MENACES ]\n  DDoS        Traçabilité >70% — bots hors ligne. Défendez ou attendez.\n  Usurpation IP  L\'ennemi usurpe votre IP — CHALEUR monte passivement.\n  Prime       Rép Dark Web LÉGENDAIRE — chasseurs d\'élite attaquent toutes les 60s.\n\n[ ATTAQUES NPC ACTIVES ]\n  Virus       L\'ennemi déploie un virus : revenus bots -50% pendant 10 min.\n              Fix : tapez \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Ou payez 1000 DATA pour auto-supprimer.\n  Faux Contrats  L\'ennemi déguisé en allié envoie des contrats arnaque.\n              Attention aux différences subtiles de noms ! Basse trace les signale auto.\n  Faux Drapeau  L\'ennemi utilise votre IP pour ses attaques (+15 CHALEUR sur 5 min).\n              Fix : CHANGEZ IP (200 DATA) ou Nettoyeur de Logs bloque auto.\n  Espionnage  L\'ennemi haute sécurité infiltre vos systèmes.\n              Fix : tapez \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ ennemis peuvent former des alliances pour des attaques coordonnées.\n  Piratage Bot  L\'ennemi pirate un bot — génère de la CHALEUR au lieu de DATA.\n              Fix : cliquez PURGER BOT (200 DATA).\n\n[ NPC vs NPC ]\n  Les NPC se combattent toutes les 3-5 min. Surveillez le fil d\'actualités !\n  Les primes et fusions peuvent changer le paysage.\n\n[ MISSIONS ]  10 missions scénarisées avec récompenses croissantes.\n              Complétez-les dans l\'ordre pour débloquer l\'histoire complète.\n\n[ COMPÉTENCES ] 3 branches : HACKER, CORP, FANTÔME. 4 compétences chacune.\n              Dépensez des CRÉDITS pour débloquer des bonus permanents.\n\n[ VIRUS ]     Débloqués après IP Spoofer. Déployez des virus offensifs sur les NPC.\n              Bombe Logique, Rançongiciel, Rootkit — chacun avec risque de détection.\n\n[ SUCCÈS ]    20 succès suivant votre progression.\n\n[ OFFENSIF ]\n  Usurpation IP  Utilisez un autre NPC comme leurre lors des hacks (nécessite IP Spoofer).\n  Virus       Déployez des virus sur les NPC depuis l\'onglet VIRUS.\n\n[ FIN DE PARTIE ] Atteignez le Niveau 50 (50M RÉP) pour choisir votre destin :\n  IPO = devenir légitime et gagner\n  NEW GAME+ = reset avec +25% bonus permanent DATA/s\n\n[ COMMANDES ]   Achetez des commandes dans CORP > COMMANDES.\n                Assignez-les à votre deck Linux/Windows via [ LOADOUT ].\n                Utilisez les commandes pour gagner en maîtrise \u2014 auto-complétion puis un clic.\n[ AFFINITÉ OS ] Se spécialiser en Linux ou Windows donne des bonus de temps et récompenses.\n[ 0-DAYS ]      Butin ultra-rare (0.5%). Sauter des commandes ou auto-réussir un hack.\n[ PAGE MAN ]    Bouton [ MAN ] \u2014 référence complète des commandes avec explications.'
   }
 };
 
@@ -1488,8 +1513,9 @@ function applyLang(){
   });
   document.getElementById('save-flash').textContent=L('saved');
   // Panel titles
-  const panels=[['panel-terminal','terminal'],['panel-bots','bots'],['panel-hack','hack'],['panel-corp','corp']];
+  const panels=[['panel-terminal','terminal'],['panel-bots','bots'],['panel-corp','corp']];
   panels.forEach(([id,key])=>{const el=document.querySelector('#'+id+' .panel-title');if(el)el.textContent=L(key);});
+  const hackTitle=document.querySelector('#panel-hack .panel-title');if(hackTitle){const loadoutBtn=hackTitle.querySelector('.header-btn');hackTitle.childNodes[0].textContent=L('hack')+' ';if(loadoutBtn)loadoutBtn.textContent='LOADOUT';}
   // Mine button
   document.getElementById('mine-btn').textContent=L('mineData');
   // Hack button
@@ -1499,7 +1525,7 @@ function applyLang(){
   // Corp tabs
   const tabBar=document.getElementById('corp-tab-bar');
   if(tabBar){const tabs=tabBar.querySelectorAll('.tab-btn');
-    if(tabs[0])tabs[0].textContent=L('devs');if(tabs[1])tabs[1].textContent=L('upgrades');if(tabs[2])tabs[2].textContent=L('virus');}
+    if(tabs[0])tabs[0].textContent=L('devs');if(tabs[1])tabs[1].textContent=L('upgrades');if(tabs[2])tabs[2].textContent=L('virus');if(tabs[4])tabs[4].textContent='CMDS';}
   // Resource labels
   const rl=document.querySelectorAll('.res-label');
   const rlKeys=['data','credits','rep','heat'];
@@ -1792,7 +1818,14 @@ let G = {
   pubShadowCooldowns: {},
   pubCompetitors: ['NovaTech','MegaCorp','DarkSec'],
   pubTotalDividendsPaid: 0,
-  pubTotalShadowOps: 0
+  pubTotalShadowOps: 0,
+  unlockedCommands: ['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'],
+  linuxDeck: ['nmap 192.168.1.1','ping target','ls /etc'],
+  windowsDeck: ['ipconfig','whoami','dir C:\\'],
+  commandMastery: {},
+  linuxAffinity: 0,
+  windowsAffinity: 0,
+  zeroDaysInventory: []
 };
 
 let gameRunning = false;
@@ -1950,8 +1983,97 @@ const LOOT_TABLE = {
   common:{chance:0.70,items:['Employee Records','Internal Emails','Config Files'],items_fr:['Dossiers Employés','E-mails Internes','Fichiers Config'],multi:1,heatBonus:0},
   rare:{chance:0.20,items:['Client Database','R&D Documents','Financial Reports'],items_fr:['Base Clients','Documents R&D','Rapports Financiers'],multi:3,heatBonus:10},
   epic:{chance:0.08,items:['Banking Credentials','Corporate Secrets','Patent Files'],items_fr:['Identifiants Bancaires','Secrets d\'Entreprise','Brevets'],multi:8,heatBonus:20},
-  legendary:{chance:0.02,items:['Government Contracts','Black Project Files','Nuclear Codes'],items_fr:['Contrats Gouvernementaux','Projets Classifiés','Codes Nucléaires'],multi:20,heatBonus:30}
+  legendary:{chance:0.02,items:['Government Contracts','Black Project Files','Nuclear Codes'],items_fr:['Contrats Gouvernementaux','Projets Classifiés','Codes Nucléaires'],multi:20,heatBonus:30},
+  zeroday:{chance:0.005,items:['0-day: SSH Bypass','0-day: Windows Auth','0-day: Kernel Exploit','0-day: Root Access'],items_fr:['0-day : Bypass SSH','0-day : Auth Windows','0-day : Exploit Kernel','0-day : Acc\u00e8s Root'],multi:50,heatBonus:0}
 };
+
+// ========== COMMAND SHOP ==========
+const CMD_SHOP = {
+  linux: [
+    {cmd:'nmap 192.168.1.1',desc:'Network scanner — discovers open ports',cost:0,starter:true},
+    {cmd:'ping target',desc:'Tests network connectivity via ICMP',cost:0,starter:true},
+    {cmd:'ls /etc',desc:'Lists system configuration directory',cost:0,starter:true},
+    {cmd:'cat /etc/hostname',desc:'Displays target machine hostname',cost:500},
+    {cmd:'ssh root@target',desc:'Opens encrypted remote terminal session',cost:1000,reqFor:'Medium'},
+    {cmd:'netstat -an',desc:'Shows active network connections',cost:1000},
+    {cmd:'cat /etc/passwd',desc:'Lists all system user accounts',cost:2000},
+    {cmd:'find / -name "*.conf"',desc:'Searches filesystem for config files',cost:2000},
+    {cmd:'sudo iptables -L',desc:'Lists active firewall rules',cost:5000,reqFor:'Hard'},
+    {cmd:'grep -r "password" /var/www',desc:'Searches web dir for passwords',cost:5000},
+    {cmd:'curl -X POST http://target/api',desc:'Sends HTTP POST to API endpoint',cost:5000},
+    {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',desc:'Dictionary-based password cracker',cost:10000},
+    {cmd:'sudo tcpdump -i eth0 -n',desc:'Captures network packets in real-time',cost:15000,reqFor:'Elite'},
+    {cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP',desc:'Blocks all traffic from specific IP',cost:15000},
+    {cmd:'sudo journalctl -u sshd --since "1 hour ago"',desc:'Shows SSH logs from last hour',cost:15000},
+    {cmd:'sudo fail2ban-client set sshd banip attacker_ip',desc:'Bans IP from SSH via Fail2ban',cost:20000}
+  ],
+  windows: [
+    {cmd:'ipconfig',desc:'Displays network adapter configuration',cost:0,starter:true},
+    {cmd:'whoami',desc:'Shows current user and domain',cost:0,starter:true},
+    {cmd:'dir C:\\',desc:'Lists files in the C: drive root',cost:0,starter:true},
+    {cmd:'net user',desc:'Lists all local user accounts',cost:500},
+    {cmd:'Get-Process',desc:'Lists all running processes',cost:1000,reqFor:'Medium'},
+    {cmd:'netstat -ano',desc:'Connections with process IDs',cost:1000},
+    {cmd:'Get-LocalUser',desc:'Lists local users via PowerShell',cost:2000},
+    {cmd:'dir C:\\Users',desc:'Lists all user profile directories',cost:2000},
+    {cmd:'Get-EventLog -LogName Security',desc:'Reads Windows Security event log',cost:5000,reqFor:'Hard'},
+    {cmd:'Invoke-WebRequest -Uri http://target',desc:'Sends HTTP request (PS wget)',cost:5000},
+    {cmd:'Set-ExecutionPolicy Bypass',desc:'Allows unsigned scripts to run',cost:5000},
+    {cmd:'Get-ADUser -Filter *',desc:'Lists all Active Directory users',cost:10000,reqFor:'Elite'}
+  ]
+};
+
+const ZERODAY_ITEMS = [
+  {id:'zd_ssh',name:'0-day: SSH Bypass',desc:'Skips all SSH-related commands in one hack'},
+  {id:'zd_winauth',name:'0-day: Windows Auth',desc:'Skips all PowerShell auth commands in one hack'},
+  {id:'zd_kernel',name:'0-day: Kernel Exploit',desc:'Skip any single command during a hack'},
+  {id:'zd_root',name:'0-day: Root Access',desc:'Auto-succeed entire hack (one use)'}
+];
+
+const MAN_LINUX = [
+  {cmd:'nmap 192.168.1.1',desc:'Network scanner. Discovers open ports and services on a target host.'},
+  {cmd:'ls /etc',desc:'Lists files in the /etc directory. Contains system configuration files.'},
+  {cmd:'cat /etc/hostname',desc:'Displays the target machine\'s hostname.'},
+  {cmd:'ping target',desc:'Tests network connectivity to a host by sending ICMP packets.'},
+  {cmd:'ssh root@target',desc:'Secure Shell. Opens an encrypted remote terminal session.'},
+  {cmd:'netstat -an',desc:'Shows all active network connections and listening ports.'},
+  {cmd:'cat /etc/passwd',desc:'Lists all user accounts on the system.'},
+  {cmd:'find / -name "*.conf"',desc:'Searches entire filesystem for configuration files.'},
+  {cmd:'sudo iptables -L',desc:'Lists all active firewall rules.'},
+  {cmd:'grep -r "password" /var/www',desc:'Recursively searches web directory for password strings.'},
+  {cmd:'curl -X POST http://target/api',desc:'Sends HTTP POST request to an API endpoint.'},
+  {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',desc:'Password cracker using dictionary attack.'},
+  {cmd:'sudo tcpdump -i eth0 -n',desc:'Captures and displays network packets in real-time.'},
+  {cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP',desc:'Blocks all incoming traffic from a specific IP.'},
+  {cmd:'sudo journalctl -u sshd --since "1 hour ago"',desc:'Shows SSH service logs from the last hour.'},
+  {cmd:'sudo fail2ban-client set sshd banip attacker_ip',desc:'Bans an IP from SSH access via Fail2ban.'},
+  {cmd:'sudo ufw enable',desc:'Enables the Uncomplicated Firewall.'},
+  {cmd:'fail2ban-client status',desc:'Shows Fail2ban status and banned IPs.'},
+  {cmd:'sudo clamscan -r /home',desc:'Scans home directory for viruses with ClamAV.'},
+  {cmd:'sudo systemctl restart cron',desc:'Restarts the cron scheduling service.'},
+  {cmd:'sudo netstat -an | grep ESTABLISHED',desc:'Filters active established connections.'}
+];
+
+const MAN_WINDOWS = [
+  {cmd:'ipconfig',desc:'Displays network adapter configuration (IP, subnet, gateway).'},
+  {cmd:'dir C:\\',desc:'Lists files and folders in the C: drive root.'},
+  {cmd:'whoami',desc:'Displays current user and domain.'},
+  {cmd:'net user',desc:'Lists all local user accounts on the system.'},
+  {cmd:'Get-Process',desc:'Lists all running processes with their details.'},
+  {cmd:'netstat -ano',desc:'Shows active connections with associated process IDs.'},
+  {cmd:'Get-LocalUser',desc:'Lists local user accounts via PowerShell cmdlet.'},
+  {cmd:'dir C:\\Users',desc:'Lists all user profile directories.'},
+  {cmd:'Get-EventLog -LogName Security',desc:'Reads Windows Security event log.'},
+  {cmd:'Invoke-WebRequest -Uri http://target',desc:'Sends HTTP request to a URL (PowerShell wget).'},
+  {cmd:'Set-ExecutionPolicy Bypass',desc:'Allows unsigned scripts to run (security risk).'},
+  {cmd:'Get-ADUser -Filter *',desc:'Lists all Active Directory users (requires AD module).'}
+];
+
+function getMasteryLevel(cmd){const uses=G.commandMastery[cmd]||0;if(uses>=15)return 3;if(uses>=8)return 2;if(uses>=3)return 1;return 0;}
+function getMasteryStars(cmd){const lv=getMasteryLevel(cmd);return '\u2605'.repeat(lv)+'\u2606'.repeat(3-lv);}
+function getOsAffinityBonus(os){const aff=os==='Linux'?G.linuxAffinity:G.windowsAffinity;let timerBonus=0,rewardMult=1;
+if(aff>90){timerBonus=15;rewardMult=1.3;}else if(aff>60){timerBonus=10;rewardMult=1.2;}else if(aff>30){timerBonus=5;rewardMult=1;}
+return{timerBonus,rewardMult};}
 
 const AUCTION_DURATIONS = {common:180,rare:300,epic:480,legendary:720};
 
@@ -2487,6 +2609,7 @@ function switchTab(tab){
   if(btn)btn.classList.add('active');
   if(tab==='viruses')renderVirusList();
   if(tab==='infra')renderInfraList();
+  if(tab==='cmds')renderCmdShop();
 }
 
 // ========== HACK SYSTEM ==========
@@ -2600,15 +2723,22 @@ function startHack(){
     return;
   }
   const diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
-  const pool=COMMANDS[n.os][diffName];
+  // Loadout-based command selection
+  const deck=n.os==='Linux'?G.linuxDeck:G.windowsDeck;
+  const minReq=[3,4,5,6,6][diff]||3;
+  if(deck.length<minReq){hackActive=false;addLog('HACK ABORTED \u2014 Load more '+(n.os==='Linux'?'Linux':'Windows')+' commands into your deck','alert');document.getElementById('hack-btn').disabled=false;return;}
+  if(deck.length===0){hackActive=false;addLog('NO '+(n.os==='Linux'?'LINUX':'WINDOWS')+' COMMANDS \u2014 Visit CORP > COMMANDS to unlock','alert');document.getElementById('hack-btn').disabled=false;return;}
   let count;if(diff===0)count=3;else if(diff===1)count=4;else if(diff===2)count=5;else if(diff===3)count=n.os==='Windows'?6:7;else count=8;
   if(G.skills.exploitkit)count=Math.max(2,count-1);
   if(G.upgrades.exploitFramework)count=Math.max(1,count-1);
-  const shuffled=[...pool].sort(()=>Math.random()-0.5);
-  hackCmds=shuffled.slice(0,Math.min(count,shuffled.length));hackCmdIndex=0;
+  count=Math.min(count,deck.length);
+  const deckCmds=deck.map(cmd=>{const shop=CMD_SHOP[n.os==='Linux'?'linux':'windows'].find(x=>x.cmd===cmd);return{cmd,tip:shop?shop.desc:cmd};});
+  const shuffled=[...deckCmds].sort(()=>Math.random()-0.5);
+  hackCmds=shuffled.slice(0,count);hackCmdIndex=0;
   const avTimes=[60,45,30,20,15];let avTime=avTimes[diff]||20;
   if(diff>=3&&G.skills.kernelpanic)avTime+=10;
   if(G.upgrades.godModeActivated)avTime+=30;
+  const osBonus=getOsAffinityBonus(n.os);avTime+=osBonus.timerBonus;
   avTimeMax=avTime;avTimeLeft=avTimeMax;
   hackTimeLeft=0;document.getElementById('hack-timer').textContent='';
   const mg=document.getElementById('hack-minigame');mg.classList.add('active');
@@ -2622,6 +2752,17 @@ function startHack(){
   document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='none';
   document.getElementById('av-timer-wrap').classList.remove('active');
   document.getElementById('av-closing-warning').classList.remove('active');
+  // Show 0-day options
+  const zdEl=document.getElementById('zeroday-actions');zdEl.innerHTML='';zdEl.style.display='none';
+  if(G.zeroDaysInventory&&G.zeroDaysInventory.length>0){
+    zdEl.style.display='';
+    G.zeroDaysInventory.forEach((zd,i)=>{
+      const btn=document.createElement('button');btn.style.cssText='background:transparent;border:1px solid #ffd700;color:#ffd700;font-family:inherit;font-size:0.65em;padding:2px 6px;margin-right:4px;cursor:pointer';
+      btn.textContent='[ USE '+zd.name+' ]';
+      btn.onclick=()=>useZeroDay(i);
+      zdEl.appendChild(btn);
+    });
+  }
   // Session header
   const targetIP=Math.floor(Math.random()*223+1)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256);
   document.getElementById('hack-session-header').textContent=L('sessionActive')+' — '+n.name+' | '+n.os+' | '+targetIP;
@@ -2682,11 +2823,29 @@ function updateAvTimerDisplay(){
 }
 
 function renderHackCmds(){const el=document.getElementById('hack-commands');el.innerHTML='';
-hackCmds.forEach((c,i)=>{const wrap=document.createElement('div');wrap.className='cmd-line-wrap';
-const line=document.createElement('div');line.className='cmd-line'+(i<hackCmdIndex?' done':i===hackCmdIndex?' current':'');
-line.textContent=(i<hackCmdIndex?'✓ ':i===hackCmdIndex?'> ':'  ')+c.cmd;
-const tip=document.createElement('div');tip.className='cmd-tooltip';tip.textContent=c.tip;
-wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
+hackCmds.forEach((c,i)=>{
+  const wrap=document.createElement('div');wrap.className='cmd-line-wrap';
+  const line=document.createElement('div');
+  const mastery=getMasteryLevel(c.cmd);
+  const stars=getMasteryStars(c.cmd);
+  line.className='cmd-line'+(i<hackCmdIndex?' done':i===hackCmdIndex?' current':'');
+  if(i<hackCmdIndex){line.textContent='\u2713 '+c.cmd+' '+stars;}
+  else if(i===hackCmdIndex&&mastery>=3){
+    line.innerHTML='<span class="current">'+c.cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+stars+'</span> <button style="background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;padding:1px 6px;margin-left:4px" onclick="oneClickCmd('+i+')">[ ONE-CLICK ]</button>';
+  } else {
+    line.textContent=(i===hackCmdIndex?'> ':'')+c.cmd+' '+stars;
+  }
+  const tip=document.createElement('div');tip.className='cmd-tooltip';tip.textContent=c.tip||c.cmd;
+  wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
+
+function oneClickCmd(idx){
+  if(idx!==hackCmdIndex||!hackActive)return;
+  const masteredCmd=hackCmds[hackCmdIndex].cmd;G.commandMastery[masteredCmd]=(G.commandMastery[masteredCmd]||0)+1;
+  hackCmdIndex++;SFX.play('cmdOk');
+  const prevLine=document.querySelectorAll('.cmd-line')[hackCmdIndex-1];
+  if(prevLine){prevLine.classList.add('cmd-success-flash');setTimeout(()=>prevLine.classList.remove('cmd-success-flash'),300);}
+  if(hackCmdIndex>=hackCmds.length)succeedHack();else renderHackCmds();
+}
 
 function cleanupHackTimers(){if(hackTimerInterval){clearInterval(hackTimerInterval);hackTimerInterval=null;}
 if(avTimerInterval){clearInterval(avTimerInterval);avTimerInterval=null;}
@@ -2751,8 +2910,14 @@ function completeDownload(pct){
   downloadActive=false;const fraction=pct/100;const reward=pendingHackReward,diff=pendingHackDiff,n=pendingHackNpc;
   const dataGain=Math.floor(reward.data*fraction),crGain=Math.floor(reward.cr*fraction),repGain=Math.floor(reward.rep*fraction);
   const heatGain=[5,10,20,35,50][diff];
-  G.data+=dataGain;G.credits+=crGain;G.rep+=repGain;G.totalRep+=repGain;G.totalHacks++;
+  // OS Affinity reward multiplier
+  const _osAffBonus=getOsAffinityBonus(n.os);
+  const dataGainFinal=Math.floor(dataGain*_osAffBonus.rewardMult),crGainFinal=Math.floor(crGain*_osAffBonus.rewardMult),repGainFinal=Math.floor(repGain*_osAffBonus.rewardMult);
+  G.data+=dataGainFinal;G.credits+=crGainFinal;G.rep+=repGainFinal;G.totalRep+=repGainFinal;G.totalHacks++;
   G.darkWebRep+=5;
+  // OS Affinity tracking
+  if(n.os==='Linux')G.linuxAffinity=Math.min(100,(G.linuxAffinity||0)+2);
+  else G.windowsAffinity=Math.min(100,(G.windowsAffinity||0)+2);
   addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
   if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog(LF('logTracers',n.name),'alert');}
   if(!hackUsedSpoof)addForensicTrace(n);
@@ -2785,7 +2950,7 @@ function completeDownload(pct){
   if(pct>=100){
     document.getElementById('download-abort').style.display='none';
     const ce=document.getElementById('download-complete');ce.style.display='';ce.classList.add('show');
-    addLog(LF('logHackSuccess',fmt(dataGain),fmt(crGain),repGain),'info');
+    addLog(LF('logHackSuccess',fmt(dataGainFinal),fmt(crGainFinal),repGainFinal),'info');
     setTimeout(()=>{closeHackMinigame();
       generateLoot(reward.data);
       if(G.upgrades.dataMinerPro)generateLoot(reward.data);// second loot
@@ -2794,7 +2959,7 @@ function completeDownload(pct){
         if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;o.hackCount++;if(o.hackCount>=3&&o.relation!=='enemy'){o.relation='enemy';o.tracerExpiry=Date.now()+600000;}addLog(LF('logOverrideHit',o.name,fmt(r2.data)),'info');generateLoot(r2.data);}}
       checkMissionProgress();checkAchievements();},1200);
   } else {
-    addLog(LF('logPartialExfil',Math.floor(pct),fmt(dataGain),fmt(crGain),repGain),'info');
+    addLog(LF('logPartialExfil',Math.floor(pct),fmt(dataGainFinal),fmt(crGainFinal),repGainFinal),'info');
     setTimeout(()=>{closeHackMinigame();if(pct>50)generateLoot(Math.floor(reward.data*fraction));checkMissionProgress();checkAchievements();},1000);
   }
 }
@@ -2821,7 +2986,21 @@ function cleanForensicTraces(){
 let pendingLoot=null;
 function generateLoot(baseDataValue){
   const roll=Math.random();let rarity,cum=0;
-  for(const[key,tier]of Object.entries(LOOT_TABLE)){cum+=tier.chance;if(roll<cum){rarity=key;break;}}
+  // Check zeroday first (0.5% chance)
+  if(roll<LOOT_TABLE.zeroday.chance){
+    const zdTier=LOOT_TABLE.zeroday;
+    const zdItemName=zdTier.items[Math.floor(Math.random()*zdTier.items.length)];
+    const zdItem=ZERODAY_ITEMS.find(z=>z.name===zdItemName);
+    if(zdItem){
+      G.zeroDaysInventory.push({id:zdItem.id,name:zdItem.name,desc:zdItem.desc});
+      addLog('0-DAY FOUND: '+zdItem.name+' \u2014 '+zdItem.desc,'info');
+    }
+    const value=Math.max(1,Math.floor(baseDataValue*zdTier.multi));
+    pendingLoot={name:zdItemName,rarity:'zeroday',value,acquiredAt:Date.now()};
+    showLootReveal(pendingLoot);
+    return;
+  }
+  for(const[key,tier]of Object.entries(LOOT_TABLE)){if(key==='zeroday')continue;cum+=tier.chance;if(roll-LOOT_TABLE.zeroday.chance<cum){rarity=key;break;}}
   if(!rarity)rarity='common';
   const tier=LOOT_TABLE[rarity],itemName=tier.items[Math.floor(Math.random()*tier.items.length)];
   const value=Math.max(1,Math.floor(baseDataValue*tier.multi));
@@ -2841,7 +3020,7 @@ function showLootReveal(loot){
   document.getElementById('loot-overlay').classList.add('active');
 }
 
-function getRarityColor(r){return{common:'#999',rare:'#4a9eff',epic:'#b44aff',legendary:'#ff8c00'}[r]||'#999';}
+function getRarityColor(r){return{common:'#999',rare:'#4a9eff',epic:'#b44aff',legendary:'#ff8c00',zeroday:'#ffd700'}[r]||'#999';}
 
 function lootSellNow(){if(!pendingLoot)return;G.data+=pendingLoot.value;G.totalItemsSold++;addLog(LF('logSold',pendingLoot.name,fmt(pendingLoot.value)),'info');pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');checkMissionProgress();checkAchievements();}
 
@@ -2883,7 +3062,9 @@ function renderBlackMarket(){
 
 function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;G.totalItemsSold++;addLog(LF('logSold',item.name,fmt(item.value)),'info');renderBlackMarket();checkMissionProgress();checkAchievements();}
 
-function bmarketStartAuction(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];
+function bmarketStartAuction(i){if(i<0||i>=G.lootInventory.length)return;
+if(G.lootInventory[i].name.startsWith('0-day:')){addLog('Dark web won\'t touch this','warning');return;}
+const item=G.lootInventory.splice(i,1)[0];
 const duration=(AUCTION_DURATIONS[item.rarity]||180)*1000;
 G.activeAuctions.push({name:item.name,rarity:item.rarity,value:item.value,currentBid:item.value,startTime:Date.now(),endTime:Date.now()+duration,lastBidTime:Date.now()});
 addLog(LF('logAuctionStart',item.name),'info');renderBlackMarket();}
@@ -2922,9 +3103,17 @@ if(document.getElementById('bmarket-overlay').classList.contains('active'))rende
 // ========== HACK INPUT ==========
 document.getElementById('hack-input').addEventListener('input',()=>{SFX.play('keyPress');});
 document.getElementById('hack-input').addEventListener('keydown',(e)=>{
+  if(e.key==='Tab'&&hackActive){
+    e.preventDefault();const input=e.target,typed=input.value.trim(),expected=hackCmds[hackCmdIndex].cmd;
+    const mastery=getMasteryLevel(expected);
+    const minChars=mastery>=2?2:mastery>=1?4:999;
+    if(typed.length>=minChars&&expected.toLowerCase().startsWith(typed.toLowerCase())){input.value=expected;}
+    return;
+  }
   if(e.key==='Enter'&&hackActive){const input=e.target,typed=input.value.trim(),expected=hackCmds[hackCmdIndex].cmd;
   if(typed.toLowerCase()===expected.toLowerCase()){
     hackCmdIndex++;SFX.play('cmdOk');input.value='';
+    const masteredCmd=hackCmds[hackCmdIndex-1].cmd;G.commandMastery[masteredCmd]=(G.commandMastery[masteredCmd]||0)+1;
     // Flash green on correct command
     const prevLine=document.querySelectorAll('.cmd-line')[hackCmdIndex-1];
     if(prevLine){prevLine.classList.add('cmd-success-flash');setTimeout(()=>prevLine.classList.remove('cmd-success-flash'),300);}
@@ -3034,7 +3223,10 @@ ${protections}
 <div id="corpid-trace-wrap"><div id="corpid-trace-label">${L('traceability')}</div>
 <div id="corpid-trace-bar-bg"><div id="corpid-trace-bar" style="width:${trace}%;background:${traceColor}"></div></div>
 <div id="corpid-trace-pct" style="color:${traceColor}">${trace}%</div></div>
-<div class="corpid-dwrep"><span class="corpid-label">${L('darkWebStatus')}: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>`;
+<div class="corpid-dwrep"><span class="corpid-label">${L('darkWebStatus')}: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>
+<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">OS AFFINITY</div>
+<div class="corpid-row"><span class="corpid-label">LINUX</span><span class="corpid-value"><span style="color:var(--accent)">${'\u2588'.repeat(Math.floor((G.linuxAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.linuxAffinity||0)/10))}</span> ${G.linuxAffinity||0}%${(G.linuxAffinity||0)>90?' \u2014 Linux Master':''}</span></div>
+<div class="corpid-row"><span class="corpid-label">WINDOWS</span><span class="corpid-value"><span style="color:#4a9eff">${'\u2588'.repeat(Math.floor((G.windowsAffinity||0)/10))+'\u2591'.repeat(10-Math.floor((G.windowsAffinity||0)/10))}</span> ${G.windowsAffinity||0}%${(G.windowsAffinity||0)>90?' \u2014 Windows Master':''}</span></div>`;
   document.getElementById('corpid-changeip').style.display=(G.usurpationActive||G.falseFlagActive)?'block':'none';
   document.getElementById('corpid-overlay').classList.add('active');
 }
@@ -3815,6 +4007,10 @@ G.corporateSpyActive=false;G.corporateSpyExpiry=0;G.corporateSpyBonus=0;
 G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
 G.timeBombTarget='';G.timeBombExpiry=0;
 G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
+G.unlockedCommands=['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'];
+G.linuxDeck=['nmap 192.168.1.1','ping target','ls /etc'];
+G.windowsDeck=['ipconfig','whoami','dir C:\\'];
+G.commandMastery={};G.linuxAffinity=0;G.windowsAffinity=0;G.zeroDaysInventory=[];
 G.operatorAlias=generateAlias();G.playerIP=generateIP();
 G.gameMode='hacker';G.pubCapital=0;G.pubStock=42;G.pubShares=10000000;G.pubPublicRep=50;
 G.pubDepartments=[0,0,0,0,0,0];G.pubShareholders=[{name:'Titan Capital',satisfaction:70},{name:'Apex Ventures',satisfaction:65},{name:'Nova Fund',satisfaction:60},{name:'Atlas Holdings',satisfaction:55},{name:'Zenith Group',satisfaction:50}];
@@ -3884,6 +4080,13 @@ pubBuybackCooldown:G.pubBuybackCooldown||0,pubIssueCooldown:G.pubIssueCooldown||
 pubDividendCooldown:G.pubDividendCooldown||0,pubShadowCooldowns:G.pubShadowCooldowns||{},
 pubCompetitors:G.pubCompetitors||[],pubTotalDividendsPaid:G.pubTotalDividendsPaid||0,
 pubTotalShadowOps:G.pubTotalShadowOps||0,
+unlockedCommands:G.unlockedCommands||['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'],
+linuxDeck:G.linuxDeck||['nmap 192.168.1.1','ping target','ls /etc'],
+windowsDeck:G.windowsDeck||['ipconfig','whoami','dir C:\\'],
+commandMastery:G.commandMastery||{},
+linuxAffinity:G.linuxAffinity||0,
+windowsAffinity:G.windowsAffinity||0,
+zeroDaysInventory:G.zeroDaysInventory||[],
 npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
 hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
 tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti,
@@ -3942,6 +4145,13 @@ G.pubBuybackCooldown=s.pubBuybackCooldown||0;G.pubIssueCooldown=s.pubIssueCooldo
 G.pubDividendCooldown=s.pubDividendCooldown||0;G.pubShadowCooldowns=s.pubShadowCooldowns||{};
 G.pubCompetitors=s.pubCompetitors||[];G.pubTotalDividendsPaid=s.pubTotalDividendsPaid||0;
 G.pubTotalShadowOps=s.pubTotalShadowOps||0;
+G.unlockedCommands=s.unlockedCommands||['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'];
+G.linuxDeck=s.linuxDeck||['nmap 192.168.1.1','ping target','ls /etc'];
+G.windowsDeck=s.windowsDeck||['ipconfig','whoami','dir C:\\'];
+G.commandMastery=s.commandMastery||{};
+G.linuxAffinity=s.linuxAffinity||0;
+G.windowsAffinity=s.windowsAffinity||0;
+G.zeroDaysInventory=s.zeroDaysInventory||[];
 G._endgameShown=false;if(s.npcs&&s.npcs.length>=15)G.npcs=s.npcs;else initNPCs();
 // Ensure NPC virus fields exist
 if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;if(!n._neuralBackdoorAlly)n._neuralBackdoorAlly=false;});
@@ -3991,6 +4201,10 @@ G.pubStockHistory=[];G.pubShadowOpsCount=0;G.pubLastEventTime=0;G.pubActiveEvent
 G.pubLastStockUpdate=0;G.pubLastQuarterly=0;G.pubLastMeetingTime=0;
 G.pubBuybackCooldown=0;G.pubIssueCooldown=0;G.pubDividendCooldown=0;G.pubShadowCooldowns={};
 G.pubCompetitors=[];G.pubTotalDividendsPaid=0;G.pubTotalShadowOps=0;
+G.unlockedCommands=['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'];
+G.linuxDeck=['nmap 192.168.1.1','ping target','ls /etc'];
+G.windowsDeck=['ipconfig','whoami','dir C:\\'];
+G.commandMastery={};G.linuxAffinity=0;G.windowsAffinity=0;G.zeroDaysInventory=[];
 document.body.classList.remove('god-mode-active','public-mode');
 document.getElementById('main').style.display='';
 document.getElementById('public-container').classList.remove('active');
@@ -4036,6 +4250,124 @@ function convertCrypto(){
   G.data+=dataGain;
   addLog(LF('logCryptoConvert',fmt(G.crypto),fmt(dataGain)),'info');
   G.crypto=0;
+}
+
+// ========== COMMAND SHOP ==========
+function renderCmdShop(){
+  const el=document.getElementById('cmds-list');if(!el)return;el.innerHTML='';
+  ['linux','windows'].forEach(os=>{
+    const hdr=document.createElement('div');hdr.className='upgrade-section-header';
+    hdr.textContent=os==='linux'?'// LINUX':'// POWERSHELL';el.appendChild(hdr);
+    CMD_SHOP[os].forEach(c=>{
+      const owned=G.unlockedCommands.includes(c.cmd);
+      const card=document.createElement('div');card.className='item-card'+(owned?' bought':'');
+      const mastery=getMasteryStars(c.cmd);
+      const reqTag=c.reqFor?' <span style="color:var(--warning);font-size:0.85em">['+c.reqFor+']</span>':'';
+      card.innerHTML='<div class="item-header"><span class="item-name" style="font-size:0.7em">'+c.cmd+reqTag+'</span><span style="color:var(--warning);font-size:0.65em">'+mastery+'</span></div>\n<div class="item-stats">'+c.desc+'</div>\n<button class="buy-btn" '+(owned||(!c.starter&&G.data<c.cost)?'disabled':'')+' onclick="buyCommand(\''+os+'\',\''+c.cmd.replace(/'/g,"\\'").replace(/\\/g,"\\\\")+'\')">'+( owned?L('owned'):c.starter?L('owned'):'[ UNLOCK \u2014 '+fmt(c.cost)+' DATA ]')+'</button>';
+      el.appendChild(card);
+    });
+  });
+}
+
+function buyCommand(os,cmd){
+  const c=CMD_SHOP[os].find(x=>x.cmd===cmd);if(!c||G.unlockedCommands.includes(cmd))return;
+  if(c.cost>0&&G.data<c.cost)return;
+  if(c.cost>0)G.data-=c.cost;
+  G.unlockedCommands.push(cmd);SFX.play('buy');
+  addLog('Command unlocked: '+cmd,'info');
+  renderCmdShop();
+}
+
+// ========== LOADOUT ==========
+function openLoadout(){renderLoadout();document.getElementById('loadout-overlay').classList.add('active');}
+function closeLoadout(){document.getElementById('loadout-overlay').classList.remove('active');}
+
+function renderLoadout(){
+  ['linux','windows'].forEach(os=>{
+    const el=document.getElementById('loadout-'+os);if(!el)return;el.innerHTML='';
+    const deck=os==='linux'?G.linuxDeck:G.windowsDeck;
+    const maxSlots=6;
+    for(let i=0;i<maxSlots;i++){
+      const cmd=deck[i]||null;
+      const slot=document.createElement('div');slot.className='item-card';slot.style.cssText='padding:4px 6px;margin-bottom:4px;cursor:pointer;font-size:0.7em';
+      if(cmd){
+        slot.innerHTML='<span style="color:var(--accent)">'+cmd+'</span> <span style="color:var(--warning);font-size:0.85em">'+getMasteryStars(cmd)+'</span> <span style="color:var(--danger);cursor:pointer;float:right" onclick="removeFromDeck(\''+os+'\','+i+')">\u2715</span>';
+      } else {
+        slot.innerHTML='<span style="color:#555">[ empty slot ]</span>';
+      }
+      el.appendChild(slot);
+    }
+    // Available commands to add
+    const avail=G.unlockedCommands.filter(c=>{
+      const isOs=CMD_SHOP[os].some(x=>x.cmd===c);
+      return isOs&&!deck.includes(c);
+    });
+    if(avail.length>0&&deck.length<maxSlots){
+      const addDiv=document.createElement('div');addDiv.style.cssText='margin-top:6px;font-size:0.65em;color:#cccccc';
+      addDiv.textContent='Available:';el.appendChild(addDiv);
+      avail.forEach(c=>{
+        const btn=document.createElement('div');btn.style.cssText='font-size:0.65em;color:var(--accent);cursor:pointer;padding:2px 0';
+        btn.textContent='+ '+c;btn.onclick=()=>{addToDeck(os,c);};
+        el.appendChild(btn);
+      });
+    }
+  });
+}
+
+function addToDeck(os,cmd){
+  const deck=os==='linux'?G.linuxDeck:G.windowsDeck;
+  if(deck.length>=6||deck.includes(cmd))return;
+  deck.push(cmd);renderLoadout();
+}
+
+function removeFromDeck(os,idx){
+  const deck=os==='linux'?G.linuxDeck:G.windowsDeck;
+  deck.splice(idx,1);renderLoadout();
+}
+
+// ========== MAN PAGE ==========
+let currentManTab='linux';
+function openManPage(){renderManContent();document.getElementById('man-overlay').classList.add('active');}
+function closeManPage(){document.getElementById('man-overlay').classList.remove('active');}
+function switchManTab(tab){
+  currentManTab=tab;
+  document.querySelectorAll('#man-tab-bar .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('#man-tab-bar .tab-btn[onclick="switchManTab(\''+tab+'\')"]').classList.add('active');
+  renderManContent();
+}
+function renderManContent(){
+  const el=document.getElementById('man-content');if(!el)return;el.innerHTML='';
+  const list=currentManTab==='linux'?MAN_LINUX:MAN_WINDOWS;
+  list.forEach(c=>{
+    const owned=G.unlockedCommands.includes(c.cmd);
+    const div=document.createElement('div');div.style.cssText='padding:4px 0;border-bottom:1px solid var(--border)';
+    div.innerHTML='<div style="color:var(--accent);font-size:0.75em">'+c.cmd+(owned?' <span style="color:var(--warning)">'+getMasteryStars(c.cmd)+'</span>':'')+'</div>\n<div style="color:#cccccc;font-size:0.65em">'+c.desc+'</div>';
+    el.appendChild(div);
+  });
+}
+
+// ========== 0-DAY USE ==========
+function useZeroDay(idx){
+  if(!hackActive||!G.zeroDaysInventory[idx])return;
+  const zd=G.zeroDaysInventory.splice(idx,1)[0];
+  if(zd.id==='zd_root'){
+    addLog('0-DAY: Root Access \u2014 auto-hack!','info');
+    hackCmdIndex=hackCmds.length;succeedHack();
+  } else if(zd.id==='zd_ssh'){
+    hackCmds=hackCmds.filter(c=>!c.cmd.toLowerCase().includes('ssh'));
+    if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
+    addLog('0-DAY: SSH Bypass activated','info');
+  } else if(zd.id==='zd_winauth'){
+    hackCmds=hackCmds.filter(c=>!c.cmd.match(/Get-LocalUser|Get-ADUser|whoami|net user/i));
+    if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
+    addLog('0-DAY: Windows Auth bypass activated','info');
+  } else if(zd.id==='zd_kernel'){
+    const masteredCmd=hackCmds[hackCmdIndex].cmd;G.commandMastery[masteredCmd]=(G.commandMastery[masteredCmd]||0)+1;
+    hackCmdIndex++;
+    if(hackCmdIndex>=hackCmds.length){succeedHack();}else{renderHackCmds();}
+    addLog('0-DAY: Kernel Exploit \u2014 command skipped','info');
+  }
+  document.getElementById('zeroday-actions').style.display='none';
 }
 
 function shellCompanyDecay(){if(G.upgrades.shell&&G.heat>0)G.heat=Math.max(0,G.heat-(1/60));}
@@ -4178,6 +4510,10 @@ G.corporateSpyActive=false;G.corporateSpyExpiry=0;G.corporateSpyBonus=0;
 G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
 G.timeBombTarget='';G.timeBombExpiry=0;
 G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
+G.unlockedCommands=['nmap 192.168.1.1','ping target','ls /etc','ipconfig','whoami','dir C:\\'];
+G.linuxDeck=['nmap 192.168.1.1','ping target','ls /etc'];
+G.windowsDeck=['ipconfig','whoami','dir C:\\'];
+G.commandMastery={};G.linuxAffinity=0;G.windowsAffinity=0;G.zeroDaysInventory=[];
 G.operatorAlias=generateAlias();G.playerIP=generateIP();
 G._endgameShown=false;initNPCs();
 document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';startGameLoops();}
