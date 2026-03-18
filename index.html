@@ -400,6 +400,12 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 /* Coalition overlay */
 #coalition-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99996;justify-content:center;align-items:center;flex-direction:column}
 #coalition-overlay.active{display:flex}
+/* Pause overlay */
+#pause-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100001;justify-content:center;align-items:center;flex-direction:column}
+#pause-overlay.active{display:flex}
+#pause-overlay h2{color:var(--accent);font-size:1.4em;letter-spacing:4px;margin-bottom:24px}
+#pause-resume-btn{padding:12px 32px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:1em;cursor:pointer;letter-spacing:2px}
+#pause-resume-btn:hover{background:rgba(0,255,65,0.1)}
 </style>
 </head>
 <body>
@@ -434,6 +440,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <button class="header-btn" onclick="openAchievements()">ACH</button>
     <button class="header-btn" onclick="manualSave()">SAVE</button>
     <span id="save-flash">SAVED</span>
+    <button class="header-btn" id="btn-pause" onclick="togglePause()">PAUSE</button>
   </div>
   <div id="header-actions-right">
     <button class="header-btn" onclick="openHelp()">?</button>
@@ -717,6 +724,12 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 <button class="bounty-btn" id="btn-coalition-close" onclick="closeCoalitionOverlay()" style="border:1px solid #555;color:#cccccc">[ CLOSE ]</button>
 </div></div>
 
+<!-- Pause Overlay -->
+<div id="pause-overlay">
+  <h2 id="pause-title">// GAME PAUSED</h2>
+  <button id="pause-resume-btn" onclick="togglePause()">RESUME</button>
+</div>
+
 <script>
 // ========== LANG & THEME ==========
 let currentLang = localStorage.getItem('bytecorp_lang') || 'en';
@@ -765,7 +778,9 @@ const LANG = {
     acceptContract:'[ ACCEPT CONTRACT ]', declineContract:'[ DECLINE ]',
     virusCountdown:'VIRUS ACTIVE: bots -50% — ',
     hijackedLabel:'⚠ COMPROMISED',
-    claim:'[ CLAIM ]', completed:'COMPLETED', active:'ACTIVE'
+    claim:'[ CLAIM ]', completed:'COMPLETED', active:'ACTIVE',
+    pause:'PAUSE', resume:'RESUME', gamePaused:'// GAME PAUSED',
+    logPaused:'Game paused', logResumed:'Game resumed'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -809,7 +824,9 @@ const LANG = {
     acceptContract:'[ ACCEPTER CONTRAT ]', declineContract:'[ REFUSER ]',
     virusCountdown:'VIRUS ACTIF : bots -50% — ',
     hijackedLabel:'⚠ COMPROMIS',
-    claim:'[ RÉCUPÉRER ]', completed:'TERMINÉ', active:'EN COURS'
+    claim:'[ RÉCUPÉRER ]', completed:'TERMINÉ', active:'EN COURS',
+    pause:'PAUSE', resume:'REPRENDRE', gamePaused:'// JEU EN PAUSE',
+    logPaused:'Jeu en pause', logResumed:'Jeu repris'
   }
 };
 
@@ -940,6 +957,10 @@ function applyLang(){
   // Coalition
   const coaT=document.getElementById('coalition-title');if(coaT)coaT.textContent=L('coalitionTitle');
   const coaClose=document.getElementById('btn-coalition-close');if(coaClose)coaClose.textContent=L('close');
+  // Pause
+  const pauseBtn=document.getElementById('btn-pause');if(pauseBtn)pauseBtn.textContent=gamePaused?L('resume'):L('pause');
+  const pauseTitle=document.getElementById('pause-title');if(pauseTitle)pauseTitle.textContent=L('gamePaused');
+  const pauseResume=document.getElementById('pause-resume-btn');if(pauseResume)pauseResume.textContent=L('resume');
   // Lang button itself
   document.getElementById('btn-lang').textContent=currentLang==='en'?'EN':'FR';
   // Re-render dynamic content
@@ -1039,6 +1060,7 @@ let G = {
 };
 
 let gameRunning = false;
+let gamePaused = false;
 let gameIntervals = [];
 
 // DDoS state
@@ -2748,12 +2770,12 @@ function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();r
 function shellCompanyDecay(){if(G.upgrades.shell&&G.heat>0)G.heat=Math.max(0,G.heat-(1/60));}
 
 // ========== GAME LOOPS ==========
-function gameLoop(){if(!gameRunning)return;const dps=getDataPerSec(),cps=getCreditsPerSec();G.data+=dps/10;G.credits+=cps/10;
+function gameLoop(){if(!gameRunning||gamePaused)return;const dps=getDataPerSec(),cps=getCreditsPerSec();G.data+=dps/10;G.credits+=cps/10;
 // Hijacked bot generates heat
 updateHijackedBot();
 updateUI();}
 
-function slowLoop(){if(!gameRunning)return;updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
+function slowLoop(){if(!gameRunning||gamePaused)return;updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
 checkDDoSExpiry();checkIncomingAttacks();checkDDoS();checkUsurpation();checkBounty();bountyAttackCheck();
 // New NPC active behaviors
 checkNpcVirusDeployment();checkFakeContracts();checkFalseFlag();checkEspionage();checkCoalitions();checkBotHijacking();
@@ -2828,6 +2850,33 @@ document.getElementById('start-screen').classList.add('hidden');document.getElem
 
 function openHelp(){document.getElementById('help-overlay').classList.add('active');}
 function closeHelp(){document.getElementById('help-overlay').classList.remove('active');}
+
+// ========== PAUSE SYSTEM ==========
+function togglePause(){
+  if(!gameRunning)return;
+  gamePaused=!gamePaused;
+  const btn=document.getElementById('btn-pause');
+  const overlay=document.getElementById('pause-overlay');
+  if(gamePaused){
+    overlay.classList.add('active');
+    btn.textContent=L('resume');
+    addLog(L('logPaused'));
+  } else {
+    overlay.classList.remove('active');
+    btn.textContent=L('pause');
+    addLog(L('logResumed'));
+  }
+}
+
+document.addEventListener('keydown',(e)=>{
+  if(e.code==='Space'&&!e.repeat){
+    const active=document.activeElement;
+    const tag=active?active.tagName:'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    e.preventDefault();
+    togglePause();
+  }
+});
 
 applyTheme();applyLang();showStartScreen();
 </script>
