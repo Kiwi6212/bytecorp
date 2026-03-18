@@ -572,6 +572,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <button class="header-btn" onclick="openMissions()">MISSIONS</button>
     <button class="header-btn" onclick="openSkills()">SKILLS</button>
     <button class="header-btn" onclick="openAchievements()">ACH</button>
+    <button class="header-btn" id="btn-npcs" onclick="openNpcDirectory()">NPCS</button>
     <button class="header-btn" onclick="manualSave()">SAVE</button>
     <span id="save-flash">SAVED</span>
     <button class="header-btn" id="btn-pause" onclick="togglePause()">PAUSE</button>
@@ -707,6 +708,9 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <!-- Menu -->
 <div id="menu-overlay"><div id="menu-popup"><h2>// MENU</h2>
 <button class="menu-btn" id="menu-save-quit" onclick="saveAndQuit()">[ SAVE & QUIT TO MENU ]</button>
+<button class="menu-btn" id="menu-export" onclick="exportSave()" style="border:1px solid var(--warning);color:var(--warning)">[ EXPORT SAVE ]</button>
+<button class="menu-btn" id="menu-import" onclick="document.getElementById('import-file').click()" style="border:1px solid var(--warning);color:var(--warning)">[ IMPORT SAVE ]</button>
+<input type="file" id="import-file" accept=".json" style="display:none" onchange="importSave(event)">
 <button class="menu-btn" id="menu-reset" onclick="resetRun()">[ RESET RUN ]</button>
 <button class="menu-btn" id="menu-close" onclick="closeMenu()">[ CLOSE ]</button>
 </div></div>
@@ -930,6 +934,12 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 </div>
 <div class="item-list" id="man-content" style="max-height:400px;overflow-y:auto"></div>
 <button class="modal-close" onclick="closeManPage()">[ CLOSE ]</button>
+</div></div>
+
+<!-- NPC Directory -->
+<div class="modal-overlay" id="npc-dir-overlay"><div class="modal-popup" id="npc-dir-popup" style="max-width:500px"><h2 id="npc-dir-title">// NPC DIRECTORY</h2>
+<div class="item-list" id="npc-dir-list" style="max-height:420px;overflow-y:auto"></div>
+<button class="modal-close" id="npc-dir-close" onclick="closeNpcDirectory()">[ CLOSE ]</button>
 </div></div>
 
 <!-- Pause Overlay -->
@@ -1272,7 +1282,14 @@ const LANG = {
     insufficientCmds:'INSUFFICIENT COMMANDS — Unlock more commands for this difficulty',
     logZdRoot:'0-DAY: Root Access — auto-hack!',logZdSsh:'0-DAY: SSH Bypass activated',
     logZdWin:'0-DAY: Windows Auth bypass activated',logZdKernel:'0-DAY: Kernel Exploit — command skipped',
-    oneClick:'[ ONE-CLICK ]'
+    oneClick:'[ ONE-CLICK ]',
+    // NPC Directory
+    npcsBtn:'NPCS',npcDirTitle:'// NPC DIRECTORY',
+    npcAlly:'ALLY',npcEnemy:'ENEMY',npcNeutral:'NEUTRAL',
+    npcHacksLabel:'Hacks',npcTracerActive:'TRACER ACTIVE',npcContractActive:'CONTRACT ACTIVE',
+    // Save export/import
+    exportSave:'[ EXPORT SAVE ]',importSave:'[ IMPORT SAVE ]',
+    importWarning:'\u26a0 This will overwrite your current save. Continue?'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1521,7 +1538,14 @@ const LANG = {
     insufficientCmds:'COMMANDES INSUFFISANTES — Débloquez plus de commandes pour cette difficulté',
     logZdRoot:'0-DAY : Accès Root — auto-hack !',logZdSsh:'0-DAY : Bypass SSH activé',
     logZdWin:'0-DAY : Bypass Auth Windows activé',logZdKernel:'0-DAY : Exploit Kernel — commande sautée',
-    oneClick:'[ UN CLIC ]'
+    oneClick:'[ UN CLIC ]',
+    // NPC Directory
+    npcsBtn:'NPCS',npcDirTitle:'// RÉPERTOIRE NPC',
+    npcAlly:'ALLIÉ',npcEnemy:'ENNEMI',npcNeutral:'NEUTRE',
+    npcHacksLabel:'Hacks',npcTracerActive:'TRACEUR ACTIF',npcContractActive:'CONTRAT ACTIF',
+    // Save export/import
+    exportSave:'[ EXPORTER SAUVEGARDE ]',importSave:'[ IMPORTER SAUVEGARDE ]',
+    importWarning:'\u26a0 Ceci écrasera votre sauvegarde actuelle. Continuer ?'
   }
 };
 
@@ -1560,6 +1584,7 @@ function applyLang(){
     else if(oc.includes('openMissions'))b.textContent=L('missions');
     else if(oc.includes('openSkills'))b.textContent=L('skills');
     else if(oc.includes('openAchievements'))b.textContent=L('ach');
+    else if(oc.includes('openNpcDirectory'))b.textContent=L('npcsBtn');
     else if(oc.includes('manualSave'))b.textContent=L('save');
     else if(oc.includes('openHelp'))b.textContent='?';
     else if(b.id==='btn-menu')b.textContent=L('menu');
@@ -1735,6 +1760,13 @@ function applyLang(){
   const cmdsTabBtn=document.getElementById('cmds-tab-btn');if(cmdsTabBtn)cmdsTabBtn.textContent=L('cmdsTab');
   // Loadout button
   const loadBtn=document.getElementById('loadout-btn');if(loadBtn)loadBtn.textContent='LOADOUT';
+  // NPC Directory
+  const npcDirT=document.getElementById('npc-dir-title');if(npcDirT)npcDirT.textContent=L('npcDirTitle');
+  const npcDirC=document.getElementById('npc-dir-close');if(npcDirC)npcDirC.textContent=L('close');
+  const npcsBtn=document.getElementById('btn-npcs');if(npcsBtn)npcsBtn.textContent=L('npcsBtn');
+  // Menu export/import
+  const menuExp=document.getElementById('menu-export');if(menuExp)menuExp.textContent=L('exportSave');
+  const menuImp=document.getElementById('menu-import');if(menuImp)menuImp.textContent=L('importSave');
   // Re-render dynamic content
   if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();renderVirusList();renderInfraList();renderCmdShop();}
 }
@@ -4237,6 +4269,44 @@ function manualSave(){saveGame();const flash=document.getElementById('save-flash
 // ========== MENU ==========
 function openMenu(){document.getElementById('menu-overlay').classList.add('active');}
 function closeMenu(){document.getElementById('menu-overlay').classList.remove('active');}
+
+// ========== NPC DIRECTORY ==========
+function openNpcDirectory(){renderNpcDirectory();document.getElementById('npc-dir-overlay').classList.add('active');}
+function closeNpcDirectory(){document.getElementById('npc-dir-overlay').classList.remove('active');}
+function renderNpcDirectory(){
+  const el=document.getElementById('npc-dir-list');if(!el||!G.npcs)return;el.innerHTML='';
+  const sorted=[...G.npcs].sort((a,b)=>{const order={enemy:0,neutral:1,ally:2};return(order[a.relation]||1)-(order[b.relation]||1);});
+  sorted.forEach(n=>{
+    const card=document.createElement('div');card.className='item-card';card.style.cssText='padding:6px 8px;margin-bottom:4px';
+    const relColor=n.relation==='ally'?'var(--accent)':n.relation==='enemy'?'var(--danger)':'var(--warning)';
+    const relLabel=n.relation==='ally'?L('npcAlly'):n.relation==='enemy'?L('npcEnemy'):L('npcNeutral');
+    const osBadge=n.os==='Linux'?'<span style="color:var(--accent);font-size:0.8em">[Linux]</span>':'<span style="color:#4a9eff;font-size:0.8em">[Windows]</span>';
+    let extra='';
+    if(n.relation==='enemy'&&n.tracerExpiry>Date.now())extra='<div style="color:var(--danger);font-size:0.6em">\u26a0 '+L('npcTracerActive')+'</div>';
+    if(n.relation==='ally'&&n.allyExpiry>Date.now())extra='<div style="color:var(--accent);font-size:0.6em">\u2713 '+L('npcContractActive')+'</div>';
+    card.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span style="color:${relColor};font-size:0.8em;font-weight:bold">${n.name}</span> ${osBadge}</div>
+<div style="font-size:0.65em;color:#ccc;margin-top:2px">Sec: ${n.securityLevel.toFixed(1)} | ${L('npcHacksLabel')}: ${n.hackCount} | <span style="color:${relColor}">${relLabel}</span></div>${extra}`;
+    el.appendChild(card);
+  });
+}
+
+// ========== SAVE EXPORT/IMPORT ==========
+function exportSave(){
+  saveGame();
+  const data=localStorage.getItem('bytecorp_save');if(!data)return;
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bytecorp_save.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importSave(event){
+  const file=event.target.files[0];if(!file)return;
+  if(!confirm(L('importWarning')))return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{JSON.parse(e.target.result);localStorage.setItem('bytecorp_save',e.target.result);location.reload();}
+    catch(err){alert('Invalid save file.');}
+  };
+  reader.readAsText(file);event.target.value='';
+}
 function saveAndQuit(){saveGame();stopGame();closeMenu();document.getElementById('game-container').style.display='none';showStartScreen();}
 function resetRun(){if(!confirm(L('confirmReset')))return;localStorage.removeItem('bytecorp_save');stopGame();closeMenu();
 document.getElementById('game-container').style.display='none';
