@@ -26,22 +26,22 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #btn-continue:hover{background:rgba(0,255,65,0.1)}
 #btn-newgame-start{border:2px solid var(--secondary);color:var(--secondary)}
 #btn-newgame-start:hover{background:rgba(255,0,102,0.1)}
-#start-version{position:absolute;bottom:16px;right:24px;font-size:0.7em;color:#333}
-#start-ip{position:absolute;bottom:16px;left:24px;font-size:0.7em;color:#555}
+#start-version{position:absolute;bottom:16px;right:24px;font-size:0.7em;color:#cccccc}
+#start-ip{position:absolute;bottom:16px;left:24px;font-size:0.7em;color:#cccccc}
 #start-ip.vpn{color:var(--accent)}
 #header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 #header h1{color:var(--accent);font-size:1.4em;animation:glitch 3s infinite,glitchSkew 4s infinite;letter-spacing:3px}
 #prestige-badge{color:var(--secondary);font-size:0.8em;margin-left:8px}
 #header-left{display:flex;align-items:center;gap:12px}
 #header-actions{display:flex;align-items:center;gap:8px}
-.header-btn{background:transparent;border:1px solid var(--border);color:#666;font-family:inherit;font-size:0.65em;padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all 0.15s}
+.header-btn{background:transparent;border:1px solid var(--border);color:#cccccc;font-family:inherit;font-size:0.65em;padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all 0.15s}
 .header-btn:hover{border-color:var(--accent);color:var(--accent)}
 #save-flash{color:var(--accent);font-size:0.7em;opacity:0;transition:opacity 0.15s}
 #save-flash.show{opacity:1}
 #level-info{font-size:0.8em;color:var(--warning)}
 #resources{display:flex;gap:24px;align-items:center}
 .res{text-align:center;min-width:100px}
-.res-label{font-size:0.65em;color:#666;letter-spacing:2px}
+.res-label{font-size:0.65em;color:#cccccc;letter-spacing:2px}
 .res-value{font-size:1.1em;color:var(--accent)}
 #heat-container{width:120px}
 #heat-bar-bg{background:#1a1a2e;height:14px;border:1px solid #333;position:relative;overflow:hidden}
@@ -59,11 +59,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #mine-btn{width:100%;padding:16px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:1.1em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.1s}
 #mine-btn:hover{background:rgba(0,255,65,0.1)}
 #mine-btn:active{background:rgba(0,255,65,0.25);transform:scale(0.98)}
-#dps-display{font-size:0.75em;color:#888;margin-bottom:8px;text-align:center}
+#dps-display{font-size:0.75em;color:#cccccc;margin-bottom:8px;text-align:center}
 #virus-status{font-size:0.7em;color:var(--danger);margin-bottom:4px;text-align:center;display:none}
 #virus-status.active{display:block}
 #log{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
-.log-entry{font-size:0.7em;color:var(--accent);opacity:0.85;padding:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log-entry{font-size:0.7em;color:var(--accent);opacity:0.9;padding:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .log-entry.warning{color:var(--secondary)}
 .log-entry.alert{color:var(--danger)}
 .log-entry.info{color:var(--warning)}
@@ -75,7 +75,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .item-name{color:var(--accent);font-size:0.8em}
 .item-count{color:var(--warning);font-size:0.75em}
-.item-stats{font-size:0.65em;color:#666;margin-bottom:6px}
+.item-stats{font-size:0.65em;color:#cccccc;margin-bottom:6px}
 .buy-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.7em;cursor:pointer;transition:all 0.15s}
 .buy-btn:hover:not(:disabled){background:rgba(0,255,65,0.1)}
 .buy-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
@@ -83,7 +83,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .purge-btn:hover{background:rgba(255,51,51,0.1)}
 #hack-target{border:1px solid var(--border);padding:10px;margin-bottom:8px;min-height:100px}
 .target-name{font-size:0.9em;color:var(--accent)}
-.target-info{font-size:0.7em;color:#888;margin:4px 0}
+.target-info{font-size:0.7em;color:#cccccc;margin:4px 0}
 .target-reward{font-size:0.7em;color:var(--warning)}
 #hack-btn{width:100%;padding:10px;background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.85em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.15s}
 #hack-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
@@ -91,7 +91,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #spoof-checkbox-wrap{font-size:0.7em;margin-bottom:6px;display:none}
 #spoof-checkbox-wrap.visible{display:block}
 #spoof-checkbox-wrap label{color:var(--warning);cursor:pointer}
-#spoof-checkbox-wrap .spoof-cooldown{color:#555;font-size:0.9em}
+#spoof-checkbox-wrap .spoof-cooldown{color:#cccccc;font-size:0.9em}
 #hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden;transition:border-color 0.3s}
 #hack-minigame.active{display:flex}
 #hack-minigame.hack-fail-flash{border-color:var(--danger);background:rgba(255,0,0,0.08)}
@@ -108,7 +108,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #hack-result-msg{font-size:0.8em;text-align:center;padding:8px;display:none;letter-spacing:1px}
 #hack-result-msg.active{display:block}
 #hack-commands{flex:1;overflow-y:auto;margin-bottom:6px}
-.cmd-line{font-size:0.7em;padding:2px 0;color:#555}
+.cmd-line{font-size:0.7em;padding:2px 0;color:#cccccc}
 .cmd-line.done{color:var(--accent)}
 .cmd-line.current{color:#fff}
 .cmd-line.failed{color:var(--danger)}
@@ -118,7 +118,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #hack-input{background:transparent;border:none;border-bottom:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;padding:4px;outline:none;width:100%}
 #hack-input::placeholder{color:#333}
 .tab-bar{display:flex;gap:0;margin-bottom:8px}
-.tab-btn{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#666;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
+.tab-btn{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#cccccc;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
 .tab-btn.active{color:var(--accent);border-color:var(--accent);background:rgba(0,255,65,0.05)}
 .tab-content{display:none;flex:1;overflow:hidden}
 .tab-content.active{display:flex;flex-direction:column}
@@ -126,7 +126,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .upgrade-card.bought{opacity:0.4;border-color:#1a1a1a}
 .upgrade-card.locked{opacity:0.3}
 .upgrade-name{color:var(--warning);font-size:0.8em}
-.upgrade-desc{font-size:0.65em;color:#666;margin:3px 0}
+.upgrade-desc{font-size:0.65em;color:#cccccc;margin:3px 0}
 .upgrade-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--warning);color:var(--warning);font-family:inherit;font-size:0.7em;cursor:pointer}
 .upgrade-btn:hover:not(:disabled){background:rgba(255,170,0,0.1)}
 .upgrade-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
@@ -139,18 +139,18 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #menu-save-quit:hover{background:rgba(0,255,65,0.1)}
 #menu-reset{border:1px solid var(--danger);color:var(--danger)}
 #menu-reset:hover{background:rgba(255,51,51,0.1)}
-#menu-close{border:1px solid #555;color:#888}
+#menu-close{border:1px solid #555;color:#cccccc}
 #menu-close:hover{border-color:var(--text);color:var(--text)}
 #market-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center}
 #market-overlay.active{display:flex}
 #market-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:350px;max-width:450px}
 #market-popup h2{color:var(--secondary);font-size:1em;margin-bottom:12px;letter-spacing:3px}
-#market-info{font-size:0.75em;color:#888;margin-bottom:12px}
+#market-info{font-size:0.75em;color:#cccccc;margin-bottom:12px}
 #market-slider{width:100%;margin:8px 0;accent-color:var(--secondary)}
 #market-amount{font-size:0.8em;color:var(--text);text-align:center;margin-bottom:8px}
 #market-sell-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;cursor:pointer;font-size:0.8em}
 #market-sell-btn:hover{background:rgba(255,0,102,0.1)}
-#market-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#666;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
+#market-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#cccccc;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
 #market-btn{display:none;width:100%;padding:6px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.7em;cursor:pointer;margin-top:6px;letter-spacing:1px}
 #market-btn.unlocked{display:block}
 #endgame-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center}
@@ -225,14 +225,14 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #bmarket-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:400px;max-width:520px;max-height:80vh;display:flex;flex-direction:column}
 #bmarket-popup h2{color:var(--secondary);font-size:1em;margin-bottom:12px;letter-spacing:3px}
 .bmarket-tabs{display:flex;gap:0;margin-bottom:12px}
-.bmarket-tab{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#666;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:1px}
+.bmarket-tab{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#cccccc;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:1px}
 .bmarket-tab.active{color:var(--secondary);border-color:var(--secondary);background:rgba(255,0,102,0.05)}
 .bmarket-content{display:none;flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;max-height:50vh}
 .bmarket-content.active{display:block}
 .bmarket-item{border:1px solid var(--border);padding:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
 .bmarket-item-info{flex:1;min-width:150px}
 .bmarket-item-name{font-size:0.8em;margin-bottom:2px}
-.bmarket-item-value{font-size:0.65em;color:#888}
+.bmarket-item-value{font-size:0.65em;color:#cccccc}
 .bmarket-item-actions{display:flex;gap:4px}
 .bm-btn{padding:4px 8px;background:transparent;font-family:inherit;font-size:0.65em;cursor:pointer;letter-spacing:1px}
 .bm-sell{border:1px solid var(--accent);color:var(--accent)}
@@ -241,11 +241,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .bm-auction:hover{background:rgba(255,0,102,0.1)}
 .bm-cancel{border:1px solid var(--danger);color:var(--danger)}
 .bm-cancel:hover{background:rgba(255,51,51,0.1)}
-.auction-info{font-size:0.65em;color:#888;margin-top:4px;width:100%}
+.auction-info{font-size:0.65em;color:#cccccc;margin-top:4px;width:100%}
 .auction-bid{color:var(--warning)}
 .auction-time{color:var(--danger)}
-#bmarket-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#666;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
-.bmarket-empty{font-size:0.75em;color:#555;text-align:center;padding:16px}
+#bmarket-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#cccccc;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
+.bmarket-empty{font-size:0.75em;color:#cccccc;text-align:center;padding:16px}
 #defense-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;justify-content:center;align-items:center;flex-direction:column}
 #defense-overlay.active{display:flex}
 #defense-skull{font-family:monospace;font-size:0.9em;color:var(--danger);line-height:1.2;margin-bottom:16px;white-space:pre}
@@ -283,14 +283,14 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #corpid-popup{background:var(--panel);border:2px solid var(--accent);padding:24px;min-width:380px;max-width:480px}
 #corpid-popup h2{color:var(--accent);font-size:1em;margin-bottom:16px;letter-spacing:3px}
 .corpid-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.75em}
-.corpid-label{color:#666}
+.corpid-label{color:#cccccc}
 .corpid-value{color:var(--accent)}
 .corpid-value.vpn{color:var(--accent)}
 .corpid-prot{font-size:0.7em;padding:4px 0}
 .prot-active{color:var(--accent)}
-.prot-inactive{color:#555}
+.prot-inactive{color:#cccccc}
 #corpid-trace-wrap{margin:12px 0}
-#corpid-trace-label{font-size:0.7em;color:#888;margin-bottom:4px}
+#corpid-trace-label{font-size:0.7em;color:#cccccc;margin-bottom:4px}
 #corpid-trace-bar-bg{height:12px;background:#1a1a2e;border:1px solid #333;overflow:hidden}
 #corpid-trace-bar{height:100%;transition:width 0.3s,background 0.3s}
 #corpid-trace-pct{font-size:0.7em;text-align:center;margin-top:3px}
@@ -326,7 +326,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #btn-bounty-pay:hover{background:rgba(255,170,0,0.1)}
 #btn-bounty-dark{border:1px solid var(--accent);color:var(--accent)}
 #btn-bounty-dark:hover{background:rgba(0,255,65,0.1)}
-#bounty-close{border:1px solid #555;color:#888;margin-top:8px}
+#bounty-close{border:1px solid #555;color:#cccccc;margin-top:8px}
 
 /* ===== NEWSFEED TICKER ===== */
 #newsfeed-bar{background:#050508;border-top:1px solid var(--border);height:24px;overflow:hidden;flex-shrink:0;position:relative}
@@ -346,11 +346,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 
 /* Mission items */
 .mission-item{border:1px solid var(--border);padding:8px;margin-bottom:6px}
-.mission-item.completed{border-color:var(--accent);opacity:0.6}
+.mission-item.completed{border-color:var(--accent);opacity:0.85}
 .mission-item.active{border-color:var(--warning)}
 .mission-item.locked{opacity:0.3}
 .mission-name{font-size:0.8em;color:var(--accent)}
-.mission-desc{font-size:0.65em;color:#888;margin:3px 0}
+.mission-desc{font-size:0.65em;color:#cccccc;margin:3px 0}
 .mission-reward{font-size:0.65em;color:var(--warning)}
 .mission-progress{font-size:0.65em;color:var(--secondary);margin-top:2px}
 .mission-claim{padding:4px 10px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:4px}
@@ -360,11 +360,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .skill-branch{margin-bottom:12px}
 .skill-branch-title{font-size:0.8em;letter-spacing:2px;margin-bottom:6px;padding:4px 0;border-bottom:1px solid var(--border)}
 .skill-item{border:1px solid var(--border);padding:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
-.skill-item.owned{border-color:var(--accent);opacity:0.6}
+.skill-item.owned{border-color:var(--accent);opacity:0.85}
 .skill-item.locked{opacity:0.3}
 .skill-info{flex:1}
 .skill-name{font-size:0.75em}
-.skill-desc{font-size:0.6em;color:#888}
+.skill-desc{font-size:0.6em;color:#cccccc}
 .skill-buy{padding:3px 8px;background:transparent;font-family:inherit;font-size:0.6em;cursor:pointer;letter-spacing:1px}
 
 /* Achievement items */
@@ -374,12 +374,12 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .ach-icon{font-size:1.2em}
 .ach-info{flex:1}
 .ach-name{font-size:0.75em;color:var(--accent)}
-.ach-desc{font-size:0.6em;color:#888}
+.ach-desc{font-size:0.6em;color:#cccccc}
 
 /* Virus tab */
 .virus-card{border:1px solid var(--border);padding:8px;margin-bottom:6px}
 .virus-name{color:var(--danger);font-size:0.8em}
-.virus-desc{font-size:0.65em;color:#888;margin:3px 0}
+.virus-desc{font-size:0.65em;color:#cccccc;margin:3px 0}
 .virus-deploy{width:100%;padding:5px;background:transparent;border:1px solid var(--danger);color:var(--danger);font-family:inherit;font-size:0.7em;cursor:pointer}
 .virus-deploy:hover:not(:disabled){background:rgba(255,51,51,0.1)}
 .virus-deploy:disabled{border-color:#333;color:#333;cursor:not-allowed}
@@ -465,7 +465,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
   </div>
   <div class="panel" id="panel-hack">
     <div class="panel-title">// Hack</div>
-    <div id="hack-target"><span style="color:#555">Scanning for targets...</span></div>
+    <div id="hack-target"><span style="color:#cccccc">Scanning for targets...</span></div>
     <div id="spoof-checkbox-wrap"><label><input type="checkbox" id="spoof-checkbox"> SPOOF IP — use another company's identity</label><span class="spoof-cooldown" id="spoof-cooldown-text"></span></div>
     <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
     <div id="hack-minigame">
@@ -711,7 +711,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 <div style="color:var(--danger);font-size:1.1em;letter-spacing:2px;margin-bottom:12px">⚠ NPC COALITION FORMED</div>
 <div id="coalition-info" style="font-size:0.8em;color:var(--text);margin-bottom:16px;text-align:center;max-width:400px"></div>
 <div style="display:flex;gap:8px">
-<button class="bounty-btn" id="btn-coalition-close" onclick="closeCoalitionOverlay()" style="border:1px solid #555;color:#888">[ CLOSE ]</button>
+<button class="bounty-btn" id="btn-coalition-close" onclick="closeCoalitionOverlay()" style="border:1px solid #555;color:#cccccc">[ CLOSE ]</button>
 </div></div>
 
 <script>
@@ -1538,7 +1538,7 @@ function pickTarget(){
 
 function renderTarget(){
   const el=document.getElementById('hack-target'),btn=document.getElementById('hack-btn');if(!el)return;
-  if(!currentTarget){el.innerHTML='<span style="color:#555">'+L('scanning')+'</span>';btn.disabled=true;return;}
+  if(!currentTarget){el.innerHTML='<span style="color:#cccccc">'+L('scanning')+'</span>';btn.disabled=true;return;}
   const n=currentTarget,diff=DIFFICULTIES[getEffectiveDifficulty(n)];
   const statusIcon=n.relation==='ally'?'🟢':n.relation==='enemy'?'🔴':'🟡';
   const r=currentTargetReward||{data:0,cr:0,rep:0};
@@ -1912,7 +1912,7 @@ function openCorpID(){
 <div class="corpid-row"><span class="corpid-label">Your IP</span><span class="corpid-value${G.upgrades.vpn?' vpn':''}">${dispIP}</span></div>
 <div class="corpid-row"><span class="corpid-label">Forensic Traces</span><span class="corpid-value">${G.forensicTraces.length}/10</span></div>
 ${shadowMode}
-<div style="margin-top:8px;font-size:0.7em;color:#666;letter-spacing:1px">PROTECTIONS</div>
+<div style="margin-top:8px;font-size:0.7em;color:#cccccc;letter-spacing:1px">PROTECTIONS</div>
 ${protections}
 <div id="corpid-trace-wrap"><div id="corpid-trace-label">TRACEABILITY</div>
 <div id="corpid-trace-bar-bg"><div id="corpid-trace-bar" style="width:${trace}%;background:${traceColor}"></div></div>
@@ -2483,7 +2483,7 @@ function declineUrgentContract(){
 // ========== 5. DEPLOYABLE VIRUSES (OFFENSIVE) ==========
 function renderVirusList(){
   const el=document.getElementById('virus-list');if(!el)return;el.innerHTML='';
-  if(!G.upgrades.ipspoofer){el.innerHTML='<div style="font-size:0.7em;color:#555;padding:12px">Requires IP Spoofer upgrade</div>';return;}
+  if(!G.upgrades.ipspoofer){el.innerHTML='<div style="font-size:0.7em;color:#cccccc;padding:12px">Requires IP Spoofer upgrade</div>';return;}
   VIRUS_TYPES.forEach(v=>{
     const card=document.createElement('div');card.className='virus-card';
     card.innerHTML=`<div class="virus-name">${v.name}</div>
