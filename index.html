@@ -912,6 +912,13 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <div style="flex:1"><div style="color:var(--accent);font-size:0.75em;margin-bottom:6px;letter-spacing:2px">LINUX DECK</div><div id="loadout-linux"></div></div>
 <div style="flex:1"><div style="color:#4a9eff;font-size:0.75em;margin-bottom:6px;letter-spacing:2px">WINDOWS DECK</div><div id="loadout-windows"></div></div>
 </div>
+<div style="border-top:1px solid var(--accent);margin-top:12px;padding-top:8px;text-align:center;font-size:11px;color:#cccccc">
+<div style="color:var(--accent);letter-spacing:2px;margin-bottom:4px">MASTERY LEGEND</div>
+<div>☆☆☆ &nbsp;Level 0 — Type full command</div>
+<div>★☆☆ &nbsp;Level 1 — Tab autocomplete after 4 chars</div>
+<div>★★☆ &nbsp;Level 2 — Tab autocomplete after 2 chars</div>
+<div>★★★ &nbsp;Level 3 — One-click button</div>
+</div>
 <button class="modal-close" onclick="closeLoadout()">[ CLOSE ]</button>
 </div></div>
 
@@ -4255,6 +4262,14 @@ function convertCrypto(){
 // ========== COMMAND SHOP ==========
 function renderCmdShop(){
   const el=document.getElementById('cmds-list');if(!el)return;el.innerHTML='';
+  // Mastery legend toggle
+  const legendWrap=document.createElement('div');legendWrap.style.cssText='margin-bottom:6px';
+  const legendBtn=document.createElement('button');legendBtn.style.cssText='background:transparent;border:1px solid var(--border);color:#cccccc;font-family:inherit;font-size:0.65em;cursor:pointer;padding:2px 8px;letter-spacing:1px;width:100%';
+  legendBtn.textContent='[ ? MASTERY ]';
+  const legendBody=document.createElement('div');legendBody.style.cssText='display:none;font-size:11px;color:#cccccc;border:1px solid var(--border);border-top:none;padding:6px;text-align:center';
+  legendBody.innerHTML='<div style="color:var(--accent);letter-spacing:2px;margin-bottom:3px">MASTERY LEGEND</div><div>☆☆☆ Level 0 — Type full command</div><div>★☆☆ Level 1 — Tab autocomplete after 4 chars</div><div>★★☆ Level 2 — Tab autocomplete after 2 chars</div><div>★★★ Level 3 — One-click button</div>';
+  legendBtn.onclick=()=>{legendBody.style.display=legendBody.style.display==='none'?'block':'none';};
+  legendWrap.appendChild(legendBtn);legendWrap.appendChild(legendBody);el.appendChild(legendWrap);
   ['linux','windows'].forEach(os=>{
     const hdr=document.createElement('div');hdr.className='upgrade-section-header';
     hdr.textContent=os==='linux'?'// LINUX':'// POWERSHELL';el.appendChild(hdr);
