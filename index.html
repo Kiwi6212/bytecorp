@@ -427,6 +427,29 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #pause-overlay h2{color:var(--accent);font-size:1.4em;letter-spacing:4px;margin-bottom:24px}
 #pause-resume-btn{padding:12px 32px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:1em;cursor:pointer;letter-spacing:2px}
 #pause-resume-btn:hover{background:rgba(0,255,65,0.1)}
+
+/* ===== NEW UPGRADE SECTIONS ===== */
+.upgrade-section-header{color:var(--secondary);font-size:0.75em;letter-spacing:3px;padding:6px 0 3px 0;border-bottom:1px solid var(--secondary);margin:10px 0 6px 0;text-transform:uppercase}
+.upgrade-toggle-btn{width:100%;padding:4px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:4px;letter-spacing:1px}
+.upgrade-toggle-btn.active{border-color:var(--danger);color:var(--danger)}
+.upgrade-toggle-btn:hover{background:rgba(0,255,65,0.08)}
+.upgrade-cooldown-btn{width:100%;padding:4px;background:transparent;border:1px solid var(--warning);color:var(--warning);font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:4px;letter-spacing:1px}
+.upgrade-cooldown-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+.upgrade-cooldown-btn:hover:not(:disabled){background:rgba(255,170,0,0.08)}
+.upgrade-multi-btn{width:100%;padding:4px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:4px}
+.upgrade-multi-btn:hover:not(:disabled){background:rgba(255,0,102,0.08)}
+.upgrade-multi-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+#res-crypto{color:#f7931a}
+@keyframes godGlow{0%,100%{box-shadow:0 0 8px rgba(255,215,0,0.3)}50%{box-shadow:0 0 20px rgba(255,215,0,0.6)}}
+body.god-mode-active #header{animation:godGlow 2s infinite}
+/* Infrastructure tab */
+.infra-node{border:1px solid var(--border);padding:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.infra-node.active{border-color:var(--accent)}
+.infra-node-name{font-size:0.75em;color:var(--accent)}
+.infra-node-info{font-size:0.6em;color:#cccccc}
+.infra-buy{padding:3px 8px;background:transparent;font-family:inherit;font-size:0.6em;cursor:pointer;border:1px solid var(--warning);color:var(--warning)}
+.infra-buy:hover:not(:disabled){background:rgba(255,170,0,0.1)}
+.infra-buy:disabled{border-color:#333;color:#333;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -473,6 +496,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div class="res"><div class="res-label">DATA</div><div class="res-value" id="res-data">0</div></div>
     <div class="res"><div class="res-label">CREDITS</div><div class="res-value" id="res-credits">0</div></div>
     <div class="res"><div class="res-label">REP</div><div class="res-value" id="res-rep">0</div></div>
+    <div class="res" id="crypto-res-wrap" style="display:none"><div class="res-label">$CRYPTO</div><div class="res-value" id="res-crypto">0</div></div>
     <div id="heat-container">
       <div class="res-label">HEAT</div>
       <div id="heat-bar-bg"><div id="heat-bar"></div></div>
@@ -488,6 +512,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div id="dps-display">+1 DATA/click | 0.0 DATA/s</div>
     <div id="virus-status"></div>
     <div id="market-btn" onclick="openMarket()">[ DARK WEB MARKET ]</div>
+    <div id="crypto-convert-btn" style="display:none;width:100%;padding:4px;background:transparent;border:1px solid #f7931a;color:#f7931a;font-family:inherit;font-size:0.65em;cursor:pointer;margin-top:4px;text-align:center;letter-spacing:1px" onclick="convertCrypto()">[ CONVERT $CRYPTO -> DATA ]</div>
     <div id="log"></div>
   </div>
   <div class="panel" id="panel-bots">
@@ -528,6 +553,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
       <button class="tab-btn active" onclick="switchTab('devs')">DEVS</button>
       <button class="tab-btn" onclick="switchTab('upgrades')">UPGRADES</button>
       <button class="tab-btn" id="virus-tab-btn" style="display:none" onclick="switchTab('viruses')">VIRUS</button>
+      <button class="tab-btn" id="infra-tab-btn" style="display:none" onclick="switchTab('infra')">INFRA</button>
     </div>
     <div class="tab-content active" id="tab-devs">
       <div class="item-list" id="dev-list"></div>
@@ -537,6 +563,9 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     </div>
     <div class="tab-content" id="tab-viruses">
       <div class="item-list" id="virus-list"></div>
+    </div>
+    <div class="tab-content" id="tab-infra">
+      <div class="item-list" id="infra-list"></div>
     </div>
   </div>
 </div>
@@ -804,7 +833,14 @@ const LANG = {
     hijackedLabel:'⚠ COMPROMISED',
     claim:'[ CLAIM ]', completed:'COMPLETED', active:'ACTIVE',
     pause:'PAUSE', resume:'RESUME', gamePaused:'// GAME PAUSED',
-    logPaused:'Game paused', logResumed:'Game resumed'
+    logPaused:'Game paused', logResumed:'Game resumed',
+    // Upgrade sections
+    secOffensif:'// OFFENSIVE', secDefensif:'// DEFENSIVE', secEconomique:'// ECONOMIC',
+    secProgression:'// PROGRESSION', secSpeciaux:'// SPECIAL',
+    crypto:'$CRYPTO', infra:'INFRA',
+    toggleOn:'[ ON ]', toggleOff:'[ OFF ]', activate:'[ ACTIVATE ]',
+    onCooldown:'COOLDOWN', buyAgain:'[ BUY AGAIN ]',
+    convertCrypto:'[ CONVERT $CRYPTO -> DATA ]'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -850,7 +886,14 @@ const LANG = {
     hijackedLabel:'⚠ COMPROMIS',
     claim:'[ RÉCUPÉRER ]', completed:'TERMINÉ', active:'EN COURS',
     pause:'PAUSE', resume:'REPRENDRE', gamePaused:'// JEU EN PAUSE',
-    logPaused:'Jeu en pause', logResumed:'Jeu repris'
+    logPaused:'Jeu en pause', logResumed:'Jeu repris',
+    // Upgrade sections
+    secOffensif:'// OFFENSIF', secDefensif:'// DÉFENSIF', secEconomique:'// ÉCONOMIQUE',
+    secProgression:'// PROGRESSION', secSpeciaux:'// SPÉCIAUX',
+    crypto:'$CRYPTO', infra:'INFRA',
+    toggleOn:'[ ON ]', toggleOff:'[ OFF ]', activate:'[ ACTIVER ]',
+    onCooldown:'RECHARGE', buyAgain:'[ ACHETER ]',
+    convertCrypto:'[ CONVERTIR $CRYPTO -> DATA ]'
   }
 };
 
@@ -1080,7 +1123,39 @@ let G = {
   lastUrgentContractCheck: 0,
   urgentContract: null,
   urgentContractExpiry: 0,
-  npcBoughtData: {}
+  npcBoughtData: {},
+  // New upgrade state
+  neuralInterfaceOn: false,
+  darkSyndicateOn: false,
+  crypto: 0,
+  infraNodes: 0,
+  empShieldCharge: 1,
+  empShieldLastRecharge: 0,
+  quantumFirewallActive: false,
+  quantumFirewallExpiry: 0,
+  ghostProtocol2Active: false,
+  ghostProtocol2Expiry: 0,
+  zeroTrustActive: false,
+  zeroTrustExpiry: 0,
+  blackoutActive: false,
+  blackoutExpiry: 0,
+  stealthModeActive: false,
+  stealthModeExpiry: 0,
+  repMultiplierActive: false,
+  repMultiplierExpiry: 0,
+  darkWebFameActive: false,
+  darkWebFameExpiry: 0,
+  corporateSpyActive: false,
+  corporateSpyExpiry: 0,
+  corporateSpyBonus: 0,
+  keyloggerActive: false,
+  keyloggerExpiry: 0,
+  keyloggerTarget: '',
+  timeBombTarget: '',
+  timeBombExpiry: 0,
+  doomsdayUsed: false,
+  cooldowns: {},
+  darkWebRepBoostCount: 0
 };
 
 let gameRunning = false;
@@ -1131,7 +1206,60 @@ const UPGRADES = [
   {id:'quantum', name:'Quantum CPU', cost:50000, currency:'data', desc:'x3 DATA/s all bots'},
   {id:'aiassist', name:'AI Assistant', cost:100000, currency:'credits', desc:'x2 CREDITS/s all devs'},
   {id:'vpnchain3', name:'VPN Chain x3', cost:200000, currency:'data', desc:'Trace -15% more, DATA/s -5% more', requires:'vpnchain2'},
-  {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%'}
+  {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%'},
+  // ===== OFFENSIF =====
+  {id:'neuralInterface',section:'secOffensif', name:'Neural Interface', cost:5000, currency:'data', desc:'DATA/click x5 but HEAT +2/click. Toggle on/off.', toggle:true},
+  {id:'zeroDayExploit',section:'secOffensif', name:'Zero-Day Exploit', cost:20000, currency:'data', desc:'Once/hour: auto-succeed any hack. Cooldown 60 min.', cooldown:3600000},
+  {id:'exploitFramework',section:'secOffensif', name:'Exploit Framework', cost:10000, currency:'data', desc:'All hacks: command count -1 (min 1).'},
+  {id:'polymorphicVirus',section:'secOffensif', name:'Polymorphic Virus', cost:50000, currency:'data', desc:'Deployed viruses have 0% detection.'},
+  {id:'botnetRental',section:'secOffensif', name:'Botnet Rental', cost:15000, currency:'credits', desc:'+500 CREDITS/min passively.'},
+  {id:'timeBomb',section:'secOffensif', name:'Time Bomb', cost:8000, currency:'data', desc:'Plant on NPC: they disappear after 10 min. Cooldown 30 min.', cooldown:1800000},
+  {id:'keylogger',section:'secOffensif', name:'Keylogger', cost:5000, currency:'data', desc:'Install on NPC: +200 CR/min for 5 min. 25% detection.', cooldown:600000},
+  {id:'dataMinerPro',section:'secOffensif', name:'Data Miner Pro', cost:25000, currency:'data', desc:'Each hack drops 2 loot items instead of 1.'},
+  {id:'socialEngineering',section:'secOffensif', name:'Social Engineering', cost:30000, currency:'credits', desc:'Convert enemy NPC to neutral. Cooldown 20 min.', cooldown:1200000},
+  {id:'trojanHorse',section:'secOffensif', name:'Trojan Horse', cost:12000, currency:'data', desc:'Send fake alliance to enemy: -3 security for 10 min. Cooldown 15 min.', cooldown:900000},
+  // ===== DEFENSIF =====
+  {id:'quantumFirewall',section:'secDefensif', name:'Quantum Firewall', cost:75000, currency:'data', desc:'IP invisible 5 min. Cooldown 30 min.', cooldown:1800000},
+  {id:'aiDefender',section:'secDefensif', name:'AI Defender', cost:40000, currency:'credits', desc:'Auto-defense base becomes 75% (cap 90%).'},
+  {id:'honeypot',section:'secDefensif', name:'Honeypot', cost:18000, currency:'data', desc:'Espionage attempts convert attacker to temp ally 5 min.'},
+  {id:'empShield',section:'secDefensif', name:'EMP Shield', cost:10000, currency:'data', desc:'Auto-blocks next DDoS. 1 charge, recharges every 20 min.'},
+  {id:'darkWebScanner',section:'secDefensif', name:'Dark Web Scanner', cost:8000, currency:'data', desc:'100% fake contract detection.'},
+  {id:'ids',section:'secDefensif', name:'Intrusion Detection', cost:15000, currency:'data', desc:'30s advance warning before incoming hack.'},
+  {id:'encryptedBackup',section:'secDefensif', name:'Encrypted Backup', cost:20000, currency:'data', desc:'RAID loses only 10% (stacks with Legal Cover for 5%).'},
+  {id:'ghostProtocol2',section:'secDefensif', name:'Ghost Protocol v2', cost:100000, currency:'data', desc:'Traceability 0% for 2 min. Cooldown 1 hour.', cooldown:3600000},
+  // ===== ECONOMIQUE =====
+  {id:'dataBroker',section:'secEconomique', name:'Data Broker', cost:12000, currency:'data', desc:'Auto-sells Common loot every 2 min.'},
+  {id:'encryptedStorage',section:'secEconomique', name:'Encrypted Storage', cost:8000, currency:'credits', desc:'Inventory limit 10 -> 25.'},
+  {id:'darkWebRepBoost',section:'secEconomique', name:'Dark Web Rep Boost', cost:5000, currency:'credits', desc:'+200 darkWebRep. Multi-purchase.', multi:true},
+  {id:'auctionBot',section:'secEconomique', name:'Auction Bot', cost:20000, currency:'credits', desc:'Auto-wins NPC auctions 50% of time.'},
+  {id:'moneyLaundering',section:'secEconomique', name:'Money Laundering', cost:30000, currency:'credits', desc:'Convert CREDITS to DATA at 1:5 ratio, no HEAT.', cooldown:60000},
+  {id:'cryptoMining',section:'secEconomique', name:'Crypto Mining', cost:50000, currency:'data', desc:'Generates $CRYPTO at +0.1/s. Convertible to DATA.'},
+  {id:'shellCorpNetwork',section:'secEconomique', name:'Shell Corp Network', cost:45000, currency:'credits', desc:'30% chance incoming attacks hit fake identity.'},
+  {id:'blackMarketMonopoly',section:'secEconomique', name:'Black Market Monopoly', cost:80000, currency:'credits', desc:'NPC auction bid amounts -50%.'},
+  // ===== PROGRESSION =====
+  {id:'prestigeToken',section:'secProgression', name:'Prestige Token', cost:200000, currency:'data', desc:'New Game+ keeps 50% resources.'},
+  {id:'legacyCode',section:'secProgression', name:'Legacy Code', cost:150000, currency:'data', desc:'Each NG+ gives +10% DATA/s (stacks infinitely).'},
+  {id:'repMultiplier',section:'secProgression', name:'Rep Multiplier', cost:25000, currency:'data', desc:'Double REP from hacks 10 min. Cooldown 30 min.', cooldown:1800000},
+  {id:'darkWebFame',section:'secProgression', name:'Dark Web Fame', cost:15000, currency:'credits', desc:'DarkWebRep 2x faster 5 min. Cooldown 20 min.', cooldown:1200000},
+  {id:'skillAccelerator',section:'secProgression', name:'Skill Accelerator', cost:40000, currency:'credits', desc:'All skill costs -25%.'},
+  {id:'quantumCpuPro',section:'secProgression', name:'Quantum CPU Pro', cost:500000, currency:'data', desc:'x5 DATA/s from bots (replaces Quantum x3).', requires:'quantum'},
+  {id:'xpBooster',section:'secProgression', name:'XP Booster', cost:10000, currency:'credits', desc:'REP gain +50% permanent.'},
+  {id:'fastLearner',section:'secProgression', name:'Fast Learner', cost:20000, currency:'credits', desc:'Skill cost -10% per skill owned.'},
+  // ===== SPECIAUX =====
+  {id:'singularity',section:'secSpeciaux', name:'Singularity', cost:10000000, currency:'data', desc:'Unlocks GOD TIER difficulty with gov targets.'},
+  {id:'theOverride',section:'secSpeciaux', name:'The Override', cost:300000, currency:'data', desc:'Hack 2 NPCs simultaneously. Cooldown 15 min.', cooldown:900000},
+  {id:'neuralBackdoor',section:'secSpeciaux', name:'Neural Backdoor', cost:150000, currency:'data', desc:'Hacking Elite NPC makes them permanent ally +100 CR/s.'},
+  {id:'zeroTrust',section:'secSpeciaux', name:'Zero Trust', cost:80000, currency:'data', desc:'All incoming hacks auto-fail 10 min. Cooldown 1 hour.', cooldown:3600000},
+  {id:'darkSyndicate',section:'secSpeciaux', name:'Dark Syndicate', cost:500000, currency:'credits', desc:'+2000 DATA/min but -1000 CR/min. Toggle.', toggle:true},
+  {id:'ipoAccelerator',section:'secSpeciaux', name:'IPO Accelerator', cost:1000000, currency:'credits', desc:'Endgame REP threshold 50M -> 25M.'},
+  {id:'stealthMode',section:'secSpeciaux', name:'Stealth Mode', cost:200000, currency:'data', desc:'HEAT from hacks -75% for 5 min. Cooldown 20 min.', cooldown:1200000},
+  {id:'corporateSpy',section:'secSpeciaux', name:'Corporate Spy', cost:60000, currency:'credits', desc:'Steal random bonus from NPC for 10 min. Cooldown 15 min.', cooldown:900000},
+  {id:'satelliteUplink',section:'secSpeciaux', name:'Satellite Uplink', cost:400000, currency:'data', desc:'All bot DATA/s doubled permanently. Requires God Mode bot.'},
+  {id:'theArchitect',section:'secSpeciaux', name:'The Architect', cost:750000, currency:'credits', desc:'Unlock INFRASTRUCTURE tab. Buy server nodes for +500 DATA/s each.'},
+  {id:'doomsdayProtocol',section:'secSpeciaux', name:'Doomsday Protocol', cost:2000000, currency:'data', desc:'Attack ALL NPCs: security->1, HEAT->95%. One-time.', oneTime:true},
+  {id:'blackout',section:'secSpeciaux', name:'Blackout', cost:1000000, currency:'data', desc:'Disable all NPC attacks/events 30 min. Cooldown 2 hours.', cooldown:7200000},
+  {id:'mindControl',section:'secSpeciaux', name:'Mind Control', cost:300000, currency:'credits', desc:'Force neutral NPC to permanent ally. Cooldown 30 min.', cooldown:1800000},
+  {id:'godModeActivated',section:'secSpeciaux', name:'God Mode Activated', cost:5000000, currency:'data', desc:'All timers +30s, rewards x3, HEAT -50%, trace -30%. Header glows gold.'}
 ];
 
 const NPC_NAMES = [
@@ -1150,20 +1278,22 @@ const NPC_FAKES = {
   'NeonGrid':'Ne0nGrid','SilkRoute':'S1lkRoute','DeepNode':'DeepN0de','BlackIce':'Black1ce','QuantumLeap':'QuantumL3ap'
 };
 
-const DIFFICULTIES = ['Easy','Medium','Hard','Elite'];
+const DIFFICULTIES = ['Easy','Medium','Hard','Elite','God Tier'];
 
 const COMMANDS = {
   Linux: {
     Easy: [{cmd:'nmap 192.168.1.1',tip:'Network scanner'},{cmd:'ls /etc',tip:'List /etc'},{cmd:'cat /etc/hostname',tip:'Read hostname'},{cmd:'ping target',tip:'Ping target'}],
     Medium: [{cmd:'ssh root@target',tip:'SSH as root'},{cmd:'netstat -an',tip:'Show connections'},{cmd:'cat /etc/passwd',tip:'Read passwd'},{cmd:'find / -name "*.conf"',tip:'Find config files'}],
     Hard: [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'}],
-    Elite: [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'},{cmd:'nmap -sV -O target',tip:'Version+OS scan'},{cmd:'ssh -L 8080:localhost:80 root@target',tip:'SSH tunnel'},{cmd:'cat /etc/shadow',tip:'Read shadow file'}]
+    Elite: [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'},{cmd:'nmap -sV -O target',tip:'Version+OS scan'},{cmd:'ssh -L 8080:localhost:80 root@target',tip:'SSH tunnel'},{cmd:'cat /etc/shadow',tip:'Read shadow file'}],
+    'God Tier': [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'},{cmd:'nmap -sV -O target',tip:'Version+OS scan'},{cmd:'ssh -L 8080:localhost:80 root@target',tip:'SSH tunnel'},{cmd:'cat /etc/shadow',tip:'Read shadow file'},{cmd:'sudo strace -p 1 -e trace=network',tip:'Trace kernel network calls'}]
   },
   Windows: {
     Easy: [{cmd:'ipconfig',tip:'Network config'},{cmd:'dir C:\\',tip:'List C:\\'},{cmd:'whoami',tip:'Current user'},{cmd:'net user',tip:'List users'}],
     Medium: [{cmd:'Get-Process',tip:'List processes'},{cmd:'netstat -ano',tip:'Connections+PIDs'},{cmd:'Get-LocalUser',tip:'Local users'},{cmd:'dir C:\\Users',tip:'User directories'}],
     Hard: [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'}],
-    Elite: [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'},{cmd:'Get-WmiObject Win32_Service',tip:'WMI services'},{cmd:'New-PSSession -ComputerName target',tip:'Remote PS session'},{cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords',tip:'Dump creds'}]
+    Elite: [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'},{cmd:'Get-WmiObject Win32_Service',tip:'WMI services'},{cmd:'New-PSSession -ComputerName target',tip:'Remote PS session'},{cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords',tip:'Dump creds'}],
+    'God Tier': [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'},{cmd:'Get-WmiObject Win32_Service',tip:'WMI services'},{cmd:'New-PSSession -ComputerName target',tip:'Remote PS session'},{cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords',tip:'Dump creds'},{cmd:'Get-NetFirewallRule -All',tip:'All firewall rules'}]
   }
 };
 
@@ -1321,6 +1451,9 @@ function getTraceability() {
   if (G.upgrades.ipspoofer) t -= 10;
   if (G.skills.shadowrouting) t -= 15;
   if (G.classifiedUnlocked) t -= 20;
+  if (G.upgrades.godModeActivated) t -= 30;
+  if (G.ghostProtocol2Active && G.ghostProtocol2Expiry > Date.now()) return 0;
+  if (G.quantumFirewallActive && G.quantumFirewallExpiry > Date.now()) return 0;
   return Math.max(5, t);
 }
 
@@ -1424,6 +1557,16 @@ function updateUI() {
   if(G.prestige>0){
     document.getElementById('prestige-badge').textContent=' #'+G.prestige+' (+'+Math.round((G.prestigeMulti-1)*100)+'%)';
   }
+  // Crypto display
+  if(G.upgrades.cryptoMining){
+    document.getElementById('crypto-res-wrap').style.display='';
+    document.getElementById('res-crypto').textContent=G.crypto.toFixed(2);
+    const ccb=document.getElementById('crypto-convert-btn');if(ccb)ccb.style.display=G.crypto>0?'block':'none';
+  }
+  // Infra tab
+  if(G.upgrades.theArchitect)document.getElementById('infra-tab-btn').style.display='';
+  // God mode glow
+  if(G.upgrades.godModeActivated)document.body.classList.add('god-mode-active');
   updateStartIP();
 }
 
@@ -1439,7 +1582,7 @@ function updateStartIP() {
 function flashEl(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 
 // ========== CALCULATIONS ==========
-function getClickPower(){let p=G.dataPower;if(G.upgrades.keyboard)p*=2;return p;}
+function getClickPower(){let p=G.dataPower;if(G.upgrades.keyboard)p*=2;if(G.upgrades.neuralInterface&&G.neuralInterfaceOn)p*=5;return p;}
 
 function getDataPerSec(){
   let total=0;
@@ -1449,7 +1592,9 @@ function getDataPerSec(){
       total+=G.bots[i]*BOTS[i].dps;
     }
   }
-  if(G.upgrades.quantum)total*=3;
+  if(G.upgrades.quantumCpuPro)total*=5;
+  else if(G.upgrades.quantum)total*=3;
+  if(G.upgrades.satelliteUplink&&G.bots[5]>0)total*=2;
   total*=G.prestigeMulti;
   // VPN chain penalties
   let penalty=1;
@@ -1458,6 +1603,10 @@ function getDataPerSec(){
   total*=Math.max(0,penalty);
   // Virus effect: -50% bot income
   if(G.virusActive&&G.virusExpiry>Date.now()) total*=0.5;
+  // Dark Syndicate: +2000 DATA/min = +33.33 DATA/s
+  if(G.upgrades.darkSyndicate&&G.darkSyndicateOn) total+=33.33;
+  // Infrastructure nodes: +500 DATA/s each
+  if(G.upgrades.theArchitect&&G.infraNodes>0) total+=G.infraNodes*500;
   return total;
 }
 
@@ -1467,7 +1616,18 @@ function getCreditsPerSec(){
   if(G.upgrades.aiassist)total*=2;
   if(G.skills.venturecap)total*=1.2;
   if(G.skills.ipoprep)total*=1.5;
-  if(G.npcs){const now=Date.now();G.npcs.forEach(npc=>{if(npc.relation==='ally'&&npc.allyExpiry>now)total+=2;});}
+  if(G.npcs){const now=Date.now();G.npcs.forEach(npc=>{
+    if(npc.relation==='ally'&&npc.allyExpiry>now)total+=2;
+    if(npc.relation==='ally'&&npc.allyExpiry===0&&npc._neuralBackdoorAlly)total+=100;
+  });}
+  // Botnet Rental: +500 CR/min = +8.33 CR/s
+  if(G.upgrades.botnetRental)total+=8.33;
+  // Dark Syndicate: -1000 CR/min = -16.67 CR/s
+  if(G.upgrades.darkSyndicate&&G.darkSyndicateOn)total-=16.67;
+  // Keylogger: +200 CR/min = +3.33 CR/s while active
+  if(G.keyloggerActive&&G.keyloggerExpiry>Date.now())total+=3.33;
+  // Corporate Spy bonus
+  if(G.corporateSpyActive&&G.corporateSpyExpiry>Date.now())total+=G.corporateSpyBonus;
   // Dev cost reduction from HR Automation is applied in getDevCost
   return total;
 }
@@ -1479,10 +1639,19 @@ function getDevCost(i){
   return cost;
 }
 
+function getSkillCost(baseCost){
+  let cost=baseCost;
+  if(G.upgrades.skillAccelerator)cost=Math.floor(cost*0.75);
+  if(G.upgrades.fastLearner){const owned=Object.keys(G.skills).length;cost=Math.floor(cost*Math.max(0.1,1-owned*0.10));}
+  return cost;
+}
+
 // ========== MINE ==========
 document.getElementById('mine-btn').addEventListener('click',()=>{
   if(!gameRunning)return;
-  const gain=getClickPower();G.data+=gain;G.totalDataMined+=gain;addLog('Mined +'+fmt(gain)+' DATA');
+  const gain=getClickPower();G.data+=gain;G.totalDataMined+=gain;
+  if(G.upgrades.neuralInterface&&G.neuralInterfaceOn)addHeat(2);
+  addLog('Mined +'+fmt(gain)+' DATA');
 });
 
 // ========== BOTS ==========
@@ -1520,19 +1689,136 @@ function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;
 
 // ========== UPGRADES ==========
 function renderUpgrades(){const el=document.getElementById('upgrade-list');if(!el)return;el.innerHTML='';
-UPGRADES.forEach(u=>{const bought=!!G.upgrades[u.id];const locked=u.requires&&!G.upgrades[u.requires];
-const canAfford=u.currency==='data'?G.data>=u.cost:G.credits>=u.cost;
-const card=document.createElement('div');card.className='upgrade-card'+(bought?' bought':'')+(locked?' locked':'');
-card.innerHTML=`<div class="upgrade-name">${u.name}</div>
+let lastSection='';
+UPGRADES.forEach(u=>{
+  // Section header
+  if(u.section&&u.section!==lastSection){lastSection=u.section;
+    const hdr=document.createElement('div');hdr.className='upgrade-section-header';hdr.textContent=L(u.section);el.appendChild(hdr);}
+  const isMulti=!!u.multi;
+  const bought=!isMulti&&!!G.upgrades[u.id];
+  const isOneTime=!!u.oneTime;
+  const oneTimeUsed=isOneTime&&G.doomsdayUsed&&u.id==='doomsdayProtocol';
+  const locked=u.requires&&!G.upgrades[u.requires];
+  // Satellite Uplink requires God Mode bot
+  const extraLock=(u.id==='satelliteUplink'&&G.bots[5]<=0);
+  const canAfford=u.currency==='data'?G.data>=u.cost:G.credits>=u.cost;
+  const card=document.createElement('div');card.className='upgrade-card'+(bought&&!u.toggle?' bought':'')+(locked||extraLock?' locked':'');
+  let extraHtml='';
+  // Toggle buttons for owned toggles
+  if(bought&&u.toggle){
+    if(u.id==='neuralInterface'){
+      const isOn=G.neuralInterfaceOn;
+      extraHtml=`<button class="upgrade-toggle-btn${isOn?' active':''}" onclick="toggleNeuralInterface()">${isOn?L('toggleOff'):L('toggleOn')}</button>`;
+    } else if(u.id==='darkSyndicate'){
+      const isOn=G.darkSyndicateOn;
+      extraHtml=`<button class="upgrade-toggle-btn${isOn?' active':''}" onclick="toggleDarkSyndicate()">${isOn?L('toggleOff'):L('toggleOn')}</button>`;
+    }
+  }
+  // Cooldown buttons for owned cooldown upgrades
+  if(bought&&u.cooldown){
+    const cdKey=u.id;const lastUsed=G.cooldowns[cdKey]||0;
+    const remaining=Math.max(0,lastUsed+u.cooldown-Date.now());
+    if(remaining>0){
+      extraHtml+=`<button class="upgrade-cooldown-btn" disabled>${L('onCooldown')}: ${Math.ceil(remaining/1000)}s</button>`;
+    } else {
+      extraHtml+=`<button class="upgrade-cooldown-btn" onclick="activateCooldownUpgrade('${u.id}')">${L('activate')}</button>`;
+    }
+  }
+  // Multi-purchase button
+  if(isMulti){
+    const timesBought=u.id==='darkWebRepBoost'?G.darkWebRepBoostCount:0;
+    extraHtml+=`<div style="font-size:0.6em;color:#cccccc;margin-top:2px">Purchased: ${timesBought}x</div>`;
+    card.innerHTML=`<div class="upgrade-name">${u.name}</div>
 <div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
-<button class="upgrade-btn" ${(bought||locked||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?L('owned'):locked?L('locked'):L('buy')}</button>`;
-el.appendChild(card);});}
+<button class="upgrade-multi-btn" ${!canAfford?'disabled':''} onclick="buyMultiUpgrade('${u.id}')">${L('buyAgain')}</button>${extraHtml}`;
+  } else {
+    card.innerHTML=`<div class="upgrade-name">${u.name}</div>
+<div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
+<button class="upgrade-btn" ${(bought||locked||extraLock||oneTimeUsed||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?L('owned'):locked||extraLock?L('locked'):L('buy')}</button>${extraHtml}`;
+  }
+  el.appendChild(card);
+});}
 
 function buyUpgrade(id){const u=UPGRADES.find(x=>x.id===id);if(!u||G.upgrades[id])return;
 if(u.requires&&!G.upgrades[u.requires])return;
+if(u.multi)return;// multi-purchase handled separately
 if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
 else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
-else return;G.upgrades[id]=true;addLog('Upgrade: '+u.name,'info');renderUpgrades();}
+else return;G.upgrades[id]=true;addLog('Upgrade: '+u.name,'info');
+// Special on-buy effects
+if(id==='theArchitect'){document.getElementById('infra-tab-btn').style.display='';renderInfraList();}
+if(id==='doomsdayProtocol'&&!G.doomsdayUsed){G.doomsdayUsed=true;if(G.npcs)G.npcs.forEach(n=>{n.securityLevel=1;n.relation='enemy';n.tracerExpiry=Date.now()+600000;});G.heat=95;addLog('DOOMSDAY: All NPC security -> 1, HEAT -> 95%!','alert');}
+if(id==='singularity'){addLog('GOD TIER difficulty unlocked — government targets available!','info');}
+if(id==='ipoAccelerator'){addLog('IPO threshold reduced to 25M REP!','info');}
+if(id==='godModeActivated'){document.body.classList.add('god-mode-active');addLog('GOD MODE ACTIVATED — All systems enhanced!','info');}
+if(id==='cryptoMining'){document.getElementById('crypto-res-wrap').style.display='';}
+if(id==='empShield'){G.empShieldCharge=1;G.empShieldLastRecharge=Date.now();}
+renderUpgrades();}
+
+function buyMultiUpgrade(id){
+  const u=UPGRADES.find(x=>x.id===id);if(!u)return;
+  if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
+  else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
+  else return;
+  if(id==='darkWebRepBoost'){G.darkWebRep+=200;G.darkWebRepBoostCount=(G.darkWebRepBoostCount||0)+1;addLog('+200 Dark Web Rep','info');}
+  renderUpgrades();
+}
+
+// Toggle functions
+function toggleNeuralInterface(){if(!G.upgrades.neuralInterface)return;G.neuralInterfaceOn=!G.neuralInterfaceOn;addLog('Neural Interface '+(G.neuralInterfaceOn?'ON':'OFF'),'info');renderUpgrades();}
+function toggleDarkSyndicate(){if(!G.upgrades.darkSyndicate)return;G.darkSyndicateOn=!G.darkSyndicateOn;addLog('Dark Syndicate '+(G.darkSyndicateOn?'ON — +2000 DATA/min, -1000 CR/min':'OFF'),'info');renderUpgrades();}
+
+// Cooldown activation
+function activateCooldownUpgrade(id){
+  const u=UPGRADES.find(x=>x.id===id);if(!u||!G.upgrades[id])return;
+  const cdKey=id;const lastUsed=G.cooldowns[cdKey]||0;
+  if(Date.now()-lastUsed<u.cooldown)return;
+  G.cooldowns[cdKey]=Date.now();
+  // Effects
+  if(id==='zeroDayExploit'){addLog('Zero-Day Exploit ready — next hack auto-succeeds!','info');G._zeroDayReady=true;}
+  if(id==='quantumFirewall'){G.quantumFirewallActive=true;G.quantumFirewallExpiry=Date.now()+300000;addLog('Quantum Firewall active — IP invisible for 5 min','info');}
+  if(id==='ghostProtocol2'){G.ghostProtocol2Active=true;G.ghostProtocol2Expiry=Date.now()+120000;addLog('Ghost Protocol v2 active — traceability 0% for 2 min','info');}
+  if(id==='zeroTrust'){G.zeroTrustActive=true;G.zeroTrustExpiry=Date.now()+600000;addLog('Zero Trust active — all incoming hacks auto-fail for 10 min','info');}
+  if(id==='blackout'){G.blackoutActive=true;G.blackoutExpiry=Date.now()+1800000;addLog('Blackout active — all NPC attacks disabled for 30 min','info');}
+  if(id==='stealthMode'){G.stealthModeActive=true;G.stealthModeExpiry=Date.now()+300000;addLog('Stealth Mode active — HEAT -75% for 5 min','info');}
+  if(id==='repMultiplier'){G.repMultiplierActive=true;G.repMultiplierExpiry=Date.now()+600000;addLog('Rep Multiplier active — double REP for 10 min','info');}
+  if(id==='darkWebFame'){G.darkWebFameActive=true;G.darkWebFameExpiry=Date.now()+300000;addLog('Dark Web Fame active — rep 2x faster for 5 min','info');}
+  if(id==='theOverride'){addLog('The Override ready — next hack hits 2 NPCs!','info');G._overrideReady=true;}
+  if(id==='timeBomb'){
+    if(!currentTarget){addLog('No target selected for Time Bomb','alert');G.cooldowns[cdKey]=0;return;}
+    G.timeBombTarget=currentTarget.name;G.timeBombExpiry=Date.now()+600000;
+    addLog('Time Bomb planted on '+currentTarget.name+' — detonates in 10 min','warning');
+  }
+  if(id==='keylogger'){
+    if(!currentTarget){addLog('No target selected for Keylogger','alert');G.cooldowns[cdKey]=0;return;}
+    if(Math.random()<0.25){addLog('Keylogger DETECTED by '+currentTarget.name+'! +15 HEAT','alert');addHeat(15);currentTarget.relation='enemy';currentTarget.tracerExpiry=Date.now()+600000;}
+    else{G.keyloggerActive=true;G.keyloggerExpiry=Date.now()+300000;G.keyloggerTarget=currentTarget.name;addLog('Keylogger installed on '+currentTarget.name+' — +200 CR/min for 5 min','info');}
+  }
+  if(id==='socialEngineering'){
+    if(!currentTarget||currentTarget.relation!=='enemy'){addLog('Target must be an enemy NPC','alert');G.cooldowns[cdKey]=0;return;}
+    currentTarget.relation='neutral';currentTarget.hackCount=0;addLog(currentTarget.name+' converted to neutral via social engineering','info');
+  }
+  if(id==='trojanHorse'){
+    if(!currentTarget||currentTarget.relation!=='enemy'){addLog('Target must be an enemy NPC','alert');G.cooldowns[cdKey]=0;return;}
+    currentTarget.securityLevel=Math.max(1,currentTarget.securityLevel-3);addLog('Trojan Horse sent to '+currentTarget.name+' — security -3 for 10 min','info');
+    setTimeout(()=>{if(G.npcs){const n=G.npcs.find(x=>x.name===currentTarget.name);if(n)n.securityLevel+=3;}},600000);
+  }
+  if(id==='corporateSpy'){
+    if(!currentTarget){addLog('No target for Corporate Spy','alert');G.cooldowns[cdKey]=0;return;}
+    G.corporateSpyActive=true;G.corporateSpyExpiry=Date.now()+600000;G.corporateSpyBonus=Math.floor(5+Math.random()*20);
+    addLog('Corporate Spy stealing from '+currentTarget.name+' — +'+G.corporateSpyBonus+' CR/s for 10 min','info');
+  }
+  if(id==='moneyLaundering'){
+    const convertAmount=Math.min(G.credits,10000);if(convertAmount<=0){addLog('No CREDITS to launder','alert');G.cooldowns[cdKey]=0;return;}
+    G.credits-=convertAmount;G.data+=convertAmount*5;addLog('Laundered '+fmt(convertAmount)+' CR -> '+fmt(convertAmount*5)+' DATA','info');
+  }
+  if(id==='mindControl'){
+    if(!currentTarget||currentTarget.relation!=='neutral'){addLog('Target must be a neutral NPC','alert');G.cooldowns[cdKey]=0;return;}
+    currentTarget.relation='ally';currentTarget.allyExpiry=0;currentTarget._neuralBackdoorAlly=true;
+    addLog(currentTarget.name+' is now your permanent ally via Mind Control!','info');
+  }
+  renderUpgrades();
+}
 
 // ========== TABS ==========
 function switchTab(tab){
@@ -1542,6 +1828,7 @@ function switchTab(tab){
   const btn=document.querySelector(`#panel-corp .tab-btn[onclick="switchTab('${tab}')"]`);
   if(btn)btn.classList.add('active');
   if(tab==='viruses')renderVirusList();
+  if(tab==='infra')renderInfraList();
 }
 
 // ========== HACK SYSTEM ==========
@@ -1558,25 +1845,32 @@ function getEffectiveDifficulty(npc){
   if(npc.relation==='enemy')d+=1;
   // Dark web data purchase effect
   if(G.npcBoughtData&&G.npcBoughtData[npc.name])d+=1;
-  return Math.min(3,Math.max(0,d));
+  const maxDiff=G.upgrades.singularity?4:3;
+  return Math.min(maxDiff,Math.max(0,d));
 }
 
 function getReward(difficulty){
-  const ranges={'Easy':{data:[50,200],cr:[5,20],rep:[5,15]},'Medium':{data:[200,800],cr:[20,80],rep:[15,40]},'Hard':{data:[800,3000],cr:[80,300],rep:[40,100]},'Elite':{data:[3000,10000],cr:[300,1000],rep:[100,250]}};
+  const ranges={'Easy':{data:[50,200],cr:[5,20],rep:[5,15]},'Medium':{data:[200,800],cr:[20,80],rep:[15,40]},'Hard':{data:[800,3000],cr:[80,300],rep:[40,100]},'Elite':{data:[3000,10000],cr:[300,1000],rep:[100,250]},'God Tier':{data:[10000,50000],cr:[1000,5000],rep:[250,1000]}};
   const r=ranges[difficulty]||ranges['Easy'];
   let reward={data:Math.max(1,Math.floor(Math.random()*(r.data[1]-r.data[0])+r.data[0])),cr:Math.max(1,Math.floor(Math.random()*(r.cr[1]-r.cr[0])+r.cr[0])),rep:Math.max(1,Math.floor(Math.random()*(r.rep[1]-r.rep[0])+r.rep[0]))};
   if(G.skills.godmodehack){reward.data=Math.floor(reward.data*1.5);reward.cr=Math.floor(reward.cr*1.5);reward.rep=Math.floor(reward.rep*1.5);}
   if(G.skills.unicorn){reward.cr=Math.floor(reward.cr*2);}
   if(G.classifiedUnlocked){reward.data=Math.floor(reward.data*2);reward.cr=Math.floor(reward.cr*2);}
+  if(G.upgrades.godModeActivated){reward.data=Math.floor(reward.data*3);reward.cr=Math.floor(reward.cr*3);reward.rep=Math.floor(reward.rep*3);}
+  if(G.upgrades.xpBooster){reward.rep=Math.floor(reward.rep*1.5);}
+  if(G.repMultiplierActive&&G.repMultiplierExpiry>Date.now()){reward.rep=Math.floor(reward.rep*2);}
   return reward;
 }
 
 function pickTarget(){
   if(!G.npcs||hackActive||downloadActive)return;
-  const available=G.npcs.filter(n=>n.relation!=='ally'||n.allyExpiry<Date.now());
+  const available=G.npcs.filter(n=>{
+    if(n.relation==='ally'&&n._neuralBackdoorAlly)return false;// permanent allies never appear
+    return n.relation!=='ally'||n.allyExpiry<Date.now();
+  });
   if(available.length===0)return;
   currentTarget=available[Math.floor(Math.random()*available.length)];
-  if(currentTarget.relation==='ally'&&currentTarget.allyExpiry<Date.now())currentTarget.relation='neutral';
+  if(currentTarget.relation==='ally'&&currentTarget.allyExpiry<Date.now()&&!currentTarget._neuralBackdoorAlly)currentTarget.relation='neutral';
   currentTargetReward=getReward(DIFFICULTIES[getEffectiveDifficulty(currentTarget)]);
   renderTarget();
 }
@@ -1611,12 +1905,32 @@ function startHack(){
       document.getElementById('spoof-checkbox').checked=false;
     }
   }
+  // Zero-Day Exploit upgrade: guaranteed auto-succeed
+  if(G._zeroDayReady){
+    G._zeroDayReady=false;hackActive=false;
+    const diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
+    const reward=getReward(diffName);
+    const heatGain=[5,10,20,35,50][diff];
+    G.data+=reward.data;G.credits+=reward.cr;G.rep+=reward.rep;G.totalRep+=reward.rep;G.totalHacks++;
+    G.darkWebRep+=5;G._lastHackDifficulty=diff;
+    addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
+    if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog('⚠ '+n.name+' is now HOSTILE!','alert');}
+    addLog('ZERO-DAY EXPLOIT: Auto-hacked '+n.name+'! +'+fmt(reward.data)+' DATA','info');
+    G._speedHackDone=true;checkMissionProgress();checkAchievements();
+    generateLoot(reward.data);
+    // Neural Backdoor: Elite NPC becomes permanent ally
+    if(G.upgrades.neuralBackdoor&&diff>=3){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(n.name+' is now permanent ally via Neural Backdoor!','info');}
+    // The Override: hit second NPC
+    if(G._overrideReady){G._overrideReady=false;const others=G.npcs.filter(x=>x.name!==n.name&&x.relation!=='ally');
+      if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;addLog('OVERRIDE: Also hacked '+o.name+'! +'+fmt(r2.data)+' DATA','info');generateLoot(r2.data);}}
+    return;
+  }
   // Zero Day skill: 10% auto-succeed
   if(G.skills.zeroday&&Math.random()<0.10){
     hackActive=false;
     const diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
     const reward=getReward(diffName);
-    const heatGain=[5,10,20,35][diff];
+    const heatGain=[5,10,20,35,50][diff];
     G.data+=reward.data;G.credits+=reward.cr;G.rep+=reward.rep;G.totalRep+=reward.rep;G.totalHacks++;
     G.darkWebRep+=5;G._lastHackDifficulty=diff;
     addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
@@ -1629,12 +1943,14 @@ function startHack(){
   }
   const diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
   const pool=COMMANDS[n.os][diffName];
-  let count;if(diff===0)count=3;else if(diff===1)count=4;else if(diff===2)count=5;else count=n.os==='Windows'?6:7;
+  let count;if(diff===0)count=3;else if(diff===1)count=4;else if(diff===2)count=5;else if(diff===3)count=n.os==='Windows'?6:7;else count=8;
   if(G.skills.exploitkit)count=Math.max(2,count-1);
+  if(G.upgrades.exploitFramework)count=Math.max(1,count-1);
   const shuffled=[...pool].sort(()=>Math.random()-0.5);
   hackCmds=shuffled.slice(0,Math.min(count,shuffled.length));hackCmdIndex=0;
-  const avTimes=[60,45,30,20];let avTime=avTimes[diff];
-  if(diff===3&&G.skills.kernelpanic)avTime+=10;
+  const avTimes=[60,45,30,20,15];let avTime=avTimes[diff]||20;
+  if(diff>=3&&G.skills.kernelpanic)avTime+=10;
+  if(G.upgrades.godModeActivated)avTime+=30;
   avTimeMax=avTime;avTimeLeft=avTimeMax;
   hackTimeLeft=0;document.getElementById('hack-timer').textContent='';
   const mg=document.getElementById('hack-minigame');mg.classList.add('active');
@@ -1773,7 +2089,7 @@ completeDownload(downloadProgress);addLog('Download aborted at '+Math.floor(down
 function completeDownload(pct){
   downloadActive=false;const fraction=pct/100;const reward=pendingHackReward,diff=pendingHackDiff,n=pendingHackNpc;
   const dataGain=Math.floor(reward.data*fraction),crGain=Math.floor(reward.cr*fraction),repGain=Math.floor(reward.rep*fraction);
-  const heatGain=[5,10,20,35][diff];
+  const heatGain=[5,10,20,35,50][diff];
   G.data+=dataGain;G.credits+=crGain;G.rep+=repGain;G.totalRep+=repGain;G.totalHacks++;
   G.darkWebRep+=5;
   addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
@@ -1801,11 +2117,21 @@ function completeDownload(pct){
     addLog('Coalition broken by hacking '+n.name+'!','info');
     checkAchievements();
   }
+  // Neural Backdoor: Elite NPC becomes permanent ally
+  if(G.upgrades.neuralBackdoor&&diff>=3&&pct>=100){n.relation='ally';n.allyExpiry=0;n._neuralBackdoorAlly=true;addLog(n.name+' is now permanent ally via Neural Backdoor! +100 CR/s','info');}
+  // Dark Web Fame: double rep gain
+  if(G.darkWebFameActive&&G.darkWebFameExpiry>Date.now()){G.darkWebRep+=5;}// extra +5 on top of existing +5
   if(pct>=100){
     document.getElementById('download-abort').style.display='none';
     const ce=document.getElementById('download-complete');ce.style.display='';ce.classList.add('show');
     addLog('HACK SUCCESS: +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
-    setTimeout(()=>{closeHackMinigame();generateLoot(reward.data);checkMissionProgress();checkAchievements();},1200);
+    setTimeout(()=>{closeHackMinigame();
+      generateLoot(reward.data);
+      if(G.upgrades.dataMinerPro)generateLoot(reward.data);// second loot
+      // The Override: hit second NPC
+      if(G._overrideReady){G._overrideReady=false;const others=G.npcs.filter(x=>x.name!==n.name&&x.relation!=='ally');
+        if(others.length>0){const o=others[Math.floor(Math.random()*others.length)];const r2=getReward(DIFFICULTIES[getEffectiveDifficulty(o)]);G.data+=r2.data;G.credits+=r2.cr;G.rep+=r2.rep;G.totalRep+=r2.rep;G.totalHacks++;o.hackCount++;if(o.hackCount>=3&&o.relation!=='enemy'){o.relation='enemy';o.tracerExpiry=Date.now()+600000;}addLog('OVERRIDE: Also hacked '+o.name+'! +'+fmt(r2.data)+' DATA','info');generateLoot(r2.data);}}
+      checkMissionProgress();checkAchievements();},1200);
   } else {
     addLog('PARTIAL EXFIL ('+Math.floor(pct)+'%): +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
     setTimeout(()=>{closeHackMinigame();if(pct>50)generateLoot(Math.floor(reward.data*fraction));checkMissionProgress();checkAchievements();},1000);
@@ -1859,7 +2185,8 @@ function getRarityColor(r){return{common:'#999',rare:'#4a9eff',epic:'#b44aff',le
 function lootSellNow(){if(!pendingLoot)return;G.data+=pendingLoot.value;G.totalItemsSold++;addLog('Sold '+pendingLoot.name+' for '+fmt(pendingLoot.value)+' DATA','info');pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');checkMissionProgress();checkAchievements();}
 
 function lootPutOnMarket(){if(!pendingLoot||!G.upgrades.darkweb)return;
-if(G.lootInventory.length>=10){G.data+=pendingLoot.value;addLog('Inventory full! Auto-sold '+pendingLoot.name,'warning');}
+const invLimit=G.upgrades.encryptedStorage?25:10;
+if(G.lootInventory.length>=invLimit){G.data+=pendingLoot.value;addLog('Inventory full! Auto-sold '+pendingLoot.name,'warning');}
 else{G.lootInventory.push(pendingLoot);addLog(pendingLoot.name+' added to inventory','info');}
 pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');}
 
@@ -1901,13 +2228,14 @@ G.activeAuctions.push({name:item.name,rarity:item.rarity,value:item.value,curren
 addLog('Auction started for '+item.name,'info');renderBlackMarket();}
 
 function bmarketCancelAuction(i){if(i<0||i>=G.activeAuctions.length)return;const auc=G.activeAuctions.splice(i,1)[0];
-if(G.lootInventory.length<10){G.lootInventory.push({name:auc.name,rarity:auc.rarity,value:auc.value,acquiredAt:Date.now()});addLog('Auction cancelled — '+auc.name+' returned','info');}
+const invLimit=G.upgrades.encryptedStorage?25:10;
+if(G.lootInventory.length<invLimit){G.lootInventory.push({name:auc.name,rarity:auc.rarity,value:auc.value,acquiredAt:Date.now()});addLog('Auction cancelled — '+auc.name+' returned','info');}
 else{G.data+=auc.value;addLog('Auction cancelled — inventory full, sold for '+fmt(auc.value)+' DATA','warning');}
 renderBlackMarket();}
 
 function updateAuctions(){if(G.activeAuctions.length===0)return;const now=Date.now();const completed=[];
 G.activeAuctions.forEach((auc,i)=>{
-  if(now-auc.lastBidTime>=30000&&now<auc.endTime){auc.currentBid=Math.floor(auc.currentBid*(1+0.1+Math.random()*0.2));auc.lastBidTime=now;}
+  if(now-auc.lastBidTime>=30000&&now<auc.endTime){let bidMult=1+0.1+Math.random()*0.2;if(G.upgrades.blackMarketMonopoly)bidMult=1+(bidMult-1)*0.5;auc.currentBid=Math.floor(auc.currentBid*bidMult);auc.lastBidTime=now;}
   if((auc.rarity==='epic'||auc.rarity==='legendary')&&now<auc.endTime)addHeat(0.017);
   if(now>=auc.endTime)completed.push(i);
 });
@@ -1973,11 +2301,13 @@ function addHeat(amount){
   let mult=1;
   if(G.upgrades.vpn)mult=0.5;
   if(G.skills.noisecanceller)mult*=0.8;
+  if(G.upgrades.godModeActivated)mult*=0.5;
+  if(G.stealthModeActive&&G.stealthModeExpiry>Date.now())mult*=0.25;
   G.heat=Math.min(100,G.heat+amount*mult);
   if(G.heat>=100)triggerRaid();
 }
 
-function triggerRaid(){const lossPercent=G.upgrades.legal?0.1:0.3;const lost=Math.floor(G.data*lossPercent);G.data-=lost;G.heat=0;
+function triggerRaid(){const lossPercent=G.upgrades.encryptedBackup?(G.upgrades.legal?0.05:0.1):(G.upgrades.legal?0.1:0.3);const lost=Math.floor(G.data*lossPercent);G.data-=lost;G.heat=0;
 addLog('🚨 RAID! Lost '+fmt(lost)+' DATA! ('+(lossPercent*100)+'% penalty)','alert');
 document.body.classList.add('raid-flash');setTimeout(()=>document.body.classList.remove('raid-flash'),1000);}
 
@@ -2063,10 +2393,14 @@ let defenseActive=false,defenseTimer=null,defenseTimeLeft=30,defenseAttacker=nul
 let lastNpcAttackTime=0,lastEnemyAttackTime=0;
 let defenseGameActive=false,defenseCmds=[],defenseCmdIndex=0,defenseGameTimer=null,defenseGameTimeLeft=0;
 
-function getAutoDefenseChance(){let c=30;if(G.upgrades.vpn)c+=20;if(G.upgrades.firewallv1)c+=20;if(G.upgrades.firewallv2)c+=20;if(G.upgrades.shell)c+=10;return Math.min(90,c);}
+function getAutoDefenseChance(){let c=G.upgrades.aiDefender?75:30;if(G.upgrades.vpn)c+=20;if(G.upgrades.firewallv1)c+=20;if(G.upgrades.firewallv2)c+=20;if(G.upgrades.shell)c+=10;return Math.min(90,c);}
 
 function checkIncomingAttacks(){
   if(!gameRunning||defenseActive||defenseGameActive||ddosActive)return;if(!G.npcs)return;
+  // Blackout: no attacks
+  if(G.blackoutActive&&G.blackoutExpiry>Date.now())return;
+  // Zero Trust: auto-fail all attacks
+  if(G.zeroTrustActive&&G.zeroTrustExpiry>Date.now()){return;}
   const now=Date.now();const trace=getTraceability();
   let attackChanceMod=1;
   if(trace>70&&G.forensicTraces.length>3)attackChanceMod=0.5;
@@ -2086,9 +2420,14 @@ function checkIncomingAttacks(){
 }
 
 function triggerIncomingAttack(npc){
-  if(defenseActive||defenseGameActive)return;defenseActive=true;defenseAttacker=npc;
+  if(defenseActive||defenseGameActive)return;
+  // Shell Corp Network: 30% chance attack hits fake identity
+  if(G.upgrades.shellCorpNetwork&&Math.random()<0.3){addLog('Shell Corp Network deflected attack from '+npc.name,'info');return;}
+  // IDS: 30s advance warning (just add a log warning)
+  if(G.upgrades.ids){addLog('⚠ IDS WARNING: '+npc.name+' preparing attack in 30s','warning');}
+  defenseActive=true;defenseAttacker=npc;
   defenseDifficulty=Math.min(3,npc.baseDifficulty+(npc.relation==='enemy'?1:0));
-  defenseDataRisk=[5,15,25,40][defenseDifficulty];
+  defenseDataRisk=[5,15,25,40,50][defenseDifficulty];
   document.getElementById('defense-skull').textContent=`    ░░░░░░░░░░░░░\n    ░░▄███████▄░░\n    ░██░░░░░░░██░\n    ░██░█░░░█░██░\n    ░░██░░░░░██░░\n    ░░░██████░░░░\n    ░░░██░░██░░░░`;
   document.getElementById('defense-title').textContent='⚠ INTRUSION DETECTED';
   document.getElementById('defense-attacker').textContent=npc.name+' is attempting to breach your systems';
@@ -2163,6 +2502,8 @@ function checkDDoS(){
 }
 
 function triggerDDoS(){
+  // EMP Shield: auto-block
+  if(G.upgrades.empShield&&G.empShieldCharge>0){G.empShieldCharge=0;G.empShieldLastRecharge=Date.now();addLog('EMP Shield blocked DDoS attack!','info');return;}
   ddosActive=true;ddosBotsOffline=true;ddosOfflineExpiry=Date.now()+60000;
   ddosTimeLeft=30;
   document.getElementById('ddos-countdown').textContent='BOTS OFFLINE: 60s — Respond within 30s!';
@@ -2320,7 +2661,7 @@ function checkFakeContracts(){
   if(allies.length===0)return;
   const disguise=allies[Math.floor(Math.random()*allies.length)];
   const fakeName=NPC_FAKES[disguise.name]||disguise.name.replace(/[aeiou]/i,c=>c==='e'?'3':c==='a'?'4':c==='o'?'0':c==='i'?'1':'u');
-  const isFlagged=getTraceability()<30;
+  const isFlagged=getTraceability()<30||G.upgrades.darkWebScanner;
   const area=document.getElementById('contract-area');if(!area)return;
   const div=document.createElement('div');
   div.className='contract-notif'+(isFlagged?' fake':'');
@@ -2371,6 +2712,8 @@ function checkEspionage(){
   const enemies=G.npcs.filter(n=>n.relation==='enemy'&&n.securityLevel>5);
   if(enemies.length===0||Math.random()>0.25)return;
   const spy=enemies[Math.floor(Math.random()*enemies.length)];
+  // Honeypot: convert attacker to temp ally
+  if(G.upgrades.honeypot){spy.relation='ally';spy.allyExpiry=Date.now()+300000;addLog('Honeypot: '+spy.name+' trapped — converted to temp ally for 5 min!','info');return;}
   G.espionageActive=true;G.espionageExpiry=Date.now()+600000;G.espionageCompany=spy.name;G._espStep=0;
   addLog('⚠ '+spy.name+' has infiltrated your systems — they can see your defenses','alert');
   addLog('Fix: type "sudo netstat -an | grep ESTABLISHED" + "sudo iptables -A INPUT -s attacker_ip -j DROP"','warning');
@@ -2624,7 +2967,7 @@ function deployVirusSelect(virusId){
   if(G.data<v.cost)return;
   G.data-=v.cost;G.totalVirusesDeployed++;
   const npc=currentTarget;
-  const detected=Math.random()<v.detection;
+  const detected=G.upgrades.polymorphicVirus?false:Math.random()<v.detection;
   if(detected){
     addLog('⚠ Virus detected by '+npc.name+'! They are now HOSTILE.','alert');
     npc.relation='enemy';npc.tracerExpiry=Date.now()+600000;
@@ -2664,10 +3007,11 @@ function renderSkillsList(){
     branch.skills.forEach(s=>{
       const owned=!!G.skills[s.id];
       const locked=s.requires&&!G.skills[s.requires];
-      const canAfford=G.credits>=s.cost;
+      const actualCost=getSkillCost(s.cost);
+      const canAfford=G.credits>=actualCost;
       const item=document.createElement('div');item.className='skill-item'+(owned?' owned':'')+(locked?' locked':'');
       item.innerHTML=`<div class="skill-info"><div class="skill-name" style="color:${branch.color}">${s.name}${owned?' [OWNED]':''}</div>
-      <div class="skill-desc">${s.desc} — ${fmt(s.cost)} CR</div></div>
+      <div class="skill-desc">${s.desc} — ${fmt(actualCost)} CR</div></div>
       <button class="skill-buy" style="border:1px solid ${branch.color};color:${branch.color}" ${(owned||locked||!canAfford)?'disabled':''} onclick="buySkill('${s.id}')">${owned?'✓':locked?'LOCKED':'BUY'}</button>`;
       div.appendChild(item);
     });
@@ -2683,8 +3027,9 @@ function buySkill(id){
   }
   if(!skill||G.skills[id])return;
   if(skill.requires&&!G.skills[skill.requires])return;
-  if(G.credits<skill.cost)return;
-  G.credits-=skill.cost;G.skills[id]=true;
+  const actualCost=getSkillCost(skill.cost);
+  if(G.credits<actualCost)return;
+  G.credits-=actualCost;G.skills[id]=true;
   addLog('Skill unlocked: '+skill.name,'info');
   renderSkillsList();checkAchievements();
 }
@@ -2763,14 +3108,21 @@ if(el){
   if(G.classifiedUnlocked)title+=' [SHADOW]';
   el.textContent='LVL '+current.lv+' — '+title;
 }
-if(current.lv>=50&&!G._endgameShown){G._endgameShown=true;document.getElementById('endgame-overlay').classList.add('active');}}
+const endgameLv=G.upgrades.ipoAccelerator?25:50;
+if(current.lv>=endgameLv&&!G._endgameShown){G._endgameShown=true;document.getElementById('endgame-overlay').classList.add('active');}}
 
 // ========== ENDGAME ==========
 function doIPO(){document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.add('active');
 document.getElementById('ipo-stats').innerHTML=`<p class="stat">Total DATA mined: ${fmt(G.totalDataMined)}</p><p class="stat">Total hacks: ${G.totalHacks}</p><p class="stat">Total REP: ${fmt(G.totalRep)}</p><p class="stat">Prestige level: #${G.prestige}</p><p class="stat">Achievements: ${G.achievements.length}/${ACHIEVEMENTS.length}</p><p class="stat">Missions: ${G.missions.length}/${MISSIONS.length}</p>`;}
 
-function doNewGamePlus(){G.prestige++;G.prestigeMulti=1+G.prestige*0.25;const prestige=G.prestige,multi=G.prestigeMulti;
-G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
+function doNewGamePlus(){G.prestige++;
+const bonusPerPrestige=G.upgrades.legacyCode?0.10:0.25;
+G.prestigeMulti=1+G.prestige*bonusPerPrestige;
+const prestige=G.prestige,multi=G.prestigeMulti;
+const keepResources=!!G.upgrades.prestigeToken;
+const keptData=keepResources?Math.floor(G.data*0.5):0;
+const keptCredits=keepResources?Math.floor(G.credits*0.5):0;
+G.data=keptData;G.credits=keptCredits;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
 G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;G.prestige=prestige;G.prestigeMulti=multi;G._endgameShown=false;
 G.lootInventory=[];G.activeAuctions=[];G.darkWebRep=0;G.forensicTraces=[];G.activeBounty=false;G.bountyDefenseCount=0;
 G.usurpationActive=false;G.usurpationExpiry=0;G.lastSpoofTime=0;
@@ -2782,8 +3134,25 @@ G.totalDefenseSuccesses=0;G.totalAuctionsSold=0;G.totalAuctionEarnings=0;G.legen
 G.totalVirusesDeployed=0;G.coalitionBroken=0;G.totalItemsSold=0;G.classifiedUnlocked=false;
 G.m10Targets=[];G.m10StartTime=0;G.m10HackedCount=0;G.npcBoughtData={};
 G.urgentContract=null;G.urgentContractExpiry=0;
+// New upgrade state reset
+G.neuralInterfaceOn=false;G.darkSyndicateOn=false;G.crypto=0;G.infraNodes=0;
+G.empShieldCharge=1;G.empShieldLastRecharge=0;
+G.quantumFirewallActive=false;G.quantumFirewallExpiry=0;
+G.ghostProtocol2Active=false;G.ghostProtocol2Expiry=0;
+G.zeroTrustActive=false;G.zeroTrustExpiry=0;
+G.blackoutActive=false;G.blackoutExpiry=0;
+G.stealthModeActive=false;G.stealthModeExpiry=0;
+G.repMultiplierActive=false;G.repMultiplierExpiry=0;
+G.darkWebFameActive=false;G.darkWebFameExpiry=0;
+G.corporateSpyActive=false;G.corporateSpyExpiry=0;G.corporateSpyBonus=0;
+G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
+G.timeBombTarget='';G.timeBombExpiry=0;
+G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
 G.operatorAlias=generateAlias();G.playerIP=generateIP();
 initNPCs();document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.remove('active');
+document.body.classList.remove('god-mode-active');
+document.getElementById('crypto-res-wrap').style.display='none';
+document.getElementById('infra-tab-btn').style.display='none';
 addLog('NEW GAME+ #'+G.prestige+' — +'+Math.round((G.prestigeMulti-1)*100)+'% DATA/s bonus','info');saveGame();renderAll();}
 
 // ========== SAVE / LOAD ==========
@@ -2808,10 +3177,25 @@ totalVirusesDeployed:G.totalVirusesDeployed||0,coalitionBroken:G.coalitionBroken
 totalItemsSold:G.totalItemsSold||0,classifiedUnlocked:G.classifiedUnlocked||false,
 m10Targets:G.m10Targets||[],m10StartTime:G.m10StartTime||0,m10HackedCount:G.m10HackedCount||0,
 npcBoughtData:G.npcBoughtData||{},urgentContract:G.urgentContract||null,urgentContractExpiry:G.urgentContractExpiry||0,
+// New upgrade state
+neuralInterfaceOn:G.neuralInterfaceOn||false,darkSyndicateOn:G.darkSyndicateOn||false,
+crypto:G.crypto||0,infraNodes:G.infraNodes||0,
+empShieldCharge:G.empShieldCharge!=null?G.empShieldCharge:1,empShieldLastRecharge:G.empShieldLastRecharge||0,
+quantumFirewallActive:G.quantumFirewallActive||false,quantumFirewallExpiry:G.quantumFirewallExpiry||0,
+ghostProtocol2Active:G.ghostProtocol2Active||false,ghostProtocol2Expiry:G.ghostProtocol2Expiry||0,
+zeroTrustActive:G.zeroTrustActive||false,zeroTrustExpiry:G.zeroTrustExpiry||0,
+blackoutActive:G.blackoutActive||false,blackoutExpiry:G.blackoutExpiry||0,
+stealthModeActive:G.stealthModeActive||false,stealthModeExpiry:G.stealthModeExpiry||0,
+repMultiplierActive:G.repMultiplierActive||false,repMultiplierExpiry:G.repMultiplierExpiry||0,
+darkWebFameActive:G.darkWebFameActive||false,darkWebFameExpiry:G.darkWebFameExpiry||0,
+corporateSpyActive:G.corporateSpyActive||false,corporateSpyExpiry:G.corporateSpyExpiry||0,corporateSpyBonus:G.corporateSpyBonus||0,
+keyloggerActive:G.keyloggerActive||false,keyloggerExpiry:G.keyloggerExpiry||0,keyloggerTarget:G.keyloggerTarget||'',
+timeBombTarget:G.timeBombTarget||'',timeBombExpiry:G.timeBombExpiry||0,
+doomsdayUsed:G.doomsdayUsed||false,cooldowns:G.cooldowns||{},darkWebRepBoostCount:G.darkWebRepBoostCount||0,
 npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
 hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
 tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti,
-virusEffect:n.virusEffect||null,virusExpiry:n.virusExpiry||0,income:n.income||100})):null,lastSave:Date.now()};
+virusEffect:n.virusEffect||null,virusExpiry:n.virusExpiry||0,income:n.income||100,_neuralBackdoorAlly:n._neuralBackdoorAlly||false})):null,lastSave:Date.now()};
 localStorage.setItem('bytecorp_save',JSON.stringify(save));}
 
 function applySave(s){G.data=s.data||0;G.credits=s.credits||0;G.rep=s.rep||0;G.heat=s.heat||0;G.dataPower=s.dataPower||1;
@@ -2838,9 +3222,24 @@ G.totalVirusesDeployed=s.totalVirusesDeployed||0;G.coalitionBroken=s.coalitionBr
 G.totalItemsSold=s.totalItemsSold||0;G.classifiedUnlocked=s.classifiedUnlocked||false;
 G.m10Targets=s.m10Targets||[];G.m10StartTime=s.m10StartTime||0;G.m10HackedCount=s.m10HackedCount||0;
 G.npcBoughtData=s.npcBoughtData||{};G.urgentContract=s.urgentContract||null;G.urgentContractExpiry=s.urgentContractExpiry||0;
+// New upgrade state
+G.neuralInterfaceOn=s.neuralInterfaceOn||false;G.darkSyndicateOn=s.darkSyndicateOn||false;
+G.crypto=s.crypto||0;G.infraNodes=s.infraNodes||0;
+G.empShieldCharge=s.empShieldCharge!=null?s.empShieldCharge:1;G.empShieldLastRecharge=s.empShieldLastRecharge||0;
+G.quantumFirewallActive=s.quantumFirewallActive||false;G.quantumFirewallExpiry=s.quantumFirewallExpiry||0;
+G.ghostProtocol2Active=s.ghostProtocol2Active||false;G.ghostProtocol2Expiry=s.ghostProtocol2Expiry||0;
+G.zeroTrustActive=s.zeroTrustActive||false;G.zeroTrustExpiry=s.zeroTrustExpiry||0;
+G.blackoutActive=s.blackoutActive||false;G.blackoutExpiry=s.blackoutExpiry||0;
+G.stealthModeActive=s.stealthModeActive||false;G.stealthModeExpiry=s.stealthModeExpiry||0;
+G.repMultiplierActive=s.repMultiplierActive||false;G.repMultiplierExpiry=s.repMultiplierExpiry||0;
+G.darkWebFameActive=s.darkWebFameActive||false;G.darkWebFameExpiry=s.darkWebFameExpiry||0;
+G.corporateSpyActive=s.corporateSpyActive||false;G.corporateSpyExpiry=s.corporateSpyExpiry||0;G.corporateSpyBonus=s.corporateSpyBonus||0;
+G.keyloggerActive=s.keyloggerActive||false;G.keyloggerExpiry=s.keyloggerExpiry||0;G.keyloggerTarget=s.keyloggerTarget||'';
+G.timeBombTarget=s.timeBombTarget||'';G.timeBombExpiry=s.timeBombExpiry||0;
+G.doomsdayUsed=s.doomsdayUsed||false;G.cooldowns=s.cooldowns||{};G.darkWebRepBoostCount=s.darkWebRepBoostCount||0;
 G._endgameShown=false;if(s.npcs&&s.npcs.length>=15)G.npcs=s.npcs;else initNPCs();
 // Ensure NPC virus fields exist
-if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;});
+if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;if(!n._neuralBackdoorAlly)n._neuralBackdoorAlly=false;});
 }
 
 function hasSave(){return!!localStorage.getItem('bytecorp_save');}
@@ -2866,10 +3265,62 @@ G.totalDefenseSuccesses=0;G.totalAuctionsSold=0;G.totalAuctionEarnings=0;G.legen
 G.totalVirusesDeployed=0;G.coalitionBroken=0;G.totalItemsSold=0;G.classifiedUnlocked=false;
 G.m10Targets=[];G.m10StartTime=0;G.m10HackedCount=0;G.npcBoughtData={};
 G.urgentContract=null;G.urgentContractExpiry=0;
+G.neuralInterfaceOn=false;G.darkSyndicateOn=false;G.crypto=0;G.infraNodes=0;
+G.empShieldCharge=1;G.empShieldLastRecharge=0;
+G.quantumFirewallActive=false;G.quantumFirewallExpiry=0;
+G.ghostProtocol2Active=false;G.ghostProtocol2Expiry=0;
+G.zeroTrustActive=false;G.zeroTrustExpiry=0;
+G.blackoutActive=false;G.blackoutExpiry=0;
+G.stealthModeActive=false;G.stealthModeExpiry=0;
+G.repMultiplierActive=false;G.repMultiplierExpiry=0;
+G.darkWebFameActive=false;G.darkWebFameExpiry=0;
+G.corporateSpyActive=false;G.corporateSpyExpiry=0;G.corporateSpyBonus=0;
+G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
+G.timeBombTarget='';G.timeBombExpiry=0;
+G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
 G.operatorAlias='';G.playerIP='';
-G._endgameShown=false;G.npcs=null;showStartScreen();}
+G._endgameShown=false;G.npcs=null;
+document.body.classList.remove('god-mode-active');
+document.getElementById('crypto-res-wrap').style.display='none';
+document.getElementById('infra-tab-btn').style.display='none';
+showStartScreen();}
 
-function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();renderNewsfeed();updateUI();}
+function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();renderNewsfeed();updateUI();
+  if(G.upgrades.theArchitect){document.getElementById('infra-tab-btn').style.display='';renderInfraList();}
+  if(G.upgrades.cryptoMining)document.getElementById('crypto-res-wrap').style.display='';
+  if(G.upgrades.godModeActivated)document.body.classList.add('god-mode-active');
+}
+
+// Infrastructure
+function renderInfraList(){
+  const el=document.getElementById('infra-list');if(!el)return;el.innerHTML='';
+  const maxNodes=5;
+  for(let i=0;i<maxNodes;i++){
+    const owned=i<G.infraNodes;
+    const cost=Math.floor(50000*Math.pow(2,i));
+    const node=document.createElement('div');node.className='infra-node'+(owned?' active':'');
+    node.innerHTML=`<div><div class="infra-node-name">Server Node #${i+1}</div>
+    <div class="infra-node-info">${owned?'+500 DATA/s [ONLINE]':'Cost: '+fmt(cost)+' CR'}</div></div>
+    ${owned?'':'<button class="infra-buy" '+(G.credits<cost?'disabled':'')+' onclick="buyInfraNode('+i+','+cost+')">BUY</button>'}`;
+    el.appendChild(node);
+  }
+}
+
+function buyInfraNode(idx,cost){
+  if(idx!==G.infraNodes||G.credits<cost)return;
+  G.credits-=cost;G.infraNodes++;
+  addLog('Server Node #'+G.infraNodes+' online — +500 DATA/s','info');
+  renderInfraList();
+}
+
+// Crypto conversion
+function convertCrypto(){
+  if(G.crypto<=0)return;
+  const dataGain=Math.floor(G.crypto*1000);
+  G.data+=dataGain;
+  addLog('Converted '+fmt(G.crypto)+' $CRYPTO -> '+fmt(dataGain)+' DATA','info');
+  G.crypto=0;
+}
 
 function shellCompanyDecay(){if(G.upgrades.shell&&G.heat>0)G.heat=Math.max(0,G.heat-(1/60));}
 
@@ -2877,9 +3328,56 @@ function shellCompanyDecay(){if(G.upgrades.shell&&G.heat>0)G.heat=Math.max(0,G.h
 function gameLoop(){if(!gameRunning||gamePaused)return;const dps=getDataPerSec(),cps=getCreditsPerSec();G.data+=dps/10;G.credits+=cps/10;
 // Hijacked bot generates heat
 updateHijackedBot();
+// Crypto mining
+if(G.upgrades.cryptoMining)G.crypto+=0.1/10;
+// Expire timed buffs
+const now=Date.now();
+if(G.quantumFirewallActive&&G.quantumFirewallExpiry<=now){G.quantumFirewallActive=false;addLog('Quantum Firewall expired','info');}
+if(G.ghostProtocol2Active&&G.ghostProtocol2Expiry<=now){G.ghostProtocol2Active=false;addLog('Ghost Protocol v2 expired','info');}
+if(G.zeroTrustActive&&G.zeroTrustExpiry<=now){G.zeroTrustActive=false;addLog('Zero Trust expired','info');}
+if(G.blackoutActive&&G.blackoutExpiry<=now){G.blackoutActive=false;addLog('Blackout expired','info');}
+if(G.stealthModeActive&&G.stealthModeExpiry<=now){G.stealthModeActive=false;addLog('Stealth Mode expired','info');}
+if(G.repMultiplierActive&&G.repMultiplierExpiry<=now){G.repMultiplierActive=false;addLog('Rep Multiplier expired','info');}
+if(G.darkWebFameActive&&G.darkWebFameExpiry<=now){G.darkWebFameActive=false;addLog('Dark Web Fame expired','info');}
+if(G.corporateSpyActive&&G.corporateSpyExpiry<=now){G.corporateSpyActive=false;G.corporateSpyBonus=0;addLog('Corporate Spy expired','info');}
+if(G.keyloggerActive&&G.keyloggerExpiry<=now){G.keyloggerActive=false;addLog('Keylogger expired','info');}
+// EMP Shield recharge
+if(G.upgrades.empShield&&G.empShieldCharge<=0&&now-G.empShieldLastRecharge>=1200000){G.empShieldCharge=1;addLog('EMP Shield recharged','info');}
+// Time Bomb detonation
+if(G.timeBombTarget&&G.timeBombExpiry>0&&now>=G.timeBombExpiry){
+  const idx=G.npcs?G.npcs.findIndex(n=>n.name===G.timeBombTarget):-1;
+  if(idx>=0){
+    const oldName=G.npcs[idx].name;
+    const newNames=['GhostNet','PhoenixByte','HexNode','CyberDawn','DataPulse'];
+    const newName=newNames[Math.floor(Math.random()*newNames.length)];
+    G.npcs[idx]={name:newName,os:Math.random()>0.5?'Linux':'Windows',baseDifficulty:Math.floor(Math.random()*4),
+      securityLevel:1+Math.random()*2,relation:'neutral',hackCount:0,lastHackTime:0,lastInteraction:Date.now(),
+      allyExpiry:0,tracerExpiry:0,breachExpiry:0,breachMulti:1,virusEffect:null,virusExpiry:0,income:100};
+    addLog('TIME BOMB: '+oldName+' destroyed! Replaced by '+newName,'info');
+    addNewsItem(oldName+' taken offline by time bomb — '+newName+' emerges');
+  }
+  G.timeBombTarget='';G.timeBombExpiry=0;
+}
 updateUI();}
 
-function slowLoop(){if(!gameRunning||gamePaused)return;updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
+let lastDataBrokerSell=0;
+let lastAuctionBotCheck=0;
+function slowLoop(){if(!gameRunning||gamePaused)return;
+// Data Broker: auto-sell common loot every 2 min
+if(G.upgrades.dataBroker){const now=Date.now();if(now-lastDataBrokerSell>=120000){lastDataBrokerSell=now;
+  const commonIdx=G.lootInventory.findIndex(i=>i.rarity==='common');
+  if(commonIdx>=0){const item=G.lootInventory.splice(commonIdx,1)[0];G.data+=item.value;G.totalItemsSold++;addLog('Data Broker auto-sold '+item.name+' for '+fmt(item.value)+' DATA','info');}
+}}
+// Auction Bot: auto-win NPC auctions 50% of time
+if(G.upgrades.auctionBot){const now=Date.now();if(now-lastAuctionBotCheck>=60000){lastAuctionBotCheck=now;
+  if(Math.random()<0.5){const rarities=['common','rare','epic'];const r=rarities[Math.floor(Math.random()*rarities.length)];
+    const tier=LOOT_TABLE[r];const itemName=tier.items[Math.floor(Math.random()*tier.items.length)];
+    const invLimit=G.upgrades.encryptedStorage?25:10;
+    if(G.lootInventory.length<invLimit){G.lootInventory.push({name:itemName,rarity:r,value:Math.floor(500+Math.random()*2000),acquiredAt:Date.now()});
+      addLog('Auction Bot won: '+itemName+' ('+r+')','info');}
+  }
+}}
+updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
 checkDDoSExpiry();checkIncomingAttacks();checkDDoS();checkUsurpation();checkBounty();bountyAttackCheck();
 // New NPC active behaviors
 checkNpcVirusDeployment();checkFakeContracts();checkFalseFlag();checkEspionage();checkCoalitions();checkBotHijacking();
@@ -2950,6 +3448,19 @@ G.totalDefenseSuccesses=0;G.totalAuctionsSold=0;G.totalAuctionEarnings=0;G.legen
 G.totalVirusesDeployed=0;G.coalitionBroken=0;G.totalItemsSold=0;G.classifiedUnlocked=false;
 G.m10Targets=[];G.m10StartTime=0;G.m10HackedCount=0;G.npcBoughtData={};
 G.urgentContract=null;G.urgentContractExpiry=0;
+G.neuralInterfaceOn=false;G.darkSyndicateOn=false;G.crypto=0;G.infraNodes=0;
+G.empShieldCharge=1;G.empShieldLastRecharge=0;
+G.quantumFirewallActive=false;G.quantumFirewallExpiry=0;
+G.ghostProtocol2Active=false;G.ghostProtocol2Expiry=0;
+G.zeroTrustActive=false;G.zeroTrustExpiry=0;
+G.blackoutActive=false;G.blackoutExpiry=0;
+G.stealthModeActive=false;G.stealthModeExpiry=0;
+G.repMultiplierActive=false;G.repMultiplierExpiry=0;
+G.darkWebFameActive=false;G.darkWebFameExpiry=0;
+G.corporateSpyActive=false;G.corporateSpyExpiry=0;G.corporateSpyBonus=0;
+G.keyloggerActive=false;G.keyloggerExpiry=0;G.keyloggerTarget='';
+G.timeBombTarget='';G.timeBombExpiry=0;
+G.doomsdayUsed=false;G.cooldowns={};G.darkWebRepBoostCount=0;
 G.operatorAlias=generateAlias();G.playerIP=generateIP();
 G._endgameShown=false;initNPCs();
 document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';startGameLoops();}
