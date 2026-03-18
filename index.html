@@ -919,7 +919,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <div id="loadout-lv2">★★☆ &nbsp;Level 2 — Tab autocomplete after 2 chars</div>
 <div id="loadout-lv3">★★★ &nbsp;Level 3 — One-click button</div>
 </div>
-<button class="modal-close" onclick="closeLoadout()">[ CLOSE ]</button>
+<button class="modal-close" id="loadout-close-btn" onclick="closeLoadout()">[ CLOSE ]</button>
 </div></div>
 
 <!-- MAN Page Modal -->
@@ -1726,6 +1726,7 @@ function applyLang(){
   const loadLv1=document.getElementById('loadout-lv1');if(loadLv1)loadLv1.innerHTML='★☆☆ &nbsp;'+L('masteryLv1');
   const loadLv2=document.getElementById('loadout-lv2');if(loadLv2)loadLv2.innerHTML='★★☆ &nbsp;'+L('masteryLv2');
   const loadLv3=document.getElementById('loadout-lv3');if(loadLv3)loadLv3.innerHTML='★★★ &nbsp;'+L('masteryLv3');
+  const loadClose=document.getElementById('loadout-close-btn');if(loadClose)loadClose.textContent=L('close');
   // MAN page
   const manTH=document.getElementById('man-title-h2');if(manTH)manTH.textContent=L('manTitle');
   const manTabL=document.getElementById('man-tab-linux');if(manTabL)manTabL.textContent=L('manLinux');
@@ -4389,7 +4390,7 @@ function renderLoadout(){
       addDiv.textContent=L('availableLabel');el.appendChild(addDiv);
       avail.forEach(c=>{
         const btn=document.createElement('div');btn.style.cssText='font-size:0.65em;color:var(--accent);cursor:pointer;padding:2px 0';
-        btn.textContent='+ '+c;btn.onclick=()=>{addToDeck(os,c);};
+        btn.textContent='+ '+c+' '+getMasteryStars(c);btn.onclick=()=>{addToDeck(os,c);};
         el.appendChild(btn);
       });
     }
