@@ -667,7 +667,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <div class="stock-price" id="pub-stock-price">$42.00</div>
     <div class="stock-change" id="pub-stock-change">+0.00 (0.00%)</div>
     <div class="stock-chart" id="pub-stock-chart"></div>
-    <div style="font-size:0.65em;color:#ccc;margin-bottom:4px;text-align:center">Shares: <span id="pub-shares">10,000,000</span> | Mkt Cap: <span id="pub-mktcap">$420M</span></div>
+    <div id="pub-shares-info" style="font-size:0.65em;color:#ccc;margin-bottom:4px;text-align:center">Shares: <span id="pub-shares">10,000,000</span> | Mkt Cap: <span id="pub-mktcap">$420M</span></div>
     <button class="pub-btn" id="pub-buyback-btn" onclick="pubBuyBack()">[ BUY BACK — stock +2% ]</button>
     <button class="pub-btn" id="pub-issue-btn" onclick="pubIssueShares()">[ ISSUE SHARES — +$10K capital ]</button>
     <button class="pub-btn" id="pub-dividend-btn" onclick="pubPayDividend()">[ PAY DIVIDEND — satisfaction +15 ]</button>
@@ -680,14 +680,14 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
   <div class="pub-panel" id="pub-events">
     <div class="pub-panel-title">// Events</div>
     <div id="pub-event-active"></div>
-    <div style="font-size:0.65em;color:#ccc;margin:6px 0;letter-spacing:1px">EVENT LOG</div>
+    <div id="pub-event-log-label" style="font-size:0.65em;color:#ccc;margin:6px 0;letter-spacing:1px">EVENT LOG</div>
     <div class="item-list" id="pub-event-log"></div>
   </div>
   <div class="pub-panel" id="pub-boardroom">
     <div class="pub-panel-title">// Board Room</div>
     <div id="pub-shareholders"></div>
     <button class="pub-btn" id="pub-meeting-btn" onclick="pubCallMeeting()" style="margin-top:8px">[ CALL BOARD MEETING ]</button>
-    <div style="font-size:0.65em;color:#ccc;margin:8px 0;letter-spacing:1px">COMPETITORS</div>
+    <div id="pub-competitors-label" style="font-size:0.65em;color:#ccc;margin:8px 0;letter-spacing:1px">COMPETITORS</div>
     <div id="pub-competitors" style="font-size:0.65em;color:#ccc"></div>
   </div>
 </div>
@@ -913,7 +913,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 
 <!-- Shadow Ops Modal -->
 <div id="shadow-overlay"><div id="shadow-popup"><h2>// SHADOW OPS</h2>
-<div style="font-size:0.7em;color:var(--danger);margin-bottom:8px">Uses: <span id="shadow-uses">0</span>/10 — <span id="shadow-warn"></span></div>
+<div id="shadow-info" style="font-size:0.7em;color:var(--danger);margin-bottom:8px">Uses: <span id="shadow-uses">0</span>/10 — <span id="shadow-warn"></span></div>
 <div id="shadow-actions-list"></div>
 <button class="modal-close" onclick="closeShadowOps()">[ CLOSE ]</button>
 </div></div>
@@ -997,7 +997,59 @@ const LANG = {
     crypto:'$CRYPTO', infra:'INFRA',
     toggleOn:'[ ON ]', toggleOff:'[ OFF ]', activate:'[ ACTIVATE ]',
     onCooldown:'COOLDOWN', buyAgain:'[ BUY AGAIN ]',
-    convertCrypto:'[ CONVERT $CRYPTO -> DATA ]'
+    convertCrypto:'[ CONVERT $CRYPTO -> DATA ]',
+    // Public mode
+    pubCompany:'PUBLIC COMPANY',
+    pubTrading:'TRADING', pubBoard:'BOARD', pubShadow:'SHADOW',
+    pubCapitalLabel:'CAPITAL', pubRepLabel:'PUB REP', pubStockLabel:'STOCK',
+    pubTradingFloor:'// Trading Floor',
+    pubBuyBack:'[ BUY BACK — stock +2% ]',
+    pubIssueShares:'[ ISSUE SHARES — +$10K capital ]',
+    pubPayDividend:'[ PAY DIVIDEND — satisfaction +15 ]',
+    pubSharesLabel:'Shares:', pubMktCapLabel:'Mkt Cap:',
+    pubAwaitingData:'Awaiting data...',
+    pubDepartments:'// Departments',
+    pubUpgrade:'UPGRADE',pubMaxLevel:'MAX LEVEL',
+    pubEvents:'// Events',
+    pubNextEventIn:'Next event in',
+    pubEventLog:'EVENT LOG',
+    pubBoardRoom:'// Board Room',
+    pubCompetitorsLabel:'COMPETITORS',
+    pubCallMeeting:'[ CALL BOARD MEETING ]',
+    pubShadowOps:'// SHADOW OPS',
+    pubShadowUses:'Uses:',
+    pubDarkReturnAvail:'DARK RETURN available!',
+    pubUntilDarkReturn:'until Dark Return',
+    pubExecute:'[ EXECUTE ]',
+    pubCooldownLabel:'COOLDOWN:',
+    pubBoardMeeting:'// BOARD MEETING',
+    pubQuarterlyTitle:'// QUARTERLY EARNINGS',
+    pubAcknowledge:'[ ACKNOWLEDGE ]',
+    pubCapitalReport:'Capital:',pubStockReport:'Stock:',pubMktCapReport:'Market Cap:',
+    pubBoardSatReport:'Board Satisfaction:',pubPubRepReport:'Public Rep:',pubHeatReport:'Heat:',
+    pubStrong:'strong',pubModerate:'moderate',pubWeak:'weak',
+    pubTrendUp:'trending up',pubTrendDown:'trending down',pubTrendFlat:'flat',
+    pubTechGiant:'TECH GIANT',
+    pubTechGiantDesc:'ByteCorp has achieved a market cap of $1 BILLION. You are now one of the most powerful tech companies on Earth. The shadows of your past are buried under mountains of gold.',
+    pubExposed:'EXPOSED',
+    pubExposedDesc:'Your heat reached critical levels. Federal investigators have uncovered ByteCorp\'s criminal origins. The stock crashes to zero. Your empire crumbles.',
+    pubBoardRemoved:'BOARD VOTE: REMOVED',
+    pubBoardRemovedDesc:'All board members have lost confidence. A unanimous vote removes you as CEO. ByteCorp continues without you.',
+    pubFinalStock:'Final Stock:',pubFinalMktCap:'Market Cap:',
+    pubShadowOpsUsed:'Shadow Ops Used:',pubDividendsPaid:'Dividends Paid:',
+    pubDarkReturn:'[ DARK RETURN ]',
+    pubLogNowPublic:'ByteCorp is now publicly traded.',
+    pubLogStartCapital:'Starting capital:',
+    pubLogUpgradedTo:'upgraded to Lv',
+    pubLogBuyback:'Stock buyback:',pubLogStockUp:'stock +2%',
+    pubLogSharesIssued:'Shares issued: +$10K capital, stock -3%',
+    pubLogDividendPaid:'Dividend paid:',pubLogSatisfaction:'satisfaction +15',
+    pubLogEvent:'EVENT:',pubLogChose:'Chose:',
+    pubLogShadowOp:'SHADOW OP:',
+    pubLogBoardDecision:'Board decision:',
+    pubLogQuarterly:'Quarterly earnings report issued',
+    pubLogDarkReturnMsg:'DARK RETURN: Back to hacking with',
+    pubNewsSuspicious:'Suspicious activity detected around ByteCorp stock'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1050,11 +1102,64 @@ const LANG = {
     crypto:'$CRYPTO', infra:'INFRA',
     toggleOn:'[ ON ]', toggleOff:'[ OFF ]', activate:'[ ACTIVER ]',
     onCooldown:'RECHARGE', buyAgain:'[ ACHETER ]',
-    convertCrypto:'[ CONVERTIR $CRYPTO -> DATA ]'
+    convertCrypto:'[ CONVERTIR $CRYPTO -> DATA ]',
+    // Public mode
+    pubCompany:'SOCIÉTÉ COTÉE',
+    pubTrading:'BOURSE', pubBoard:'CONSEIL', pubShadow:'OMBRE',
+    pubCapitalLabel:'CAPITAL', pubRepLabel:'RÉP PUB', pubStockLabel:'ACTION',
+    pubTradingFloor:'// Salle des Marchés',
+    pubBuyBack:'[ RACHAT — action +2% ]',
+    pubIssueShares:'[ ÉMETTRE ACTIONS — +10K$ capital ]',
+    pubPayDividend:'[ VERSER DIVIDENDE — satisfaction +15 ]',
+    pubSharesLabel:'Actions:', pubMktCapLabel:'Cap. Bours.:',
+    pubAwaitingData:'En attente de données...',
+    pubDepartments:'// Départements',
+    pubUpgrade:'AMÉLIORER',pubMaxLevel:'NIVEAU MAX',
+    pubEvents:'// Événements',
+    pubNextEventIn:'Prochain événement dans',
+    pubEventLog:'JOURNAL',
+    pubBoardRoom:'// Salle du Conseil',
+    pubCompetitorsLabel:'CONCURRENTS',
+    pubCallMeeting:'[ CONVOQUER LE CONSEIL ]',
+    pubShadowOps:'// OPS SECRÈTES',
+    pubShadowUses:'Utilisations:',
+    pubDarkReturnAvail:'RETOUR SOMBRE disponible !',
+    pubUntilDarkReturn:'avant Retour Sombre',
+    pubExecute:'[ EXÉCUTER ]',
+    pubCooldownLabel:'RECHARGE:',
+    pubBoardMeeting:'// RÉUNION DU CONSEIL',
+    pubQuarterlyTitle:'// RÉSULTATS TRIMESTRIELS',
+    pubAcknowledge:'[ ACCUSÉ DE RÉCEPTION ]',
+    pubCapitalReport:'Capital:',pubStockReport:'Action:',pubMktCapReport:'Cap. Bours.:',
+    pubBoardSatReport:'Satisfaction du Conseil:',pubPubRepReport:'Rép. Publique:',pubHeatReport:'Chaleur:',
+    pubStrong:'forte',pubModerate:'modérée',pubWeak:'faible',
+    pubTrendUp:'en hausse',pubTrendDown:'en baisse',pubTrendFlat:'stable',
+    pubTechGiant:'GÉANT TECH',
+    pubTechGiantDesc:'ByteCorp a atteint une capitalisation de 1 MILLIARD $. Vous êtes désormais l\'une des entreprises tech les plus puissantes au monde. Les ombres de votre passé sont enfouies sous des montagnes d\'or.',
+    pubExposed:'DÉMASQUÉ',
+    pubExposedDesc:'Votre chaleur a atteint un niveau critique. Les enquêteurs fédéraux ont découvert les origines criminelles de ByteCorp. L\'action s\'effondre à zéro. Votre empire s\'écroule.',
+    pubBoardRemoved:'VOTE DU CONSEIL : DESTITUÉ',
+    pubBoardRemovedDesc:'Tous les membres du conseil ont perdu confiance. Un vote unanime vous destitue de vos fonctions de PDG. ByteCorp continue sans vous.',
+    pubFinalStock:'Action Finale:',pubFinalMktCap:'Cap. Bours.:',
+    pubShadowOpsUsed:'Ops Secrètes Utilisées:',pubDividendsPaid:'Dividendes Versés:',
+    pubDarkReturn:'[ RETOUR SOMBRE ]',
+    pubLogNowPublic:'ByteCorp est maintenant cotée en bourse.',
+    pubLogStartCapital:'Capital initial:',
+    pubLogUpgradedTo:'amélioré au Nv',
+    pubLogBuyback:'Rachat d\'actions:',pubLogStockUp:'action +2%',
+    pubLogSharesIssued:'Actions émises: +10K$ capital, action -3%',
+    pubLogDividendPaid:'Dividende versé:',pubLogSatisfaction:'satisfaction +15',
+    pubLogEvent:'ÉVÉNEMENT:',pubLogChose:'Choix:',
+    pubLogShadowOp:'OP SECRÈTE:',
+    pubLogBoardDecision:'Décision du conseil:',
+    pubLogQuarterly:'Rapport trimestriel publié',
+    pubLogDarkReturnMsg:'RETOUR SOMBRE: Retour au hacking avec',
+    pubNewsSuspicious:'Activité suspecte détectée autour de l\'action ByteCorp'
   }
 };
 
 function L(key){return LANG[currentLang][key]||LANG.en[key]||key;}
+function LP(obj,field){return(currentLang==='fr'&&obj[field+'_fr'])?obj[field+'_fr']:obj[field];}
 
 function toggleLang(){
   currentLang=currentLang==='en'?'fr':'en';
@@ -1187,6 +1292,50 @@ function applyLang(){
   const pauseResume=document.getElementById('pause-resume-btn');if(pauseResume)pauseResume.textContent=L('resume');
   // Lang button itself
   document.getElementById('btn-lang').textContent=currentLang==='en'?'EN':'FR';
+  // Public mode elements
+  if(G.gameMode==='public'){
+    document.getElementById('level-info').textContent=L('pubCompany');
+    // Panel titles
+    const ptTrading=document.querySelector('#pub-trading .pub-panel-title');if(ptTrading)ptTrading.textContent=L('pubTradingFloor');
+    const ptDept=document.querySelector('#pub-departments .pub-panel-title');if(ptDept)ptDept.textContent=L('pubDepartments');
+    const ptEvents=document.querySelector('#pub-events .pub-panel-title');if(ptEvents)ptEvents.textContent=L('pubEvents');
+    const ptBoard=document.querySelector('#pub-boardroom .pub-panel-title');if(ptBoard)ptBoard.textContent=L('pubBoardRoom');
+    // Resource labels
+    const rlPub=document.querySelectorAll('.res-label');
+    if(rlPub[0])rlPub[0].textContent=L('pubCapitalLabel');
+    if(rlPub[1])rlPub[1].textContent=L('pubRepLabel');
+    if(rlPub[2])rlPub[2].textContent=L('pubStockLabel');
+    // Trading buttons
+    const buybackBtn=document.getElementById('pub-buyback-btn');if(buybackBtn)buybackBtn.textContent=L('pubBuyBack');
+    const issueBtn=document.getElementById('pub-issue-btn');if(issueBtn)issueBtn.textContent=L('pubIssueShares');
+    const divBtn=document.getElementById('pub-dividend-btn');if(divBtn)divBtn.textContent=L('pubPayDividend');
+    // Shares/MktCap labels
+    const sharesInfo=document.getElementById('pub-shares-info');
+    if(sharesInfo)sharesInfo.innerHTML=L('pubSharesLabel')+' <span id="pub-shares">'+fmt(G.pubShares)+'</span> | '+L('pubMktCapLabel')+' <span id="pub-mktcap">$'+fmt(pubGetMarketCap())+'</span>';
+    // Event log label
+    const evLogLabel=document.getElementById('pub-event-log-label');
+    if(evLogLabel)evLogLabel.textContent=L('pubEventLog');
+    // Board meeting button
+    const meetBtn=document.getElementById('pub-meeting-btn');if(meetBtn)meetBtn.textContent=L('pubCallMeeting');
+    // Competitors label
+    const compLabel=document.getElementById('pub-competitors-label');
+    if(compLabel)compLabel.textContent=L('pubCompetitorsLabel');
+    // Shadow ops modal
+    const shadowT=document.querySelector('#shadow-popup h2');if(shadowT)shadowT.textContent=L('pubShadowOps');
+    const shadowClose=document.querySelector('#shadow-popup .modal-close');if(shadowClose)shadowClose.textContent=L('close');
+    // Board meeting modal
+    const bmtT=document.querySelector('#board-meeting-popup h2');if(bmtT)bmtT.textContent=L('pubBoardMeeting');
+    // Quarterly modal
+    const qtT=document.querySelector('#quarterly-popup h2');if(qtT)qtT.textContent=L('pubQuarterlyTitle');
+    const qtClose=document.getElementById('quarterly-close');if(qtClose)qtClose.textContent=L('pubAcknowledge');
+    // Ending buttons
+    const endNg=document.getElementById('pub-ending-ng');if(endNg)endNg.textContent=L('ipoRestart');
+    const endDark=document.getElementById('pub-ending-dark');if(endDark)endDark.textContent=L('pubDarkReturn');
+    // Re-render public header buttons
+    updatePublicHeaderButtons();
+    renderPubDepartments();
+    renderPubActiveEvent();
+  }
   // Re-render dynamic content
   if(gameRunning){renderBots();renderDevs();renderUpgrades();renderTarget();}
 }
@@ -3736,54 +3885,54 @@ document.addEventListener('keydown',(e)=>{
 // =====================================================
 
 const PUB_DEPARTMENTS = [
-  {name:'R&D',desc:'Stock growth/min',effect:'stockGrowth',baseCost:5000,perLevel:[0.01,0.02,0.04,0.08,0.16]},
-  {name:'Marketing',desc:'Public rep/min',effect:'repGrowth',baseCost:3000,perLevel:[0.5,1,2,4,8]},
-  {name:'Sales',desc:'Capital/min',effect:'capitalGrowth',baseCost:4000,perLevel:[100,250,500,1000,2000]},
-  {name:'Legal',desc:'Heat reduction/min',effect:'heatReduction',baseCost:6000,perLevel:[0.5,1,2,3,5]},
-  {name:'Security',desc:'Defense %',effect:'defense',baseCost:8000,perLevel:[5,10,15,20,25]},
-  {name:'PR Crisis Team',desc:'Scandal reduction %',effect:'scandalReduce',baseCost:7000,perLevel:[10,20,30,40,50]}
+  {name:'R&D',name_fr:'R&D',desc:'Stock growth/min',desc_fr:'Croissance action/min',effect:'stockGrowth',baseCost:5000,perLevel:[0.01,0.02,0.04,0.08,0.16]},
+  {name:'Marketing',name_fr:'Marketing',desc:'Public rep/min',desc_fr:'Rép. publique/min',effect:'repGrowth',baseCost:3000,perLevel:[0.5,1,2,4,8]},
+  {name:'Sales',name_fr:'Ventes',desc:'Capital/min',desc_fr:'Capital/min',effect:'capitalGrowth',baseCost:4000,perLevel:[100,250,500,1000,2000]},
+  {name:'Legal',name_fr:'Juridique',desc:'Heat reduction/min',desc_fr:'Réduction chaleur/min',effect:'heatReduction',baseCost:6000,perLevel:[0.5,1,2,3,5]},
+  {name:'Security',name_fr:'Sécurité',desc:'Defense %',desc_fr:'Défense %',effect:'defense',baseCost:8000,perLevel:[5,10,15,20,25]},
+  {name:'PR Crisis Team',name_fr:'Équipe de Crise RP',desc:'Scandal reduction %',desc_fr:'Réduction scandale %',effect:'scandalReduce',baseCost:7000,perLevel:[10,20,30,40,50]}
 ];
 
 const PUB_POSITIVE_EVENTS = [
-  {title:'Tech Breakthrough',desc:'R&D discovers a new algorithm.',optA:'Patent it (+$5K capital)',optB:'Open source it (+20 rep)',effA:{capital:5000},effB:{rep:20}},
-  {title:'Viral Campaign',desc:'Marketing campaign goes viral.',optA:'Monetize it (+$8K capital, -5 rep)',optB:'Ride the wave (+15 rep)',effA:{capital:8000,rep:-5},effB:{rep:15}},
-  {title:'Government Contract',desc:'Government wants your services.',optA:'Accept (+$15K, +10 heat)',optB:'Decline (+10 rep)',effA:{capital:15000,heat:10},effB:{rep:10}},
-  {title:'Acquisition Offer',desc:'A startup wants to merge.',optA:'Acquire them (+$10K, stock +3%)',optB:'Partner instead (+15 rep)',effA:{capital:10000,stockPct:3},effB:{rep:15}},
-  {title:'Industry Award',desc:'ByteCorp wins Best Tech Company.',optA:'Celebrate publicly (+20 rep, stock +2%)',optB:'Stay humble (+10 satisfaction)',effA:{rep:20,stockPct:2},effB:{satisfaction:10}},
-  {title:'Bull Market',desc:'The entire sector is booming.',optA:'Issue shares (+$20K, stock -2%)',optB:'Hold steady (stock +5%)',effA:{capital:20000,stockPct:-2},effB:{stockPct:5}},
-  {title:'Strategic Partnership',desc:'A major firm wants to partner.',optA:'Accept (+$12K capital)',optB:'Negotiate harder (+8 rep, +5 satisfaction)',effA:{capital:12000},effB:{rep:8,satisfaction:5}},
-  {title:'Record Earnings',desc:'This quarter exceeded projections.',optA:'Pay bonus dividends (+15 satisfaction, -$5K)',optB:'Reinvest (+$10K)',effA:{satisfaction:15,capital:-5000},effB:{capital:10000}}
+  {title:'Tech Breakthrough',title_fr:'Percée Technologique',desc:'R&D discovers a new algorithm.',desc_fr:'La R&D découvre un nouvel algorithme.',optA:'Patent it (+$5K capital)',optA_fr:'Le breveter (+5K$ capital)',optB:'Open source it (+20 rep)',optB_fr:'Open source (+20 rép)',effA:{capital:5000},effB:{rep:20}},
+  {title:'Viral Campaign',title_fr:'Campagne Virale',desc:'Marketing campaign goes viral.',desc_fr:'La campagne marketing devient virale.',optA:'Monetize it (+$8K capital, -5 rep)',optA_fr:'Monétiser (+8K$ capital, -5 rép)',optB:'Ride the wave (+15 rep)',optB_fr:'Surfer la vague (+15 rép)',effA:{capital:8000,rep:-5},effB:{rep:15}},
+  {title:'Government Contract',title_fr:'Contrat Gouvernemental',desc:'Government wants your services.',desc_fr:'Le gouvernement veut vos services.',optA:'Accept (+$15K, +10 heat)',optA_fr:'Accepter (+15K$, +10 chaleur)',optB:'Decline (+10 rep)',optB_fr:'Refuser (+10 rép)',effA:{capital:15000,heat:10},effB:{rep:10}},
+  {title:'Acquisition Offer',title_fr:'Offre d\'Acquisition',desc:'A startup wants to merge.',desc_fr:'Une startup veut fusionner.',optA:'Acquire them (+$10K, stock +3%)',optA_fr:'Les acquérir (+10K$, action +3%)',optB:'Partner instead (+15 rep)',optB_fr:'Partenariat (+15 rép)',effA:{capital:10000,stockPct:3},effB:{rep:15}},
+  {title:'Industry Award',title_fr:'Prix de l\'Industrie',desc:'ByteCorp wins Best Tech Company.',desc_fr:'ByteCorp remporte le prix de la meilleure entreprise tech.',optA:'Celebrate publicly (+20 rep, stock +2%)',optA_fr:'Célébrer publiquement (+20 rép, action +2%)',optB:'Stay humble (+10 satisfaction)',optB_fr:'Rester humble (+10 satisfaction)',effA:{rep:20,stockPct:2},effB:{satisfaction:10}},
+  {title:'Bull Market',title_fr:'Marché Haussier',desc:'The entire sector is booming.',desc_fr:'Tout le secteur est en plein essor.',optA:'Issue shares (+$20K, stock -2%)',optA_fr:'Émettre des actions (+20K$, action -2%)',optB:'Hold steady (stock +5%)',optB_fr:'Tenir bon (action +5%)',effA:{capital:20000,stockPct:-2},effB:{stockPct:5}},
+  {title:'Strategic Partnership',title_fr:'Partenariat Stratégique',desc:'A major firm wants to partner.',desc_fr:'Une grande entreprise veut s\'associer.',optA:'Accept (+$12K capital)',optA_fr:'Accepter (+12K$ capital)',optB:'Negotiate harder (+8 rep, +5 satisfaction)',optB_fr:'Négocier (+8 rép, +5 satisfaction)',effA:{capital:12000},effB:{rep:8,satisfaction:5}},
+  {title:'Record Earnings',title_fr:'Bénéfices Records',desc:'This quarter exceeded projections.',desc_fr:'Ce trimestre a dépassé les prévisions.',optA:'Pay bonus dividends (+15 satisfaction, -$5K)',optA_fr:'Verser des dividendes bonus (+15 satisfaction, -5K$)',optB:'Reinvest (+$10K)',optB_fr:'Réinvestir (+10K$)',effA:{satisfaction:15,capital:-5000},effB:{capital:10000}}
 ];
 
 const PUB_NEGATIVE_EVENTS = [
-  {title:'Data Breach Scandal',desc:'Customer data was leaked!',optA:'Cover it up (-10 rep, +15 heat)',optB:'Full transparency (-$10K, +5 rep)',effA:{rep:-10,heat:15},effB:{capital:-10000,rep:5}},
-  {title:'Hostile Takeover Attempt',desc:'A rival is buying your shares.',optA:'Poison pill defense (-$15K, stock -3%)',optB:'Fight in court (-$8K, +5 heat)',effA:{capital:-15000,stockPct:-3},effB:{capital:-8000,heat:5}},
-  {title:'Regulatory Investigation',desc:'The SEC is looking into your past.',optA:'Cooperate fully (+10 heat, -5 rep)',optB:'Lawyer up (-$12K)',effA:{heat:10,rep:-5},effB:{capital:-12000}},
-  {title:'Employee Walkout',desc:'Key engineers are leaving.',optA:'Raise salaries (-$8K)',optB:'Let them go (-10 satisfaction, stock -2%)',effA:{capital:-8000},effB:{satisfaction:-10,stockPct:-2}},
-  {title:'Product Recall',desc:'Critical bug found in your product.',optA:'Full recall (-$15K, +5 rep)',optB:'Patch quietly (-10 rep, +10 heat)',effA:{capital:-15000,rep:5},effB:{rep:-10,heat:10}},
-  {title:'Competitor Poaching',desc:'A rival is stealing your talent.',optA:'Counter-offer (-$10K)',optB:'Recruit replacements (-5 satisfaction)',effA:{capital:-10000},effB:{satisfaction:-5}},
-  {title:'Market Crash',desc:'Tech stocks are plummeting.',optA:'Buy the dip (-$20K, stock +4% later)',optB:'Hunker down (stock -5%)',effA:{capital:-20000,stockPct:4},effB:{stockPct:-5}},
-  {title:'Whistleblower',desc:'An employee leaks internal docs.',optA:'Settle quietly (-$12K, +8 heat)',optB:'Deny everything (-15 rep)',effA:{capital:-12000,heat:8},effB:{rep:-15}}
+  {title:'Data Breach Scandal',title_fr:'Scandale de Fuite de Données',desc:'Customer data was leaked!',desc_fr:'Les données clients ont fuité !',optA:'Cover it up (-10 rep, +15 heat)',optA_fr:'Étouffer l\'affaire (-10 rép, +15 chaleur)',optB:'Full transparency (-$10K, +5 rep)',optB_fr:'Transparence totale (-10K$, +5 rép)',effA:{rep:-10,heat:15},effB:{capital:-10000,rep:5}},
+  {title:'Hostile Takeover Attempt',title_fr:'Tentative d\'OPA Hostile',desc:'A rival is buying your shares.',desc_fr:'Un rival rachète vos actions.',optA:'Poison pill defense (-$15K, stock -3%)',optA_fr:'Pilule empoisonnée (-15K$, action -3%)',optB:'Fight in court (-$8K, +5 heat)',optB_fr:'Bataille juridique (-8K$, +5 chaleur)',effA:{capital:-15000,stockPct:-3},effB:{capital:-8000,heat:5}},
+  {title:'Regulatory Investigation',title_fr:'Enquête Réglementaire',desc:'The SEC is looking into your past.',desc_fr:'La SEC enquête sur votre passé.',optA:'Cooperate fully (+10 heat, -5 rep)',optA_fr:'Coopérer (+10 chaleur, -5 rép)',optB:'Lawyer up (-$12K)',optB_fr:'Engager des avocats (-12K$)',effA:{heat:10,rep:-5},effB:{capital:-12000}},
+  {title:'Employee Walkout',title_fr:'Départ des Employés',desc:'Key engineers are leaving.',desc_fr:'Des ingénieurs clés partent.',optA:'Raise salaries (-$8K)',optA_fr:'Augmenter les salaires (-8K$)',optB:'Let them go (-10 satisfaction, stock -2%)',optB_fr:'Les laisser partir (-10 satisfaction, action -2%)',effA:{capital:-8000},effB:{satisfaction:-10,stockPct:-2}},
+  {title:'Product Recall',title_fr:'Rappel de Produit',desc:'Critical bug found in your product.',desc_fr:'Bug critique trouvé dans votre produit.',optA:'Full recall (-$15K, +5 rep)',optA_fr:'Rappel total (-15K$, +5 rép)',optB:'Patch quietly (-10 rep, +10 heat)',optB_fr:'Patcher discrètement (-10 rép, +10 chaleur)',effA:{capital:-15000,rep:5},effB:{rep:-10,heat:10}},
+  {title:'Competitor Poaching',title_fr:'Braconnage par la Concurrence',desc:'A rival is stealing your talent.',desc_fr:'Un rival vole vos talents.',optA:'Counter-offer (-$10K)',optA_fr:'Contre-offre (-10K$)',optB:'Recruit replacements (-5 satisfaction)',optB_fr:'Recruter des remplaçants (-5 satisfaction)',effA:{capital:-10000},effB:{satisfaction:-5}},
+  {title:'Market Crash',title_fr:'Krach Boursier',desc:'Tech stocks are plummeting.',desc_fr:'Les actions tech s\'effondrent.',optA:'Buy the dip (-$20K, stock +4% later)',optA_fr:'Acheter la baisse (-20K$, action +4% après)',optB:'Hunker down (stock -5%)',optB_fr:'Se protéger (action -5%)',effA:{capital:-20000,stockPct:4},effB:{stockPct:-5}},
+  {title:'Whistleblower',title_fr:'Lanceur d\'Alerte',desc:'An employee leaks internal docs.',desc_fr:'Un employé divulgue des documents internes.',optA:'Settle quietly (-$12K, +8 heat)',optA_fr:'Régler discrètement (-12K$, +8 chaleur)',optB:'Deny everything (-15 rep)',optB_fr:'Tout nier (-15 rép)',effA:{capital:-12000,heat:8},effB:{rep:-15}}
 ];
 
 const PUB_PAST_EVENTS = [
-  {title:'Past Resurfaces',desc:'An old enemy recognizes your methods.',optA:'Bribe them (-$20K)',optB:'Threaten them (+20 heat, +5 shadow ops feel)',effA:{capital:-20000},effB:{heat:20}},
-  {title:'Dark Web Traces',desc:'Your hacker past surfaces online.',optA:'Hire fixers (-$15K, -10 heat)',optB:'Deny everything (-20 rep)',effA:{capital:-15000,heat:-10},effB:{rep:-20}},
-  {title:'Former Rival Returns',desc:'A hacked NPC is now a corporate competitor.',optA:'Acquire their company (-$25K)',optB:'Ignore them (+15 heat over time)',effA:{capital:-25000},effB:{heat:15}}
+  {title:'Past Resurfaces',title_fr:'Le Passé Resurgit',desc:'An old enemy recognizes your methods.',desc_fr:'Un ancien ennemi reconnaît vos méthodes.',optA:'Bribe them (-$20K)',optA_fr:'Les soudoyer (-20K$)',optB:'Threaten them (+20 heat, +5 shadow ops feel)',optB_fr:'Les menacer (+20 chaleur, +5 ops secrètes)',effA:{capital:-20000},effB:{heat:20}},
+  {title:'Dark Web Traces',title_fr:'Traces du Dark Web',desc:'Your hacker past surfaces online.',desc_fr:'Votre passé de hacker refait surface en ligne.',optA:'Hire fixers (-$15K, -10 heat)',optA_fr:'Engager des nettoyeurs (-15K$, -10 chaleur)',optB:'Deny everything (-20 rep)',optB_fr:'Tout nier (-20 rép)',effA:{capital:-15000,heat:-10},effB:{rep:-20}},
+  {title:'Former Rival Returns',title_fr:'Retour d\'un Ancien Rival',desc:'A hacked NPC is now a corporate competitor.',desc_fr:'Un NPC piraté est devenu un concurrent.',optA:'Acquire their company (-$25K)',optA_fr:'Acquérir leur société (-25K$)',optB:'Ignore them (+15 heat over time)',optB_fr:'Les ignorer (+15 chaleur)',effA:{capital:-25000},effB:{heat:15}}
 ];
 
 const PUB_SHADOW_ACTIONS = [
-  {id:'insider',name:'Insider Trading',desc:'Use hacker skills to front-run trades. +$8K capital, +8 heat.',cost:0,heat:8,effect:{capital:8000},cooldown:60000},
-  {id:'sabotage',name:'Corporate Sabotage',desc:'Hack a competitor. Their stock drops, yours rises +3%. +12 heat.',cost:0,heat:12,effect:{stockPct:3},cooldown:90000},
-  {id:'blackmail',name:'Blackmail Executive',desc:'Leverage old data. +$15K capital, +15 heat.',cost:0,heat:15,effect:{capital:15000},cooldown:120000},
-  {id:'datatheft',name:'Steal Trade Secrets',desc:'Exfiltrate competitor R&D. +20 rep, +10 heat.',cost:0,heat:10,effect:{rep:20},cooldown:90000},
-  {id:'marketmanip',name:'Market Manipulation',desc:'Bot army manipulates stock. Stock +5%, +20 heat.',cost:0,heat:20,effect:{stockPct:5},cooldown:180000}
+  {id:'insider',name:'Insider Trading',name_fr:'Délit d\'Initié',desc:'Use hacker skills to front-run trades. +$8K capital, +8 heat.',desc_fr:'Utiliser vos compétences de hacker pour devancer les trades. +8K$ capital, +8 chaleur.',cost:0,heat:8,effect:{capital:8000},cooldown:60000},
+  {id:'sabotage',name:'Corporate Sabotage',name_fr:'Sabotage Industriel',desc:'Hack a competitor. Their stock drops, yours rises +3%. +12 heat.',desc_fr:'Pirater un concurrent. Leur action chute, la vôtre monte de +3%. +12 chaleur.',cost:0,heat:12,effect:{stockPct:3},cooldown:90000},
+  {id:'blackmail',name:'Blackmail Executive',name_fr:'Chantage de Dirigeant',desc:'Leverage old data. +$15K capital, +15 heat.',desc_fr:'Exploiter d\'anciennes données. +15K$ capital, +15 chaleur.',cost:0,heat:15,effect:{capital:15000},cooldown:120000},
+  {id:'datatheft',name:'Steal Trade Secrets',name_fr:'Vol de Secrets Industriels',desc:'Exfiltrate competitor R&D. +20 rep, +10 heat.',desc_fr:'Exfiltrer la R&D d\'un concurrent. +20 rép, +10 chaleur.',cost:0,heat:10,effect:{rep:20},cooldown:90000},
+  {id:'marketmanip',name:'Market Manipulation',name_fr:'Manipulation de Marché',desc:'Bot army manipulates stock. Stock +5%, +20 heat.',desc_fr:'Une armée de bots manipule l\'action. Action +5%, +20 chaleur.',cost:0,heat:20,effect:{stockPct:5},cooldown:180000}
 ];
 
 const PUB_BOARD_QUESTIONS = [
-  {q:'How should we handle the next fiscal quarter?',a:'Focus on growth — invest heavily in R&D.',b:'Focus on stability — maintain current margins.',effA:{stockPct:2,satisfaction:-5},effB:{satisfaction:10,stockPct:-1}},
-  {q:'A competitor is encroaching on our market share.',a:'Launch an aggressive counter-campaign.',b:'Differentiate with premium features.',effA:{capital:-5000,rep:10},effB:{rep:5,satisfaction:5}},
-  {q:'Should we expand internationally?',a:'Yes, open offices in Asia and Europe.',b:'No, consolidate our domestic position.',effA:{capital:-15000,stockPct:4},effB:{satisfaction:8,capital:5000}}
+  {q:'How should we handle the next fiscal quarter?',q_fr:'Comment gérer le prochain trimestre fiscal ?',a:'Focus on growth — invest heavily in R&D.',a_fr:'Miser sur la croissance — investir massivement en R&D.',b:'Focus on stability — maintain current margins.',b_fr:'Miser sur la stabilité — maintenir les marges actuelles.',effA:{stockPct:2,satisfaction:-5},effB:{satisfaction:10,stockPct:-1}},
+  {q:'A competitor is encroaching on our market share.',q_fr:'Un concurrent empiète sur nos parts de marché.',a:'Launch an aggressive counter-campaign.',a_fr:'Lancer une contre-campagne agressive.',b:'Differentiate with premium features.',b_fr:'Se différencier avec des fonctionnalités premium.',effA:{capital:-5000,rep:10},effB:{rep:5,satisfaction:5}},
+  {q:'Should we expand internationally?',q_fr:'Devons-nous nous développer à l\'international ?',a:'Yes, open offices in Asia and Europe.',a_fr:'Oui, ouvrir des bureaux en Asie et en Europe.',b:'No, consolidate our domestic position.',b_fr:'Non, consolider notre position nationale.',effA:{capital:-15000,stockPct:4},effB:{satisfaction:8,capital:5000}}
 ];
 
 let pubGameLoop = null;
@@ -3889,7 +4038,7 @@ function switchToPublicMode() {
 
   // Update header
   document.querySelector('#header h1').textContent = '$BYTECORP';
-  document.getElementById('level-info').textContent = 'PUBLIC COMPANY';
+  document.getElementById('level-info').textContent = L('pubCompany');
 
   // Update header buttons for public mode
   updatePublicHeaderButtons();
@@ -3897,9 +4046,9 @@ function switchToPublicMode() {
   // Update resource labels
   const resLabels = document.querySelectorAll('.res-label');
   const resValues = document.querySelectorAll('.res-value');
-  if (resLabels[0]) resLabels[0].textContent = 'CAPITAL';
-  if (resLabels[1]) resLabels[1].textContent = 'PUB REP';
-  if (resLabels[2]) resLabels[2].textContent = 'STOCK';
+  if (resLabels[0]) resLabels[0].textContent = L('pubCapitalLabel');
+  if (resLabels[1]) resLabels[1].textContent = L('pubRepLabel');
+  if (resLabels[2]) resLabels[2].textContent = L('pubStockLabel');
 
   // Hide crypto
   document.getElementById('crypto-res-wrap').style.display = 'none';
@@ -3907,18 +4056,18 @@ function switchToPublicMode() {
   // Start public game loops
   startPublicLoops();
   renderPublicUI();
-  addPubLog('ByteCorp is now publicly traded.');
-  addPubLog('Starting capital: $' + fmt(G.pubCapital));
+  addPubLog(L('pubLogNowPublic'));
+  addPubLog(L('pubLogStartCapital') + ' $' + fmt(G.pubCapital));
 }
 
 function updatePublicHeaderButtons() {
   const leftActions = document.getElementById('header-actions-left');
   leftActions.innerHTML = '';
   const btns = [
-    {text: 'TRADING', fn: "pubShowPanel('trading')"},
-    {text: 'BOARD', fn: "pubShowPanel('boardroom')"},
-    {text: 'SHADOW', fn: 'openShadowOps()'},
-    {text: 'SAVE', fn: 'manualSave()'},
+    {text: L('pubTrading'), fn: "pubShowPanel('trading')"},
+    {text: L('pubBoard'), fn: "pubShowPanel('boardroom')"},
+    {text: L('pubShadow'), fn: 'openShadowOps()'},
+    {text: L('save'), fn: 'manualSave()'},
   ];
   btns.forEach(b => {
     const btn = document.createElement('button');
@@ -3929,12 +4078,12 @@ function updatePublicHeaderButtons() {
   });
   const flash = document.createElement('span');
   flash.id = 'save-flash';
-  flash.textContent = 'SAVED';
+  flash.textContent = L('saved');
   leftActions.appendChild(flash);
   const pauseBtn = document.createElement('button');
   pauseBtn.className = 'header-btn';
   pauseBtn.id = 'btn-pause';
-  pauseBtn.textContent = 'PAUSE';
+  pauseBtn.textContent = gamePaused ? L('resume') : L('pause');
   pauseBtn.setAttribute('onclick', 'togglePause()');
   leftActions.appendChild(pauseBtn);
 }
@@ -3971,8 +4120,8 @@ function renderPublicUI() {
   }
 
   // Shares / market cap
-  document.getElementById('pub-shares').textContent = fmt(G.pubShares);
-  document.getElementById('pub-mktcap').textContent = '$' + fmt(pubGetMarketCap());
+  const siEl=document.getElementById('pub-shares-info');
+  if(siEl)siEl.innerHTML=L('pubSharesLabel')+' <span id="pub-shares">'+fmt(G.pubShares)+'</span> | '+L('pubMktCapLabel')+' <span id="pub-mktcap">$'+fmt(pubGetMarketCap())+'</span>';
 
   // Stock chart
   renderStockChart();
@@ -3996,7 +4145,7 @@ function renderPublicUI() {
 
 function renderStockChart() {
   const hist = G.pubStockHistory.slice(-30);
-  if (hist.length < 2) { document.getElementById('pub-stock-chart').textContent = 'Awaiting data...'; return; }
+  if (hist.length < 2) { document.getElementById('pub-stock-chart').textContent = L('pubAwaitingData'); return; }
   const min = Math.min(...hist) * 0.95;
   const max = Math.max(...hist) * 1.05;
   const range = max - min || 1;
@@ -4027,11 +4176,11 @@ function renderPubDepartments() {
     const eff = lvl > 0 ? pubGetDeptEffect(i) : 0;
     const card = document.createElement('div');
     card.className = 'dept-card';
-    card.innerHTML = '<div class="dept-name">' + d.name + ' [Lv ' + lvl + '/' + maxLvl + ']</div>' +
-      '<div class="dept-info">' + d.desc + ': ' + (eff > 0 ? '+' + eff : '0') + '</div>' +
+    card.innerHTML = '<div class="dept-name">' + LP(d,'name') + ' [Lv ' + lvl + '/' + maxLvl + ']</div>' +
+      '<div class="dept-info">' + LP(d,'desc') + ': ' + (eff > 0 ? '+' + eff : '0') + '</div>' +
       (lvl < maxLvl ? '<button class="dept-upgrade" ' + (G.pubCapital < cost ? 'disabled' : '') +
-        ' onclick="pubUpgradeDept(' + i + ')">UPGRADE — $' + fmt(cost) + '</button>' :
-        '<div class="dept-info" style="color:#FFD700">MAX LEVEL</div>');
+        ' onclick="pubUpgradeDept(' + i + ')">' + L('pubUpgrade') + ' — $' + fmt(cost) + '</button>' :
+        '<div class="dept-info" style="color:#FFD700">' + L('pubMaxLevel') + '</div>');
     el.appendChild(card);
   });
 }
@@ -4041,7 +4190,7 @@ function pubUpgradeDept(idx) {
   if (G.pubCapital < cost || G.pubDepartments[idx] >= 5) return;
   G.pubCapital -= cost;
   G.pubDepartments[idx]++;
-  addPubLog(PUB_DEPARTMENTS[idx].name + ' upgraded to Lv ' + G.pubDepartments[idx]);
+  addPubLog(LP(PUB_DEPARTMENTS[idx],'name') + ' ' + L('pubLogUpgradedTo') + ' ' + G.pubDepartments[idx]);
   renderPublicUI();
 }
 
@@ -4072,16 +4221,16 @@ function renderPubActiveEvent() {
   if (!el) return;
   if (!G.pubActiveEvent) {
     const nextIn = Math.max(0, Math.ceil((G.pubLastEventTime + 90000 - Date.now()) / 1000));
-    el.innerHTML = '<div style="font-size:0.7em;color:#ccc;padding:8px">Next event in ' + nextIn + 's...</div>';
+    el.innerHTML = '<div style="font-size:0.7em;color:#ccc;padding:8px">' + L('pubNextEventIn') + ' ' + nextIn + 's...</div>';
     return;
   }
   const ev = G.pubActiveEvent;
   const typeClass = ev.type === 'positive' ? 'positive' : ev.type === 'past' ? 'past' : 'negative';
   el.innerHTML = '<div class="event-card ' + typeClass + '">' +
-    '<div class="event-title">' + ev.title + '</div>' +
-    '<div class="event-desc">' + ev.desc + '</div>' +
-    '<button class="event-btn a" onclick="pubEventChoice(\'a\')">' + ev.optA + '</button>' +
-    '<button class="event-btn b" onclick="pubEventChoice(\'b\')">' + ev.optB + '</button>' +
+    '<div class="event-title">' + LP(ev,'title') + '</div>' +
+    '<div class="event-desc">' + LP(ev,'desc') + '</div>' +
+    '<button class="event-btn a" onclick="pubEventChoice(\'a\')">' + LP(ev,'optA') + '</button>' +
+    '<button class="event-btn b" onclick="pubEventChoice(\'b\')">' + LP(ev,'optB') + '</button>' +
     '</div>';
 }
 
@@ -4093,7 +4242,7 @@ function pubBuyBack() {
   G.pubCapital -= cost;
   G.pubStock *= 1.02;
   G.pubBuybackCooldown = Date.now() + 30000;
-  addPubLog('Stock buyback: -$' + fmt(cost) + ', stock +2%');
+  addPubLog(L('pubLogBuyback') + ' -$' + fmt(cost) + ', ' + L('pubLogStockUp'));
   renderPublicUI();
 }
 
@@ -4103,7 +4252,7 @@ function pubIssueShares() {
   G.pubShares += 500000;
   G.pubStock *= 0.97;
   G.pubIssueCooldown = Date.now() + 45000;
-  addPubLog('Shares issued: +$10K capital, stock -3%');
+  addPubLog(L('pubLogSharesIssued'));
   adjustSatisfaction(-3);
   renderPublicUI();
 }
@@ -4117,7 +4266,7 @@ function pubPayDividend() {
   G.pubDividendCooldown = Date.now() + 60000;
   G.pubTotalDividendsPaid++;
   adjustSatisfaction(15);
-  addPubLog('Dividend paid: -$' + fmt(cost) + ', satisfaction +15', 'good');
+  addPubLog(L('pubLogDividendPaid') + ' -$' + fmt(cost) + ', ' + L('pubLogSatisfaction'), 'good');
   renderPublicUI();
 }
 
@@ -4149,7 +4298,7 @@ function pubCheckEvent() {
 
   const ev = pool[Math.floor(Math.random() * pool.length)];
   G.pubActiveEvent = { ...ev, type, effA: { ...ev.effA }, effB: { ...ev.effB } };
-  addPubLog('EVENT: ' + ev.title, type === 'negative' ? 'bad' : 'good');
+  addPubLog(L('pubLogEvent') + ' ' + LP(ev,'title'), type === 'negative' ? 'bad' : 'good');
   renderPubActiveEvent();
 }
 
@@ -4157,10 +4306,10 @@ function pubEventChoice(choice) {
   if (!G.pubActiveEvent) return;
   const eff = choice === 'a' ? G.pubActiveEvent.effA : G.pubActiveEvent.effB;
   applyPubEffect(eff);
-  const choiceText = choice === 'a' ? G.pubActiveEvent.optA : G.pubActiveEvent.optB;
-  G.pubEventLog.unshift({ title: G.pubActiveEvent.title, choice: choiceText, time: Date.now() });
+  const choiceText = choice === 'a' ? LP(G.pubActiveEvent,'optA') : LP(G.pubActiveEvent,'optB');
+  G.pubEventLog.unshift({ title: LP(G.pubActiveEvent,'title'), choice: choiceText, time: Date.now() });
   if (G.pubEventLog.length > 10) G.pubEventLog.pop();
-  addPubLog('Chose: ' + choiceText);
+  addPubLog(L('pubLogChose') + ' ' + choiceText);
   G.pubActiveEvent = null;
   renderPubActiveEvent();
   renderPubEventLog();
@@ -4192,8 +4341,7 @@ function renderPubEventLog() {
 
 // ===== Shadow Ops =====
 function openShadowOps() {
-  document.getElementById('shadow-uses').textContent = G.pubShadowOpsCount;
-  document.getElementById('shadow-warn').textContent = G.pubShadowOpsCount >= 10 ? 'DARK RETURN available!' : (10 - G.pubShadowOpsCount) + ' until Dark Return';
+  document.getElementById('shadow-info').innerHTML = L('pubShadowUses') + ' <span id="shadow-uses">' + G.pubShadowOpsCount + '</span>/10 — <span id="shadow-warn">' + (G.pubShadowOpsCount >= 10 ? L('pubDarkReturnAvail') : (10 - G.pubShadowOpsCount) + ' ' + L('pubUntilDarkReturn')) + '</span>';
   const el = document.getElementById('shadow-actions-list');
   el.innerHTML = '';
   const now = Date.now();
@@ -4202,11 +4350,11 @@ function openShadowOps() {
     const cdRemain = onCooldown ? Math.ceil((G.pubShadowCooldowns[sa.id] - now) / 1000) : 0;
     const div = document.createElement('div');
     div.className = 'shadow-action';
-    div.innerHTML = '<div class="shadow-action-name">' + sa.name + '</div>' +
-      '<div class="shadow-action-desc">' + sa.desc + '</div>' +
+    div.innerHTML = '<div class="shadow-action-name">' + LP(sa,'name') + '</div>' +
+      '<div class="shadow-action-desc">' + LP(sa,'desc') + '</div>' +
       '<button class="shadow-action-btn" ' + (onCooldown ? 'disabled' : '') +
       ' onclick="pubDoShadowOp(\'' + sa.id + '\')">' +
-      (onCooldown ? 'COOLDOWN: ' + cdRemain + 's' : '[ EXECUTE ]') + '</button>';
+      (onCooldown ? L('pubCooldownLabel') + ' ' + cdRemain + 's' : L('pubExecute')) + '</button>';
     el.appendChild(div);
   });
   document.getElementById('shadow-overlay').classList.add('active');
@@ -4227,8 +4375,8 @@ function pubDoShadowOp(id) {
   G.pubShadowOpsCount++;
   G.pubTotalShadowOps++;
   applyPubEffect(sa.effect);
-  addPubLog('SHADOW OP: ' + sa.name + ' (+' + sa.heat + ' heat)', 'bad');
-  addNewsItem('Suspicious activity detected around ByteCorp stock');
+  addPubLog(L('pubLogShadowOp') + ' ' + LP(sa,'name') + ' (+' + sa.heat + ' ' + L('heat') + ')', 'bad');
+  addNewsItem(L('pubNewsSuspicious'));
   closeShadowOps();
   renderPublicUI();
   pubCheckEndings();
@@ -4241,9 +4389,9 @@ function pubCallMeeting() {
   G.pubLastMeetingTime = now;
   const q = PUB_BOARD_QUESTIONS[Math.floor(Math.random() * PUB_BOARD_QUESTIONS.length)];
   G._currentBoardQ = q;
-  document.getElementById('board-question').textContent = q.q;
-  document.getElementById('board-ans-a').textContent = 'A: ' + q.a;
-  document.getElementById('board-ans-b').textContent = 'B: ' + q.b;
+  document.getElementById('board-question').textContent = LP(q,'q');
+  document.getElementById('board-ans-a').textContent = 'A: ' + LP(q,'a');
+  document.getElementById('board-ans-b').textContent = 'B: ' + LP(q,'b');
   document.getElementById('board-meeting-overlay').classList.add('active');
 }
 
@@ -4252,7 +4400,7 @@ function boardAnswer(choice) {
   if (!q) return;
   const eff = choice === 'a' ? q.effA : q.effB;
   applyPubEffect(eff);
-  addPubLog('Board decision: ' + (choice === 'a' ? q.a : q.b));
+  addPubLog(L('pubLogBoardDecision') + ' ' + (choice === 'a' ? LP(q,'a') : LP(q,'b')));
   adjustSatisfaction(3); // Board appreciates being consulted
   document.getElementById('board-meeting-overlay').classList.remove('active');
   renderPublicUI();
@@ -4264,26 +4412,27 @@ function pubCheckQuarterly() {
   if (now - G.pubLastQuarterly < 600000) return; // every 10 min
   G.pubLastQuarterly = now;
 
-  const capitalGrowth = G.pubCapital > 10000 ? 'strong' : G.pubCapital > 5000 ? 'moderate' : 'weak';
-  const stockTrend = G.pubStockHistory.length >= 2 ? (G.pubStock > G.pubStockHistory[G.pubStockHistory.length - 2] ? 'up' : 'down') : 'flat';
+  const capitalGrowth = G.pubCapital > 10000 ? L('pubStrong') : G.pubCapital > 5000 ? L('pubModerate') : L('pubWeak');
+  const stockUp = G.pubStockHistory.length >= 2 && G.pubStock > G.pubStockHistory[G.pubStockHistory.length - 2];
+  const stockTrend = G.pubStockHistory.length >= 2 ? (stockUp ? L('pubTrendUp') : L('pubTrendDown')) : L('pubTrendFlat');
   const avgSat = G.pubShareholders.reduce((s, sh) => s + sh.satisfaction, 0) / G.pubShareholders.length;
 
-  let report = 'Capital: $' + fmt(G.pubCapital) + ' (' + capitalGrowth + ')\n';
-  report += 'Stock: $' + G.pubStock.toFixed(2) + ' (trending ' + stockTrend + ')\n';
-  report += 'Market Cap: $' + fmt(pubGetMarketCap()) + '\n';
-  report += 'Board Satisfaction: ' + Math.floor(avgSat) + '%\n';
-  report += 'Public Rep: ' + Math.floor(G.pubPublicRep) + '\n';
-  report += 'Heat: ' + Math.floor(G.heat) + '%';
+  let report = L('pubCapitalReport') + ' $' + fmt(G.pubCapital) + ' (' + capitalGrowth + ')\n';
+  report += L('pubStockReport') + ' $' + G.pubStock.toFixed(2) + ' (' + stockTrend + ')\n';
+  report += L('pubMktCapReport') + ' $' + fmt(pubGetMarketCap()) + '\n';
+  report += L('pubBoardSatReport') + ' ' + Math.floor(avgSat) + '%\n';
+  report += L('pubPubRepReport') + ' ' + Math.floor(G.pubPublicRep) + '\n';
+  report += L('pubHeatReport') + ' ' + Math.floor(G.heat) + '%';
 
   document.getElementById('quarterly-body').textContent = report;
   document.getElementById('quarterly-overlay').classList.add('active');
 
   // Quarterly effects on satisfaction
-  if (stockTrend === 'up') adjustSatisfaction(5);
+  if (stockUp) adjustSatisfaction(5);
   else adjustSatisfaction(-5);
   if (G.pubTotalDividendsPaid > 0) adjustSatisfaction(3);
 
-  addPubLog('Quarterly earnings report issued');
+  addPubLog(L('pubLogQuarterly'));
 }
 
 function closeQuarterly() {
@@ -4402,23 +4551,23 @@ function pubShowEnding(type) {
   const darkBtn = document.getElementById('pub-ending-dark');
 
   if (type === 'tech_giant') {
-    title.textContent = 'TECH GIANT';
+    title.textContent = L('pubTechGiant');
     title.style.color = '#FFD700';
-    desc.textContent = 'ByteCorp has achieved a market cap of $1 BILLION. You are now one of the most powerful tech companies on Earth. The shadows of your past are buried under mountains of gold.';
+    desc.textContent = L('pubTechGiantDesc');
   } else if (type === 'exposed') {
-    title.textContent = 'EXPOSED';
+    title.textContent = L('pubExposed');
     title.style.color = 'var(--danger)';
-    desc.textContent = 'Your heat reached critical levels. Federal investigators have uncovered ByteCorp\'s criminal origins. The stock crashes to zero. Your empire crumbles.';
+    desc.textContent = L('pubExposedDesc');
   } else if (type === 'exposed_board') {
-    title.textContent = 'BOARD VOTE: REMOVED';
+    title.textContent = L('pubBoardRemoved');
     title.style.color = 'var(--danger)';
-    desc.textContent = 'All board members have lost confidence. A unanimous vote removes you as CEO. ByteCorp continues without you.';
+    desc.textContent = L('pubBoardRemovedDesc');
   }
 
-  stats.innerHTML = '<p style="color:#FFD700">Final Stock: $' + G.pubStock.toFixed(2) + '</p>' +
-    '<p style="color:#FFD700">Market Cap: $' + fmt(pubGetMarketCap()) + '</p>' +
-    '<p style="color:#FFD700">Shadow Ops Used: ' + G.pubShadowOpsCount + '</p>' +
-    '<p style="color:#FFD700">Dividends Paid: ' + G.pubTotalDividendsPaid + '</p>';
+  stats.innerHTML = '<p style="color:#FFD700">' + L('pubFinalStock') + ' $' + G.pubStock.toFixed(2) + '</p>' +
+    '<p style="color:#FFD700">' + L('pubFinalMktCap') + ' $' + fmt(pubGetMarketCap()) + '</p>' +
+    '<p style="color:#FFD700">' + L('pubShadowOpsUsed') + ' ' + G.pubShadowOpsCount + '</p>' +
+    '<p style="color:#FFD700">' + L('pubDividendsPaid') + ' ' + G.pubTotalDividendsPaid + '</p>';
 
   // Dark Return option
   if (G.pubShadowOpsCount >= 10) {
@@ -4453,11 +4602,11 @@ function pubDarkReturn() {
 
   // Restore resource labels
   const resLabels = document.querySelectorAll('.res-label');
-  if (resLabels[0]) resLabels[0].textContent = 'DATA';
-  if (resLabels[1]) resLabels[1].textContent = 'CREDITS';
-  if (resLabels[2]) resLabels[2].textContent = 'REP';
+  if (resLabels[0]) resLabels[0].textContent = L('data');
+  if (resLabels[1]) resLabels[1].textContent = L('credits');
+  if (resLabels[2]) resLabels[2].textContent = L('rep');
 
-  addLog('DARK RETURN: Back to hacking with $' + fmt(G.data) + ' DATA', 'info');
+  addLog(L('pubLogDarkReturnMsg') + ' $' + fmt(G.data) + ' DATA', 'info');
   saveGame();
   startGameLoops();
 }
@@ -4466,12 +4615,12 @@ function restoreHackerHeader() {
   const leftActions = document.getElementById('header-actions-left');
   leftActions.innerHTML = '';
   const hackerBtns = [
-    {text: 'CORP ID', fn: 'openCorpID()'},
-    {text: 'MARKET', fn: 'openBlackMarket()', id: 'bmarket-header-btn'},
-    {text: 'MISSIONS', fn: 'openMissions()'},
-    {text: 'SKILLS', fn: 'openSkills()'},
-    {text: 'ACH', fn: 'openAchievements()'},
-    {text: 'SAVE', fn: 'manualSave()'},
+    {text: L('corpId'), fn: 'openCorpID()'},
+    {text: L('market'), fn: 'openBlackMarket()', id: 'bmarket-header-btn'},
+    {text: L('missions'), fn: 'openMissions()'},
+    {text: L('skills'), fn: 'openSkills()'},
+    {text: L('ach'), fn: 'openAchievements()'},
+    {text: L('save'), fn: 'manualSave()'},
   ];
   hackerBtns.forEach(b => {
     const btn = document.createElement('button');
@@ -4483,12 +4632,12 @@ function restoreHackerHeader() {
   });
   const flash = document.createElement('span');
   flash.id = 'save-flash';
-  flash.textContent = 'SAVED';
+  flash.textContent = L('saved');
   leftActions.appendChild(flash);
   const pauseBtn = document.createElement('button');
   pauseBtn.className = 'header-btn';
   pauseBtn.id = 'btn-pause';
-  pauseBtn.textContent = 'PAUSE';
+  pauseBtn.textContent = gamePaused ? L('resume') : L('pause');
   pauseBtn.setAttribute('onclick', 'togglePause()');
   leftActions.appendChild(pauseBtn);
 }
