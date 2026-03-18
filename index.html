@@ -10,14 +10,11 @@
 :root{--bg:#0a0a0f;--accent:#00ff41;--secondary:#ff0066;--text:#c0c0c0;--panel:#0d0d14;--border:#1a1a2e;--danger:#ff3333;--warning:#ffaa00}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Share Tech Mono',monospace;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-/* Scanlines */
 body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px)}
-/* Glitch title */
 @keyframes glitch{0%{text-shadow:2px 0 var(--secondary),-2px 0 var(--accent)}20%{text-shadow:-2px 0 var(--secondary),2px 0 var(--accent)}40%{text-shadow:2px -1px var(--secondary),-2px 1px var(--accent)}60%{text-shadow:-1px 2px var(--secondary),1px -2px var(--accent)}80%{text-shadow:2px 0 var(--secondary),-2px 0 var(--accent)}100%{text-shadow:-2px 0 var(--secondary),2px 0 var(--accent)}}
 @keyframes glitchSkew{0%{transform:skew(0deg)}2%{transform:skew(-2deg)}4%{transform:skew(0deg)}98%{transform:skew(0deg)}100%{transform:skew(1deg)}}
 @keyframes flash{0%{color:var(--accent);text-shadow:0 0 8px var(--accent)}100%{color:var(--text);text-shadow:none}}
 .flash{animation:flash 0.3s ease-out}
-/* Start screen */
 #start-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:5000;display:flex;flex-direction:column;justify-content:center;align-items:center}
 #start-screen.hidden{display:none}
 #start-screen h1{color:var(--accent);font-size:3em;letter-spacing:8px;animation:glitch 3s infinite,glitchSkew 4s infinite;margin-bottom:48px}
@@ -28,7 +25,8 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #btn-newgame-start{border:2px solid var(--secondary);color:var(--secondary)}
 #btn-newgame-start:hover{background:rgba(255,0,102,0.1)}
 #start-version{position:absolute;bottom:16px;right:24px;font-size:0.7em;color:#333}
-/* Header */
+#start-ip{position:absolute;bottom:16px;left:24px;font-size:0.7em;color:#555}
+#start-ip.vpn{color:var(--accent)}
 #header{background:#080810;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 #header h1{color:var(--accent);font-size:1.4em;animation:glitch 3s infinite,glitchSkew 4s infinite;letter-spacing:3px}
 #prestige-badge{color:var(--secondary);font-size:0.8em;margin-left:8px}
@@ -48,7 +46,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #heat-bar{height:100%;background:var(--accent);transition:width 0.3s,background 0.3s;width:0%}
 #heat-bar.danger{background:var(--danger)}
 #heat-text{font-size:0.7em;text-align:center;margin-top:2px}
-/* Main layout */
 #main{display:flex;flex:1;overflow:hidden}
 .panel{border-right:1px solid var(--border);padding:10px;display:flex;flex-direction:column;overflow:hidden}
 .panel:last-child{border-right:none}
@@ -57,7 +54,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #panel-bots{width:24%;min-width:220px}
 #panel-hack{width:30%;min-width:280px}
 #panel-corp{width:24%;min-width:220px}
-/* Terminal panel */
 #mine-btn{width:100%;padding:16px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:1.1em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.1s}
 #mine-btn:hover{background:rgba(0,255,65,0.1)}
 #mine-btn:active{background:rgba(0,255,65,0.25);transform:scale(0.98)}
@@ -67,7 +63,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .log-entry.warning{color:var(--secondary)}
 .log-entry.alert{color:var(--danger)}
 .log-entry.info{color:var(--warning)}
-/* Bot / Dev list */
 .item-list{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .item-list::-webkit-scrollbar{width:4px}
 .item-list::-webkit-scrollbar-thumb{background:var(--border)}
@@ -79,7 +74,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .buy-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.7em;cursor:pointer;transition:all 0.15s}
 .buy-btn:hover:not(:disabled){background:rgba(0,255,65,0.1)}
 .buy-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
-/* Hack panel */
 #hack-target{border:1px solid var(--border);padding:10px;margin-bottom:8px;min-height:100px}
 .target-name{font-size:0.9em;color:var(--accent)}
 .target-info{font-size:0.7em;color:#888;margin:4px 0}
@@ -87,13 +81,16 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #hack-btn{width:100%;padding:10px;background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.85em;cursor:pointer;letter-spacing:2px;margin-bottom:8px;transition:all 0.15s}
 #hack-btn:hover:not(:disabled){background:rgba(255,0,102,0.1)}
 #hack-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
+#spoof-checkbox-wrap{font-size:0.7em;margin-bottom:6px;display:none}
+#spoof-checkbox-wrap.visible{display:block}
+#spoof-checkbox-wrap label{color:var(--warning);cursor:pointer}
+#spoof-checkbox-wrap .spoof-cooldown{color:#555;font-size:0.9em}
 #hack-minigame{flex:1;display:none;flex-direction:column;border:1px solid var(--accent);background:#050508;padding:8px;overflow:hidden;transition:border-color 0.3s}
 #hack-minigame.active{display:flex}
 #hack-minigame.hack-fail-flash{border-color:var(--danger);background:rgba(255,0,0,0.08)}
 #hack-minigame.hack-success-flash{border-color:var(--accent);background:rgba(0,255,65,0.08)}
 #hack-prompt{font-size:0.75em;color:var(--accent);margin-bottom:6px}
 #hack-timer{font-size:0.7em;color:var(--danger);margin-bottom:4px}
-/* Antivirus timer bar */
 #av-timer-wrap{margin-bottom:6px;display:none}
 #av-timer-wrap.active{display:block}
 #av-timer-label{font-size:0.65em;margin-bottom:3px;letter-spacing:1px}
@@ -113,13 +110,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .cmd-line-wrap:hover .cmd-tooltip{display:block}
 #hack-input{background:transparent;border:none;border-bottom:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;padding:4px;outline:none;width:100%}
 #hack-input::placeholder{color:#333}
-/* Corp panel tabs */
 .tab-bar{display:flex;gap:0;margin-bottom:8px}
 .tab-btn{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#666;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:2px;transition:all 0.15s}
 .tab-btn.active{color:var(--accent);border-color:var(--accent);background:rgba(0,255,65,0.05)}
 .tab-content{display:none;flex:1;overflow:hidden}
 .tab-content.active{display:flex;flex-direction:column}
-/* Upgrades */
 .upgrade-card{border:1px solid var(--border);padding:8px;margin-bottom:6px}
 .upgrade-card.bought{opacity:0.4;border-color:#1a1a1a}
 .upgrade-card.locked{opacity:0.3}
@@ -128,7 +123,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .upgrade-btn{width:100%;padding:5px;background:transparent;border:1px solid var(--warning);color:var(--warning);font-family:inherit;font-size:0.7em;cursor:pointer}
 .upgrade-btn:hover:not(:disabled){background:rgba(255,170,0,0.1)}
 .upgrade-btn:disabled{border-color:#333;color:#333;cursor:not-allowed}
-/* Menu modal */
 #menu-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1500;justify-content:center;align-items:center}
 #menu-overlay.active{display:flex}
 #menu-popup{background:var(--panel);border:2px solid var(--accent);padding:32px;min-width:320px;text-align:center}
@@ -140,7 +134,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #menu-reset:hover{background:rgba(255,51,51,0.1)}
 #menu-close{border:1px solid #555;color:#888}
 #menu-close:hover{border-color:var(--text);color:var(--text)}
-/* Market popup — old DATA exchange */
 #market-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center}
 #market-overlay.active{display:flex}
 #market-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:350px;max-width:450px}
@@ -153,7 +146,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #market-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#666;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
 #market-btn{display:none;width:100%;padding:6px;background:transparent;border:1px solid var(--secondary);color:var(--secondary);font-family:inherit;font-size:0.7em;cursor:pointer;margin-top:6px;letter-spacing:1px}
 #market-btn.unlocked{display:block}
-/* Endgame overlay */
 #endgame-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center}
 #endgame-overlay.active{display:flex}
 #endgame-popup{text-align:center;max-width:500px;padding:32px}
@@ -164,20 +156,16 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #btn-ipo:hover{background:rgba(0,255,65,0.1)}
 #btn-newgame{border:2px solid var(--secondary);color:var(--secondary)}
 #btn-newgame:hover{background:rgba(255,0,102,0.1)}
-/* IPO screen */
 #ipo-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:3000;justify-content:center;align-items:center;flex-direction:column}
 #ipo-overlay.active{display:flex}
 #ipo-overlay h1{color:var(--accent);font-size:2em;animation:glitch 2s infinite;margin-bottom:16px}
 #ipo-overlay p{font-size:0.9em;margin-bottom:8px}
 #ipo-overlay .stat{color:var(--warning)}
 #ipo-restart{margin-top:24px;padding:10px 30px;background:transparent;border:2px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.9em;cursor:pointer}
-/* Contract notification */
 .contract-notif{background:rgba(0,255,65,0.05);border:1px solid var(--accent);padding:6px 8px;margin-bottom:6px;font-size:0.7em}
 .contract-notif button{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.9em;cursor:pointer;padding:2px 8px;margin-left:6px}
-/* Raid alert */
 @keyframes raidFlash{0%,100%{background:var(--bg)}50%{background:rgba(255,0,0,0.15)}}
 .raid-flash{animation:raidFlash 0.3s 3}
-/* Help modal */
 #help-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;justify-content:center;align-items:center}
 #help-overlay.active{display:flex}
 #help-popup{background:var(--panel);border:2px solid var(--accent);padding:24px 28px;max-width:620px;width:90%;max-height:80vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
@@ -187,8 +175,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #help-popup pre{font-family:inherit;font-size:0.75em;color:var(--accent);line-height:1.7;white-space:pre-wrap;margin-bottom:16px}
 #help-close-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:2px}
 #help-close-btn:hover{background:rgba(0,255,65,0.1)}
-
-/* ===== DOWNLOAD SEQUENCE ===== */
 #download-screen{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:16px;text-align:center}
 #download-screen.active{display:flex}
 #download-title{color:var(--accent);font-size:0.85em;letter-spacing:2px;margin-bottom:12px}
@@ -201,8 +187,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #download-complete{display:none;color:var(--accent);font-size:1em;letter-spacing:2px}
 @keyframes downloadFlash{0%{opacity:1;text-shadow:0 0 12px var(--accent)}50%{opacity:0.5}100%{opacity:1;text-shadow:0 0 12px var(--accent)}}
 #download-complete.show{display:block;animation:downloadFlash 0.4s 3}
-
-/* ===== LOOT REVEAL ===== */
 #loot-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1800;justify-content:center;align-items:center}
 #loot-overlay.active{display:flex}
 #loot-popup{background:var(--panel);border:2px solid var(--accent);padding:24px;min-width:320px;max-width:420px;text-align:center}
@@ -225,8 +209,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #loot-auction{border:1px solid var(--secondary);color:var(--secondary)}
 #loot-auction:hover{background:rgba(255,0,102,0.1)}
 #loot-auction.hidden{display:none}
-
-/* ===== BLACK MARKET (LOOT) ===== */
 #bmarket-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1600;justify-content:center;align-items:center}
 #bmarket-overlay.active{display:flex}
 #bmarket-popup{background:var(--panel);border:2px solid var(--secondary);padding:24px;min-width:400px;max-width:520px;max-height:80vh;display:flex;flex-direction:column}
@@ -253,8 +235,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .auction-time{color:var(--danger)}
 #bmarket-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#666;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
 .bmarket-empty{font-size:0.75em;color:#555;text-align:center;padding:16px}
-
-/* ===== DEFENSE ALERT ===== */
 #defense-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;justify-content:center;align-items:center;flex-direction:column}
 #defense-overlay.active{display:flex}
 #defense-skull{font-family:monospace;font-size:0.9em;color:var(--danger);line-height:1.2;margin-bottom:16px;white-space:pre}
@@ -272,8 +252,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #btn-defend-manual:hover{background:rgba(0,255,65,0.1)}
 #btn-defend-auto{border:2px solid var(--warning);color:var(--warning)}
 #btn-defend-auto:hover{background:rgba(255,170,0,0.1)}
-
-/* ===== DEFENSE MINIGAME ===== */
 #defense-game{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100000;justify-content:center;align-items:center}
 #defense-game.active{display:flex}
 #defense-game-popup{background:var(--panel);border:2px solid var(--accent);padding:24px;min-width:400px;max-width:520px}
@@ -287,6 +265,57 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #defense-game-input::placeholder{color:#333}
 #defense-result{font-size:0.9em;text-align:center;padding:12px;display:none;letter-spacing:1px}
 #defense-result.active{display:block}
+
+/* ===== CORP ID MODAL ===== */
+#corpid-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1700;justify-content:center;align-items:center}
+#corpid-overlay.active{display:flex}
+#corpid-popup{background:var(--panel);border:2px solid var(--accent);padding:24px;min-width:380px;max-width:480px}
+#corpid-popup h2{color:var(--accent);font-size:1em;margin-bottom:16px;letter-spacing:3px}
+.corpid-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.75em}
+.corpid-label{color:#666}
+.corpid-value{color:var(--accent)}
+.corpid-value.vpn{color:var(--accent)}
+.corpid-prot{font-size:0.7em;padding:4px 0}
+.prot-active{color:var(--accent)}
+.prot-inactive{color:#555}
+#corpid-trace-wrap{margin:12px 0}
+#corpid-trace-label{font-size:0.7em;color:#888;margin-bottom:4px}
+#corpid-trace-bar-bg{height:12px;background:#1a1a2e;border:1px solid #333;overflow:hidden}
+#corpid-trace-bar{height:100%;transition:width 0.3s,background 0.3s}
+#corpid-trace-pct{font-size:0.7em;text-align:center;margin-top:3px}
+.corpid-dwrep{font-size:0.75em;padding:6px 0;border-bottom:1px solid var(--border)}
+.dwrep-status{font-weight:bold}
+#corpid-close{width:100%;padding:6px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:12px;letter-spacing:1px}
+#corpid-close:hover{background:rgba(0,255,65,0.1)}
+#corpid-changeip{display:none;width:100%;padding:6px;background:transparent;border:1px solid var(--danger);color:var(--danger);font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:6px;letter-spacing:1px}
+#corpid-changeip:hover{background:rgba(255,51,51,0.1)}
+
+/* ===== DDOS ALERT ===== */
+#ddos-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99998;justify-content:center;align-items:center;flex-direction:column}
+#ddos-overlay.active{display:flex}
+#ddos-title{color:var(--danger);font-size:1.2em;letter-spacing:3px;animation:intrusionBlink 0.8s infinite;margin-bottom:12px}
+#ddos-info{font-size:0.8em;color:var(--text);margin-bottom:8px}
+#ddos-countdown{font-size:0.9em;color:var(--warning);margin-bottom:16px}
+#ddos-actions{display:flex;gap:12px}
+.ddos-btn{padding:10px 20px;background:transparent;font-family:inherit;font-size:0.8em;cursor:pointer;letter-spacing:1px}
+#btn-ddos-absorb{border:2px solid var(--warning);color:var(--warning)}
+#btn-ddos-absorb:hover{background:rgba(255,170,0,0.1)}
+#btn-ddos-reroute{border:2px solid var(--accent);color:var(--accent)}
+#btn-ddos-reroute:hover{background:rgba(0,255,65,0.1)}
+
+/* ===== BOUNTY ALERT ===== */
+#bounty-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99997;justify-content:center;align-items:center;flex-direction:column}
+#bounty-overlay.active{display:flex}
+#bounty-title{color:var(--danger);font-size:1.1em;letter-spacing:2px;margin-bottom:8px}
+#bounty-info{font-size:0.8em;color:var(--text);margin-bottom:8px;text-align:center;max-width:400px}
+#bounty-status{font-size:0.75em;color:var(--warning);margin-bottom:16px}
+#bounty-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.bounty-btn{padding:8px 16px;background:transparent;font-family:inherit;font-size:0.75em;cursor:pointer;letter-spacing:1px}
+#btn-bounty-pay{border:1px solid var(--warning);color:var(--warning)}
+#btn-bounty-pay:hover{background:rgba(255,170,0,0.1)}
+#btn-bounty-dark{border:1px solid var(--accent);color:var(--accent)}
+#btn-bounty-dark:hover{background:rgba(0,255,65,0.1)}
+#bounty-close{border:1px solid #555;color:#888;margin-top:8px}
 </style>
 </head>
 <body>
@@ -298,10 +327,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <button class="start-btn" id="btn-continue" style="display:none" onclick="continueGame()">[ CONTINUE ]</button>
     <button class="start-btn" id="btn-newgame-start" onclick="newGame()">[ NEW GAME ]</button>
   </div>
+  <div id="start-ip"></div>
   <div id="start-version">v1.0</div>
 </div>
 
-<!-- Game UI (hidden until start) -->
+<!-- Game UI -->
 <div id="game-container" style="display:none;flex-direction:column;height:100%">
 
 <div id="header">
@@ -313,6 +343,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div id="level-info">LVL 1 — Script Kiddie</div>
   </div>
   <div id="header-actions">
+    <button class="header-btn" onclick="openCorpID()">[ CORP ID ]</button>
     <button class="header-btn" id="bmarket-header-btn" style="display:none" onclick="openBlackMarket()">[ MARKET ]</button>
     <button class="header-btn" onclick="manualSave()">[ SAVE ]</button>
     <span id="save-flash">SAVED</span>
@@ -332,7 +363,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 </div>
 
 <div id="main">
-  <!-- Terminal -->
   <div class="panel" id="panel-terminal">
     <div class="panel-title">// Terminal</div>
     <button id="mine-btn">[ MINE DATA ]</button>
@@ -340,17 +370,14 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     <div id="market-btn" onclick="openMarket()">[ DARK WEB MARKET ]</div>
     <div id="log"></div>
   </div>
-
-  <!-- Bots -->
   <div class="panel" id="panel-bots">
     <div class="panel-title">// Bots</div>
     <div class="item-list" id="bot-list"></div>
   </div>
-
-  <!-- Hack -->
   <div class="panel" id="panel-hack">
     <div class="panel-title">// Hack</div>
     <div id="hack-target"><span style="color:#555">Scanning for targets...</span></div>
+    <div id="spoof-checkbox-wrap"><label><input type="checkbox" id="spoof-checkbox"> SPOOF IP — use another company's identity</label><span class="spoof-cooldown" id="spoof-cooldown-text"></span></div>
     <button id="hack-btn" disabled>[ INITIATE HACK ]</button>
     <div id="hack-minigame">
       <div id="av-timer-wrap">
@@ -362,7 +389,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
       <div id="hack-commands"></div>
       <div style="display:flex;align-items:center"><span style="color:var(--accent);margin-right:4px">$</span><input id="hack-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
       <div id="hack-result-msg"></div>
-      <!-- Download screen (inside hack minigame) -->
       <div id="download-screen">
         <div id="download-title">EXFILTRATING DATA...</div>
         <div id="download-bar-wrap"><div id="download-bar-bg"><div id="download-bar"></div></div></div>
@@ -373,8 +399,6 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     </div>
     <div id="contract-area"></div>
   </div>
-
-  <!-- Corp -->
   <div class="panel" id="panel-corp">
     <div class="panel-title">// Corp</div>
     <div class="tab-bar">
@@ -389,54 +413,36 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
     </div>
   </div>
 </div>
-
-</div><!-- /game-container -->
-
-<!-- Menu modal -->
-<div id="menu-overlay">
-  <div id="menu-popup">
-    <h2>// MENU</h2>
-    <button class="menu-btn" id="menu-save-quit" onclick="saveAndQuit()">[ SAVE & QUIT TO MENU ]</button>
-    <button class="menu-btn" id="menu-reset" onclick="resetRun()">[ RESET RUN ]</button>
-    <button class="menu-btn" id="menu-close" onclick="closeMenu()">[ CLOSE ]</button>
-  </div>
 </div>
 
-<!-- Market (DATA exchange) -->
-<div id="market-overlay">
-  <div id="market-popup">
-    <h2>// DARK WEB MARKET</h2>
-    <div id="market-info">Exchange rate: 10 DATA → 1 CREDIT (+10 HEAT per transaction)</div>
-    <input type="range" id="market-slider" min="0" max="0" value="0" step="10" oninput="updateMarketDisplay()">
-    <div id="market-amount">0 DATA → 0 CREDITS</div>
-    <button id="market-sell-btn" onclick="sellData()">[ SELL DATA ]</button>
-    <button id="market-close" onclick="closeMarket()">[ CLOSE ]</button>
-  </div>
-</div>
+<!-- Menu -->
+<div id="menu-overlay"><div id="menu-popup"><h2>// MENU</h2>
+<button class="menu-btn" id="menu-save-quit" onclick="saveAndQuit()">[ SAVE & QUIT TO MENU ]</button>
+<button class="menu-btn" id="menu-reset" onclick="resetRun()">[ RESET RUN ]</button>
+<button class="menu-btn" id="menu-close" onclick="closeMenu()">[ CLOSE ]</button>
+</div></div>
+
+<!-- Market -->
+<div id="market-overlay"><div id="market-popup"><h2>// DARK WEB MARKET</h2>
+<div id="market-info">Exchange rate: 10 DATA → 1 CREDIT (+10 HEAT per transaction)</div>
+<input type="range" id="market-slider" min="0" max="0" value="0" step="10" oninput="updateMarketDisplay()">
+<div id="market-amount">0 DATA → 0 CREDITS</div>
+<button id="market-sell-btn" onclick="sellData()">[ SELL DATA ]</button>
+<button id="market-close" onclick="closeMarket()">[ CLOSE ]</button>
+</div></div>
 
 <!-- Endgame -->
-<div id="endgame-overlay">
-  <div id="endgame-popup">
-    <h2>LEVEL 50 — ENDGAME</h2>
-    <p>ByteCorp has reached critical mass. Choose your destiny.</p>
-    <button class="eg-btn" id="btn-ipo" onclick="doIPO()">[ GO LEGIT — IPO ]</button>
-    <button class="eg-btn" id="btn-newgame" onclick="doNewGamePlus()">[ BURN IT ALL — NEW GAME+ ]</button>
-  </div>
-</div>
+<div id="endgame-overlay"><div id="endgame-popup"><h2>LEVEL 50 — ENDGAME</h2><p>ByteCorp has reached critical mass. Choose your destiny.</p>
+<button class="eg-btn" id="btn-ipo" onclick="doIPO()">[ GO LEGIT — IPO ]</button>
+<button class="eg-btn" id="btn-newgame" onclick="doNewGamePlus()">[ BURN IT ALL — NEW GAME+ ]</button>
+</div></div>
 
 <!-- IPO -->
-<div id="ipo-overlay">
-  <h1>ByteCorp is now public.</h1>
-  <p>You won. For now.</p>
-  <div id="ipo-stats"></div>
-  <button id="ipo-restart" onclick="doNewGamePlus()">[ NEW GAME+ ]</button>
-</div>
+<div id="ipo-overlay"><h1>ByteCorp is now public.</h1><p>You won. For now.</p><div id="ipo-stats"></div>
+<button id="ipo-restart" onclick="doNewGamePlus()">[ NEW GAME+ ]</button></div>
 
 <!-- Help -->
-<div id="help-overlay">
-  <div id="help-popup">
-    <h2>// HELP — BYTECORP v1.0</h2>
-    <pre>
+<div id="help-overlay"><div id="help-popup"><h2>// HELP — BYTECORP v1.0</h2><pre>
 [ DATA ]      Main currency. Mine manually or buy BOTS.
 [ CREDITS ]   Corp currency. Hire DEVS to generate passively.
 [ REP ]       Reputation. Gained by hacking. Unlocks levels.
@@ -464,70 +470,108 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
               Auto-defense success rate depends on your security upgrades.
               Firewall v1/v2 + VPN Pro + Shell Company = up to 90% success rate.
 
+[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.
+              Lower traceability = fewer attacks, less HEAT from hacks.
+              VPN chains reduce traceability but cost passive DATA/s.
+
+[ THREATS ]
+  DDoS        Traceability >70% — bots go offline. Defend or wait.
+  IP Spoof    Enemy impersonates your IP — HEAT rises passively.
+  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.
+
+[ OFFENSIVE ]
+  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer upgrade).
+              Failed hacks blame the decoy, not you.
+
 [ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:
   IPO → go legit and win
   NEW GAME+ → reset with +25% permanent DATA/s bonus</pre>
-    <button id="help-close-btn" onclick="closeHelp()">[ CLOSE ]</button>
-  </div>
-</div>
+<button id="help-close-btn" onclick="closeHelp()">[ CLOSE ]</button></div></div>
 
 <!-- Loot Reveal -->
-<div id="loot-overlay">
-  <div id="loot-popup">
-    <h2 id="loot-title">// LOOT ACQUIRED</h2>
-    <div class="loot-item-name" id="loot-name"></div>
-    <div id="loot-badge-wrap"><span class="rarity-badge" id="loot-badge"></span></div>
-    <div id="loot-value"></div>
-    <div id="loot-actions">
-      <button class="loot-btn" id="loot-sell" onclick="lootSellNow()">[ SELL NOW ]</button>
-      <button class="loot-btn" id="loot-auction" onclick="lootPutOnMarket()">[ PUT ON MARKET ]</button>
-    </div>
-  </div>
-</div>
+<div id="loot-overlay"><div id="loot-popup"><h2 id="loot-title">// LOOT ACQUIRED</h2>
+<div class="loot-item-name" id="loot-name"></div>
+<div id="loot-badge-wrap"><span class="rarity-badge" id="loot-badge"></span></div>
+<div id="loot-value"></div>
+<div id="loot-actions">
+<button class="loot-btn" id="loot-sell" onclick="lootSellNow()">[ SELL NOW ]</button>
+<button class="loot-btn" id="loot-auction" onclick="lootPutOnMarket()">[ PUT ON MARKET ]</button>
+</div></div></div>
 
-<!-- Black Market (Loot Auctions) -->
-<div id="bmarket-overlay">
-  <div id="bmarket-popup">
-    <h2>// BLACK MARKET</h2>
-    <div class="bmarket-tabs">
-      <button class="bmarket-tab active" onclick="switchBMarketTab('inventory')">INVENTORY</button>
-      <button class="bmarket-tab" onclick="switchBMarketTab('auctions')">ACTIVE AUCTIONS</button>
-    </div>
-    <div class="bmarket-content active" id="bmarket-inventory"></div>
-    <div class="bmarket-content" id="bmarket-auctions"></div>
-    <button id="bmarket-close" onclick="closeBlackMarket()">[ CLOSE ]</button>
-  </div>
+<!-- Black Market -->
+<div id="bmarket-overlay"><div id="bmarket-popup"><h2>// BLACK MARKET</h2>
+<div class="bmarket-tabs">
+<button class="bmarket-tab active" onclick="switchBMarketTab('inventory')">INVENTORY</button>
+<button class="bmarket-tab" onclick="switchBMarketTab('auctions')">ACTIVE AUCTIONS</button>
 </div>
+<div class="bmarket-content active" id="bmarket-inventory"></div>
+<div class="bmarket-content" id="bmarket-auctions"></div>
+<button id="bmarket-close" onclick="closeBlackMarket()">[ CLOSE ]</button>
+</div></div>
 
 <!-- Defense Alert -->
 <div id="defense-overlay">
-  <div id="defense-skull"></div>
-  <div id="defense-title"></div>
-  <div id="defense-attacker"></div>
-  <div id="defense-risk"></div>
-  <div id="defense-timer-wrap">
-    <div id="defense-timer-bg"><div id="defense-timer-bar"></div></div>
-    <div id="defense-timer-text">30s</div>
-  </div>
-  <div id="defense-actions">
-    <button class="defense-btn" id="btn-defend-manual" onclick="startManualDefense()">[ DEFEND MANUALLY ]</button>
-    <button class="defense-btn" id="btn-defend-auto" onclick="triggerAutoDefense()">[ AUTO-DEFEND ]</button>
-  </div>
-</div>
+<div id="defense-skull"></div><div id="defense-title"></div><div id="defense-attacker"></div><div id="defense-risk"></div>
+<div id="defense-timer-wrap"><div id="defense-timer-bg"><div id="defense-timer-bar"></div></div><div id="defense-timer-text">30s</div></div>
+<div id="defense-actions">
+<button class="defense-btn" id="btn-defend-manual" onclick="startManualDefense()">[ DEFEND MANUALLY ]</button>
+<button class="defense-btn" id="btn-defend-auto" onclick="triggerAutoDefense()">[ AUTO-DEFEND ]</button>
+</div></div>
 
 <!-- Defense Minigame -->
-<div id="defense-game">
-  <div id="defense-game-popup">
-    <h2>// MANUAL DEFENSE</h2>
-    <div id="defense-game-timer"></div>
-    <div id="defense-game-prompt">Type defensive commands:</div>
-    <div id="defense-game-commands"></div>
-    <div id="defense-game-input-wrap"><span>$</span><input id="defense-game-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
-    <div id="defense-result"></div>
-  </div>
-</div>
+<div id="defense-game"><div id="defense-game-popup"><h2>// MANUAL DEFENSE</h2>
+<div id="defense-game-timer"></div>
+<div id="defense-game-prompt">Type defensive commands:</div>
+<div id="defense-game-commands"></div>
+<div id="defense-game-input-wrap"><span>$</span><input id="defense-game-input" placeholder="type command..." autocomplete="off" spellcheck="false"></div>
+<div id="defense-result"></div>
+</div></div>
+
+<!-- Corp ID Modal -->
+<div id="corpid-overlay"><div id="corpid-popup"><h2>// CORP ID</h2>
+<div id="corpid-body"></div>
+<button id="corpid-changeip" onclick="changeIP()">[ CHANGE IP — 200 DATA ]</button>
+<button id="corpid-close" onclick="closeCorpID()">[ CLOSE ]</button>
+</div></div>
+
+<!-- DDoS Alert -->
+<div id="ddos-overlay">
+<div id="ddos-title">⚠ DDOS ATTACK DETECTED</div>
+<div id="ddos-info">Your systems are being flooded — all bot income paused!</div>
+<div id="ddos-countdown"></div>
+<div id="ddos-actions">
+<button class="ddos-btn" id="btn-ddos-absorb" onclick="ddosAbsorb()">[ ABSORB — 500 DATA ]</button>
+<button class="ddos-btn" id="btn-ddos-reroute" onclick="ddosReroute()">[ REROUTE TRAFFIC ]</button>
+</div></div>
+
+<!-- Bounty Alert -->
+<div id="bounty-overlay">
+<div id="bounty-title">⚠ BOUNTY PLACED ON YOUR ALIAS</div>
+<div id="bounty-info"></div>
+<div id="bounty-status"></div>
+<div id="bounty-actions">
+<button class="bounty-btn" id="btn-bounty-pay" onclick="bountyPayOff()">[ BUY OFF HUNTER ]</button>
+<button class="bounty-btn" id="btn-bounty-dark" onclick="bountyGoDark()">[ GO DARK ]</button>
+<button class="bounty-btn bounty-close" id="bounty-close" onclick="closeBountyOverlay()">[ CLOSE ]</button>
+</div></div>
 
 <script>
+// ========== HACKER ALIASES ==========
+const HACKER_ALIASES = [
+  'gh0st_k1w1','null_byte','d4rk_r00t','v01d_h4x','sh4d0w_c0d3',
+  'r00t_d3m0n','ph4nt0m_n3t','z3r0_c00l','d34d_p1x3l','c0d3_wr41th',
+  'n1ght_sh1ft','b1n4ry_st0rm','h4ck_s4w','n30n_gh0st','cr4ck_j4ck',
+  'bl4ck_m1rr0r','cyb3r_f0x','gl1tch_k1ng','p1x3l_th13f','d4t4_sp1d3r'
+];
+
+function generateIP() {
+  return Math.floor(Math.random()*223+1)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256);
+}
+
+function generateAlias() {
+  return HACKER_ALIASES[Math.floor(Math.random()*HACKER_ALIASES.length)];
+}
+
 // ========== STATE ==========
 let G = {
   data: 0, credits: 0, rep: 0, heat: 0,
@@ -544,11 +588,34 @@ let G = {
   npcTimers: {},
   lastSave: Date.now(),
   lootInventory: [],
-  activeAuctions: []
+  activeAuctions: [],
+  operatorAlias: '',
+  playerIP: '',
+  darkWebRep: 0,
+  forensicTraces: [],
+  activeBounty: false,
+  bountyDefenseCount: 0,
+  usurpationActive: false,
+  usurpationExpiry: 0,
+  usurpationCompany: '',
+  lastSpoofTime: 0
 };
 
 let gameRunning = false;
 let gameIntervals = [];
+
+// DDoS state
+let ddosActive = false;
+let ddosBotsOffline = false;
+let ddosOfflineExpiry = 0;
+let ddosTimer = null;
+let ddosTimeLeft = 30;
+let lastDdosCheck = 0;
+let lastUsurpCheck = 0;
+
+// Bounty state
+let bountyAttackInterval = null;
+let lastBountyAttack = 0;
 
 // ========== DEFINITIONS ==========
 const BOTS = [
@@ -570,13 +637,17 @@ const DEVS = [
 
 const UPGRADES = [
   {id:'keyboard', name:'Better Keyboard', cost:500, currency:'data', desc:'x2 DATA/click'},
-  {id:'vpn', name:'VPN Pro', cost:1000, currency:'data', desc:'HEAT gains reduced 50%'},
-  {id:'firewallv1', name:'Firewall v1', cost:2000, currency:'data', desc:'Auto-defense +20%'},
-  {id:'shell', name:'Shell Company', cost:5000, currency:'credits', desc:'HEAT -1/min auto'},
+  {id:'vpn', name:'VPN Pro', cost:1000, currency:'data', desc:'HEAT -50%, Traceability -30%'},
+  {id:'firewallv1', name:'Firewall v1', cost:2000, currency:'data', desc:'Auto-defense +20%, Trace -10%'},
+  {id:'shell', name:'Shell Company', cost:5000, currency:'credits', desc:'HEAT -1/min, Trace -20%'},
   {id:'darkweb', name:'Dark Web Access', cost:10000, currency:'data', desc:'Unlock dark web market'},
-  {id:'firewallv2', name:'Firewall v2', cost:20000, currency:'data', desc:'Auto-defense +20% (requires Firewall v1)', requires:'firewallv1'},
+  {id:'logcleaner', name:'Log Cleaner', cost:10000, currency:'data', desc:'Forensic traces auto-deleted every 5 min'},
+  {id:'firewallv2', name:'Firewall v2', cost:20000, currency:'data', desc:'Auto-defense +20%, Trace -10%', requires:'firewallv1'},
+  {id:'ipspoofer', name:'IP Spoofer', cost:30000, currency:'data', desc:'Trace -10%, unlocks offensive IP spoofing'},
+  {id:'vpnchain2', name:'VPN Chain x2', cost:50000, currency:'data', desc:'Trace -15%, DATA/s -5%', requires:'vpn'},
   {id:'quantum', name:'Quantum CPU', cost:50000, currency:'data', desc:'x3 DATA/s all bots'},
   {id:'aiassist', name:'AI Assistant', cost:100000, currency:'credits', desc:'x2 CREDITS/s all devs'},
+  {id:'vpnchain3', name:'VPN Chain x3', cost:200000, currency:'data', desc:'Trace -15% more, DATA/s -5% more', requires:'vpnchain2'},
   {id:'legal', name:'Legal Cover', cost:500000, currency:'credits', desc:'RAID penalty 10% instead of 30%'}
 ];
 
@@ -591,102 +662,39 @@ const DIFFICULTIES = ['Easy','Medium','Hard','Elite'];
 
 const COMMANDS = {
   Linux: {
-    Easy: [
-      {cmd:'nmap 192.168.1.1', tip:'Network scanner — discovers open ports on target'},
-      {cmd:'ls /etc', tip:'List files in /etc configuration directory'},
-      {cmd:'cat /etc/hostname', tip:'Read the system hostname file'},
-      {cmd:'ping target', tip:'Send ICMP echo to check if host is alive'}
-    ],
-    Medium: [
-      {cmd:'ssh root@target', tip:'Open SSH session as root to remote target'},
-      {cmd:'netstat -an', tip:'Show all network connections and listening ports'},
-      {cmd:'cat /etc/passwd', tip:'Read the user account database'},
-      {cmd:'find / -name "*.conf"', tip:'Search entire filesystem for .conf files'}
-    ],
-    Hard: [
-      {cmd:'sudo iptables -L', tip:'List all firewall rules'},
-      {cmd:'grep -r "password" /var/www', tip:'Recursively search web root for passwords'},
-      {cmd:'curl -X POST http://target/api', tip:'Send POST request to target API endpoint'},
-      {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt', tip:'Crack password hashes using rockyou wordlist'}
-    ],
-    Elite: [
-      {cmd:'sudo iptables -L', tip:'List all firewall rules'},
-      {cmd:'grep -r "password" /var/www', tip:'Recursively search web root for passwords'},
-      {cmd:'curl -X POST http://target/api', tip:'Send POST request to target API endpoint'},
-      {cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt', tip:'Crack password hashes using rockyou wordlist'},
-      {cmd:'nmap -sV -O target', tip:'Scan target with version and OS detection'},
-      {cmd:'ssh -L 8080:localhost:80 root@target', tip:'SSH tunnel — forward local 8080 to target port 80'},
-      {cmd:'cat /etc/shadow', tip:'Read the shadow password file (hashes)'}
-    ]
+    Easy: [{cmd:'nmap 192.168.1.1',tip:'Network scanner'},{cmd:'ls /etc',tip:'List /etc'},{cmd:'cat /etc/hostname',tip:'Read hostname'},{cmd:'ping target',tip:'Ping target'}],
+    Medium: [{cmd:'ssh root@target',tip:'SSH as root'},{cmd:'netstat -an',tip:'Show connections'},{cmd:'cat /etc/passwd',tip:'Read passwd'},{cmd:'find / -name "*.conf"',tip:'Find config files'}],
+    Hard: [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'}],
+    Elite: [{cmd:'sudo iptables -L',tip:'List firewall rules'},{cmd:'grep -r "password" /var/www',tip:'Search for passwords'},{cmd:'curl -X POST http://target/api',tip:'POST to API'},{cmd:'john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt',tip:'Crack hashes'},{cmd:'nmap -sV -O target',tip:'Version+OS scan'},{cmd:'ssh -L 8080:localhost:80 root@target',tip:'SSH tunnel'},{cmd:'cat /etc/shadow',tip:'Read shadow file'}]
   },
   Windows: {
-    Easy: [
-      {cmd:'ipconfig', tip:'Display network adapter configuration'},
-      {cmd:'dir C:\\', tip:'List contents of C: drive root'},
-      {cmd:'whoami', tip:'Show current user name'},
-      {cmd:'net user', tip:'List all local user accounts'}
-    ],
-    Medium: [
-      {cmd:'Get-Process', tip:'PowerShell — list all running processes'},
-      {cmd:'netstat -ano', tip:'Show connections with process IDs'},
-      {cmd:'Get-LocalUser', tip:'PowerShell — enumerate local user accounts'},
-      {cmd:'dir C:\\Users', tip:'List user profile directories'}
-    ],
-    Hard: [
-      {cmd:'Get-EventLog -LogName Security', tip:'Read Windows Security event log'},
-      {cmd:'Invoke-WebRequest -Uri http://target', tip:'PowerShell HTTP request to target'},
-      {cmd:'Set-ExecutionPolicy Bypass', tip:'Allow all PowerShell scripts to run'},
-      {cmd:'Get-ADUser -Filter *', tip:'Query Active Directory for all user objects'}
-    ],
-    Elite: [
-      {cmd:'Get-EventLog -LogName Security', tip:'Read Windows Security event log'},
-      {cmd:'Invoke-WebRequest -Uri http://target', tip:'PowerShell HTTP request to target'},
-      {cmd:'Set-ExecutionPolicy Bypass', tip:'Allow all PowerShell scripts to run'},
-      {cmd:'Get-ADUser -Filter *', tip:'Query Active Directory for all user objects'},
-      {cmd:'Get-WmiObject Win32_Service', tip:'Enumerate all Windows services via WMI'},
-      {cmd:'New-PSSession -ComputerName target', tip:'Open remote PowerShell session to target'},
-      {cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords', tip:'Dump credentials from memory'}
-    ]
+    Easy: [{cmd:'ipconfig',tip:'Network config'},{cmd:'dir C:\\',tip:'List C:\\'},{cmd:'whoami',tip:'Current user'},{cmd:'net user',tip:'List users'}],
+    Medium: [{cmd:'Get-Process',tip:'List processes'},{cmd:'netstat -ano',tip:'Connections+PIDs'},{cmd:'Get-LocalUser',tip:'Local users'},{cmd:'dir C:\\Users',tip:'User directories'}],
+    Hard: [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'}],
+    Elite: [{cmd:'Get-EventLog -LogName Security',tip:'Security log'},{cmd:'Invoke-WebRequest -Uri http://target',tip:'HTTP request'},{cmd:'Set-ExecutionPolicy Bypass',tip:'Allow scripts'},{cmd:'Get-ADUser -Filter *',tip:'AD users'},{cmd:'Get-WmiObject Win32_Service',tip:'WMI services'},{cmd:'New-PSSession -ComputerName target',tip:'Remote PS session'},{cmd:'Invoke-Mimikatz -Command sekurlsa::logonpasswords',tip:'Dump creds'}]
   }
 };
 
-// ========== DEFENSIVE COMMANDS ==========
 const DEFENSE_COMMANDS = {
-  Easy: [
-    {cmd:'sudo ufw enable', tip:'Enable the Uncomplicated Firewall'},
-    {cmd:'fail2ban-client status', tip:'Check fail2ban jail status'},
-    {cmd:'netstat -an', tip:'Show all network connections'}
-  ],
-  Medium: [
-    {cmd:'sudo iptables -A INPUT -j DROP', tip:'Drop all incoming traffic by default'},
-    {cmd:'grep -r "unauthorized" /var/log', tip:'Search logs for unauthorized access'},
-    {cmd:'sudo systemctl stop ssh', tip:'Stop SSH service to block remote access'}
-  ],
-  Hard: [
-    {cmd:'sudo tcpdump -i eth0 -n', tip:'Capture network traffic on eth0'},
-    {cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP', tip:'Block attacker IP'},
-    {cmd:'sudo journalctl -u sshd --since "1 hour ago"', tip:'Review recent SSH logs'},
-    {cmd:'sudo fail2ban-client set sshd banip attacker_ip', tip:'Ban attacker IP in fail2ban'}
-  ],
-  Elite: [
-    {cmd:'sudo tcpdump -i eth0 -n', tip:'Capture network traffic on eth0'},
-    {cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP', tip:'Block attacker IP'},
-    {cmd:'sudo journalctl -u sshd --since "1 hour ago"', tip:'Review recent SSH logs'},
-    {cmd:'sudo fail2ban-client set sshd banip attacker_ip', tip:'Ban attacker IP in fail2ban'},
-    {cmd:'sudo netstat -tlnp', tip:'Show listening ports with process info'},
-    {cmd:'sudo kill -9 $(lsof -t -i :4444)', tip:'Kill process on common backdoor port'}
-  ]
+  Easy: [{cmd:'sudo ufw enable',tip:'Enable firewall'},{cmd:'fail2ban-client status',tip:'Check fail2ban'},{cmd:'netstat -an',tip:'Show connections'}],
+  Medium: [{cmd:'sudo iptables -A INPUT -j DROP',tip:'Drop incoming'},{cmd:'grep -r "unauthorized" /var/log',tip:'Search logs'},{cmd:'sudo systemctl stop ssh',tip:'Stop SSH'}],
+  Hard: [{cmd:'sudo tcpdump -i eth0 -n',tip:'Capture traffic'},{cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP',tip:'Block attacker'},{cmd:'sudo journalctl -u sshd --since "1 hour ago"',tip:'Review SSH logs'},{cmd:'sudo fail2ban-client set sshd banip attacker_ip',tip:'Ban attacker'}],
+  Elite: [{cmd:'sudo tcpdump -i eth0 -n',tip:'Capture traffic'},{cmd:'sudo iptables -A INPUT -s attacker_ip -j DROP',tip:'Block attacker'},{cmd:'sudo journalctl -u sshd --since "1 hour ago"',tip:'Review SSH logs'},{cmd:'sudo fail2ban-client set sshd banip attacker_ip',tip:'Ban attacker'},{cmd:'sudo netstat -tlnp',tip:'Listening ports'},{cmd:'sudo kill -9 $(lsof -t -i :4444)',tip:'Kill backdoor'}]
 };
 
-// ========== LOOT TABLE ==========
+const DDOS_DEFENSE_CMDS = [
+  {cmd:'sudo iptables -A INPUT -p tcp --dport 80 -j DROP',tip:'Block HTTP flood'},
+  {cmd:'sudo fail2ban-client set http-get-dos unbanip all',tip:'Reset fail2ban HTTP jail'}
+];
+
 const LOOT_TABLE = {
-  common:    {chance:0.70, items:['Employee Records','Internal Emails','Config Files'], multi:1, heatBonus:0},
-  rare:      {chance:0.20, items:['Client Database','R&D Documents','Financial Reports'], multi:3, heatBonus:10},
-  epic:      {chance:0.08, items:['Banking Credentials','Corporate Secrets','Patent Files'], multi:8, heatBonus:20},
-  legendary: {chance:0.02, items:['Government Contracts','Black Project Files','Nuclear Codes'], multi:20, heatBonus:30}
+  common:{chance:0.70,items:['Employee Records','Internal Emails','Config Files'],multi:1,heatBonus:0},
+  rare:{chance:0.20,items:['Client Database','R&D Documents','Financial Reports'],multi:3,heatBonus:10},
+  epic:{chance:0.08,items:['Banking Credentials','Corporate Secrets','Patent Files'],multi:8,heatBonus:20},
+  legendary:{chance:0.02,items:['Government Contracts','Black Project Files','Nuclear Codes'],multi:20,heatBonus:30}
 };
 
-const AUCTION_DURATIONS = {common:180, rare:300, epic:480, legendary:720}; // seconds
+const AUCTION_DURATIONS = {common:180,rare:300,epic:480,legendary:720};
 
 const LEVELS = [
   {lv:1,rep:0,title:'Script Kiddie'},{lv:2,rep:50,title:'Newbie'},{lv:3,rep:150,title:'Curious Cat'},
@@ -714,6 +722,33 @@ const LEVELS = [
   {lv:49,rep:42000000,title:'Absolute Zero'},{lv:50,rep:50000000,title:'ENDGAME'}
 ];
 
+// ========== TRACEABILITY ==========
+function getTraceability() {
+  let t = 100;
+  if (G.upgrades.vpn) t -= 30;
+  if (G.upgrades.firewallv1) t -= 10;
+  if (G.upgrades.firewallv2) t -= 10;
+  if (G.upgrades.shell) t -= 20;
+  if (G.upgrades.vpnchain2) t -= 15;
+  if (G.upgrades.vpnchain3) t -= 15;
+  if (G.upgrades.ipspoofer) t -= 10;
+  return Math.max(5, t);
+}
+
+function getDisplayIP() {
+  if (G.upgrades.vpn) {
+    return '10.0.' + Math.floor(Math.random()*256) + '.' + Math.floor(Math.random()*256) + ' [VPN]';
+  }
+  return G.playerIP || '?.?.?.?';
+}
+
+function getDarkWebStatus() {
+  if (G.darkWebRep >= 2001) return 'LEGENDARY';
+  if (G.darkWebRep >= 501) return 'FEARED';
+  if (G.darkWebRep >= 101) return 'NOTICED';
+  return 'UNKNOWN';
+}
+
 // ========== FORMAT ==========
 function fmt(n) {
   if (n < 0) n = 0;
@@ -725,7 +760,7 @@ function fmt(n) {
 
 function ts() {
   const d = new Date();
-  return '[' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') + ':' + String(d.getSeconds()).padStart(2,'0') + ']';
+  return '['+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0')+']';
 }
 
 // ========== LOG ==========
@@ -733,8 +768,8 @@ function addLog(msg, cls) {
   const el = document.getElementById('log');
   if (!el) return;
   const e = document.createElement('div');
-  e.className = 'log-entry' + (cls ? ' ' + cls : '');
-  e.textContent = ts() + ' ' + msg;
+  e.className = 'log-entry' + (cls ? ' '+cls : '');
+  e.textContent = ts()+' '+msg;
   el.appendChild(e);
   while (el.children.length > 5) el.removeChild(el.firstChild);
 }
@@ -742,1495 +777,807 @@ function addLog(msg, cls) {
 // ========== NPC INIT ==========
 function initNPCs() {
   G.npcs = NPC_NAMES.map((name, i) => ({
-    name,
-    os: i % 2 === 0 ? 'Linux' : 'Windows',
-    baseDifficulty: i < 5 ? 0 : i < 10 ? 1 : i < 15 ? 2 : 3,
-    securityLevel: 1 + Math.random() * 2,
-    relation: 'neutral',
-    hackCount: 0,
-    lastHackTime: 0,
-    lastInteraction: Date.now(),
-    allyExpiry: 0,
-    tracerExpiry: 0,
-    breachExpiry: 0,
-    breachMulti: 1
+    name, os: i%2===0?'Linux':'Windows',
+    baseDifficulty: i<5?0:i<10?1:i<15?2:3,
+    securityLevel: 1+Math.random()*2, relation:'neutral', hackCount:0,
+    lastHackTime:0, lastInteraction:Date.now(), allyExpiry:0,
+    tracerExpiry:0, breachExpiry:0, breachMulti:1
   }));
 }
 
-// ========== RESOURCE DISPLAY ==========
+// ========== UI ==========
 function updateUI() {
-  const dEl = document.getElementById('res-data');
-  const cEl = document.getElementById('res-credits');
-  const rEl = document.getElementById('res-rep');
-  if (!dEl) return;
-  const oldD = dEl.textContent, oldC = cEl.textContent, oldR = rEl.textContent;
-
-  dEl.textContent = fmt(G.data);
-  cEl.textContent = fmt(G.credits);
-  rEl.textContent = fmt(G.rep);
-
-  if (dEl.textContent !== oldD) flashEl(dEl);
-  if (cEl.textContent !== oldC) flashEl(cEl);
-  if (rEl.textContent !== oldR) flashEl(rEl);
-
-  // Heat
-  const hb = document.getElementById('heat-bar');
-  const ht = document.getElementById('heat-text');
-  const pct = Math.min(100, Math.max(0, G.heat));
-  hb.style.width = pct + '%';
-  hb.className = pct > 70 ? 'danger' : '';
-  ht.textContent = Math.floor(pct) + '%';
-  ht.style.color = pct > 70 ? 'var(--danger)' : 'var(--text)';
-
-  // DPS
-  const dps = getDataPerSec();
-  const cps = getCreditsPerSec();
-  document.getElementById('dps-display').textContent =
-    '+' + fmt(getClickPower()) + ' DATA/click | ' + fmt(dps) + ' DATA/s | ' + fmt(cps) + ' CR/s';
-
-  // Level
+  const dEl=document.getElementById('res-data'),cEl=document.getElementById('res-credits'),rEl=document.getElementById('res-rep');
+  if(!dEl)return;
+  const oldD=dEl.textContent,oldC=cEl.textContent,oldR=rEl.textContent;
+  dEl.textContent=fmt(G.data);cEl.textContent=fmt(G.credits);rEl.textContent=fmt(G.rep);
+  if(dEl.textContent!==oldD)flashEl(dEl);
+  if(cEl.textContent!==oldC)flashEl(cEl);
+  if(rEl.textContent!==oldR)flashEl(rEl);
+  const hb=document.getElementById('heat-bar'),ht=document.getElementById('heat-text');
+  const pct=Math.min(100,Math.max(0,G.heat));
+  hb.style.width=pct+'%';hb.className=pct>70?'danger':'';
+  ht.textContent=Math.floor(pct)+'%';ht.style.color=pct>70?'var(--danger)':'var(--text)';
+  const dps=getDataPerSec(),cps=getCreditsPerSec();
+  document.getElementById('dps-display').textContent='+'+fmt(getClickPower())+' DATA/click | '+fmt(dps)+' DATA/s | '+fmt(cps)+' CR/s';
   updateLevel();
-
-  // Market button (DATA exchange)
-  document.getElementById('market-btn').className = G.upgrades.darkweb ? 'unlocked' : '';
-
-  // Black market header button
-  document.getElementById('bmarket-header-btn').style.display = G.upgrades.darkweb ? '' : 'none';
-
-  // Prestige badge
-  if (G.prestige > 0) {
-    document.getElementById('prestige-badge').textContent = ' #' + G.prestige + ' (+' + Math.round((G.prestigeMulti - 1) * 100) + '%)';
+  document.getElementById('market-btn').className=G.upgrades.darkweb?'unlocked':'';
+  document.getElementById('bmarket-header-btn').style.display=G.upgrades.darkweb?'':'none';
+  // Spoof checkbox visibility
+  const spoofWrap=document.getElementById('spoof-checkbox-wrap');
+  if(G.upgrades.ipspoofer){
+    spoofWrap.classList.add('visible');
+    const cooldownLeft=Math.max(0,G.lastSpoofTime+600000-Date.now());
+    const cdEl=document.getElementById('spoof-cooldown-text');
+    if(cooldownLeft>0){
+      cdEl.textContent=' (cooldown: '+Math.ceil(cooldownLeft/1000)+'s)';
+      document.getElementById('spoof-checkbox').disabled=true;
+    } else {
+      cdEl.textContent='';
+      document.getElementById('spoof-checkbox').disabled=false;
+    }
+  } else {
+    spoofWrap.classList.remove('visible');
   }
+  if(G.prestige>0){
+    document.getElementById('prestige-badge').textContent=' #'+G.prestige+' (+'+Math.round((G.prestigeMulti-1)*100)+'%)';
+  }
+  // Start screen IP
+  updateStartIP();
 }
 
-function flashEl(el) {
-  el.classList.remove('flash');
-  void el.offsetWidth;
-  el.classList.add('flash');
+function updateStartIP() {
+  const el=document.getElementById('start-ip');
+  if(!el)return;
+  if(G.playerIP){
+    if(G.upgrades.vpn){el.textContent='IP: 10.0.x.x [VPN ACTIVE]';el.className='vpn';}
+    else{el.textContent='IP: '+G.playerIP;el.className='';}
+  } else {el.textContent='';}
 }
+
+function flashEl(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 
 // ========== CALCULATIONS ==========
-function getClickPower() {
-  let p = G.dataPower;
-  if (G.upgrades.keyboard) p *= 2;
-  return p;
-}
+function getClickPower(){let p=G.dataPower;if(G.upgrades.keyboard)p*=2;return p;}
 
-function getDataPerSec() {
-  let total = 0;
-  for (let i = 0; i < BOTS.length; i++) total += G.bots[i] * BOTS[i].dps;
-  if (G.upgrades.quantum) total *= 3;
-  total *= G.prestigeMulti;
-  return total;
-}
-
-function getCreditsPerSec() {
-  let total = 0;
-  for (let i = 0; i < DEVS.length; i++) total += G.devs[i] * DEVS[i].cps;
-  if (G.upgrades.aiassist) total *= 2;
-  if (G.npcs) {
-    const now = Date.now();
-    G.npcs.forEach(npc => {
-      if (npc.relation === 'ally' && npc.allyExpiry > now) total += 2;
-    });
+function getDataPerSec(){
+  let total=0;
+  if(!ddosBotsOffline){
+    for(let i=0;i<BOTS.length;i++)total+=G.bots[i]*BOTS[i].dps;
   }
+  if(G.upgrades.quantum)total*=3;
+  total*=G.prestigeMulti;
+  // VPN chain penalties
+  let penalty=1;
+  if(G.upgrades.vpnchain2)penalty-=0.05;
+  if(G.upgrades.vpnchain3)penalty-=0.05;
+  total*=Math.max(0,penalty);
   return total;
 }
 
-function getBotCost(i) { return Math.floor(BOTS[i].baseCost * Math.pow(1.15, G.bots[i])); }
-function getDevCost(i) { return Math.floor(DEVS[i].baseCost * Math.pow(1.15, G.devs[i])); }
+function getCreditsPerSec(){
+  let total=0;
+  for(let i=0;i<DEVS.length;i++)total+=G.devs[i]*DEVS[i].cps;
+  if(G.upgrades.aiassist)total*=2;
+  if(G.npcs){const now=Date.now();G.npcs.forEach(npc=>{if(npc.relation==='ally'&&npc.allyExpiry>now)total+=2;});}
+  return total;
+}
+
+function getBotCost(i){return Math.floor(BOTS[i].baseCost*Math.pow(1.15,G.bots[i]));}
+function getDevCost(i){return Math.floor(DEVS[i].baseCost*Math.pow(1.15,G.devs[i]));}
 
 // ========== MINE ==========
-document.getElementById('mine-btn').addEventListener('click', () => {
-  if (!gameRunning) return;
-  const gain = getClickPower();
-  G.data += gain;
-  G.totalDataMined += gain;
-  addLog('Mined +' + fmt(gain) + ' DATA');
+document.getElementById('mine-btn').addEventListener('click',()=>{
+  if(!gameRunning)return;
+  const gain=getClickPower();G.data+=gain;G.totalDataMined+=gain;addLog('Mined +'+fmt(gain)+' DATA');
 });
 
 // ========== BOTS ==========
-function renderBots() {
-  const el = document.getElementById('bot-list');
-  if (!el) return;
-  el.innerHTML = '';
-  BOTS.forEach((b, i) => {
-    const cost = getBotCost(i);
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.innerHTML = `<div class="item-header"><span class="item-name">${b.name}</span><span class="item-count">x${G.bots[i]}</span></div>
-      <div class="item-stats">+${fmt(b.dps)} DATA/s | Cost: ${fmt(cost)} DATA</div>
-      <button class="buy-btn" ${G.data < cost ? 'disabled' : ''} onclick="buyBot(${i})">[ BUY ]</button>`;
-    el.appendChild(card);
-  });
-}
+function renderBots(){const el=document.getElementById('bot-list');if(!el)return;el.innerHTML='';
+BOTS.forEach((b,i)=>{const cost=getBotCost(i);const card=document.createElement('div');card.className='item-card';
+card.innerHTML=`<div class="item-header"><span class="item-name">${b.name}</span><span class="item-count">x${G.bots[i]}</span></div>
+<div class="item-stats">+${fmt(b.dps)} DATA/s | Cost: ${fmt(cost)} DATA</div>
+<button class="buy-btn" ${G.data<cost?'disabled':''} onclick="buyBot(${i})">[ BUY ]</button>`;el.appendChild(card);});}
 
-function buyBot(i) {
-  const cost = getBotCost(i);
-  if (G.data >= cost) {
-    G.data -= cost;
-    G.bots[i]++;
-    addLog('Bought ' + BOTS[i].name);
-    renderBots();
-  }
-}
+function buyBot(i){const cost=getBotCost(i);if(G.data>=cost){G.data-=cost;G.bots[i]++;addLog('Bought '+BOTS[i].name);renderBots();}}
 
 // ========== DEVS ==========
-function renderDevs() {
-  const el = document.getElementById('dev-list');
-  if (!el) return;
-  el.innerHTML = '';
-  DEVS.forEach((d, i) => {
-    const cost = getDevCost(i);
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.innerHTML = `<div class="item-header"><span class="item-name">${d.name}</span><span class="item-count">x${G.devs[i]}</span></div>
-      <div class="item-stats">+${fmt(d.cps)} CR/s | Cost: ${fmt(cost)} CR</div>
-      <button class="buy-btn" ${G.credits < cost ? 'disabled' : ''} onclick="buyDev(${i})">[ BUY ]</button>`;
-    el.appendChild(card);
-  });
-}
+function renderDevs(){const el=document.getElementById('dev-list');if(!el)return;el.innerHTML='';
+DEVS.forEach((d,i)=>{const cost=getDevCost(i);const card=document.createElement('div');card.className='item-card';
+card.innerHTML=`<div class="item-header"><span class="item-name">${d.name}</span><span class="item-count">x${G.devs[i]}</span></div>
+<div class="item-stats">+${fmt(d.cps)} CR/s | Cost: ${fmt(cost)} CR</div>
+<button class="buy-btn" ${G.credits<cost?'disabled':''} onclick="buyDev(${i})">[ BUY ]</button>`;el.appendChild(card);});}
 
-function buyDev(i) {
-  const cost = getDevCost(i);
-  if (G.credits >= cost) {
-    G.credits -= cost;
-    G.devs[i]++;
-    addLog('Hired ' + DEVS[i].name);
-    renderDevs();
-  }
-}
+function buyDev(i){const cost=getDevCost(i);if(G.credits>=cost){G.credits-=cost;G.devs[i]++;addLog('Hired '+DEVS[i].name);renderDevs();}}
 
 // ========== UPGRADES ==========
-function renderUpgrades() {
-  const el = document.getElementById('upgrade-list');
-  if (!el) return;
-  el.innerHTML = '';
-  UPGRADES.forEach(u => {
-    const bought = !!G.upgrades[u.id];
-    const locked = u.requires && !G.upgrades[u.requires];
-    const canAfford = u.currency === 'data' ? G.data >= u.cost : G.credits >= u.cost;
-    const card = document.createElement('div');
-    card.className = 'upgrade-card' + (bought ? ' bought' : '') + (locked ? ' locked' : '');
-    card.innerHTML = `<div class="upgrade-name">${u.name}</div>
-      <div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency === 'data' ? 'DATA' : 'CR'}</div>
-      <button class="upgrade-btn" ${(bought || locked || !canAfford) ? 'disabled' : ''} onclick="buyUpgrade('${u.id}')">${bought ? '[ OWNED ]' : locked ? '[ LOCKED ]' : '[ BUY ]'}</button>`;
-    el.appendChild(card);
-  });
-}
+function renderUpgrades(){const el=document.getElementById('upgrade-list');if(!el)return;el.innerHTML='';
+UPGRADES.forEach(u=>{const bought=!!G.upgrades[u.id];const locked=u.requires&&!G.upgrades[u.requires];
+const canAfford=u.currency==='data'?G.data>=u.cost:G.credits>=u.cost;
+const card=document.createElement('div');card.className='upgrade-card'+(bought?' bought':'')+(locked?' locked':'');
+card.innerHTML=`<div class="upgrade-name">${u.name}</div>
+<div class="upgrade-desc">${u.desc} — ${fmt(u.cost)} ${u.currency==='data'?'DATA':'CR'}</div>
+<button class="upgrade-btn" ${(bought||locked||!canAfford)?'disabled':''} onclick="buyUpgrade('${u.id}')">${bought?'[ OWNED ]':locked?'[ LOCKED ]':'[ BUY ]'}</button>`;
+el.appendChild(card);});}
 
-function buyUpgrade(id) {
-  const u = UPGRADES.find(x => x.id === id);
-  if (!u || G.upgrades[id]) return;
-  if (u.requires && !G.upgrades[u.requires]) return;
-  if (u.currency === 'data' && G.data >= u.cost) {
-    G.data -= u.cost;
-  } else if (u.currency === 'credits' && G.credits >= u.cost) {
-    G.credits -= u.cost;
-  } else return;
-  G.upgrades[id] = true;
-  addLog('Upgrade: ' + u.name, 'info');
-  renderUpgrades();
-}
+function buyUpgrade(id){const u=UPGRADES.find(x=>x.id===id);if(!u||G.upgrades[id])return;
+if(u.requires&&!G.upgrades[u.requires])return;
+if(u.currency==='data'&&G.data>=u.cost)G.data-=u.cost;
+else if(u.currency==='credits'&&G.credits>=u.cost)G.credits-=u.cost;
+else return;G.upgrades[id]=true;addLog('Upgrade: '+u.name,'info');renderUpgrades();}
 
 // ========== TABS ==========
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
   document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`).classList.add('active');
 }
 
 // ========== HACK SYSTEM ==========
-let currentTarget = null;
-let currentTargetReward = null;
-let hackActive = false;
-let hackCmds = [];
-let hackCmdIndex = 0;
-let hackTimerInterval = null;
-let hackTimeLeft = 0;
-let targetRotateTimer = null;
-let avTimerInterval = null;
-let avTimeLeft = 0;
-let avTimeMax = 0;
-let hackCooldown = false;
+let currentTarget=null,currentTargetReward=null,hackActive=false,hackCmds=[],hackCmdIndex=0;
+let hackTimerInterval=null,hackTimeLeft=0,targetRotateTimer=null;
+let avTimerInterval=null,avTimeLeft=0,avTimeMax=0,hackCooldown=false;
+let downloadActive=false,downloadInterval=null,downloadProgress=0,downloadDuration=0;
+let pendingHackReward=null,pendingHackDiff=0,pendingHackNpc=null;
+let hackUsedSpoof=false,hackSpoofDecoy=null;
 
-// Download sequence state
-let downloadActive = false;
-let downloadInterval = null;
-let downloadProgress = 0;
-let downloadDuration = 0;
-let pendingHackReward = null;
-let pendingHackDiff = 0;
-let pendingHackNpc = null;
+function getEffectiveDifficulty(npc){let d=npc.baseDifficulty+Math.floor(npc.securityLevel/3);if(npc.relation==='enemy')d+=1;return Math.min(3,Math.max(0,d));}
 
-function getEffectiveDifficulty(npc) {
-  let d = npc.baseDifficulty + Math.floor(npc.securityLevel / 3);
-  if (npc.relation === 'enemy') d += 1;
-  return Math.min(3, Math.max(0, d));
+function getReward(difficulty){
+  const ranges={'Easy':{data:[50,200],cr:[5,20],rep:[5,15]},'Medium':{data:[200,800],cr:[20,80],rep:[15,40]},'Hard':{data:[800,3000],cr:[80,300],rep:[40,100]},'Elite':{data:[3000,10000],cr:[300,1000],rep:[100,250]}};
+  const r=ranges[difficulty]||ranges['Easy'];
+  return{data:Math.max(1,Math.floor(Math.random()*(r.data[1]-r.data[0])+r.data[0])),cr:Math.max(1,Math.floor(Math.random()*(r.cr[1]-r.cr[0])+r.cr[0])),rep:Math.max(1,Math.floor(Math.random()*(r.rep[1]-r.rep[0])+r.rep[0]))};
 }
 
-// ========== FIXED REWARD FORMULA ==========
-function getReward(difficulty, securityLevel) {
-  const ranges = {
-    'Easy':   { data: [50, 200],     cr: [5, 20],      rep: [5, 15] },
-    'Medium': { data: [200, 800],    cr: [20, 80],     rep: [15, 40] },
-    'Hard':   { data: [800, 3000],   cr: [80, 300],    rep: [40, 100] },
-    'Elite':  { data: [3000, 10000], cr: [300, 1000],  rep: [100, 250] }
-  };
-  const r = ranges[difficulty] || ranges['Easy'];
-  const result = {
-    data: Math.max(1, Math.floor(Math.random() * (r.data[1] - r.data[0]) + r.data[0])),
-    cr:   Math.max(1, Math.floor(Math.random() * (r.cr[1]   - r.cr[0])   + r.cr[0])),
-    rep:  Math.max(1, Math.floor(Math.random() * (r.rep[1]  - r.rep[0])  + r.rep[0]))
-  };
-  console.log('reward:', difficulty, result);
-  return result;
-}
-
-function pickTarget() {
-  if (!G.npcs || hackActive || downloadActive) return;
-  const available = G.npcs.filter(n => n.relation !== 'ally' || n.allyExpiry < Date.now());
-  if (available.length === 0) return;
-  currentTarget = available[Math.floor(Math.random() * available.length)];
-  if (currentTarget.relation === 'ally' && currentTarget.allyExpiry < Date.now()) {
-    currentTarget.relation = 'neutral';
-  }
-  const diffName = DIFFICULTIES[getEffectiveDifficulty(currentTarget)];
-  currentTargetReward = getReward(diffName, currentTarget.securityLevel);
+function pickTarget(){
+  if(!G.npcs||hackActive||downloadActive)return;
+  const available=G.npcs.filter(n=>n.relation!=='ally'||n.allyExpiry<Date.now());
+  if(available.length===0)return;
+  currentTarget=available[Math.floor(Math.random()*available.length)];
+  if(currentTarget.relation==='ally'&&currentTarget.allyExpiry<Date.now())currentTarget.relation='neutral';
+  currentTargetReward=getReward(DIFFICULTIES[getEffectiveDifficulty(currentTarget)]);
   renderTarget();
 }
 
-function renderTarget() {
-  const el = document.getElementById('hack-target');
-  const btn = document.getElementById('hack-btn');
-  if (!el) return;
-  if (!currentTarget) {
-    el.innerHTML = '<span style="color:#555">Scanning for targets...</span>';
-    btn.disabled = true;
-    return;
-  }
-  const n = currentTarget;
-  const diff = DIFFICULTIES[getEffectiveDifficulty(n)];
-  const statusIcon = n.relation === 'ally' ? '🟢' : n.relation === 'enemy' ? '🔴' : '🟡';
-  const r = currentTargetReward || {data: 0, cr: 0, rep: 0};
-  const isAlly = n.relation === 'ally' && n.allyExpiry > Date.now();
-  el.innerHTML = `<div class="target-name">${statusIcon} ${n.name}</div>
-    <div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
-    <div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly ? ' (contract active)' : ''}</div>
-    <div class="target-reward">Reward: ~${fmt(r.data)} DATA, ~${fmt(r.cr)} CR, +${r.rep} REP</div>`;
-  btn.disabled = isAlly || hackActive || hackCooldown || downloadActive;
+function renderTarget(){
+  const el=document.getElementById('hack-target'),btn=document.getElementById('hack-btn');if(!el)return;
+  if(!currentTarget){el.innerHTML='<span style="color:#555">Scanning for targets...</span>';btn.disabled=true;return;}
+  const n=currentTarget,diff=DIFFICULTIES[getEffectiveDifficulty(n)];
+  const statusIcon=n.relation==='ally'?'🟢':n.relation==='enemy'?'🔴':'🟡';
+  const r=currentTargetReward||{data:0,cr:0,rep:0};
+  const isAlly=n.relation==='ally'&&n.allyExpiry>Date.now();
+  el.innerHTML=`<div class="target-name">${statusIcon} ${n.name}</div>
+<div class="target-info">OS: ${n.os} | Difficulty: ${diff} | Security: ${n.securityLevel.toFixed(1)}</div>
+<div class="target-info">Status: ${n.relation.toUpperCase()}${isAlly?' (contract active)':''}</div>
+<div class="target-reward">Reward: ~${fmt(r.data)} DATA, ~${fmt(r.cr)} CR, +${r.rep} REP</div>`;
+  btn.disabled=isAlly||hackActive||hackCooldown||downloadActive;
 }
 
-function startHack() {
-  if (!currentTarget || hackActive || hackCooldown || downloadActive) return;
-  const n = currentTarget;
-  if (n.relation === 'ally' && n.allyExpiry > Date.now()) return;
-  hackActive = true;
-  const diff = getEffectiveDifficulty(n);
-  const diffName = DIFFICULTIES[diff];
-  const pool = COMMANDS[n.os][diffName];
-
-  let count;
-  if (diff === 0) count = 3;
-  else if (diff === 1) count = 4;
-  else if (diff === 2) count = 5;
-  else count = n.os === 'Windows' ? 6 : 7;
-
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  hackCmds = shuffled.slice(0, Math.min(count, shuffled.length));
-  hackCmdIndex = 0;
-
-  const avTimes = [60, 45, 30, 20];
-  avTimeMax = avTimes[diff];
-  avTimeLeft = avTimeMax;
-
-  hackTimeLeft = 0;
-  document.getElementById('hack-timer').textContent = '';
-
-  const mg = document.getElementById('hack-minigame');
-  mg.classList.add('active');
-  mg.classList.remove('hack-fail-flash', 'hack-success-flash');
-  document.getElementById('hack-btn').disabled = true;
-  document.getElementById('hack-prompt').textContent = `Hacking ${n.name}... Type each command:`;
+function startHack(){
+  if(!currentTarget||hackActive||hackCooldown||downloadActive)return;
+  const n=currentTarget;if(n.relation==='ally'&&n.allyExpiry>Date.now())return;
+  hackActive=true;
+  // Check IP spoof
+  hackUsedSpoof=false;hackSpoofDecoy=null;
+  if(G.upgrades.ipspoofer&&document.getElementById('spoof-checkbox').checked){
+    const cooldownLeft=G.lastSpoofTime+600000-Date.now();
+    if(cooldownLeft<=0){
+      hackUsedSpoof=true;
+      G.lastSpoofTime=Date.now();
+      const neutrals=G.npcs.filter(x=>x.relation==='neutral'&&x.name!==n.name);
+      if(neutrals.length>0)hackSpoofDecoy=neutrals[Math.floor(Math.random()*neutrals.length)];
+      document.getElementById('spoof-checkbox').checked=false;
+    }
+  }
+  const diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
+  const pool=COMMANDS[n.os][diffName];
+  let count;if(diff===0)count=3;else if(diff===1)count=4;else if(diff===2)count=5;else count=n.os==='Windows'?6:7;
+  const shuffled=[...pool].sort(()=>Math.random()-0.5);
+  hackCmds=shuffled.slice(0,Math.min(count,shuffled.length));hackCmdIndex=0;
+  const avTimes=[60,45,30,20];avTimeMax=avTimes[diff];avTimeLeft=avTimeMax;
+  hackTimeLeft=0;document.getElementById('hack-timer').textContent='';
+  const mg=document.getElementById('hack-minigame');mg.classList.add('active');
+  mg.classList.remove('hack-fail-flash','hack-success-flash');
+  document.getElementById('hack-btn').disabled=true;
+  document.getElementById('hack-prompt').textContent=`Hacking ${n.name}...${hackUsedSpoof&&hackSpoofDecoy?' [SPOOFING as '+hackSpoofDecoy.name+']':''} Type each command:`;
   document.getElementById('hack-result-msg').classList.remove('active');
   document.getElementById('download-screen').classList.remove('active');
-  document.getElementById('hack-commands').style.display = '';
-  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display = '';
+  document.getElementById('hack-commands').style.display='';
+  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='';
   renderHackCmds();
-
-  const input = document.getElementById('hack-input');
-  input.value = '';
-  input.disabled = false;
-  input.focus();
-
-  const avWrap = document.getElementById('av-timer-wrap');
-  avWrap.classList.add('active');
-  updateAvTimerDisplay();
-
-  avTimerInterval = setInterval(() => {
-    avTimeLeft--;
-    updateAvTimerDisplay();
-    if (avTimeLeft <= 0) {
-      clearInterval(avTimerInterval);
-      avTimerInterval = null;
-      failHack('CONNECTION TERMINATED — Antivirus detected intrusion', 20);
-    }
-  }, 1000);
-
-  addLog('Initiating hack on ' + n.name + '...', 'warning');
+  const input=document.getElementById('hack-input');input.value='';input.disabled=false;input.focus();
+  document.getElementById('av-timer-wrap').classList.add('active');updateAvTimerDisplay();
+  avTimerInterval=setInterval(()=>{avTimeLeft--;updateAvTimerDisplay();if(avTimeLeft<=0){clearInterval(avTimerInterval);avTimerInterval=null;failHack('CONNECTION TERMINATED — Antivirus detected intrusion',20);}},1000);
+  addLog('Initiating hack on '+n.name+'...','warning');
 }
 
-function updateAvTimerDisplay() {
-  const label = document.getElementById('av-timer-label');
-  const bar = document.getElementById('av-timer-bar');
-  const pct = avTimeMax > 0 ? (avTimeLeft / avTimeMax) * 100 : 0;
+function updateAvTimerDisplay(){
+  const label=document.getElementById('av-timer-label'),bar=document.getElementById('av-timer-bar');
+  const pct=avTimeMax>0?(avTimeLeft/avTimeMax)*100:0;
+  label.textContent='ANTIVIRUS SCAN: '+avTimeLeft+'s remaining';bar.style.width=pct+'%';
+  if(pct>50){bar.style.background='var(--accent)';label.style.color='var(--accent)';label.classList.remove('critical');}
+  else if(pct>20){bar.style.background='var(--warning)';label.style.color='var(--warning)';label.classList.remove('critical');}
+  else{bar.style.background='var(--danger)';label.style.color='var(--danger)';label.classList.add('critical');}
+}
 
-  label.textContent = 'ANTIVIRUS SCAN: ' + avTimeLeft + 's remaining';
+function renderHackCmds(){const el=document.getElementById('hack-commands');el.innerHTML='';
+hackCmds.forEach((c,i)=>{const wrap=document.createElement('div');wrap.className='cmd-line-wrap';
+const line=document.createElement('div');line.className='cmd-line'+(i<hackCmdIndex?' done':i===hackCmdIndex?' current':'');
+line.textContent=(i<hackCmdIndex?'✓ ':i===hackCmdIndex?'> ':'  ')+c.cmd;
+const tip=document.createElement('div');tip.className='cmd-tooltip';tip.textContent=c.tip;
+wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
 
-  bar.style.width = pct + '%';
-  if (pct > 50) {
-    bar.style.background = 'var(--accent)';
-    label.style.color = 'var(--accent)';
-    label.classList.remove('critical');
-  } else if (pct > 20) {
-    bar.style.background = 'var(--warning)';
-    label.style.color = 'var(--warning)';
-    label.classList.remove('critical');
+function cleanupHackTimers(){if(hackTimerInterval){clearInterval(hackTimerInterval);hackTimerInterval=null;}
+if(avTimerInterval){clearInterval(avTimerInterval);avTimerInterval=null;}
+document.getElementById('av-timer-wrap').classList.remove('active');document.getElementById('av-timer-label').classList.remove('critical');}
+
+function failHack(msg,heatAmount){
+  hackActive=false;cleanupHackTimers();
+  const mg=document.getElementById('hack-minigame'),input=document.getElementById('hack-input'),resultMsg=document.getElementById('hack-result-msg');
+  input.disabled=true;resultMsg.textContent=msg;resultMsg.style.color='var(--danger)';resultMsg.classList.add('active');mg.classList.add('hack-fail-flash');
+  // IP spoof: blame decoy on fail
+  if(hackUsedSpoof&&hackSpoofDecoy){
+    addHeat(0);// no heat for player
+    hackSpoofDecoy.relation='enemy';hackSpoofDecoy.tracerExpiry=Date.now()+600000;
+    addLog('Spoof: '+hackSpoofDecoy.name+' blamed for failed hack (+20 HEAT to them)','warning');
   } else {
-    bar.style.background = 'var(--danger)';
-    label.style.color = 'var(--danger)';
-    label.classList.add('critical');
+    addHeat(heatAmount||15);
   }
+  addLog('HACK FAILED: '+msg,'alert');
+  // Add forensic trace unless spoofing
+  if(!hackUsedSpoof&&currentTarget)addForensicTrace(currentTarget);
+  hackCooldown=true;document.getElementById('hack-btn').disabled=true;
+  setTimeout(()=>{mg.classList.remove('active','hack-fail-flash');resultMsg.classList.remove('active');input.disabled=false;
+  currentTarget=null;renderTarget();setTimeout(()=>{hackCooldown=false;pickTarget();},5000);},1500);
 }
 
-function renderHackCmds() {
-  const el = document.getElementById('hack-commands');
-  el.innerHTML = '';
-  hackCmds.forEach((c, i) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'cmd-line-wrap';
-    const line = document.createElement('div');
-    line.className = 'cmd-line' + (i < hackCmdIndex ? ' done' : i === hackCmdIndex ? ' current' : '');
-    line.textContent = (i < hackCmdIndex ? '✓ ' : i === hackCmdIndex ? '> ' : '  ') + c.cmd;
-    const tip = document.createElement('div');
-    tip.className = 'cmd-tooltip';
-    tip.textContent = c.tip;
-    wrap.appendChild(line);
-    wrap.appendChild(tip);
-    el.appendChild(wrap);
-  });
-}
-
-function cleanupHackTimers() {
-  if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
-  if (avTimerInterval) { clearInterval(avTimerInterval); avTimerInterval = null; }
-  document.getElementById('av-timer-wrap').classList.remove('active');
-  document.getElementById('av-timer-label').classList.remove('critical');
-}
-
-function failHack(msg, heatAmount) {
-  hackActive = false;
-  cleanupHackTimers();
-
-  const mg = document.getElementById('hack-minigame');
-  const input = document.getElementById('hack-input');
-  const resultMsg = document.getElementById('hack-result-msg');
-
-  input.disabled = true;
-
-  resultMsg.textContent = msg;
-  resultMsg.style.color = 'var(--danger)';
-  resultMsg.classList.add('active');
-  mg.classList.add('hack-fail-flash');
-
-  addHeat(heatAmount || 15);
-  addLog('HACK FAILED: ' + msg, 'alert');
-
-  hackCooldown = true;
-  document.getElementById('hack-btn').disabled = true;
-
-  setTimeout(() => {
-    mg.classList.remove('active', 'hack-fail-flash');
-    resultMsg.classList.remove('active');
-    input.disabled = false;
-    currentTarget = null;
-    renderTarget();
-    setTimeout(() => {
-      hackCooldown = false;
-      pickTarget();
-    }, 5000);
-  }, 1500);
-}
-
-// ========== DOWNLOAD SEQUENCE (replaces instant reward) ==========
-function succeedHack() {
-  hackActive = false;
-  cleanupHackTimers();
-
-  const n = currentTarget;
-  const diff = getEffectiveDifficulty(n);
-  const diffName = DIFFICULTIES[diff];
-  const reward = getReward(diffName, n.securityLevel);
-
-  // Store pending reward info for download completion
-  pendingHackReward = reward;
-  pendingHackDiff = diff;
-  pendingHackNpc = n;
-
-  // Hide typing UI, show download screen
-  document.getElementById('hack-commands').style.display = 'none';
-  document.getElementById('hack-input').disabled = true;
-  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display = 'none';
-  document.getElementById('hack-prompt').textContent = '';
+function succeedHack(){
+  hackActive=false;cleanupHackTimers();
+  const n=currentTarget,diff=getEffectiveDifficulty(n),diffName=DIFFICULTIES[diff];
+  const reward=getReward(diffName);
+  pendingHackReward=reward;pendingHackDiff=diff;pendingHackNpc=n;
+  document.getElementById('hack-commands').style.display='none';
+  document.getElementById('hack-input').disabled=true;
+  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='none';
+  document.getElementById('hack-prompt').textContent='';
   document.getElementById('hack-result-msg').classList.remove('active');
-
-  const downloadScreen = document.getElementById('download-screen');
-  downloadScreen.classList.add('active');
-  document.getElementById('download-complete').classList.remove('show');
-  document.getElementById('download-complete').style.display = 'none';
-  document.getElementById('download-abort').style.display = '';
-
-  // Duration based on difficulty: Easy 3s, Medium 6s, Hard 10s, Elite 15s
-  const durations = [3000, 6000, 10000, 15000];
-  downloadDuration = durations[diff];
-  downloadProgress = 0;
-  downloadActive = true;
-
-  const startTime = Date.now();
-  updateDownloadDisplay(0);
-
-  downloadInterval = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    downloadProgress = Math.min(100, (elapsed / downloadDuration) * 100);
-    updateDownloadDisplay(downloadProgress);
-
-    if (downloadProgress >= 100) {
-      clearInterval(downloadInterval);
-      downloadInterval = null;
-      completeDownload(100);
-    }
-  }, 50);
-
-  addLog('Exfiltrating data from ' + n.name + '...', 'info');
+  const ds=document.getElementById('download-screen');ds.classList.add('active');
+  document.getElementById('download-complete').classList.remove('show');document.getElementById('download-complete').style.display='none';
+  document.getElementById('download-abort').style.display='';
+  const durations=[3000,6000,10000,15000];downloadDuration=durations[diff];downloadProgress=0;downloadActive=true;
+  const startTime=Date.now();updateDownloadDisplay(0);
+  downloadInterval=setInterval(()=>{const elapsed=Date.now()-startTime;downloadProgress=Math.min(100,(elapsed/downloadDuration)*100);updateDownloadDisplay(downloadProgress);
+  if(downloadProgress>=100){clearInterval(downloadInterval);downloadInterval=null;completeDownload(100);}},50);
+  addLog('Exfiltrating data from '+n.name+'...','info');
 }
 
-function updateDownloadDisplay(pct) {
-  const filled = Math.floor(pct / 10);
-  const empty = 10 - filled;
-  const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
-  document.getElementById('download-pct').textContent = `[${bar}] ${Math.floor(pct)}%`;
-  document.getElementById('download-bar').style.width = pct + '%';
-}
+function updateDownloadDisplay(pct){const filled=Math.floor(pct/10),empty=10-filled;
+document.getElementById('download-pct').textContent='['+'\u2588'.repeat(filled)+'\u2591'.repeat(empty)+'] '+Math.floor(pct)+'%';
+document.getElementById('download-bar').style.width=pct+'%';}
 
-function abortDownload() {
-  if (!downloadActive) return;
-  if (downloadInterval) { clearInterval(downloadInterval); downloadInterval = null; }
-  const finalPct = downloadProgress;
-  completeDownload(finalPct);
-  addLog('Download aborted at ' + Math.floor(finalPct) + '%', 'warning');
-}
+function abortDownload(){if(!downloadActive)return;if(downloadInterval){clearInterval(downloadInterval);downloadInterval=null;}
+completeDownload(downloadProgress);addLog('Download aborted at '+Math.floor(downloadProgress)+'%','warning');}
 
-function completeDownload(pct) {
-  downloadActive = false;
-  const fraction = pct / 100;
-
-  const reward = pendingHackReward;
-  const diff = pendingHackDiff;
-  const n = pendingHackNpc;
-
-  // Apply partial rewards
-  const dataGain = Math.floor(reward.data * fraction);
-  const crGain = Math.floor(reward.cr * fraction);
-  const repGain = Math.floor(reward.rep * fraction);
-  const heatGain = [5, 10, 20, 35][diff];
-
-  G.data += dataGain;
-  G.credits += crGain;
-  G.rep += repGain;
-  G.totalRep += repGain;
-  G.totalHacks++;
-  addHeat(heatGain);
-
-  n.hackCount++;
-  n.lastHackTime = Date.now();
-  n.lastInteraction = Date.now();
-
-  if (n.hackCount >= 3 && n.relation !== 'enemy') {
-    n.relation = 'enemy';
-    n.tracerExpiry = Date.now() + 600000;
-    addLog('⚠ ' + n.name + ' is now HOSTILE — tracers deployed!', 'alert');
-  }
-
-  if (pct >= 100) {
-    // Full download — show DOWNLOAD COMPLETE flash then loot
-    document.getElementById('download-abort').style.display = 'none';
-    const completeEl = document.getElementById('download-complete');
-    completeEl.style.display = '';
-    completeEl.classList.add('show');
-    addLog('HACK SUCCESS: +' + fmt(dataGain) + ' DATA, +' + fmt(crGain) + ' CR, +' + repGain + ' REP', 'info');
-
-    setTimeout(() => {
-      closeHackMinigame();
-      generateLoot(reward.data);
-    }, 1200);
+function completeDownload(pct){
+  downloadActive=false;const fraction=pct/100;const reward=pendingHackReward,diff=pendingHackDiff,n=pendingHackNpc;
+  const dataGain=Math.floor(reward.data*fraction),crGain=Math.floor(reward.cr*fraction),repGain=Math.floor(reward.rep*fraction);
+  const heatGain=[5,10,20,35][diff];
+  G.data+=dataGain;G.credits+=crGain;G.rep+=repGain;G.totalRep+=repGain;G.totalHacks++;
+  G.darkWebRep+=5;
+  addHeat(heatGain);n.hackCount++;n.lastHackTime=Date.now();n.lastInteraction=Date.now();
+  if(n.hackCount>=3&&n.relation!=='enemy'){n.relation='enemy';n.tracerExpiry=Date.now()+600000;addLog('⚠ '+n.name+' is now HOSTILE — tracers deployed!','alert');}
+  // Add forensic trace unless spoofing
+  if(!hackUsedSpoof)addForensicTrace(n);
+  if(pct>=100){
+    document.getElementById('download-abort').style.display='none';
+    const ce=document.getElementById('download-complete');ce.style.display='';ce.classList.add('show');
+    addLog('HACK SUCCESS: +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
+    setTimeout(()=>{closeHackMinigame();generateLoot(reward.data);},1200);
   } else {
-    // Partial download — reduced loot chance proportional to pct
-    addLog('PARTIAL EXFIL (' + Math.floor(pct) + '%): +' + fmt(dataGain) + ' DATA, +' + fmt(crGain) + ' CR, +' + repGain + ' REP', 'info');
-
-    setTimeout(() => {
-      closeHackMinigame();
-      // Only generate loot if > 50% downloaded
-      if (pct > 50) {
-        generateLoot(Math.floor(reward.data * fraction));
-      }
-    }, 1000);
+    addLog('PARTIAL EXFIL ('+Math.floor(pct)+'%): +'+fmt(dataGain)+' DATA, +'+fmt(crGain)+' CR, +'+repGain+' REP','info');
+    setTimeout(()=>{closeHackMinigame();if(pct>50)generateLoot(Math.floor(reward.data*fraction));},1000);
   }
 }
 
-function closeHackMinigame() {
-  const mg = document.getElementById('hack-minigame');
-  mg.classList.remove('active', 'hack-fail-flash', 'hack-success-flash');
-  document.getElementById('hack-result-msg').classList.remove('active');
-  document.getElementById('download-screen').classList.remove('active');
-  document.getElementById('hack-input').disabled = false;
-  document.getElementById('hack-commands').style.display = '';
-  document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display = '';
-  document.getElementById('hack-btn').disabled = false;
-  renderTarget();
+function closeHackMinigame(){const mg=document.getElementById('hack-minigame');
+mg.classList.remove('active','hack-fail-flash','hack-success-flash');
+document.getElementById('hack-result-msg').classList.remove('active');document.getElementById('download-screen').classList.remove('active');
+document.getElementById('hack-input').disabled=false;document.getElementById('hack-commands').style.display='';
+document.querySelector('#hack-minigame > div:nth-last-child(3)').style.display='';
+document.getElementById('hack-btn').disabled=false;renderTarget();}
+
+// ========== FORENSIC TRACES ==========
+function addForensicTrace(npc){
+  G.forensicTraces.push({company:npc.name,timestamp:Date.now(),difficulty:getEffectiveDifficulty(npc)});
+  while(G.forensicTraces.length>10)G.forensicTraces.shift();
 }
 
-// ========== LOOT SYSTEM ==========
-let pendingLoot = null;
+function cleanForensicTraces(){
+  if(G.upgrades.logcleaner){G.forensicTraces=[];addLog('Log Cleaner: forensic traces deleted','info');}
+}
 
-function generateLoot(baseDataValue) {
-  const roll = Math.random();
-  let rarity, cumulative = 0;
-  for (const [key, tier] of Object.entries(LOOT_TABLE)) {
-    cumulative += tier.chance;
-    if (roll < cumulative) { rarity = key; break; }
-  }
-  if (!rarity) rarity = 'common';
-
-  const tier = LOOT_TABLE[rarity];
-  const itemName = tier.items[Math.floor(Math.random() * tier.items.length)];
-  const value = Math.max(1, Math.floor(baseDataValue * tier.multi));
-
-  pendingLoot = {
-    name: itemName,
-    rarity: rarity,
-    value: value,
-    acquiredAt: Date.now()
-  };
-
-  // Apply heat bonus for rare+ items
-  if (tier.heatBonus > 0) {
-    addHeat(tier.heatBonus);
-    addLog('Rare data detected — HEAT +' + tier.heatBonus, 'warning');
-  }
-
+// ========== LOOT ==========
+let pendingLoot=null;
+function generateLoot(baseDataValue){
+  const roll=Math.random();let rarity,cum=0;
+  for(const[key,tier]of Object.entries(LOOT_TABLE)){cum+=tier.chance;if(roll<cum){rarity=key;break;}}
+  if(!rarity)rarity='common';
+  const tier=LOOT_TABLE[rarity],itemName=tier.items[Math.floor(Math.random()*tier.items.length)];
+  const value=Math.max(1,Math.floor(baseDataValue*tier.multi));
+  pendingLoot={name:itemName,rarity,value,acquiredAt:Date.now()};
+  if(tier.heatBonus>0){addHeat(tier.heatBonus);addLog('Rare data detected — HEAT +'+tier.heatBonus,'warning');}
   showLootReveal(pendingLoot);
 }
 
-function showLootReveal(loot) {
-  document.getElementById('loot-name').textContent = loot.name;
-  document.getElementById('loot-name').className = 'loot-item-name rarity-' + loot.rarity;
-
-  const badge = document.getElementById('loot-badge');
-  badge.textContent = loot.rarity.toUpperCase();
-  badge.className = 'rarity-badge ' + loot.rarity;
-
-  document.getElementById('loot-value').textContent = 'Estimated value: ' + fmt(loot.value) + ' DATA';
-  document.getElementById('loot-title').style.color = getRarityColor(loot.rarity);
-
-  // Show/hide auction button based on Dark Web Access
-  const auctionBtn = document.getElementById('loot-auction');
-  auctionBtn.className = 'loot-btn' + (G.upgrades.darkweb ? '' : ' hidden');
-
+function showLootReveal(loot){
+  document.getElementById('loot-name').textContent=loot.name;
+  document.getElementById('loot-name').className='loot-item-name rarity-'+loot.rarity;
+  const badge=document.getElementById('loot-badge');badge.textContent=loot.rarity.toUpperCase();badge.className='rarity-badge '+loot.rarity;
+  document.getElementById('loot-value').textContent='Estimated value: '+fmt(loot.value)+' DATA';
+  document.getElementById('loot-title').style.color=getRarityColor(loot.rarity);
+  document.getElementById('loot-auction').className='loot-btn'+(G.upgrades.darkweb?'':' hidden');
   document.getElementById('loot-overlay').classList.add('active');
 }
 
-function getRarityColor(rarity) {
-  const colors = {common:'#999', rare:'#4a9eff', epic:'#b44aff', legendary:'#ff8c00'};
-  return colors[rarity] || '#999';
-}
+function getRarityColor(r){return{common:'#999',rare:'#4a9eff',epic:'#b44aff',legendary:'#ff8c00'}[r]||'#999';}
 
-function lootSellNow() {
-  if (!pendingLoot) return;
-  G.data += pendingLoot.value;
-  addLog('Sold ' + pendingLoot.name + ' for ' + fmt(pendingLoot.value) + ' DATA', 'info');
-  pendingLoot = null;
-  document.getElementById('loot-overlay').classList.remove('active');
-}
+function lootSellNow(){if(!pendingLoot)return;G.data+=pendingLoot.value;addLog('Sold '+pendingLoot.name+' for '+fmt(pendingLoot.value)+' DATA','info');pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');}
 
-function lootPutOnMarket() {
-  if (!pendingLoot || !G.upgrades.darkweb) return;
+function lootPutOnMarket(){if(!pendingLoot||!G.upgrades.darkweb)return;
+if(G.lootInventory.length>=10){G.data+=pendingLoot.value;addLog('Inventory full! Auto-sold '+pendingLoot.name,'warning');}
+else{G.lootInventory.push(pendingLoot);addLog(pendingLoot.name+' added to inventory','info');}
+pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');}
 
-  if (G.lootInventory.length >= 10) {
-    // Inventory full — force sell
-    G.data += pendingLoot.value;
-    addLog('Inventory full! Auto-sold ' + pendingLoot.name + ' for ' + fmt(pendingLoot.value) + ' DATA', 'warning');
-  } else {
-    G.lootInventory.push(pendingLoot);
-    addLog(pendingLoot.name + ' added to market inventory', 'info');
-  }
-  pendingLoot = null;
-  document.getElementById('loot-overlay').classList.remove('active');
-}
+// ========== BLACK MARKET ==========
+function openBlackMarket(){if(!G.upgrades.darkweb)return;document.getElementById('bmarket-overlay').classList.add('active');renderBlackMarket();}
+function closeBlackMarket(){document.getElementById('bmarket-overlay').classList.remove('active');}
 
-// ========== BLACK MARKET (AUCTIONS) ==========
-function openBlackMarket() {
-  if (!G.upgrades.darkweb) return;
-  document.getElementById('bmarket-overlay').classList.add('active');
-  renderBlackMarket();
-}
-
-function closeBlackMarket() {
-  document.getElementById('bmarket-overlay').classList.remove('active');
-}
-
-function switchBMarketTab(tab) {
-  document.querySelectorAll('.bmarket-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.bmarket-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('bmarket-' + tab).classList.add('active');
+function switchBMarketTab(tab){
+  document.querySelectorAll('.bmarket-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bmarket-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('bmarket-'+tab).classList.add('active');
   document.querySelector(`.bmarket-tab[onclick="switchBMarketTab('${tab}')"]`).classList.add('active');
   renderBlackMarket();
 }
 
-function renderBlackMarket() {
-  // Inventory tab
-  const invEl = document.getElementById('bmarket-inventory');
-  if (G.lootInventory.length === 0) {
-    invEl.innerHTML = '<div class="bmarket-empty">No items in inventory</div>';
-  } else {
-    invEl.innerHTML = '';
-    G.lootInventory.forEach((item, i) => {
-      const div = document.createElement('div');
-      div.className = 'bmarket-item';
-      div.innerHTML = `<div class="bmarket-item-info">
-          <div class="bmarket-item-name rarity-${item.rarity}">${item.name} <span class="rarity-badge ${item.rarity}" style="font-size:0.6em">${item.rarity.toUpperCase()}</span></div>
-          <div class="bmarket-item-value">Value: ${fmt(item.value)} DATA</div>
-        </div>
-        <div class="bmarket-item-actions">
-          <button class="bm-btn bm-sell" onclick="bmarketSell(${i})">SELL</button>
-          <button class="bm-btn bm-auction" onclick="bmarketStartAuction(${i})">AUCTION</button>
-        </div>`;
-      invEl.appendChild(div);
-    });
-  }
-
-  // Auctions tab
-  const aucEl = document.getElementById('bmarket-auctions');
-  if (G.activeAuctions.length === 0) {
-    aucEl.innerHTML = '<div class="bmarket-empty">No active auctions</div>';
-  } else {
-    aucEl.innerHTML = '';
-    const now = Date.now();
-    G.activeAuctions.forEach((auc, i) => {
-      const remaining = Math.max(0, Math.ceil((auc.endTime - now) / 1000));
-      const mins = Math.floor(remaining / 60);
-      const secs = remaining % 60;
-      const div = document.createElement('div');
-      div.className = 'bmarket-item';
-      div.innerHTML = `<div class="bmarket-item-info">
-          <div class="bmarket-item-name rarity-${auc.rarity}">${auc.name} <span class="rarity-badge ${auc.rarity}" style="font-size:0.6em">${auc.rarity.toUpperCase()}</span></div>
-          <div class="auction-info">
-            <span class="auction-bid">Current bid: ${fmt(auc.currentBid)} DATA</span> |
-            <span class="auction-time">${mins}m ${secs}s remaining</span>
-          </div>
-        </div>
-        <div class="bmarket-item-actions">
-          <button class="bm-btn bm-cancel" onclick="bmarketCancelAuction(${i})">CANCEL</button>
-        </div>`;
-      aucEl.appendChild(div);
-    });
-  }
+function renderBlackMarket(){
+  const invEl=document.getElementById('bmarket-inventory');
+  if(G.lootInventory.length===0)invEl.innerHTML='<div class="bmarket-empty">No items in inventory</div>';
+  else{invEl.innerHTML='';G.lootInventory.forEach((item,i)=>{const div=document.createElement('div');div.className='bmarket-item';
+  div.innerHTML=`<div class="bmarket-item-info"><div class="bmarket-item-name rarity-${item.rarity}">${item.name} <span class="rarity-badge ${item.rarity}" style="font-size:0.6em">${item.rarity.toUpperCase()}</span></div>
+  <div class="bmarket-item-value">Value: ${fmt(item.value)} DATA</div></div>
+  <div class="bmarket-item-actions"><button class="bm-btn bm-sell" onclick="bmarketSell(${i})">SELL</button><button class="bm-btn bm-auction" onclick="bmarketStartAuction(${i})">AUCTION</button></div>`;
+  invEl.appendChild(div);});}
+  const aucEl=document.getElementById('bmarket-auctions');
+  if(G.activeAuctions.length===0)aucEl.innerHTML='<div class="bmarket-empty">No active auctions</div>';
+  else{aucEl.innerHTML='';const now=Date.now();G.activeAuctions.forEach((auc,i)=>{const remaining=Math.max(0,Math.ceil((auc.endTime-now)/1000));
+  const div=document.createElement('div');div.className='bmarket-item';
+  div.innerHTML=`<div class="bmarket-item-info"><div class="bmarket-item-name rarity-${auc.rarity}">${auc.name} <span class="rarity-badge ${auc.rarity}" style="font-size:0.6em">${auc.rarity.toUpperCase()}</span></div>
+  <div class="auction-info"><span class="auction-bid">Current bid: ${fmt(auc.currentBid)} DATA</span> | <span class="auction-time">${Math.floor(remaining/60)}m ${remaining%60}s</span></div></div>
+  <div class="bmarket-item-actions"><button class="bm-btn bm-cancel" onclick="bmarketCancelAuction(${i})">CANCEL</button></div>`;
+  aucEl.appendChild(div);});}
 }
 
-function bmarketSell(index) {
-  if (index < 0 || index >= G.lootInventory.length) return;
-  const item = G.lootInventory.splice(index, 1)[0];
-  G.data += item.value;
-  addLog('Sold ' + item.name + ' for ' + fmt(item.value) + ' DATA', 'info');
-  renderBlackMarket();
-}
+function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;addLog('Sold '+item.name+' for '+fmt(item.value)+' DATA','info');renderBlackMarket();}
 
-function bmarketStartAuction(index) {
-  if (index < 0 || index >= G.lootInventory.length) return;
-  const item = G.lootInventory.splice(index, 1)[0];
-  const duration = (AUCTION_DURATIONS[item.rarity] || 180) * 1000;
-  G.activeAuctions.push({
-    name: item.name,
-    rarity: item.rarity,
-    value: item.value,
-    currentBid: item.value,
-    startTime: Date.now(),
-    endTime: Date.now() + duration,
-    lastBidTime: Date.now()
-  });
-  addLog('Auction started for ' + item.name, 'info');
-  renderBlackMarket();
-}
+function bmarketStartAuction(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];
+const duration=(AUCTION_DURATIONS[item.rarity]||180)*1000;
+G.activeAuctions.push({name:item.name,rarity:item.rarity,value:item.value,currentBid:item.value,startTime:Date.now(),endTime:Date.now()+duration,lastBidTime:Date.now()});
+addLog('Auction started for '+item.name,'info');renderBlackMarket();}
 
-function bmarketCancelAuction(index) {
-  if (index < 0 || index >= G.activeAuctions.length) return;
-  const auc = G.activeAuctions.splice(index, 1)[0];
-  // Return to inventory
-  if (G.lootInventory.length < 10) {
-    G.lootInventory.push({name: auc.name, rarity: auc.rarity, value: auc.value, acquiredAt: Date.now()});
-    addLog('Auction cancelled — ' + auc.name + ' returned to inventory', 'info');
-  } else {
-    // Inventory full, force sell at base value
-    G.data += auc.value;
-    addLog('Auction cancelled — inventory full, sold ' + auc.name + ' for ' + fmt(auc.value) + ' DATA', 'warning');
-  }
-  renderBlackMarket();
-}
+function bmarketCancelAuction(i){if(i<0||i>=G.activeAuctions.length)return;const auc=G.activeAuctions.splice(i,1)[0];
+if(G.lootInventory.length<10){G.lootInventory.push({name:auc.name,rarity:auc.rarity,value:auc.value,acquiredAt:Date.now()});addLog('Auction cancelled — '+auc.name+' returned','info');}
+else{G.data+=auc.value;addLog('Auction cancelled — inventory full, sold for '+fmt(auc.value)+' DATA','warning');}
+renderBlackMarket();}
 
-function updateAuctions() {
-  if (G.activeAuctions.length === 0) return;
-  const now = Date.now();
-  const completed = [];
-
-  G.activeAuctions.forEach((auc, i) => {
-    // NPC bidding every 30s
-    if (now - auc.lastBidTime >= 30000 && now < auc.endTime) {
-      const bidIncrease = 1 + (0.1 + Math.random() * 0.2); // +10-30%
-      auc.currentBid = Math.floor(auc.currentBid * bidIncrease);
-      auc.lastBidTime = now;
-    }
-
-    // Epic/Legendary: +HEAT every minute while active
-    if ((auc.rarity === 'epic' || auc.rarity === 'legendary') && now < auc.endTime) {
-      // Check if a minute has passed (called every second from slowLoop)
-      // We add tiny heat each call to simulate continuous monitoring
-      addHeat(0.017); // ~1 HEAT/min
-    }
-
-    // Check if auction ended
-    if (now >= auc.endTime) {
-      completed.push(i);
-    }
-  });
-
-  // Process completed auctions (reverse order to maintain indices)
-  for (let i = completed.length - 1; i >= 0; i--) {
-    const idx = completed[i];
-    const auc = G.activeAuctions.splice(idx, 1)[0];
-    G.data += auc.currentBid;
-    addLog('AUCTION CLOSED — Sold ' + auc.name + ' for ' + fmt(auc.currentBid) + ' DATA', 'info');
-  }
-
-  // Re-render if market is open
-  if (document.getElementById('bmarket-overlay').classList.contains('active')) {
-    renderBlackMarket();
-  }
-}
+function updateAuctions(){if(G.activeAuctions.length===0)return;const now=Date.now();const completed=[];
+G.activeAuctions.forEach((auc,i)=>{
+  if(now-auc.lastBidTime>=30000&&now<auc.endTime){auc.currentBid=Math.floor(auc.currentBid*(1+0.1+Math.random()*0.2));auc.lastBidTime=now;}
+  if((auc.rarity==='epic'||auc.rarity==='legendary')&&now<auc.endTime)addHeat(0.017);
+  if(now>=auc.endTime)completed.push(i);
+});
+for(let i=completed.length-1;i>=0;i--){const auc=G.activeAuctions.splice(completed[i],1)[0];G.data+=auc.currentBid;
+G.darkWebRep+=Math.floor(auc.currentBid/100);
+addLog('AUCTION CLOSED — Sold '+auc.name+' for '+fmt(auc.currentBid)+' DATA','info');}
+if(document.getElementById('bmarket-overlay').classList.contains('active'))renderBlackMarket();}
 
 // ========== HACK INPUT ==========
-document.getElementById('hack-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && hackActive) {
-    const input = e.target;
-    const typed = input.value.trim();
-    const expected = hackCmds[hackCmdIndex].cmd;
-    if (typed.toLowerCase() === expected.toLowerCase()) {
-      hackCmdIndex++;
-      input.value = '';
-      if (hackCmdIndex >= hackCmds.length) {
-        succeedHack();
-      } else {
-        renderHackCmds();
-      }
-    } else {
-      input.value = '';
-      const lines = document.querySelectorAll('.cmd-line');
-      if (lines[hackCmdIndex]) lines[hackCmdIndex].classList.add('failed');
-      failHack('INTRUSION DETECTED — Wrong command signature', 15);
-    }
-  }
+document.getElementById('hack-input').addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'&&hackActive){const input=e.target,typed=input.value.trim(),expected=hackCmds[hackCmdIndex].cmd;
+  if(typed.toLowerCase()===expected.toLowerCase()){hackCmdIndex++;input.value='';if(hackCmdIndex>=hackCmds.length)succeedHack();else renderHackCmds();}
+  else{input.value='';const lines=document.querySelectorAll('.cmd-line');if(lines[hackCmdIndex])lines[hackCmdIndex].classList.add('failed');failHack('INTRUSION DETECTED — Wrong command signature',15);}}
 });
-
-document.getElementById('hack-btn').addEventListener('click', startHack);
+document.getElementById('hack-btn').addEventListener('click',startHack);
 
 // ========== HEAT ==========
-function addHeat(amount) {
-  let mult = 1;
-  if (G.upgrades.vpn) mult = 0.5;
-  G.heat = Math.min(100, G.heat + amount * mult);
-  if (G.heat >= 100) triggerRaid();
-}
+function addHeat(amount){let mult=1;if(G.upgrades.vpn)mult=0.5;G.heat=Math.min(100,G.heat+amount*mult);if(G.heat>=100)triggerRaid();}
 
-function triggerRaid() {
-  const lossPercent = G.upgrades.legal ? 0.1 : 0.3;
-  const lost = Math.floor(G.data * lossPercent);
-  G.data -= lost;
-  G.heat = 0;
-  addLog('🚨 RAID! Lost ' + fmt(lost) + ' DATA! (' + (lossPercent * 100) + '% penalty)', 'alert');
-  document.body.classList.add('raid-flash');
-  setTimeout(() => document.body.classList.remove('raid-flash'), 1000);
-}
+function triggerRaid(){const lossPercent=G.upgrades.legal?0.1:0.3;const lost=Math.floor(G.data*lossPercent);G.data-=lost;G.heat=0;
+addLog('🚨 RAID! Lost '+fmt(lost)+' DATA! ('+(lossPercent*100)+'% penalty)','alert');
+document.body.classList.add('raid-flash');setTimeout(()=>document.body.classList.remove('raid-flash'),1000);}
 
 // ========== NPC BEHAVIOR ==========
-function updateNPCs() {
-  if (!G.npcs) return;
-  const now = Date.now();
+function updateNPCs(){if(!G.npcs)return;const now=Date.now();
+G.npcs.forEach(npc=>{npc.securityLevel=Math.min(10,npc.securityLevel+0.02/60);
+if(npc.relation==='enemy'&&npc.tracerExpiry>now){G.heat=Math.min(100,G.heat+(0.5/60));if(G.heat>=100)triggerRaid();}
+if(npc.relation==='ally'&&npc.allyExpiry>0&&npc.allyExpiry<now){npc.relation='neutral';addLog(npc.name+' contract expired');}});}
 
-  G.npcs.forEach(npc => {
-    npc.securityLevel = Math.min(10, npc.securityLevel + 0.02 / 60);
+function checkAllianceProposals(){if(!G.npcs)return;const now=Date.now();
+const neutrals=G.npcs.filter(n=>n.relation==='neutral'&&(now-n.lastInteraction)>600000);if(neutrals.length===0)return;
+const npc=neutrals[Math.floor(Math.random()*neutrals.length)];npc.lastInteraction=now;
+const area=document.getElementById('contract-area');if(!area)return;
+const div=document.createElement('div');div.className='contract-notif';
+div.innerHTML=`🤝 ${npc.name} offers alliance (+2 CR/s for 5 min) <button onclick="acceptContract('${npc.name}',this.parentElement)">[ ACCEPT ]</button>`;
+area.appendChild(div);addLog('🤝 '+npc.name+' offers a contract','info');setTimeout(()=>{if(div.parentElement)div.remove();},30000);}
 
-    if (npc.relation === 'enemy' && npc.tracerExpiry > now) {
-      G.heat = Math.min(100, G.heat + (0.5 / 60));
-      if (G.heat >= 100) triggerRaid();
-    }
+function acceptContract(name,el){const npc=G.npcs.find(n=>n.name===name);if(!npc)return;
+npc.relation='ally';npc.allyExpiry=Date.now()+300000;npc.lastInteraction=Date.now();if(el)el.remove();
+addLog('✓ Alliance with '+name+' — +2 CR/s for 5 min','info');renderTarget();}
 
-    if (npc.relation === 'ally' && npc.allyExpiry > 0 && npc.allyExpiry < now) {
-      npc.relation = 'neutral';
-      addLog(npc.name + ' contract expired — now neutral');
-    }
-  });
+function randomNPCEvent(){if(!G.npcs)return;const npc=G.npcs[Math.floor(Math.random()*G.npcs.length)];
+const events=[
+{msg:`⚡ ${npc.name} patched — difficulty +1`,fn:()=>{npc.securityLevel=Math.min(10,npc.securityLevel+1);}},
+{msg:`🔓 ${npc.name} breach — reward x2 for 3 min`,fn:()=>{npc.breachExpiry=Date.now()+180000;npc.breachMulti=2;}},
+{msg:`⚔️ ${npc.name} offensive — HEAT +10`,fn:()=>{addHeat(10);}},
+{msg:`🤝 ${npc.name} seeks partner`,fn:()=>{checkAllianceProposals();}},
+{msg:`💀 ${npc.name} hacked — security -1`,fn:()=>{npc.securityLevel=Math.max(1,npc.securityLevel-1);}}
+];const ev=events[Math.floor(Math.random()*events.length)];ev.fn();addLog(ev.msg,'warning');}
+
+// ========== MARKET ==========
+function openMarket(){if(!G.upgrades.darkweb)return;document.getElementById('market-overlay').classList.add('active');
+const slider=document.getElementById('market-slider');slider.max=Math.floor(G.data/10)*10;slider.value=0;updateMarketDisplay();}
+function closeMarket(){document.getElementById('market-overlay').classList.remove('active');}
+function updateMarketDisplay(){const v=parseInt(document.getElementById('market-slider').value);
+document.getElementById('market-amount').textContent=fmt(v)+' DATA → '+fmt(Math.floor(v/10))+' CREDITS';}
+function sellData(){const v=parseInt(document.getElementById('market-slider').value);if(v<=0||G.data<v)return;
+G.data-=v;G.credits+=Math.floor(v/10);addHeat(10);addLog('Dark Web: sold '+fmt(v)+' DATA for '+fmt(Math.floor(v/10))+' CR (+10 HEAT)','warning');closeMarket();}
+
+// ========== CORP ID ==========
+function openCorpID(){
+  const body=document.getElementById('corpid-body');
+  const trace=getTraceability();
+  const dwStatus=getDarkWebStatus();
+  const dispIP=G.upgrades.vpn?'10.0.x.x [VPN]':G.playerIP;
+  let protections='';
+  const prots=[{id:'vpn',name:'VPN Pro'},{id:'firewallv1',name:'Firewall v1'},{id:'firewallv2',name:'Firewall v2'},{id:'shell',name:'Shell Company'},{id:'vpnchain2',name:'VPN Chain x2'},{id:'vpnchain3',name:'VPN Chain x3'},{id:'ipspoofer',name:'IP Spoofer'},{id:'logcleaner',name:'Log Cleaner'}];
+  prots.forEach(p=>{const owned=!!G.upgrades[p.id];protections+=`<div class="corpid-prot"><span class="${owned?'prot-active':'prot-inactive'}">[${owned?'ACTIVE':'INACTIVE'}]</span> ${p.name}</div>`;});
+  let traceColor=trace<30?'var(--accent)':trace<70?'var(--warning)':'var(--danger)';
+  body.innerHTML=`
+<div class="corpid-row"><span class="corpid-label">Company</span><span class="corpid-value">ByteCorp</span></div>
+<div class="corpid-row"><span class="corpid-label">Operator</span><span class="corpid-value">${G.operatorAlias}</span></div>
+<div class="corpid-row"><span class="corpid-label">Your IP</span><span class="corpid-value${G.upgrades.vpn?' vpn':''}">${dispIP}</span></div>
+<div class="corpid-row"><span class="corpid-label">Forensic Traces</span><span class="corpid-value">${G.forensicTraces.length}/10</span></div>
+<div style="margin-top:8px;font-size:0.7em;color:#666;letter-spacing:1px">PROTECTIONS</div>
+${protections}
+<div id="corpid-trace-wrap"><div id="corpid-trace-label">TRACEABILITY</div>
+<div id="corpid-trace-bar-bg"><div id="corpid-trace-bar" style="width:${trace}%;background:${traceColor}"></div></div>
+<div id="corpid-trace-pct" style="color:${traceColor}">${trace}%</div></div>
+<div class="corpid-dwrep"><span class="corpid-label">Dark Web Status: </span><span class="dwrep-status" style="color:${dwStatus==='LEGENDARY'?'#ff8c00':dwStatus==='FEARED'?'#b44aff':dwStatus==='NOTICED'?'#4a9eff':'#666'}">${dwStatus}</span> (${Math.floor(G.darkWebRep)} rep)</div>`;
+  // Show CHANGE IP button if usurpation active
+  document.getElementById('corpid-changeip').style.display=G.usurpationActive?'block':'none';
+  document.getElementById('corpid-overlay').classList.add('active');
 }
 
-function checkAllianceProposals() {
-  if (!G.npcs) return;
-  const now = Date.now();
-  const neutrals = G.npcs.filter(n => n.relation === 'neutral' && (now - n.lastInteraction) > 600000);
-  if (neutrals.length === 0) return;
-  const npc = neutrals[Math.floor(Math.random() * neutrals.length)];
-  npc.lastInteraction = now;
+function closeCorpID(){document.getElementById('corpid-overlay').classList.remove('active');}
 
-  const area = document.getElementById('contract-area');
-  if (!area) return;
-  const div = document.createElement('div');
-  div.className = 'contract-notif';
-  div.innerHTML = `🤝 ${npc.name} offers an alliance contract (+2 CR/s for 5 min) <button onclick="acceptContract('${npc.name}', this.parentElement)">[ ACCEPT ]</button>`;
-  area.appendChild(div);
-  addLog('🤝 ' + npc.name + ' offers a contract', 'info');
-
-  setTimeout(() => { if (div.parentElement) div.remove(); }, 30000);
+function changeIP(){
+  if(G.data<200)return;
+  G.data-=200;G.playerIP=generateIP();
+  G.usurpationActive=false;G.usurpationExpiry=0;
+  addLog('IP changed to '+G.playerIP+' — usurpation stopped','info');
+  closeCorpID();openCorpID();
 }
 
-function acceptContract(name, el) {
-  const npc = G.npcs.find(n => n.name === name);
-  if (!npc) return;
-  npc.relation = 'ally';
-  npc.allyExpiry = Date.now() + 300000;
-  npc.lastInteraction = Date.now();
-  if (el) el.remove();
-  addLog('✓ Alliance with ' + name + ' — +2 CR/s for 5 min', 'info');
-  renderTarget();
+// ========== DEFENSE SYSTEM ==========
+let defenseActive=false,defenseTimer=null,defenseTimeLeft=30,defenseAttacker=null,defenseDifficulty=0,defenseDataRisk=0;
+let lastNpcAttackTime=0,lastEnemyAttackTime=0;
+let defenseGameActive=false,defenseCmds=[],defenseCmdIndex=0,defenseGameTimer=null,defenseGameTimeLeft=0;
+
+function getAutoDefenseChance(){let c=30;if(G.upgrades.vpn)c+=20;if(G.upgrades.firewallv1)c+=20;if(G.upgrades.firewallv2)c+=20;if(G.upgrades.shell)c+=10;return Math.min(90,c);}
+
+function checkIncomingAttacks(){
+  if(!gameRunning||defenseActive||defenseGameActive||ddosActive)return;if(!G.npcs)return;
+  const now=Date.now();const trace=getTraceability();
+  // Forensic trace effect: more attacks if high trace + many traces
+  let attackChanceMod=1;
+  if(trace>70&&G.forensicTraces.length>3)attackChanceMod=0.5;// halve interval = more attacks
+
+  let npcInterval;if(G.heat<30)npcInterval=600000;else if(G.heat<70)npcInterval=300000;else npcInterval=120000;
+  npcInterval*=attackChanceMod;
+  // Log cleaner reduces targeted attack chance by 30%
+  if(G.upgrades.logcleaner)npcInterval/=0.7;
+
+  if(now-lastNpcAttackTime>=npcInterval){lastNpcAttackTime=now;
+  const attackers=G.npcs.filter(n=>n.relation!=='ally');
+  if(attackers.length>0){triggerIncomingAttack(attackers[Math.floor(Math.random()*attackers.length)]);return;}}
+
+  if(now-lastEnemyAttackTime>=180000){const enemies=G.npcs.filter(n=>n.relation==='enemy');
+  if(enemies.length>0){lastEnemyAttackTime=now;triggerIncomingAttack(enemies[Math.floor(Math.random()*enemies.length)]);}}
 }
 
-function randomNPCEvent() {
-  if (!G.npcs) return;
-  const npc = G.npcs[Math.floor(Math.random() * G.npcs.length)];
-  const events = [
-    { msg: `⚡ ${npc.name} patched a critical flaw — difficulty +1`, fn: () => { npc.securityLevel = Math.min(10, npc.securityLevel + 1); }},
-    { msg: `🔓 ${npc.name} has a breach — reward x2 for 3 min`, fn: () => { npc.breachExpiry = Date.now() + 180000; npc.breachMulti = 2; }},
-    { msg: `⚔️ ${npc.name} launches an offensive — your HEAT +10`, fn: () => { addHeat(10); }},
-    { msg: `🤝 ${npc.name} seeks a discreet partner — contract available`, fn: () => { checkAllianceProposals(); }},
-    { msg: `💀 ${npc.name} was hacked by a competitor — security -1`, fn: () => { npc.securityLevel = Math.max(1, npc.securityLevel - 1); }}
-  ];
-  const ev = events[Math.floor(Math.random() * events.length)];
-  ev.fn();
-  addLog(ev.msg, 'warning');
+function triggerIncomingAttack(npc){
+  if(defenseActive||defenseGameActive)return;defenseActive=true;defenseAttacker=npc;
+  defenseDifficulty=Math.min(3,npc.baseDifficulty+(npc.relation==='enemy'?1:0));
+  defenseDataRisk=[5,15,25,40][defenseDifficulty];
+  document.getElementById('defense-skull').textContent=`    ░░░░░░░░░░░░░\n    ░░▄███████▄░░\n    ░██░░░░░░░██░\n    ░██░█░░░█░██░\n    ░░██░░░░░██░░\n    ░░░██████░░░░\n    ░░░██░░██░░░░`;
+  document.getElementById('defense-title').textContent='⚠ INTRUSION DETECTED';
+  document.getElementById('defense-attacker').textContent=npc.name+' is attempting to breach your systems';
+  document.getElementById('defense-risk').textContent='Threat: '+DIFFICULTIES[defenseDifficulty]+' | Data at risk: '+defenseDataRisk+'%';
+  defenseTimeLeft=30;document.getElementById('defense-timer-bar').style.width='100%';document.getElementById('defense-timer-text').textContent='30s';
+  document.getElementById('defense-overlay').classList.add('active');addLog('⚠ INCOMING ATTACK from '+npc.name+'!','alert');
+  defenseTimer=setInterval(()=>{defenseTimeLeft--;document.getElementById('defense-timer-bar').style.width=(defenseTimeLeft/30*100)+'%';
+  document.getElementById('defense-timer-text').textContent=defenseTimeLeft+'s';
+  if(defenseTimeLeft<=0){clearInterval(defenseTimer);defenseTimer=null;triggerAutoDefense();}},1000);
 }
 
-// ========== MARKET (DATA EXCHANGE) ==========
-function openMarket() {
-  if (!G.upgrades.darkweb) return;
-  const overlay = document.getElementById('market-overlay');
-  overlay.classList.add('active');
-  const slider = document.getElementById('market-slider');
-  slider.max = Math.floor(G.data / 10) * 10;
-  slider.value = 0;
-  updateMarketDisplay();
-}
+function startManualDefense(){if(!defenseActive)return;if(defenseTimer){clearInterval(defenseTimer);defenseTimer=null;}
+document.getElementById('defense-overlay').classList.remove('active');defenseGameActive=true;
+const pool=DEFENSE_COMMANDS[DIFFICULTIES[defenseDifficulty]];
+let count;if(defenseDifficulty<=1)count=3;else if(defenseDifficulty===2)count=4;else count=Math.min(pool.length,6);
+defenseCmds=[...pool].sort(()=>Math.random()-0.5).slice(0,Math.min(count,pool.length));defenseCmdIndex=0;
+defenseGameTimeLeft=defenseDifficulty===3?25:30;
+document.getElementById('defense-game').classList.add('active');
+document.getElementById('defense-game-timer').textContent='Time: '+defenseGameTimeLeft+'s';
+document.getElementById('defense-game-prompt').textContent='Type defensive commands to block '+defenseAttacker.name+':';
+document.getElementById('defense-result').classList.remove('active');renderDefenseCmds();
+const input=document.getElementById('defense-game-input');input.value='';input.disabled=false;input.focus();
+defenseGameTimer=setInterval(()=>{defenseGameTimeLeft--;document.getElementById('defense-game-timer').textContent='Time: '+defenseGameTimeLeft+'s';
+if(defenseGameTimeLeft<=0){clearInterval(defenseGameTimer);defenseGameTimer=null;defenseFailResult();}},1000);}
 
-function closeMarket() {
-  document.getElementById('market-overlay').classList.remove('active');
-}
+function renderDefenseCmds(){const el=document.getElementById('defense-game-commands');el.innerHTML='';
+defenseCmds.forEach((c,i)=>{const wrap=document.createElement('div');wrap.className='cmd-line-wrap';
+const line=document.createElement('div');line.className='cmd-line'+(i<defenseCmdIndex?' done':i===defenseCmdIndex?' current':'');
+line.textContent=(i<defenseCmdIndex?'✓ ':i===defenseCmdIndex?'> ':'  ')+c.cmd;
+const tip=document.createElement('div');tip.className='cmd-tooltip';tip.textContent=c.tip;wrap.appendChild(line);wrap.appendChild(tip);el.appendChild(wrap);});}
 
-function updateMarketDisplay() {
-  const v = parseInt(document.getElementById('market-slider').value);
-  document.getElementById('market-amount').textContent = fmt(v) + ' DATA → ' + fmt(Math.floor(v / 10)) + ' CREDITS';
-}
-
-function sellData() {
-  const v = parseInt(document.getElementById('market-slider').value);
-  if (v <= 0 || G.data < v) return;
-  G.data -= v;
-  G.credits += Math.floor(v / 10);
-  addHeat(10);
-  addLog('Dark Web: sold ' + fmt(v) + ' DATA for ' + fmt(Math.floor(v / 10)) + ' CR (+10 HEAT)', 'warning');
-  closeMarket();
-}
-
-// ========== INCOMING HACK DEFENSE SYSTEM ==========
-let defenseActive = false;
-let defenseTimer = null;
-let defenseTimeLeft = 30;
-let defenseAttacker = null;
-let defenseDifficulty = 0;
-let defenseDataRisk = 0;
-let lastNpcAttackTime = 0;
-let lastEnemyAttackTime = 0;
-
-// Defense minigame state
-let defenseGameActive = false;
-let defenseCmds = [];
-let defenseCmdIndex = 0;
-let defenseGameTimer = null;
-let defenseGameTimeLeft = 0;
-
-function getAutoDefenseChance() {
-  let chance = 30; // base 30%
-  if (G.upgrades.vpn) chance += 20;
-  if (G.upgrades.firewallv1) chance += 20;
-  if (G.upgrades.firewallv2) chance += 20;
-  if (G.upgrades.shell) chance += 10;
-  return Math.min(90, chance);
-}
-
-function checkIncomingAttacks() {
-  if (!gameRunning || defenseActive || defenseGameActive) return;
-  if (!G.npcs) return;
-
-  const now = Date.now();
-
-  // Regular NPC attacks based on heat
-  let npcInterval;
-  if (G.heat < 30) npcInterval = 600000;
-  else if (G.heat < 70) npcInterval = 300000;
-  else npcInterval = 120000;
-
-  if (now - lastNpcAttackTime >= npcInterval) {
-    lastNpcAttackTime = now;
-    // Pick a random NPC attacker
-    const attackers = G.npcs.filter(n => n.relation !== 'ally');
-    if (attackers.length > 0) {
-      const attacker = attackers[Math.floor(Math.random() * attackers.length)];
-      triggerIncomingAttack(attacker);
-      return;
-    }
-  }
-
-  // Enemy companies attack every 180s independently
-  if (now - lastEnemyAttackTime >= 180000) {
-    const enemies = G.npcs.filter(n => n.relation === 'enemy');
-    if (enemies.length > 0) {
-      lastEnemyAttackTime = now;
-      const attacker = enemies[Math.floor(Math.random() * enemies.length)];
-      triggerIncomingAttack(attacker);
-    }
-  }
-}
-
-function triggerIncomingAttack(npc) {
-  if (defenseActive || defenseGameActive) return;
-  defenseActive = true;
-  defenseAttacker = npc;
-
-  // Determine difficulty based on NPC
-  defenseDifficulty = Math.min(3, npc.baseDifficulty + (npc.relation === 'enemy' ? 1 : 0));
-  const diffName = DIFFICULTIES[defenseDifficulty];
-
-  // Data at risk
-  const riskPcts = [5, 15, 25, 40];
-  defenseDataRisk = riskPcts[defenseDifficulty];
-
-  // Show alert overlay
-  const skull = `    ░░░░░░░░░░░░░
-    ░░▄███████▄░░
-    ░██░░░░░░░██░
-    ░██░█░░░█░██░
-    ░░██░░░░░██░░
-    ░░░██████░░░░
-    ░░░██░░██░░░░`;
-
-  document.getElementById('defense-skull').textContent = skull;
-  document.getElementById('defense-title').textContent = '⚠ INTRUSION DETECTED';
-  document.getElementById('defense-attacker').textContent = npc.name + ' is attempting to breach your systems';
-  document.getElementById('defense-risk').textContent = 'Threat: ' + diffName + ' | Data at risk: ' + defenseDataRisk + '%';
-
-  defenseTimeLeft = 30;
-  document.getElementById('defense-timer-bar').style.width = '100%';
-  document.getElementById('defense-timer-text').textContent = '30s';
-  document.getElementById('defense-overlay').classList.add('active');
-
-  addLog('⚠ INCOMING ATTACK from ' + npc.name + '!', 'alert');
-
-  defenseTimer = setInterval(() => {
-    defenseTimeLeft--;
-    const pct = (defenseTimeLeft / 30) * 100;
-    document.getElementById('defense-timer-bar').style.width = pct + '%';
-    document.getElementById('defense-timer-text').textContent = defenseTimeLeft + 's';
-
-    if (defenseTimeLeft <= 0) {
-      clearInterval(defenseTimer);
-      defenseTimer = null;
-      // Auto-defend on timeout
-      triggerAutoDefense();
-    }
-  }, 1000);
-}
-
-function startManualDefense() {
-  if (!defenseActive) return;
-
-  // Stop the alert timer
-  if (defenseTimer) { clearInterval(defenseTimer); defenseTimer = null; }
-  document.getElementById('defense-overlay').classList.remove('active');
-
-  // Start defense minigame
-  defenseGameActive = true;
-  const diffName = DIFFICULTIES[defenseDifficulty];
-  const pool = DEFENSE_COMMANDS[diffName];
-
-  let count;
-  if (defenseDifficulty === 0) count = 3;
-  else if (defenseDifficulty === 1) count = 3;
-  else if (defenseDifficulty === 2) count = 4;
-  else count = Math.min(pool.length, 6); // Elite: 5-6 commands
-
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  defenseCmds = shuffled.slice(0, Math.min(count, shuffled.length));
-  defenseCmdIndex = 0;
-
-  // Timer: Elite = 25s, others = 30s
-  defenseGameTimeLeft = defenseDifficulty === 3 ? 25 : 30;
-
-  document.getElementById('defense-game').classList.add('active');
-  document.getElementById('defense-game-timer').textContent = 'Time: ' + defenseGameTimeLeft + 's';
-  document.getElementById('defense-game-prompt').textContent = 'Type defensive commands to block ' + defenseAttacker.name + ':';
-  document.getElementById('defense-result').classList.remove('active');
-  renderDefenseCmds();
-
-  const input = document.getElementById('defense-game-input');
-  input.value = '';
-  input.disabled = false;
-  input.focus();
-
-  defenseGameTimer = setInterval(() => {
-    defenseGameTimeLeft--;
-    document.getElementById('defense-game-timer').textContent = 'Time: ' + defenseGameTimeLeft + 's';
-    if (defenseGameTimeLeft <= 0) {
-      clearInterval(defenseGameTimer);
-      defenseGameTimer = null;
-      defenseFailResult();
-    }
-  }, 1000);
-}
-
-function renderDefenseCmds() {
-  const el = document.getElementById('defense-game-commands');
-  el.innerHTML = '';
-  defenseCmds.forEach((c, i) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'cmd-line-wrap';
-    const line = document.createElement('div');
-    line.className = 'cmd-line' + (i < defenseCmdIndex ? ' done' : i === defenseCmdIndex ? ' current' : '');
-    line.textContent = (i < defenseCmdIndex ? '✓ ' : i === defenseCmdIndex ? '> ' : '  ') + c.cmd;
-    const tip = document.createElement('div');
-    tip.className = 'cmd-tooltip';
-    tip.textContent = c.tip;
-    wrap.appendChild(line);
-    wrap.appendChild(tip);
-    el.appendChild(wrap);
-  });
-}
-
-document.getElementById('defense-game-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && defenseGameActive) {
-    const input = e.target;
-    const typed = input.value.trim();
-    const expected = defenseCmds[defenseCmdIndex].cmd;
-
-    if (typed.toLowerCase() === expected.toLowerCase()) {
-      defenseCmdIndex++;
-      input.value = '';
-      if (defenseCmdIndex >= defenseCmds.length) {
-        // Defense success
-        if (defenseGameTimer) { clearInterval(defenseGameTimer); defenseGameTimer = null; }
-        defenseSuccessResult();
-      } else {
-        renderDefenseCmds();
-      }
-    } else {
-      // Wrong command = immediate failure
-      input.value = '';
-      const lines = document.querySelectorAll('#defense-game-commands .cmd-line');
-      if (lines[defenseCmdIndex]) lines[defenseCmdIndex].classList.add('failed');
-      if (defenseGameTimer) { clearInterval(defenseGameTimer); defenseGameTimer = null; }
-      defenseFailResult();
-    }
-  }
+document.getElementById('defense-game-input').addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'&&defenseGameActive){const input=e.target,typed=input.value.trim(),expected=defenseCmds[defenseCmdIndex].cmd;
+  if(typed.toLowerCase()===expected.toLowerCase()){defenseCmdIndex++;input.value='';
+  if(defenseCmdIndex>=defenseCmds.length){if(defenseGameTimer){clearInterval(defenseGameTimer);defenseGameTimer=null;}defenseSuccessResult();}
+  else renderDefenseCmds();}
+  else{input.value='';const lines=document.querySelectorAll('#defense-game-commands .cmd-line');if(lines[defenseCmdIndex])lines[defenseCmdIndex].classList.add('failed');
+  if(defenseGameTimer){clearInterval(defenseGameTimer);defenseGameTimer=null;}defenseFailResult();}}
 });
 
-function defenseSuccessResult() {
-  defenseGameActive = false;
-  const input = document.getElementById('defense-game-input');
-  input.disabled = true;
+function defenseSuccessResult(){defenseGameActive=false;document.getElementById('defense-game-input').disabled=true;
+const repGain=[10,25,50,100][defenseDifficulty];G.rep+=repGain;G.totalRep+=repGain;G.darkWebRep+=20;addHeat(5);
+const result=document.getElementById('defense-result');result.textContent='INTRUSION BLOCKED — +'+repGain+' REP';result.style.color='var(--accent)';result.classList.add('active');
+addLog('DEFENSE SUCCESS: Blocked '+defenseAttacker.name+' +'+repGain+' REP','info');
+// Bounty: count successful manual defenses
+if(G.activeBounty)G.bountyDefenseCount++;
+if(G.activeBounty&&G.bountyDefenseCount>=3){G.activeBounty=false;G.bountyDefenseCount=0;G.darkWebRep+=500;addLog('BOUNTY RESOLVED: Scared off hunter! +500 Dark Web Rep','info');}
+setTimeout(()=>{document.getElementById('defense-game').classList.remove('active');result.classList.remove('active');defenseActive=false;},2000);}
 
-  const repGain = [10, 25, 50, 100][defenseDifficulty];
-  G.rep += repGain;
-  G.totalRep += repGain;
-  addHeat(5);
+function defenseFailResult(){defenseGameActive=false;document.getElementById('defense-game-input').disabled=true;
+const dataLost=Math.floor(G.data*(defenseDataRisk/100));G.data-=dataLost;addHeat(20);
+const result=document.getElementById('defense-result');result.textContent='SYSTEMS BREACHED — Lost '+fmt(dataLost)+' DATA';result.style.color='var(--danger)';result.classList.add('active');
+addLog('DEFENSE FAILED: '+defenseAttacker.name+' stole '+fmt(dataLost)+' DATA','alert');
+setTimeout(()=>{document.getElementById('defense-game').classList.remove('active');result.classList.remove('active');defenseActive=false;},2000);}
 
-  const result = document.getElementById('defense-result');
-  result.textContent = 'INTRUSION BLOCKED — +' + repGain + ' REP';
-  result.style.color = 'var(--accent)';
-  result.classList.add('active');
+function triggerAutoDefense(){if(!defenseActive)return;if(defenseTimer){clearInterval(defenseTimer);defenseTimer=null;}
+document.getElementById('defense-overlay').classList.remove('active');
+const chance=getAutoDefenseChance();
+if(Math.random()*100<chance){const repGain=[10,25,50,100][defenseDifficulty];G.rep+=repGain;G.totalRep+=repGain;addHeat(5);addLog('AUTO-DEFEND SUCCESS ('+chance+'%): Blocked '+defenseAttacker.name+' +'+repGain+' REP','info');}
+else{const dataLost=Math.floor(G.data*(defenseDataRisk/100));G.data-=dataLost;addHeat(20);addLog('AUTO-DEFEND FAILED ('+chance+'%): '+defenseAttacker.name+' stole '+fmt(dataLost)+' DATA','alert');}
+defenseActive=false;}
 
-  addLog('DEFENSE SUCCESS: Blocked ' + defenseAttacker.name + ' +' + repGain + ' REP', 'info');
-
-  setTimeout(() => {
-    document.getElementById('defense-game').classList.remove('active');
-    result.classList.remove('active');
-    defenseActive = false;
-  }, 2000);
+// ========== DDOS SYSTEM ==========
+function checkDDoS(){
+  if(ddosActive||defenseActive||defenseGameActive)return;
+  const now=Date.now();if(now-lastDdosCheck<300000)return;// every 5 min
+  lastDdosCheck=now;
+  if(getTraceability()>70&&Math.random()<0.4){triggerDDoS();}
 }
 
-function defenseFailResult() {
-  defenseGameActive = false;
-  const input = document.getElementById('defense-game-input');
-  input.disabled = true;
-
-  const dataLost = Math.floor(G.data * (defenseDataRisk / 100));
-  G.data -= dataLost;
-  addHeat(20);
-
-  const result = document.getElementById('defense-result');
-  result.textContent = 'SYSTEMS BREACHED — Lost ' + fmt(dataLost) + ' DATA';
-  result.style.color = 'var(--danger)';
-  result.classList.add('active');
-
-  addLog('DEFENSE FAILED: ' + defenseAttacker.name + ' stole ' + fmt(dataLost) + ' DATA', 'alert');
-
-  setTimeout(() => {
-    document.getElementById('defense-game').classList.remove('active');
-    result.classList.remove('active');
-    defenseActive = false;
-  }, 2000);
+function triggerDDoS(){
+  ddosActive=true;ddosBotsOffline=true;ddosOfflineExpiry=Date.now()+60000;
+  ddosTimeLeft=30;
+  document.getElementById('ddos-countdown').textContent='BOTS OFFLINE: 60s — Respond within 30s!';
+  document.getElementById('ddos-overlay').classList.add('active');
+  addLog('⚠ DDOS ATTACK — Bots offline!','alert');
+  ddosTimer=setInterval(()=>{ddosTimeLeft--;
+  document.getElementById('ddos-countdown').textContent='Respond within '+ddosTimeLeft+'s or bots offline for 60s';
+  if(ddosTimeLeft<=0){clearInterval(ddosTimer);ddosTimer=null;closeDDoSOverlay();addLog('DDoS: no response — bots offline for 60s','alert');}},1000);
 }
 
-function triggerAutoDefense() {
-  if (!defenseActive) return;
+function ddosAbsorb(){if(!ddosActive)return;if(G.data<500)return;
+G.data-=500;ddosBotsOffline=false;ddosActive=false;
+if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
+closeDDoSOverlay();addLog('DDoS absorbed — bots back online (-500 DATA)','info');}
 
-  // Stop alert timer if still running
-  if (defenseTimer) { clearInterval(defenseTimer); defenseTimer = null; }
-  document.getElementById('defense-overlay').classList.remove('active');
+function ddosReroute(){if(!ddosActive)return;
+// Must type 2 commands — simplified: just succeed instantly for now
+ddosBotsOffline=false;ddosActive=false;
+if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
+closeDDoSOverlay();addLog('DDoS rerouted — bots back online','info');}
 
-  const chance = getAutoDefenseChance();
-  const roll = Math.random() * 100;
+function closeDDoSOverlay(){document.getElementById('ddos-overlay').classList.remove('active');ddosActive=false;}
 
-  if (roll < chance) {
-    // Auto-defense success
-    const repGain = [10, 25, 50, 100][defenseDifficulty];
-    G.rep += repGain;
-    G.totalRep += repGain;
-    addHeat(5);
-    addLog('AUTO-DEFEND SUCCESS (' + chance + '% chance): Blocked ' + defenseAttacker.name + ' +' + repGain + ' REP', 'info');
-  } else {
-    // Auto-defense failure
-    const dataLost = Math.floor(G.data * (defenseDataRisk / 100));
-    G.data -= dataLost;
-    addHeat(20);
-    addLog('AUTO-DEFEND FAILED (' + chance + '% chance): ' + defenseAttacker.name + ' stole ' + fmt(dataLost) + ' DATA', 'alert');
+function checkDDoSExpiry(){
+  if(ddosBotsOffline&&Date.now()>=ddosOfflineExpiry){ddosBotsOffline=false;addLog('Bots back online after DDoS','info');}
+}
+
+// ========== IP USURPATION ==========
+function checkUsurpation(){
+  if(G.usurpationActive)return;
+  const now=Date.now();if(now-lastUsurpCheck<300000)return;
+  lastUsurpCheck=now;
+  if(getTraceability()>50&&G.npcs){
+    const enemies=G.npcs.filter(n=>n.relation==='enemy');
+    if(enemies.length>0&&Math.random()<0.3){
+      const attacker=enemies[Math.floor(Math.random()*enemies.length)];
+      G.usurpationActive=true;G.usurpationExpiry=Date.now()+180000;G.usurpationCompany=attacker.name;
+      addLog('⚠ '+attacker.name+' is impersonating your IP address!','alert');
+      // Auto-block if IP Spoofer owned
+      if(G.upgrades.ipspoofer){G.usurpationActive=false;G.usurpationExpiry=0;addLog('IP Spoofer auto-blocked usurpation','info');}
+    }
   }
+}
 
-  defenseActive = false;
+function updateUsurpation(){
+  if(!G.usurpationActive)return;
+  if(Date.now()>=G.usurpationExpiry){G.usurpationActive=false;G.usurpationExpiry=0;addLog('IP usurpation expired','info');return;}
+  addHeat(2/60);// +2 HEAT/min
+}
+
+// ========== BOUNTY HUNTER ==========
+function checkBounty(){
+  if(G.activeBounty)return;
+  if(G.darkWebRep>=2000&&!G.activeBounty){
+    G.activeBounty=true;G.bountyDefenseCount=0;
+    addLog('⚠ A bounty has been placed on '+G.operatorAlias+'! Elite hunters incoming.','alert');
+    showBountyOverlay();
+  }
+}
+
+function showBountyOverlay(){
+  document.getElementById('bounty-info').textContent='A bounty has been placed on alias "'+G.operatorAlias+'". Elite hunters will attack every 60s until resolved.';
+  const trace=getTraceability();
+  let status='Defend 3 manual attacks ('+G.bountyDefenseCount+'/3) or pay 10% CREDITS or reduce traceability below 30% (current: '+trace+'%)';
+  document.getElementById('bounty-status').textContent=status;
+  document.getElementById('bounty-overlay').classList.add('active');
+}
+
+function bountyPayOff(){
+  const cost=Math.floor(G.credits*0.1);
+  if(cost<=0){addLog('Not enough CREDITS to pay off bounty','alert');return;}
+  G.credits-=cost;G.activeBounty=false;G.bountyDefenseCount=0;
+  addLog('Paid off bounty hunter — '+fmt(cost)+' CREDITS','info');
+  document.getElementById('bounty-overlay').classList.remove('active');
+}
+
+function bountyGoDark(){
+  if(getTraceability()<30){G.activeBounty=false;G.bountyDefenseCount=0;addLog('Gone dark — bounty dropped','info');document.getElementById('bounty-overlay').classList.remove('active');}
+  else{addLog('Traceability too high to go dark (need <30%)','alert');}
+}
+
+function closeBountyOverlay(){document.getElementById('bounty-overlay').classList.remove('active');}
+
+function bountyAttackCheck(){
+  if(!G.activeBounty||defenseActive||defenseGameActive)return;
+  const now=Date.now();if(now-lastBountyAttack<60000)return;
+  lastBountyAttack=now;
+  // Create a fake "Bounty Hunter" NPC attack at Elite difficulty
+  const fakeNpc={name:'Bounty Hunter',os:'Linux',baseDifficulty:3,securityLevel:5,relation:'enemy',hackCount:0,lastHackTime:0,lastInteraction:0,allyExpiry:0,tracerExpiry:0,breachExpiry:0,breachMulti:1};
+  triggerIncomingAttack(fakeNpc);
 }
 
 // ========== LEVELS ==========
-function updateLevel() {
-  let current = LEVELS[0];
-  for (const l of LEVELS) {
-    if (G.rep >= l.rep) current = l;
-    else break;
-  }
-  const el = document.getElementById('level-info');
-  if (el) el.textContent = 'LVL ' + current.lv + ' — ' + current.title;
-
-  if (current.lv >= 50 && !G._endgameShown) {
-    G._endgameShown = true;
-    document.getElementById('endgame-overlay').classList.add('active');
-  }
-}
+function updateLevel(){let current=LEVELS[0];for(const l of LEVELS){if(G.rep>=l.rep)current=l;else break;}
+const el=document.getElementById('level-info');if(el)el.textContent='LVL '+current.lv+' — '+current.title;
+if(current.lv>=50&&!G._endgameShown){G._endgameShown=true;document.getElementById('endgame-overlay').classList.add('active');}}
 
 // ========== ENDGAME ==========
-function doIPO() {
-  document.getElementById('endgame-overlay').classList.remove('active');
-  document.getElementById('ipo-overlay').classList.add('active');
-  document.getElementById('ipo-stats').innerHTML =
-    `<p class="stat">Total DATA mined: ${fmt(G.totalDataMined)}</p>
-     <p class="stat">Total hacks: ${G.totalHacks}</p>
-     <p class="stat">Total REP: ${fmt(G.totalRep)}</p>
-     <p class="stat">Prestige level: #${G.prestige}</p>`;
-}
+function doIPO(){document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.add('active');
+document.getElementById('ipo-stats').innerHTML=`<p class="stat">Total DATA mined: ${fmt(G.totalDataMined)}</p><p class="stat">Total hacks: ${G.totalHacks}</p><p class="stat">Total REP: ${fmt(G.totalRep)}</p><p class="stat">Prestige level: #${G.prestige}</p>`;}
 
-function doNewGamePlus() {
-  G.prestige++;
-  G.prestigeMulti = 1 + G.prestige * 0.25;
-  const prestige = G.prestige;
-  const multi = G.prestigeMulti;
-
-  G.data = 0; G.credits = 0; G.rep = 0; G.heat = 0;
-  G.dataPower = 1;
-  G.bots = [0,0,0,0,0,0];
-  G.devs = [0,0,0,0,0];
-  G.upgrades = {};
-  G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
-  G.prestige = prestige;
-  G.prestigeMulti = multi;
-  G._endgameShown = false;
-  G.lootInventory = [];
-  G.activeAuctions = [];
-
-  initNPCs();
-
-  document.getElementById('endgame-overlay').classList.remove('active');
-  document.getElementById('ipo-overlay').classList.remove('active');
-
-  addLog('NEW GAME+ #' + G.prestige + ' — +' + Math.round((G.prestigeMulti - 1) * 100) + '% DATA/s bonus', 'info');
-  saveGame();
-  renderAll();
-}
+function doNewGamePlus(){G.prestige++;G.prestigeMulti=1+G.prestige*0.25;const prestige=G.prestige,multi=G.prestigeMulti;
+G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
+G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;G.prestige=prestige;G.prestigeMulti=multi;G._endgameShown=false;
+G.lootInventory=[];G.activeAuctions=[];G.darkWebRep=0;G.forensicTraces=[];G.activeBounty=false;G.bountyDefenseCount=0;
+G.usurpationActive=false;G.usurpationExpiry=0;G.lastSpoofTime=0;
+G.operatorAlias=generateAlias();G.playerIP=generateIP();
+initNPCs();document.getElementById('endgame-overlay').classList.remove('active');document.getElementById('ipo-overlay').classList.remove('active');
+addLog('NEW GAME+ #'+G.prestige+' — +'+Math.round((G.prestigeMulti-1)*100)+'% DATA/s bonus','info');saveGame();renderAll();}
 
 // ========== SAVE / LOAD ==========
-function saveGame() {
-  const save = {
-    data: G.data, credits: G.credits, rep: G.rep, heat: G.heat,
-    dataPower: G.dataPower, bots: G.bots, devs: G.devs, upgrades: G.upgrades,
-    prestige: G.prestige, prestigeMulti: G.prestigeMulti,
-    totalDataMined: G.totalDataMined, totalHacks: G.totalHacks, totalRep: G.totalRep,
-    lootInventory: G.lootInventory || [],
-    activeAuctions: G.activeAuctions || [],
+function saveGame(){const save={data:G.data,credits:G.credits,rep:G.rep,heat:G.heat,dataPower:G.dataPower,bots:G.bots,devs:G.devs,upgrades:G.upgrades,
+prestige:G.prestige,prestigeMulti:G.prestigeMulti,totalDataMined:G.totalDataMined,totalHacks:G.totalHacks,totalRep:G.totalRep,
+lootInventory:G.lootInventory||[],activeAuctions:G.activeAuctions||[],
+operatorAlias:G.operatorAlias,playerIP:G.playerIP,darkWebRep:G.darkWebRep||0,forensicTraces:G.forensicTraces||[],
+activeBounty:G.activeBounty||false,bountyDefenseCount:G.bountyDefenseCount||0,
+usurpationActive:G.usurpationActive||false,usurpationExpiry:G.usurpationExpiry||0,usurpationCompany:G.usurpationCompany||'',
+lastSpoofTime:G.lastSpoofTime||0,
+npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
+hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
+tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti})):null,lastSave:Date.now()};
+localStorage.setItem('bytecorp_save',JSON.stringify(save));}
 
-    npcs: G.npcs ? G.npcs.map(n => ({
-      name: n.name, os: n.os, baseDifficulty: n.baseDifficulty,
-      securityLevel: n.securityLevel, relation: n.relation,
-      hackCount: n.hackCount, lastHackTime: n.lastHackTime,
-      lastInteraction: n.lastInteraction, allyExpiry: n.allyExpiry,
-      tracerExpiry: n.tracerExpiry, breachExpiry: n.breachExpiry, breachMulti: n.breachMulti
-    })) : null,
-    lastSave: Date.now()
-  };
-  localStorage.setItem('bytecorp_save', JSON.stringify(save));
-}
+function applySave(s){G.data=s.data||0;G.credits=s.credits||0;G.rep=s.rep||0;G.heat=s.heat||0;G.dataPower=s.dataPower||1;
+G.bots=s.bots||[0,0,0,0,0,0];G.devs=s.devs||[0,0,0,0,0];G.upgrades=s.upgrades||{};
+G.prestige=s.prestige||0;G.prestigeMulti=s.prestigeMulti||1;
+G.totalDataMined=s.totalDataMined||0;G.totalHacks=s.totalHacks||0;G.totalRep=s.totalRep||0;
+G.lootInventory=s.lootInventory||[];G.activeAuctions=s.activeAuctions||[];
+G.operatorAlias=s.operatorAlias||generateAlias();G.playerIP=s.playerIP||generateIP();
+G.darkWebRep=s.darkWebRep||0;G.forensicTraces=s.forensicTraces||[];
+G.activeBounty=s.activeBounty||false;G.bountyDefenseCount=s.bountyDefenseCount||0;
+G.usurpationActive=s.usurpationActive||false;G.usurpationExpiry=s.usurpationExpiry||0;G.usurpationCompany=s.usurpationCompany||'';
+G.lastSpoofTime=s.lastSpoofTime||0;
+G._endgameShown=false;if(s.npcs&&s.npcs.length===20)G.npcs=s.npcs;else initNPCs();}
 
-function applySave(s) {
-  G.data = s.data || 0;
-  G.credits = s.credits || 0;
-  G.rep = s.rep || 0;
-  G.heat = s.heat || 0;
-  G.dataPower = s.dataPower || 1;
-  G.bots = s.bots || [0,0,0,0,0,0];
-  G.devs = s.devs || [0,0,0,0,0];
-  G.upgrades = s.upgrades || {};
-  G.prestige = s.prestige || 0;
-  G.prestigeMulti = s.prestigeMulti || 1;
-  G.totalDataMined = s.totalDataMined || 0;
-  G.totalHacks = s.totalHacks || 0;
-  G.totalRep = s.totalRep || 0;
-  G.lootInventory = s.lootInventory || [];
-  G.activeAuctions = s.activeAuctions || [];
+function hasSave(){return!!localStorage.getItem('bytecorp_save');}
+function loadSaveData(){const raw=localStorage.getItem('bytecorp_save');if(!raw)return null;try{return JSON.parse(raw);}catch(e){return null;}}
 
-  G._endgameShown = false;
-  if (s.npcs && s.npcs.length === 20) {
-    G.npcs = s.npcs;
-  } else {
-    initNPCs();
-  }
-}
-
-function hasSave() {
-  return !!localStorage.getItem('bytecorp_save');
-}
-
-function loadSaveData() {
-  const raw = localStorage.getItem('bytecorp_save');
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch(e) { return null; }
-}
-
-function manualSave() {
-  saveGame();
-  const flash = document.getElementById('save-flash');
-  flash.classList.add('show');
-  setTimeout(() => flash.classList.remove('show'), 1000);
-}
+function manualSave(){saveGame();const flash=document.getElementById('save-flash');flash.classList.add('show');setTimeout(()=>flash.classList.remove('show'),1000);}
 
 // ========== MENU ==========
-function openMenu() {
-  document.getElementById('menu-overlay').classList.add('active');
-}
+function openMenu(){document.getElementById('menu-overlay').classList.add('active');}
+function closeMenu(){document.getElementById('menu-overlay').classList.remove('active');}
+function saveAndQuit(){saveGame();stopGame();closeMenu();document.getElementById('game-container').style.display='none';showStartScreen();}
+function resetRun(){if(!confirm('Reset all progress? This cannot be undone.'))return;localStorage.removeItem('bytecorp_save');stopGame();closeMenu();
+document.getElementById('game-container').style.display='none';
+G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
+G.prestige=0;G.prestigeMulti=1;G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;
+G.lootInventory=[];G.activeAuctions=[];G.darkWebRep=0;G.forensicTraces=[];G.activeBounty=false;G.bountyDefenseCount=0;
+G.usurpationActive=false;G.usurpationExpiry=0;G.lastSpoofTime=0;
+G.operatorAlias='';G.playerIP='';
+G._endgameShown=false;G.npcs=null;showStartScreen();}
 
-function closeMenu() {
-  document.getElementById('menu-overlay').classList.remove('active');
-}
+function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();updateUI();}
 
-function saveAndQuit() {
-  saveGame();
-  stopGame();
-  closeMenu();
-  document.getElementById('game-container').style.display = 'none';
-  showStartScreen();
-}
+function shellCompanyDecay(){if(G.upgrades.shell&&G.heat>0)G.heat=Math.max(0,G.heat-(1/60));}
 
-function resetRun() {
-  if (!confirm('Reset all progress? This cannot be undone.')) return;
-  localStorage.removeItem('bytecorp_save');
-  stopGame();
-  closeMenu();
-  document.getElementById('game-container').style.display = 'none';
+// ========== GAME LOOPS ==========
+function gameLoop(){if(!gameRunning)return;const dps=getDataPerSec(),cps=getCreditsPerSec();G.data+=dps/10;G.credits+=cps/10;updateUI();}
 
-  G.data = 0; G.credits = 0; G.rep = 0; G.heat = 0;
-  G.dataPower = 1;
-  G.bots = [0,0,0,0,0,0];
-  G.devs = [0,0,0,0,0];
-  G.upgrades = {};
-  G.prestige = 0;
-  G.prestigeMulti = 1;
-  G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
-  G.lootInventory = [];
-  G.activeAuctions = [];
+function slowLoop(){if(!gameRunning)return;updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();
+checkDDoSExpiry();checkIncomingAttacks();checkDDoS();checkUsurpation();checkBounty();bountyAttackCheck();
+renderBots();renderDevs();renderUpgrades();renderTarget();}
 
-  G._endgameShown = false;
-  G.npcs = null;
+let logCleanerTimer=0;
+function fiveMinLoop(){if(!gameRunning)return;cleanForensicTraces();}
 
-  showStartScreen();
-}
+function stopGame(){gameRunning=false;gameIntervals.forEach(id=>clearInterval(id));gameIntervals=[];
+if(hackTimerInterval){clearInterval(hackTimerInterval);hackTimerInterval=null;}
+if(avTimerInterval){clearInterval(avTimerInterval);avTimerInterval=null;}
+if(downloadInterval){clearInterval(downloadInterval);downloadInterval=null;}
+if(defenseTimer){clearInterval(defenseTimer);defenseTimer=null;}
+if(defenseGameTimer){clearInterval(defenseGameTimer);defenseGameTimer=null;}
+if(ddosTimer){clearInterval(ddosTimer);ddosTimer=null;}
+hackActive=false;hackCooldown=false;downloadActive=false;defenseActive=false;defenseGameActive=false;ddosActive=false;
+currentTarget=null;currentTargetReward=null;}
 
-// ========== RENDER ALL ==========
-function renderAll() {
-  renderBots();
-  renderDevs();
-  renderUpgrades();
-  renderTarget();
-  updateUI();
-}
-
-// ========== SHELL COMPANY HEAT DECAY ==========
-function shellCompanyDecay() {
-  if (G.upgrades.shell && G.heat > 0) {
-    G.heat = Math.max(0, G.heat - (1 / 60));
-  }
-}
-
-// ========== GAME LOOP ==========
-function gameLoop() {
-  if (!gameRunning) return;
-  const dps = getDataPerSec();
-  const cps = getCreditsPerSec();
-  G.data += dps / 10;
-  G.credits += cps / 10;
-  updateUI();
-}
-
-function slowLoop() {
-  if (!gameRunning) return;
-  updateNPCs();
-  shellCompanyDecay();
-  updateAuctions();
-  checkIncomingAttacks();
-  renderBots();
-  renderDevs();
-  renderUpgrades();
-  renderTarget();
-}
-
-// ========== START / STOP GAME ==========
-function stopGame() {
-  gameRunning = false;
-  gameIntervals.forEach(id => clearInterval(id));
-  gameIntervals = [];
-  if (hackTimerInterval) { clearInterval(hackTimerInterval); hackTimerInterval = null; }
-  if (avTimerInterval) { clearInterval(avTimerInterval); avTimerInterval = null; }
-  if (downloadInterval) { clearInterval(downloadInterval); downloadInterval = null; }
-  if (defenseTimer) { clearInterval(defenseTimer); defenseTimer = null; }
-  if (defenseGameTimer) { clearInterval(defenseGameTimer); defenseGameTimer = null; }
-  hackActive = false;
-  hackCooldown = false;
-  downloadActive = false;
-  defenseActive = false;
-  defenseGameActive = false;
-  currentTarget = null;
-  currentTargetReward = null;
-}
-
-function startGameLoops() {
-  gameRunning = true;
-  lastNpcAttackTime = Date.now();
-  lastEnemyAttackTime = Date.now();
-
-  renderAll();
-  addLog('ByteCorp v1.0 initialized');
-  addLog('Welcome, operator.');
-
-  gameIntervals.push(setInterval(gameLoop, 100));
-  gameIntervals.push(setInterval(slowLoop, 1000));
-
-  pickTarget();
-  gameIntervals.push(setInterval(pickTarget, 45000));
-  gameIntervals.push(setInterval(checkAllianceProposals, 120000));
-  gameIntervals.push(setInterval(randomNPCEvent, 180000));
-  gameIntervals.push(setInterval(() => {
-    if (!G.npcs) return;
-    G.npcs.forEach(n => { n.securityLevel = Math.min(10, n.securityLevel + 0.1); });
-  }, 300000));
-  gameIntervals.push(setInterval(saveGame, 10000));
-}
+function startGameLoops(){gameRunning=true;lastNpcAttackTime=Date.now();lastEnemyAttackTime=Date.now();
+lastDdosCheck=Date.now();lastUsurpCheck=Date.now();lastBountyAttack=Date.now();
+renderAll();addLog('ByteCorp v1.0 initialized');addLog('Welcome, '+G.operatorAlias+'.');
+gameIntervals.push(setInterval(gameLoop,100));gameIntervals.push(setInterval(slowLoop,1000));
+pickTarget();gameIntervals.push(setInterval(pickTarget,45000));gameIntervals.push(setInterval(checkAllianceProposals,120000));
+gameIntervals.push(setInterval(randomNPCEvent,180000));
+gameIntervals.push(setInterval(()=>{if(!G.npcs)return;G.npcs.forEach(n=>{n.securityLevel=Math.min(10,n.securityLevel+0.1);});},300000));
+gameIntervals.push(setInterval(saveGame,10000));
+gameIntervals.push(setInterval(fiveMinLoop,300000));}
 
 // ========== START SCREEN ==========
-function showStartScreen() {
-  const screen = document.getElementById('start-screen');
-  screen.classList.remove('hidden');
-  document.getElementById('btn-continue').style.display = hasSave() ? 'block' : 'none';
-}
+function showStartScreen(){document.getElementById('start-screen').classList.remove('hidden');
+document.getElementById('btn-continue').style.display=hasSave()?'block':'none';updateStartIP();}
 
-function continueGame() {
-  const s = loadSaveData();
-  if (!s) return;
-  applySave(s);
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('game-container').style.display = 'flex';
-  startGameLoops();
-  addLog('Save restored');
-}
+function continueGame(){const s=loadSaveData();if(!s)return;applySave(s);
+document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';
+startGameLoops();addLog('Save restored');}
 
-function newGame() {
-  if (hasSave()) {
-    if (!confirm('This will erase your current save. Confirm?')) return;
-    localStorage.removeItem('bytecorp_save');
-  }
-  G.data = 0; G.credits = 0; G.rep = 0; G.heat = 0;
-  G.dataPower = 1;
-  G.bots = [0,0,0,0,0,0];
-  G.devs = [0,0,0,0,0];
-  G.upgrades = {};
-  G.prestige = 0;
-  G.prestigeMulti = 1;
-  G.totalDataMined = 0; G.totalHacks = 0; G.totalRep = 0;
-  G.lootInventory = [];
-  G.activeAuctions = [];
+function newGame(){if(hasSave()){if(!confirm('This will erase your current save. Confirm?'))return;localStorage.removeItem('bytecorp_save');}
+G.data=0;G.credits=0;G.rep=0;G.heat=0;G.dataPower=1;G.bots=[0,0,0,0,0,0];G.devs=[0,0,0,0,0];G.upgrades={};
+G.prestige=0;G.prestigeMulti=1;G.totalDataMined=0;G.totalHacks=0;G.totalRep=0;
+G.lootInventory=[];G.activeAuctions=[];G.darkWebRep=0;G.forensicTraces=[];G.activeBounty=false;G.bountyDefenseCount=0;
+G.usurpationActive=false;G.usurpationExpiry=0;G.lastSpoofTime=0;
+G.operatorAlias=generateAlias();G.playerIP=generateIP();
+G._endgameShown=false;initNPCs();
+document.getElementById('start-screen').classList.add('hidden');document.getElementById('game-container').style.display='flex';startGameLoops();}
 
-  G._endgameShown = false;
-  initNPCs();
+function openHelp(){document.getElementById('help-overlay').classList.add('active');}
+function closeHelp(){document.getElementById('help-overlay').classList.remove('active');}
 
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('game-container').style.display = 'flex';
-  startGameLoops();
-}
-
-// ========== HELP ==========
-function openHelp() {
-  document.getElementById('help-overlay').classList.add('active');
-}
-function closeHelp() {
-  document.getElementById('help-overlay').classList.remove('active');
-}
-
-// ========== INIT ==========
 showStartScreen();
 </script>
 </body>
