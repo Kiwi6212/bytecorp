@@ -37,6 +37,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 #header-actions-right{display:flex;align-items:center;gap:4px;margin-left:auto;flex-shrink:0}
 .header-btn{background:transparent;border:1px solid var(--accent);color:#cccccc;font-family:inherit;font-size:11px;padding:3px 8px;cursor:pointer;letter-spacing:0.5px;transition:all 0.15s;white-space:nowrap}
 .header-btn:hover{background:rgba(0,255,65,0.08);color:var(--accent)}
+.header-btn{position:relative}.npc-auc-badge{position:absolute;top:-6px;right:-6px;background:#ff3333;color:#fff;font-size:9px;min-width:14px;height:14px;line-height:14px;border-radius:7px;text-align:center;padding:0 3px;font-family:inherit;pointer-events:none;animation:badgePulse 1.5s infinite}@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 #save-flash{color:var(--accent);font-size:0.7em;opacity:0;transition:opacity 0.15s}
 #save-flash.show{opacity:1}
 #level-info{font-size:0.8em;color:var(--warning)}
@@ -1324,7 +1325,7 @@ const LANG = {
     npcAucBid:'[ BID ]',npcAucPass:'[ PASS ]',npcAucResell:'[ RESELL ]',
     npcAucCurrentBid:'Bid: {0} DATA',npcAucTimeLeft:'{0}m {1}s',
     npcAucYourBid:'Your bid: {0} DATA',npcAucHighBidder:'YOU ARE HIGH BIDDER',
-    logNpcAucNew:'{0} listed {1} on the black market',
+    logNpcAucNew:'\uD83C\uDFF7 {0} listed: {1} ({2}) on the black market',
     logNpcAucBid:'You bid {0} DATA on {1}',logNpcAucOutbid:'You were outbid on {0}! DATA refunded.',
     logNpcAucWon:'You won {0}! Effect: {1}',logNpcAucLost:'You lost auction for {0}. Bid refunded.',
     logNpcAucResell:'Resold {0} for {1} DATA (+{2}% profit)',
@@ -1605,7 +1606,7 @@ const LANG = {
     npcAucBid:'[ ENCHÉRIR ]',npcAucPass:'[ PASSER ]',npcAucResell:'[ REVENDRE ]',
     npcAucCurrentBid:'Enchère: {0} DATA',npcAucTimeLeft:'{0}m {1}s',
     npcAucYourBid:'Votre enchère: {0} DATA',npcAucHighBidder:'VOUS ÊTES LE PLUS OFFRANT',
-    logNpcAucNew:'{0} a listé {1} sur le marché noir',
+    logNpcAucNew:'\uD83C\uDFF7 {0} met en vente: {1} ({2}) sur le marché noir',
     logNpcAucBid:'Vous avez enchéri {0} DATA sur {1}',logNpcAucOutbid:'Surenchère sur {0} ! DATA remboursé.',
     logNpcAucWon:'Vous avez gagné {0} ! Effet: {1}',logNpcAucLost:'Enchère perdue pour {0}. Mise remboursée.',
     logNpcAucResell:'{0} revendu pour {1} DATA (+{2}% profit)',
@@ -2015,7 +2016,8 @@ let G = {
   npcAucDataBoostExpiry: 0,
   npcAucCoalWarnActive: false,
   npcAucBcBreachElite: '',
-  npcAucBcBreachFake: ''
+  npcAucBcBreachFake: '',
+  unseenNpcAuctions: 0
 };
 
 let gameRunning = false;
@@ -3227,8 +3229,14 @@ else{G.lootInventory.push(pendingLoot);addLog(LF('logAddedInv',pendingLoot.name)
 pendingLoot=null;document.getElementById('loot-overlay').classList.remove('active');}
 
 // ========== BLACK MARKET ==========
-function openBlackMarket(){if(!G.upgrades.darkweb)return;document.getElementById('bmarket-overlay').classList.add('active');renderBlackMarket();}
+function openBlackMarket(){if(!G.upgrades.darkweb)return;G.unseenNpcAuctions=0;updateNpcAucBadge();document.getElementById('bmarket-overlay').classList.add('active');renderBlackMarket();}
 function closeBlackMarket(){document.getElementById('bmarket-overlay').classList.remove('active');}
+
+function updateNpcAucBadge(){const btn=document.getElementById('bmarket-header-btn');if(!btn)return;
+let badge=btn.querySelector('.npc-auc-badge');
+const count=G.unseenNpcAuctions||0;
+if(count>0){if(!badge){badge=document.createElement('span');badge.className='npc-auc-badge';btn.appendChild(badge);}badge.textContent=count;}
+else{if(badge)badge.remove();}}
 
 function switchBMarketTab(tab){
   document.querySelectorAll('.bmarket-tab').forEach(t=>t.classList.remove('active'));
@@ -3349,8 +3357,10 @@ const auc={seller:company,name:name,rarity:rarity,baseValue:baseValue,currentBid
   startTime:now,endTime:now+duration,lastNpcBidTime:now,
   bcBreach:rarity==='legendary'&&Math.random()<0.3};
 G.npcAuctions.push(auc);
-addLog(LF('logNpcAucNew',company,name),'info');
-addNewsItem(LF('logNpcAucNew',company,name));
+G.unseenNpcAuctions=(G.unseenNpcAuctions||0)+1;updateNpcAucBadge();
+SFX.play('bid');
+addLog(LF('logNpcAucNew',company,name,L('rar'+rarity.charAt(0).toUpperCase()+rarity.slice(1))),'info');
+addNewsItem(LF('logNpcAucNew',company,name,L('rar'+rarity.charAt(0).toUpperCase()+rarity.slice(1))));
 }
 
 function updateNpcAuctions(){
@@ -4543,7 +4553,7 @@ zeroDaysInventory:G.zeroDaysInventory||[],
 npcAuctions:G.npcAuctions||[],lastNpcAuctionSpawn:G.lastNpcAuctionSpawn||0,
 npcAucEffects:G.npcAucEffects||{},npcAucWonItems:G.npcAucWonItems||[],
 npcAucDataBoostExpiry:G.npcAucDataBoostExpiry||0,npcAucCoalWarnActive:G.npcAucCoalWarnActive||false,
-npcAucBcBreachElite:G.npcAucBcBreachElite||'',npcAucBcBreachFake:G.npcAucBcBreachFake||'',
+npcAucBcBreachElite:G.npcAucBcBreachElite||'',npcAucBcBreachFake:G.npcAucBcBreachFake||'',unseenNpcAuctions:G.unseenNpcAuctions||0,
 npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
 hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
 tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti,
@@ -4612,7 +4622,7 @@ G.zeroDaysInventory=s.zeroDaysInventory||[];
 G.npcAuctions=s.npcAuctions||[];G.lastNpcAuctionSpawn=s.lastNpcAuctionSpawn||0;
 G.npcAucEffects=s.npcAucEffects||{};G.npcAucWonItems=s.npcAucWonItems||[];
 G.npcAucDataBoostExpiry=s.npcAucDataBoostExpiry||0;G.npcAucCoalWarnActive=s.npcAucCoalWarnActive||false;
-G.npcAucBcBreachElite=s.npcAucBcBreachElite||'';G.npcAucBcBreachFake=s.npcAucBcBreachFake||'';
+G.npcAucBcBreachElite=s.npcAucBcBreachElite||'';G.npcAucBcBreachFake=s.npcAucBcBreachFake||'';G.unseenNpcAuctions=s.unseenNpcAuctions||0;
 G._endgameShown=false;if(s.npcs&&s.npcs.length>=15)G.npcs=s.npcs;else initNPCs();
 // Ensure NPC virus fields exist
 if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;if(!n._neuralBackdoorAlly)n._neuralBackdoorAlly=false;});
@@ -4714,7 +4724,7 @@ document.getElementById('infra-tab-btn').style.display='none';
 restoreHackerHeader();
 showStartScreen();}
 
-function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();renderNewsfeed();updateUI();
+function renderAll(){renderBots();renderDevs();renderUpgrades();renderTarget();renderNewsfeed();updateUI();updateNpcAucBadge();
   if(G.upgrades.theArchitect){document.getElementById('infra-tab-btn').style.display='';renderInfraList();}
   if(G.upgrades.cryptoMining)document.getElementById('crypto-res-wrap').style.display='';
   if(G.upgrades.godModeActivated)document.body.classList.add('god-mode-active');
