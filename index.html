@@ -46,6 +46,36 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 @keyframes toastFadeOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
 .npc-auc-card.outbid-flash{animation:outbidCardFlash 0.6s ease}
 @keyframes outbidCardFlash{0%{border-color:#FF6600;box-shadow:0 0 12px rgba(255,102,0,0.5)}100%{border-color:#FF6600;box-shadow:none}}
+#training-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1600;justify-content:center;align-items:center}
+#training-overlay.active{display:flex}
+#training-popup{background:var(--panel);border:2px solid var(--accent);padding:24px;min-width:420px;max-width:560px;max-height:85vh;display:flex;flex-direction:column;overflow-y:auto}
+#training-popup h2{color:var(--accent);font-size:1em;margin-bottom:12px;letter-spacing:3px}
+.training-tabs{display:flex;gap:0;margin-bottom:12px}
+.training-tab{flex:1;padding:6px;background:transparent;border:1px solid var(--border);color:#ccc;font-family:inherit;font-size:0.7em;cursor:pointer;letter-spacing:1px}
+.training-tab.active{color:var(--accent);border-color:var(--accent);background:rgba(0,255,65,0.05)}
+.training-content{display:none}.training-content.active{display:block}
+#training-cmd-select{width:100%;padding:6px;background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:0.75em;margin-bottom:8px}
+#training-cmd-desc{font-size:0.7em;color:#999;margin-bottom:8px;min-height:1.2em}
+#training-mastery-info{font-size:0.7em;margin-bottom:10px;color:var(--text)}
+.training-prompt-label{color:var(--accent);font-size:0.8em;margin-right:6px}
+#training-practice-input,#drill-input{width:calc(100% - 16px);padding:6px 8px;background:#0a0a1a;border:1px solid var(--border);color:var(--accent);font-family:inherit;font-size:0.8em;margin-top:6px}
+#training-practice-input:focus,#drill-input:focus{border-color:var(--accent);outline:none}
+#training-practice-result{font-size:0.75em;margin-top:8px;min-height:1.2em}
+.train-ok{color:var(--accent)}.train-fail{color:var(--danger)}
+#training-practice-cooldown{font-size:0.65em;color:var(--warning);margin-top:4px}
+#training-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#ccc;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:10px}
+#drill-timer{font-size:1.4em;color:var(--warning);text-align:center;letter-spacing:2px;margin-bottom:8px}
+#drill-progress{font-size:0.7em;color:#999;text-align:center;margin-bottom:10px}
+#drill-cmd-display{font-size:0.85em;color:var(--accent);text-align:center;padding:10px;border:1px solid var(--border);margin-bottom:8px;min-height:1.5em;letter-spacing:1px}
+#drill-penalty{font-size:0.65em;color:var(--danger);text-align:center;min-height:1em;margin-top:4px}
+#drill-results{text-align:center;font-size:0.75em;color:var(--text);line-height:1.8}
+.drill-rating{font-size:2em;font-weight:bold;letter-spacing:4px;margin:8px 0}
+.drill-rating-S{color:#FFD700}.drill-rating-A{color:var(--accent)}.drill-rating-B{color:#4a9eff}.drill-rating-C{color:#999}.drill-rating-D{color:var(--danger)}
+#drill-best-time{font-size:0.7em;color:#999;margin-top:8px}
+#drill-start-wrap{text-align:center;padding:20px 0}
+@keyframes trainFlashGreen{0%{background:rgba(0,255,65,0.2)}100%{background:transparent}}
+@keyframes trainFlashRed{0%{background:rgba(255,51,51,0.2)}100%{background:transparent}}
+.train-flash-ok{animation:trainFlashGreen 0.4s ease}.train-flash-fail{animation:trainFlashRed 0.4s ease}
 #save-flash{color:var(--accent);font-size:0.7em;opacity:0;transition:opacity 0.15s}
 #save-flash.show{opacity:1}
 #level-info{font-size:0.8em;color:var(--warning)}
@@ -605,6 +635,7 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
     <button class="header-btn" onclick="openMissions()">MISSIONS</button>
     <button class="header-btn" onclick="openSkills()">SKILLS</button>
     <button class="header-btn" onclick="openAchievements()">ACH</button>
+    <button class="header-btn" id="btn-training" onclick="openTraining()">TRAINING</button>
     <button class="header-btn" id="btn-npcs" onclick="openNpcDirectory()">NPCS</button>
     <button class="header-btn" onclick="manualSave()">SAVE</button>
     <span id="save-flash">SAVED</span>
@@ -867,6 +898,37 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <!-- Bankrupt Picker -->
 <div id="bankrupt-picker-overlay"><div id="bankrupt-picker"><h3>// SELECT TARGET</h3><div id="bankrupt-picker-list"></div></div></div>
 <div id="outbid-toast-container"></div>
+
+<!-- Training Modal -->
+<div id="training-overlay"><div id="training-popup">
+<h2 id="training-title">// TERMINAL TRAINING</h2>
+<div class="training-tabs">
+<button class="training-tab active" onclick="switchTrainingTab('practice')">PRACTICE</button>
+<button class="training-tab" onclick="switchTrainingTab('drill')">DRILL</button>
+</div>
+<div class="training-content active" id="training-practice">
+<div id="training-select-wrap"><select id="training-cmd-select"><option value="">-- Select Command --</option></select></div>
+<div id="training-cmd-desc"></div>
+<div id="training-mastery-info"></div>
+<div id="training-prompt" style="display:none"><span class="training-prompt-label">&gt; Simulation:</span>
+<input type="text" id="training-practice-input" autocomplete="off" spellcheck="false" placeholder="type command..."></div>
+<div id="training-practice-result"></div>
+<div id="training-practice-cooldown"></div>
+</div>
+<div class="training-content" id="training-drill">
+<div id="drill-start-wrap"><button class="bm-btn bm-bid" id="drill-start-btn" onclick="startDrill()">[ START DRILL ]</button>
+<div id="drill-best-time"></div></div>
+<div id="drill-area" style="display:none">
+<div id="drill-timer">0.000s</div>
+<div id="drill-progress"></div>
+<div id="drill-cmd-display"></div>
+<input type="text" id="drill-input" autocomplete="off" spellcheck="false" placeholder="type command...">
+<div id="drill-penalty"></div>
+</div>
+<div id="drill-results" style="display:none"></div>
+</div>
+<button id="training-close" onclick="closeTraining()">[ CLOSE ]</button>
+</div></div>
 
 <!-- Defense Alert -->
 <div id="defense-overlay">
@@ -1297,7 +1359,7 @@ const LANG = {
     scanFw1:'> Bypassing firewall layer 1...',scanFw2:'> Bypassing firewall layer 2...',
     scanConnected:'> Connected to [target IP: {0}]',scanExploit:'> Deploying exploit...',
     scanAccess:'> ACCESS POINT FOUND — Awaiting commands',
-    helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus\n\n[ COMMANDS ]    Buy commands in CORP > COMMANDS tab.\n                Assign them to your Linux/Windows deck via [ LOADOUT ].\n                Use commands repeatedly to gain mastery \u2014 autocomplete then one-click.\n[ OS AFFINITY ] Specializing in Linux or Windows gives timer bonuses and reward boosts.\n[ 0-DAYS ]      Ultra-rare loot (0.5%). Skip commands or auto-succeed a hack. One use only.\n[ MAN PAGE ]    [ MAN ] button in header \u2014 full command reference with real explanations.',
+    helpContent:'[ DATA ]      Main currency. Mine manually or buy BOTS.\n[ CREDITS ]   Corp currency. Hire DEVS to generate passively.\n[ REP ]       Reputation. Gained by hacking. Unlocks levels.\n[ HEAT ]      Threat level. Hits 100% = RAID (-30% DATA).\n\n[ MINE DATA ] Click to earn DATA manually.\n[ BOTS ]      Buy bots for passive DATA/s. Cost x1.15 per purchase.\n[ HACK ]      Type real Linux/PowerShell commands to hack NPC servers.\n              Wrong command or timeout = HEAT penalty + hack fails.\n[ DEVS ]      Hire developers for passive CREDITS/s.\n[ UPGRADES ]  One-time boosts. VPN reduces HEAT. Dark Web unlocks market.\n\n[ NPC STATUS ]\n  NEUTRAL  — can be hacked\n  ALLY     — offers contracts, cannot be hacked\n  ENEMY    — higher rewards but sends tracers (+HEAT/min)\n  Hack same target 3x = becomes ENEMY\n  Leave neutral target alone = may offer ALLIANCE\n\n[ LOOT ]      After each hack, a file is exfiltrated. Rarity: Common/Rare/Epic/Legendary.\n              Sell instantly or auction on the Dark Web for higher prices.\n\n[ DEFENSE ]   NPC companies attack you based on your HEAT level.\n              Defend manually with Linux commands or use AUTO-DEFEND.\n              Auto-defense success rate depends on your security upgrades.\n\n[ CORP ID ]   Your hacker identity. IP, alias, traceability meter.\n\n[ THREATS ]\n  DDoS        Traceability >70% — bots go offline. Defend or wait.\n  IP Spoof    Enemy impersonates your IP — HEAT rises passively.\n  Bounty      Dark Web Rep LEGENDARY — elite hunters attack every 60s.\n\n[ NPC ACTIVE ATTACKS ]\n  Virus       Enemy deploys virus: bot income -50% for 10 min.\n              Fix: type \'sudo clamscan -r /home\' + \'sudo systemctl restart cron\'\n              Or pay 1000 DATA to auto-remove.\n  Fake Contracts  Enemy disguised as ally sends scam contracts.\n              Watch for subtle name differences! Low trace auto-flags them.\n  False Flag  Enemy uses your IP for their attacks (+15 HEAT over 5 min).\n              Fix: CHANGE IP (200 DATA) or Log Cleaner auto-blocks.\n  Espionage   High-security enemy infiltrates your systems.\n              Fix: type \'sudo netstat -an | grep ESTABLISHED\' +\n              \'sudo iptables -A INPUT -s attacker_ip -j DROP\'\n  Coalition   3+ enemies may form alliances for coordinated attacks.\n  Bot Hijack  Enemy hijacks a bot — generates HEAT instead of DATA.\n              Fix: click PURGE BOT button (200 DATA).\n\n[ NPC vs NPC ]\n  NPCs fight each other every 3-5 min. Watch the newsfeed ticker!\n  Bounty opportunities and mergers can change the landscape.\n\n[ MISSIONS ]  10 story missions with escalating rewards.\n              Complete them in order to unlock the full story.\n\n[ SKILLS ]    3 branches: HACKER, CORP, GHOST. 4 skills each.\n              Spend CREDITS to unlock permanent bonuses.\n\n[ VIRUSES ]   Unlocked after IP Spoofer. Deploy offensive viruses on NPCs.\n              Logic Bomb, Ransomware, Rootkit — each with detection risk.\n\n[ ACHIEVEMENTS ] 20 achievements tracking your progress.\n\n[ OFFENSIVE ]\n  IP Spoofing Use another NPC as decoy on hacks (requires IP Spoofer).\n  Viruses     Deploy viruses on NPCs from the VIRUS tab.\n\n[ ENDGAME ]   Reach Level 50 (50M REP) to choose your fate:\n  IPO = go legit and win\n  NEW GAME+ = reset with +25% permanent DATA/s bonus\n\n[ COMMANDS ]    Buy commands in CORP > COMMANDS tab.\n                Assign them to your Linux/Windows deck via [ LOADOUT ].\n                Use commands repeatedly to gain mastery \u2014 autocomplete then one-click.\n[ OS AFFINITY ] Specializing in Linux or Windows gives timer bonuses and reward boosts.\n[ 0-DAYS ]      Ultra-rare loot (0.5%). Skip commands or auto-succeed a hack. One use only.\n[ MAN PAGE ]    [ MAN ] button in header \u2014 full command reference with real explanations.\n\n[ TRAINING ]  Practice commands without HEAT risk.\n  PRACTICE  Type a selected command \u2014 +0.5 mastery XP (30s cooldown)\n  DRILL     5 random timed commands \u2014 WPM score + rating S/A/B/C/D',
     helpContent_fr:'',
     // Command system
     cmdsTab:'CMDS',linuxSection:'// LINUX',powershellSection:'// POWERSHELL',
@@ -1354,7 +1416,19 @@ const LANG = {
     logBcBreach:'{0} acquired ByteCorp data — {1}',
     bcBreachElite:'{0} next attack is Elite difficulty',bcBreachFake:'{0} sends undetectable fake contract',
     bcBreachCopy:'{0} copied bot upgrade — income +5 min',
-    outbidToastMsg:'outbid you on',outbidToastBid:'New bid: {0} DATA'
+    outbidToastMsg:'outbid you on',outbidToastBid:'New bid: {0} DATA',
+    // Training
+    trainingBtn:'TRAINING',trainingTitle:'// TERMINAL TRAINING',
+    trainPractice:'PRACTICE',trainDrill:'DRILL',
+    trainSelectCmd:'-- Select Command --',trainSimLabel:'> Simulation:',
+    trainCmdOk:'\u2713 Command executed',trainCmdFail:'\u2717 Incorrect \u2014 try again',
+    trainCooldown:'Cooldown: {0}s',trainMasteryXp:'{0} {1} ({2}/{3} uses to next level)',
+    trainMasteryMax:'{0} {1} MAX MASTERY',
+    trainStartDrill:'[ START DRILL ]',trainRetry:'[ RETRY ]',trainNewDrill:'[ NEW DRILL ]',
+    trainDrillTime:'Time: {0}s',trainDrillWpm:'WPM: {0}',trainDrillXp:'Mastery XP: +{0} per command',
+    trainDrillRating:'Rating: ',trainDrillBest:'Best time: {0}s',trainDrillNewRecord:'New record!',
+    trainDrillPenalty:'+2s penalty!',trainDrillProgress:'{0} / {1}',
+    trainHelpSection:'\n\n[ TRAINING ]  Practice commands without HEAT risk.\n  PRACTICE  Type a selected command \u2014 +0.5 mastery XP (30s cooldown)\n  DRILL     5 random timed commands \u2014 WPM score + rating S/A/B/C/D'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1636,7 +1710,19 @@ const LANG = {
     logBcBreach:'{0} a acquis des données ByteCorp — {1}',
     bcBreachElite:'Prochaine attaque de {0} en difficulté Élite',bcBreachFake:'{0} envoie un faux contrat indétectable',
     bcBreachCopy:'{0} a copié un bot — revenu +5 min',
-    outbidToastMsg:'a surenchéri sur',outbidToastBid:'Nouvelle enchère: {0} DATA'
+    outbidToastMsg:'a surenchéri sur',outbidToastBid:'Nouvelle enchère: {0} DATA',
+    // Training
+    trainingBtn:'ENTRAÎNEMENT',trainingTitle:'// ENTRAÎNEMENT TERMINAL',
+    trainPractice:'PRATIQUE',trainDrill:'DRILL',
+    trainSelectCmd:'-- Sélectionner une commande --',trainSimLabel:'> Simulation :',
+    trainCmdOk:'\u2713 Commande exécutée',trainCmdFail:'\u2717 Incorrect \u2014 réessayez',
+    trainCooldown:'Recharge : {0}s',trainMasteryXp:'{0} {1} ({2}/{3} utilisations pour le prochain niveau)',
+    trainMasteryMax:'{0} {1} MAÎTRISE MAX',
+    trainStartDrill:'[ DÉMARRER DRILL ]',trainRetry:'[ RÉESSAYER ]',trainNewDrill:'[ NOUVEAU DRILL ]',
+    trainDrillTime:'Temps : {0}s',trainDrillWpm:'MPM : {0}',trainDrillXp:'XP Maîtrise : +{0} par commande',
+    trainDrillRating:'Note : ',trainDrillBest:'Meilleur temps : {0}s',trainDrillNewRecord:'Nouveau record !',
+    trainDrillPenalty:'+2s pénalité !',trainDrillProgress:'{0} / {1}',
+    trainHelpSection:'\n\n[ ENTRAÎNEMENT ] Pratiquez les commandes sans risque CHALEUR.\n  PRATIQUE  Tapez une commande sélectionnée \u2014 +0.5 XP maîtrise (recharge 30s)\n  DRILL     5 commandes aléatoires chronométrées \u2014 score MPM + note S/A/B/C/D'
   }
 };
 
@@ -1675,6 +1761,7 @@ function applyLang(){
     else if(oc.includes('openMissions'))b.textContent=L('missions');
     else if(oc.includes('openSkills'))b.textContent=L('skills');
     else if(oc.includes('openAchievements'))b.textContent=L('ach');
+    else if(oc.includes('openTraining'))b.textContent=L('trainingBtn');
     else if(oc.includes('openNpcDirectory'))b.textContent=L('npcsBtn');
     else if(oc.includes('manualSave'))b.textContent=L('save');
     else if(oc.includes('openHelp'))b.textContent='?';
@@ -1741,6 +1828,11 @@ function applyLang(){
   const bmT=document.querySelector('#bmarket-popup h2');if(bmT)bmT.textContent=L('blackMarketTitle');
   const bmClose=document.getElementById('bmarket-close');if(bmClose)bmClose.textContent=L('close');
   const bmTabs=document.querySelectorAll('.bmarket-tab');if(bmTabs[0])bmTabs[0].textContent=L('inventory');if(bmTabs[1])bmTabs[1].textContent=L('activeAuctions');if(bmTabs[2])bmTabs[2].textContent=L('npcMarketTab');
+  // Training
+  const trT=document.getElementById('training-title');if(trT)trT.textContent=L('trainingTitle');
+  const trTabs=document.querySelectorAll('.training-tab');if(trTabs[0])trTabs[0].textContent=L('trainPractice');if(trTabs[1])trTabs[1].textContent=L('trainDrill');
+  const trClose=document.getElementById('training-close');if(trClose)trClose.textContent=L('close');
+  const drillBtn=document.getElementById('drill-start-btn');if(drillBtn)drillBtn.textContent=L('trainStartDrill');
   // Defense
   const defMan=document.getElementById('btn-defend-manual');if(defMan)defMan.textContent=L('defenseManual');
   const defAuto=document.getElementById('btn-defend-auto');if(defAuto)defAuto.textContent=L('defenseAuto');
@@ -3569,6 +3661,201 @@ G.npcAuctions.forEach((auc,i)=>{
   html+='</div>';
   div.innerHTML=html;el.appendChild(div);
 });
+}
+
+// ========== TRAINING SYSTEM ==========
+let trainingCooldowns={};
+let drillActive=false,drillCmds=[],drillIdx=0,drillStartTime=0,drillPenalty=0,drillTimerInterval=null,drillTotalChars=0,drillLastCmds=[];
+
+function openTraining(){document.getElementById('training-overlay').classList.add('active');populateTrainingSelect();renderTrainingMastery();updateDrillBest();}
+function closeTraining(){document.getElementById('training-overlay').classList.remove('active');if(drillTimerInterval){clearInterval(drillTimerInterval);drillTimerInterval=null;}drillActive=false;}
+
+function switchTrainingTab(tab){
+document.querySelectorAll('.training-tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.training-content').forEach(c=>c.classList.remove('active'));
+document.getElementById('training-'+tab).classList.add('active');
+document.querySelector('.training-tab[onclick="switchTrainingTab(\''+tab+'\')"]').classList.add('active');
+if(tab==='practice'){populateTrainingSelect();renderTrainingMastery();}
+if(tab==='drill')updateDrillBest();
+}
+
+function populateTrainingSelect(){
+const sel=document.getElementById('training-cmd-select');
+const val=sel.value;sel.innerHTML='<option value="">'+L('trainSelectCmd')+'</option>';
+(G.unlockedCommands||[]).forEach(cmd=>{
+  const opt=document.createElement('option');opt.value=cmd;opt.textContent=cmd;sel.appendChild(opt);
+});
+sel.value=val;updateTrainingCmdDesc();
+}
+
+function getCmdDesc(cmd){
+const all=[...CMD_SHOP.linux,...CMD_SHOP.windows];
+const found=all.find(c=>c.cmd===cmd);return found?found.desc:'';
+}
+
+function updateTrainingCmdDesc(){
+const sel=document.getElementById('training-cmd-select');
+const cmd=sel.value;
+const descEl=document.getElementById('training-cmd-desc');
+const promptEl=document.getElementById('training-prompt');
+const resultEl=document.getElementById('training-practice-result');
+if(!cmd){descEl.textContent='';promptEl.style.display='none';resultEl.textContent='';renderTrainingMastery();return;}
+descEl.textContent=getCmdDesc(cmd);
+promptEl.style.display='';
+document.getElementById('training-practice-input').value='';
+resultEl.textContent='';
+renderTrainingMastery();updatePracticeCooldown(cmd);
+}
+
+function renderTrainingMastery(){
+const cmd=document.getElementById('training-cmd-select').value;
+const el=document.getElementById('training-mastery-info');
+if(!cmd){el.innerHTML='';return;}
+const uses=G.commandMastery[cmd]||0;const lv=getMasteryLevel(cmd);
+const stars=getMasteryStarsHtml(cmd);
+if(lv>=3){el.innerHTML=LF('trainMasteryMax',stars,'<span style="color:#ccc">'+cmd+'</span>');return;}
+const thresholds=[3,8,15];const next=thresholds[lv];
+const usesDisplay=Math.floor(uses);
+el.innerHTML=LF('trainMasteryXp',stars,'<span style="color:#ccc">'+cmd+'</span>',usesDisplay,next);
+}
+
+function updatePracticeCooldown(cmd){
+const el=document.getElementById('training-practice-cooldown');
+const cd=trainingCooldowns[cmd];
+if(!cd||Date.now()>=cd){el.textContent='';return;}
+const remaining=Math.ceil((cd-Date.now())/1000);
+el.textContent=LF('trainCooldown',remaining);
+}
+
+document.getElementById('training-cmd-select').addEventListener('change',updateTrainingCmdDesc);
+
+document.getElementById('training-practice-input').addEventListener('input',()=>{SFX.play('keyPress');});
+document.getElementById('training-practice-input').addEventListener('keydown',(e)=>{
+if(e.key!=='Enter')return;
+const cmd=document.getElementById('training-cmd-select').value;if(!cmd)return;
+const input=e.target,typed=input.value.trim();
+const resultEl=document.getElementById('training-practice-result');
+const promptEl=document.getElementById('training-prompt');
+if(typed.toLowerCase()===cmd.toLowerCase()){
+  // Check cooldown
+  if(trainingCooldowns[cmd]&&Date.now()<trainingCooldowns[cmd]){
+    input.value='';return;
+  }
+  SFX.play('cmdOk');
+  resultEl.innerHTML='<span class="train-ok">'+L('trainCmdOk')+'</span>';
+  promptEl.classList.add('train-flash-ok');setTimeout(()=>promptEl.classList.remove('train-flash-ok'),400);
+  G.commandMastery[cmd]=(G.commandMastery[cmd]||0)+0.5;
+  trainingCooldowns[cmd]=Date.now()+30000;
+  renderTrainingMastery();
+  input.value='';
+  // Cooldown countdown
+  const cdInterval=setInterval(()=>{
+    const cd=trainingCooldowns[cmd];
+    if(!cd||Date.now()>=cd){document.getElementById('training-practice-cooldown').textContent='';clearInterval(cdInterval);return;}
+    document.getElementById('training-practice-cooldown').textContent=LF('trainCooldown',Math.ceil((cd-Date.now())/1000));
+  },500);
+}else{
+  SFX.play('cmdFail');
+  resultEl.innerHTML='<span class="train-fail">'+L('trainCmdFail')+'</span>';
+  promptEl.classList.add('train-flash-fail');setTimeout(()=>promptEl.classList.remove('train-flash-fail'),400);
+  input.value='';
+}
+});
+
+// Drill system
+function startDrill(){
+if(drillActive)return;
+const cmds=G.unlockedCommands||[];
+if(cmds.length<5){return;}
+drillCmds=[];const pool=[...cmds];
+for(let i=0;i<5;i++){drillCmds.push(pool[Math.floor(Math.random()*pool.length)]);}
+drillLastCmds=[...drillCmds];
+drillIdx=0;drillPenalty=0;drillTotalChars=0;drillActive=true;
+document.getElementById('drill-start-wrap').style.display='none';
+document.getElementById('drill-results').style.display='none';
+const area=document.getElementById('drill-area');area.style.display='';
+document.getElementById('drill-penalty').textContent='';
+drillStartTime=Date.now();
+drillTimerInterval=setInterval(updateDrillTimer,50);
+renderDrillCmd();
+document.getElementById('drill-input').value='';
+document.getElementById('drill-input').focus();
+}
+
+function updateDrillTimer(){
+if(!drillActive)return;
+const elapsed=(Date.now()-drillStartTime)/1000+drillPenalty;
+document.getElementById('drill-timer').textContent=elapsed.toFixed(3)+'s';
+}
+
+function renderDrillCmd(){
+document.getElementById('drill-cmd-display').textContent=drillCmds[drillIdx];
+document.getElementById('drill-progress').textContent=LF('trainDrillProgress',drillIdx+1,drillCmds.length);
+}
+
+document.getElementById('drill-input').addEventListener('input',()=>{SFX.play('keyPress');});
+document.getElementById('drill-input').addEventListener('keydown',(e)=>{
+if(e.key!=='Enter'||!drillActive)return;
+const input=e.target,typed=input.value.trim();
+if(typed.toLowerCase()===drillCmds[drillIdx].toLowerCase()){
+  SFX.play('cmdOk');drillTotalChars+=drillCmds[drillIdx].length;
+  G.commandMastery[drillCmds[drillIdx]]=(G.commandMastery[drillCmds[drillIdx]]||0)+0.3;
+  drillIdx++;input.value='';
+  document.getElementById('drill-penalty').textContent='';
+  if(drillIdx>=drillCmds.length){finishDrill();}
+  else{renderDrillCmd();}
+}else{
+  SFX.play('cmdFail');drillPenalty+=2;input.value='';
+  document.getElementById('drill-penalty').textContent=L('trainDrillPenalty');
+  const area=document.getElementById('drill-area');
+  area.classList.add('train-flash-fail');setTimeout(()=>area.classList.remove('train-flash-fail'),400);
+}
+});
+
+function finishDrill(){
+drillActive=false;if(drillTimerInterval){clearInterval(drillTimerInterval);drillTimerInterval=null;}
+const totalTime=((Date.now()-drillStartTime)/1000+drillPenalty);
+const words=drillTotalChars/5;const minutes=totalTime/60;const wpm=Math.round(words/minutes);
+let rating='D',ratingClass='drill-rating-D';
+if(totalTime<20){rating='S';ratingClass='drill-rating-S';}
+else if(totalTime<35){rating='A';ratingClass='drill-rating-A';}
+else if(totalTime<50){rating='B';ratingClass='drill-rating-B';}
+else if(totalTime<70){rating='C';ratingClass='drill-rating-C';}
+const bestRaw=localStorage.getItem('bytecorp_drill_best');
+const best=bestRaw?parseFloat(bestRaw):null;
+const isNewRecord=!best||totalTime<best;
+if(isNewRecord)localStorage.setItem('bytecorp_drill_best',totalTime.toFixed(3));
+document.getElementById('drill-area').style.display='none';
+const res=document.getElementById('drill-results');res.style.display='';
+let html='<div class="drill-rating '+ratingClass+'">'+rating+'</div>';
+html+='<div>'+LF('trainDrillTime',totalTime.toFixed(3))+'</div>';
+html+='<div>'+LF('trainDrillWpm',wpm)+'</div>';
+html+='<div>'+LF('trainDrillXp','0.3')+'</div>';
+if(isNewRecord)html+='<div style="color:#FFD700;margin-top:6px">'+L('trainDrillNewRecord')+'</div>';
+else if(best)html+='<div style="color:#999;margin-top:4px">'+LF('trainDrillBest',best.toFixed(3))+'</div>';
+html+='<div style="margin-top:12px"><button class="bm-btn bm-bid" onclick="retryDrill()">'+L('trainRetry')+'</button> ';
+html+='<button class="bm-btn bm-pass" onclick="startDrill()">'+L('trainNewDrill')+'</button></div>';
+res.innerHTML=html;
+}
+
+function retryDrill(){
+if(!drillLastCmds||drillLastCmds.length<5){startDrill();return;}
+drillCmds=[...drillLastCmds];drillIdx=0;drillPenalty=0;drillTotalChars=0;drillActive=true;
+document.getElementById('drill-results').style.display='none';
+const area=document.getElementById('drill-area');area.style.display='';
+document.getElementById('drill-penalty').textContent='';
+drillStartTime=Date.now();
+drillTimerInterval=setInterval(updateDrillTimer,50);
+renderDrillCmd();
+document.getElementById('drill-input').value='';
+document.getElementById('drill-input').focus();
+}
+
+function updateDrillBest(){
+const bestRaw=localStorage.getItem('bytecorp_drill_best');
+const el=document.getElementById('drill-best-time');
+if(bestRaw)el.textContent=LF('trainDrillBest',parseFloat(bestRaw).toFixed(3));
+else el.textContent='';
 }
 
 // ========== HACK INPUT ==========
@@ -5840,6 +6127,7 @@ function restoreHackerHeader() {
     {text: L('missions'), fn: 'openMissions()'},
     {text: L('skills'), fn: 'openSkills()'},
     {text: L('ach'), fn: 'openAchievements()'},
+    {text: L('trainingBtn'), fn: 'openTraining()'},
     {text: L('save'), fn: 'manualSave()'},
   ];
   hackerBtns.forEach(b => {
