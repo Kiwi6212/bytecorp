@@ -3683,7 +3683,7 @@ function populateTrainingSelect(){
 const sel=document.getElementById('training-cmd-select');
 const val=sel.value;sel.innerHTML='<option value="">'+L('trainSelectCmd')+'</option>';
 (G.unlockedCommands||[]).forEach(cmd=>{
-  const opt=document.createElement('option');opt.value=cmd;opt.textContent=cmd;sel.appendChild(opt);
+  const opt=document.createElement('option');opt.value=cmd;opt.textContent=cmd+' '+getMasteryStars(cmd);sel.appendChild(opt);
 });
 sel.value=val;updateTrainingCmdDesc();
 }
