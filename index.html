@@ -268,6 +268,30 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointe
 .auction-time{color:var(--danger)}
 #bmarket-close{width:100%;padding:6px;background:transparent;border:1px solid #333;color:#cccccc;font-family:inherit;cursor:pointer;font-size:0.7em;margin-top:8px}
 .bmarket-empty{font-size:0.75em;color:#cccccc;text-align:center;padding:16px}
+.npc-auc-card{border:1px solid #FF8C00;padding:8px;margin-bottom:6px;background:rgba(255,140,0,0.03)}
+.npc-auc-seller{font-size:0.7em;color:#FF8C00;margin-bottom:2px;letter-spacing:1px}
+.npc-auc-name{font-size:0.8em;margin-bottom:2px}
+.npc-auc-effect{font-size:0.6em;color:#999;margin-bottom:4px;font-style:italic}
+.npc-auc-info{display:flex;justify-content:space-between;align-items:center;font-size:0.65em;margin-bottom:4px}
+.npc-auc-bid{color:var(--warning)}
+.npc-auc-time{color:var(--danger)}
+.npc-auc-actions{display:flex;gap:4px}
+.bm-bid{border:1px solid #FF8C00;color:#FF8C00}
+.bm-bid:hover{background:rgba(255,140,0,0.1)}
+.bm-pass{border:1px solid #666;color:#999}
+.bm-pass:hover{background:rgba(255,255,255,0.03)}
+.bm-resell{border:1px solid var(--accent);color:var(--accent)}
+.bm-resell:hover{background:rgba(0,255,65,0.1)}
+.npc-auc-highbid{border-color:#FFD700;box-shadow:0 0 6px rgba(255,215,0,0.2)}
+.npc-auc-won{animation:npcAucWin 0.5s ease}
+@keyframes npcAucWin{0%{background:rgba(0,255,65,0.3)}100%{background:transparent}}
+.bmarket-tab.npc-tab.active{color:#FF8C00;border-color:#FF8C00;background:rgba(255,140,0,0.05)}
+#bankrupt-picker-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1700;justify-content:center;align-items:center}
+#bankrupt-picker-overlay.active{display:flex}
+#bankrupt-picker{background:var(--panel);border:2px solid var(--danger);padding:20px;max-width:400px}
+#bankrupt-picker h3{color:var(--danger);font-size:0.9em;margin-bottom:10px;letter-spacing:2px}
+.bankrupt-btn{display:block;width:100%;padding:6px;margin-bottom:4px;background:transparent;border:1px solid var(--border);color:#ccc;font-family:inherit;font-size:0.7em;cursor:pointer}
+.bankrupt-btn:hover{border-color:var(--danger);color:var(--danger);background:rgba(255,51,51,0.05)}
 #defense-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;justify-content:center;align-items:center;flex-direction:column}
 #defense-overlay.active{display:flex}
 #defense-skull{font-family:monospace;font-size:0.9em;color:var(--danger);line-height:1.2;margin-bottom:16px;white-space:pre}
@@ -823,11 +847,16 @@ body.god-mode-active #header{animation:godGlow 2s infinite}
 <div class="bmarket-tabs">
 <button class="bmarket-tab active" onclick="switchBMarketTab('inventory')">INVENTORY</button>
 <button class="bmarket-tab" onclick="switchBMarketTab('auctions')">ACTIVE AUCTIONS</button>
+<button class="bmarket-tab npc-tab" onclick="switchBMarketTab('npcauctions')">// NPC MARKET</button>
 </div>
 <div class="bmarket-content active" id="bmarket-inventory"></div>
 <div class="bmarket-content" id="bmarket-auctions"></div>
+<div class="bmarket-content" id="bmarket-npcauctions"></div>
 <button id="bmarket-close" onclick="closeBlackMarket()">[ CLOSE ]</button>
 </div></div>
+
+<!-- Bankrupt Picker -->
+<div id="bankrupt-picker-overlay"><div id="bankrupt-picker"><h3>// SELECT TARGET</h3><div id="bankrupt-picker-list"></div></div></div>
 
 <!-- Defense Alert -->
 <div id="defense-overlay">
@@ -1289,7 +1318,32 @@ const LANG = {
     npcHacksLabel:'Hacks',npcTracerActive:'TRACER ACTIVE',npcContractActive:'CONTRACT ACTIVE',
     // Save export/import
     exportSave:'[ EXPORT SAVE ]',importSave:'[ IMPORT SAVE ]',
-    importWarning:'\u26a0 This will overwrite your current save. Continue?'
+    importWarning:'\u26a0 This will overwrite your current save. Continue?',
+    // NPC Market
+    npcMarketTab:'// NPC MARKET',noNpcAuctions:'No NPC auctions available right now...',
+    npcAucBid:'[ BID ]',npcAucPass:'[ PASS ]',npcAucResell:'[ RESELL ]',
+    npcAucCurrentBid:'Bid: {0} DATA',npcAucTimeLeft:'{0}m {1}s',
+    npcAucYourBid:'Your bid: {0} DATA',npcAucHighBidder:'YOU ARE HIGH BIDDER',
+    logNpcAucNew:'{0} listed {1} on the black market',
+    logNpcAucBid:'You bid {0} DATA on {1}',logNpcAucOutbid:'You were outbid on {0}! DATA refunded.',
+    logNpcAucWon:'You won {0}! Effect: {1}',logNpcAucLost:'You lost auction for {0}. Bid refunded.',
+    logNpcAucResell:'Resold {0} for {1} DATA (+{2}% profit)',
+    logNpcAucEnemyWon:'{0} won {1} — {2}',
+    npcAucEffNone:'Resellable data — flip for profit',
+    npcAucEffSecDown:'Lowers {0} security for 10 min',npcAucEffSkipCmd:'Skip 1 command on next {0} hack',
+    npcAucEffRewardUp:'Next {0} hack rewards +30%',npcAucEffStealCreds:'Steal 500-2000 CREDITS from {0}',
+    npcAucEffReveal:'Reveals {0} next planned action',npcAucEffDataBoost:'DATA/s +15% for 10 min',
+    npcAucEffCoalWarn:'Reveals coalition forming 60s early',npcAucEffBankrupt:'Force one NPC into bankruptcy',
+    npcAucEffTurnNeutral:'Turn one enemy NPC neutral instantly',npcAucEffZeroDay:'Adds a zero-day to inventory',
+    logNpcSecDown:'{0} security lowered for 10 min',logNpcSkipCmd:'Next hack on {0}: skip 1 command',
+    logNpcRewardUp:'Next hack on {0}: +30% rewards',logNpcStealCreds:'Stole {0} CREDITS from {1}',
+    logNpcReveal:'Intel: {0} plans to {1} in ~3 min',logNpcDataBoost:'DATA/s +15% for 10 min',
+    logNpcCoalWarn:'Intel: Coalition forming in ~60s',logNpcBankrupt:'{0} went bankrupt! Income zeroed.',
+    logNpcTurnNeutral:'{0} is now neutral.',logNpcZeroDay:'Zero-day exploit acquired!',
+    npcAucPickBankrupt:'Choose an NPC to bankrupt:',
+    logBcBreach:'{0} acquired ByteCorp data — {1}',
+    bcBreachElite:'{0} next attack is Elite difficulty',bcBreachFake:'{0} sends undetectable fake contract',
+    bcBreachCopy:'{0} copied bot upgrade — income +5 min'
   },
   fr: {
     mineData:'[ MINER DATA ]', terminal:'// Terminal', bots:'// Bots', hack:'// Hack', corp:'// Corp',
@@ -1545,7 +1599,32 @@ const LANG = {
     npcHacksLabel:'Hacks',npcTracerActive:'TRACEUR ACTIF',npcContractActive:'CONTRAT ACTIF',
     // Save export/import
     exportSave:'[ EXPORTER SAUVEGARDE ]',importSave:'[ IMPORTER SAUVEGARDE ]',
-    importWarning:'\u26a0 Ceci écrasera votre sauvegarde actuelle. Continuer ?'
+    importWarning:'\u26a0 Ceci écrasera votre sauvegarde actuelle. Continuer ?',
+    // NPC Market
+    npcMarketTab:'// MARCHÉ NPC',noNpcAuctions:'Aucune enchère NPC disponible...',
+    npcAucBid:'[ ENCHÉRIR ]',npcAucPass:'[ PASSER ]',npcAucResell:'[ REVENDRE ]',
+    npcAucCurrentBid:'Enchère: {0} DATA',npcAucTimeLeft:'{0}m {1}s',
+    npcAucYourBid:'Votre enchère: {0} DATA',npcAucHighBidder:'VOUS ÊTES LE PLUS OFFRANT',
+    logNpcAucNew:'{0} a listé {1} sur le marché noir',
+    logNpcAucBid:'Vous avez enchéri {0} DATA sur {1}',logNpcAucOutbid:'Surenchère sur {0} ! DATA remboursé.',
+    logNpcAucWon:'Vous avez gagné {0} ! Effet: {1}',logNpcAucLost:'Enchère perdue pour {0}. Mise remboursée.',
+    logNpcAucResell:'{0} revendu pour {1} DATA (+{2}% profit)',
+    logNpcAucEnemyWon:'{0} a gagné {1} — {2}',
+    npcAucEffNone:'Données revendables — profit rapide',
+    npcAucEffSecDown:'Baisse la sécurité de {0} pour 10 min',npcAucEffSkipCmd:'Saute 1 commande au prochain hack de {0}',
+    npcAucEffRewardUp:'Prochain hack de {0}: récompenses +30%',npcAucEffStealCreds:'Vole 500-2000 CRÉDITS à {0}',
+    npcAucEffReveal:'Révèle la prochaine action de {0}',npcAucEffDataBoost:'DATA/s +15% pour 10 min',
+    npcAucEffCoalWarn:'Révèle coalition en formation 60s avant',npcAucEffBankrupt:'Force un NPC en faillite',
+    npcAucEffTurnNeutral:'Rend un NPC ennemi neutre instantanément',npcAucEffZeroDay:'Ajoute un zero-day à l\'inventaire',
+    logNpcSecDown:'Sécurité de {0} réduite pour 10 min',logNpcSkipCmd:'Prochain hack de {0}: 1 commande sautée',
+    logNpcRewardUp:'Prochain hack de {0}: +30% récompenses',logNpcStealCreds:'{0} CRÉDITS volés à {1}',
+    logNpcReveal:'Intel: {0} prévoit de {1} dans ~3 min',logNpcDataBoost:'DATA/s +15% pour 10 min',
+    logNpcCoalWarn:'Intel: Coalition en formation dans ~60s',logNpcBankrupt:'{0} en faillite ! Revenu à zéro.',
+    logNpcTurnNeutral:'{0} est maintenant neutre.',logNpcZeroDay:'Exploit zero-day acquis !',
+    npcAucPickBankrupt:'Choisissez un NPC à mettre en faillite :',
+    logBcBreach:'{0} a acquis des données ByteCorp — {1}',
+    bcBreachElite:'Prochaine attaque de {0} en difficulté Élite',bcBreachFake:'{0} envoie un faux contrat indétectable',
+    bcBreachCopy:'{0} a copié un bot — revenu +5 min'
   }
 };
 
@@ -1649,7 +1728,7 @@ function applyLang(){
   // Black market
   const bmT=document.querySelector('#bmarket-popup h2');if(bmT)bmT.textContent=L('blackMarketTitle');
   const bmClose=document.getElementById('bmarket-close');if(bmClose)bmClose.textContent=L('close');
-  const bmTabs=document.querySelectorAll('.bmarket-tab');if(bmTabs[0])bmTabs[0].textContent=L('inventory');if(bmTabs[1])bmTabs[1].textContent=L('activeAuctions');
+  const bmTabs=document.querySelectorAll('.bmarket-tab');if(bmTabs[0])bmTabs[0].textContent=L('inventory');if(bmTabs[1])bmTabs[1].textContent=L('activeAuctions');if(bmTabs[2])bmTabs[2].textContent=L('npcMarketTab');
   // Defense
   const defMan=document.getElementById('btn-defend-manual');if(defMan)defMan.textContent=L('defenseManual');
   const defAuto=document.getElementById('btn-defend-auto');if(defAuto)defAuto.textContent=L('defenseAuto');
@@ -1928,7 +2007,15 @@ let G = {
   commandMastery: {},
   linuxAffinity: 0,
   windowsAffinity: 0,
-  zeroDaysInventory: []
+  zeroDaysInventory: [],
+  npcAuctions: [],
+  lastNpcAuctionSpawn: 0,
+  npcAucEffects: {},
+  npcAucWonItems: [],
+  npcAucDataBoostExpiry: 0,
+  npcAucCoalWarnActive: false,
+  npcAucBcBreachElite: '',
+  npcAucBcBreachFake: ''
 };
 
 let gameRunning = false;
@@ -2489,6 +2576,8 @@ function getDataPerSec(){
   if(G.upgrades.darkSyndicate&&G.darkSyndicateOn) total+=33.33;
   // Infrastructure nodes: +500 DATA/s each
   if(G.upgrades.theArchitect&&G.infraNodes>0) total+=G.infraNodes*500;
+  // NPC auction data boost: +15% for 10 min
+  if(G.npcAucDataBoostExpiry&&G.npcAucDataBoostExpiry>Date.now()) total*=1.15;
   return total;
 }
 
@@ -2839,6 +2928,8 @@ function startHack(){
   const deckCmds=deck.map(cmd=>{const shop=CMD_SHOP[n.os==='Linux'?'linux':'windows'].find(x=>x.cmd===cmd);return{cmd,tip:shop?shop.desc:cmd};});
   const shuffled=[...deckCmds].sort(()=>Math.random()-0.5);
   hackCmds=shuffled.slice(0,count);hackCmdIndex=0;
+  // NPC auction effect: skip 1 command
+  if(G.npcAucEffects&&G.npcAucEffects[n.name]&&G.npcAucEffects[n.name].skipCmd&&hackCmds.length>1){delete G.npcAucEffects[n.name].skipCmd;hackCmdIndex=1;addLog(LF('logNpcSkipCmd',n.name),'info');}
   const avTimes=[60,45,30,20,15];let avTime=avTimes[diff]||20;
   if(diff>=3&&G.skills.kernelpanic)avTime+=10;
   if(G.upgrades.godModeActivated)avTime+=30;
@@ -3016,7 +3107,8 @@ function completeDownload(pct){
   const heatGain=[5,10,20,35,50][diff];
   // OS Affinity reward multiplier
   const _osAffBonus=getOsAffinityBonus(n.os);
-  const dataGainFinal=Math.floor(dataGain*_osAffBonus.rewardMult),crGainFinal=Math.floor(crGain*_osAffBonus.rewardMult),repGainFinal=Math.floor(repGain*_osAffBonus.rewardMult);
+  let _npcAucMult=1;if(G.npcAucEffects&&G.npcAucEffects[n.name]&&G.npcAucEffects[n.name].rewardUp){_npcAucMult=1.3;delete G.npcAucEffects[n.name].rewardUp;}
+  const dataGainFinal=Math.floor(dataGain*_osAffBonus.rewardMult*_npcAucMult),crGainFinal=Math.floor(crGain*_osAffBonus.rewardMult*_npcAucMult),repGainFinal=Math.floor(repGain*_osAffBonus.rewardMult*_npcAucMult);
   G.data+=dataGainFinal;G.credits+=crGainFinal;G.rep+=repGainFinal;G.totalRep+=repGainFinal;G.totalHacks++;
   G.darkWebRep+=5;
   // OS Affinity tracking
@@ -3162,6 +3254,7 @@ function renderBlackMarket(){
   <div class="auction-info"><span class="auction-bid">Current bid: ${fmt(auc.currentBid)} DATA</span> | <span class="auction-time">${Math.floor(remaining/60)}m ${remaining%60}s</span></div></div>
   <div class="bmarket-item-actions"><button class="bm-btn bm-cancel" onclick="bmarketCancelAuction(${i})">${L('cancelBtn')}</button></div>`;
   aucEl.appendChild(div);});}
+  renderNpcAuctions();
 }
 
 function bmarketSell(i){if(i<0||i>=G.lootInventory.length)return;const item=G.lootInventory.splice(i,1)[0];G.data+=item.value;G.totalItemsSold++;addLog(LF('logSold',item.name,fmt(item.value)),'info');renderBlackMarket();checkMissionProgress();checkAchievements();}
@@ -3181,7 +3274,7 @@ renderBlackMarket();}
 
 function updateAuctions(){if(G.activeAuctions.length===0)return;const now=Date.now();const completed=[];
 G.activeAuctions.forEach((auc,i)=>{
-  if(now-auc.lastBidTime>=30000&&now<auc.endTime){let bidMult=1+0.1+Math.random()*0.2;if(G.upgrades.blackMarketMonopoly)bidMult=1+(bidMult-1)*0.5;auc.currentBid=Math.floor(auc.currentBid*bidMult);auc.lastBidTime=now;SFX.play('bid');}
+  if(now-auc.lastBidTime>=20000&&now<auc.endTime){let bidMult=1+0.1+Math.random()*0.2;if(G.upgrades.blackMarketMonopoly)bidMult=1+(bidMult-1)*0.5;auc.currentBid=Math.floor(auc.currentBid*bidMult);auc.lastBidTime=now;SFX.play('bid');}
   if((auc.rarity==='epic'||auc.rarity==='legendary')&&now<auc.endTime)addHeat(0.017);
   if(now>=auc.endTime)completed.push(i);
 });
@@ -3203,6 +3296,250 @@ if(G.npcs&&Math.random()<0.3){
 }
 checkMissionProgress();checkAchievements();}
 if(document.getElementById('bmarket-overlay').classList.contains('active'))renderBlackMarket();}
+
+// ========== NPC AUCTION SYSTEM ==========
+function generateNpcAuction(){
+if(!G.npcs||G.npcs.length===0)return;
+const roll=Math.random();let rarity='common';
+if(roll<0.05)rarity='legendary';else if(roll<0.20)rarity='epic';else if(roll<0.50)rarity='rare';
+const sellers=G.npcs.filter(n=>n.relation==='neutral'||n.relation==='enemy');
+if(sellers.length===0)return;
+const seller=sellers[Math.floor(Math.random()*sellers.length)];
+let baseValue,name,effectKey='none',effectDesc='';
+const company=seller.name;
+if(rarity==='common'){
+  baseValue=100+Math.floor(Math.random()*200);
+  const items=['Stolen Logs','Traffic Data','DNS Records','Packet Dumps','Session Tokens'];
+  name=items[Math.floor(Math.random()*items.length)];
+  effectKey='none';effectDesc=L('npcAucEffNone');
+}else if(rarity==='rare'){
+  const types=[
+    {name:'Client Database from '+company,key:'secDown',descKey:'npcAucEffSecDown'},
+    {name:'Internal Emails from '+company,key:'skipCmd',descKey:'npcAucEffSkipCmd'},
+    {name:'R&D Documents from '+company,key:'rewardUp',descKey:'npcAucEffRewardUp'}
+  ];
+  const t=types[Math.floor(Math.random()*types.length)];
+  name=t.name;effectKey=t.key;effectDesc=LF(t.descKey,company);
+  baseValue=500+Math.floor(Math.random()*1000);
+}else if(rarity==='epic'){
+  const types=[
+    {name:'Banking Credentials from '+company,key:'stealCreds',descKey:'npcAucEffStealCreds'},
+    {name:'Corporate Secrets from '+company,key:'reveal',descKey:'npcAucEffReveal'},
+    {name:'Patent Files from '+company,key:'dataBoost',descKey:'npcAucEffDataBoost'}
+  ];
+  const t=types[Math.floor(Math.random()*types.length)];
+  name=t.name;effectKey=t.key;effectDesc=LF(t.descKey,company);
+  baseValue=2000+Math.floor(Math.random()*6000);
+}else{
+  const types=[
+    {name:'Government Contracts',key:'coalWarn',descKey:'npcAucEffCoalWarn'},
+    {name:'Black Project Files',key:'bankrupt',descKey:'npcAucEffBankrupt'},
+    {name:'Executive Communications',key:'turnNeutral',descKey:'npcAucEffTurnNeutral'},
+    {name:'Zero-Day Exploit',key:'zeroDay',descKey:'npcAucEffZeroDay'}
+  ];
+  const t=types[Math.floor(Math.random()*types.length)];
+  name=t.name;effectKey=t.key;effectDesc=L(t.descKey);
+  baseValue=10000+Math.floor(Math.random()*40000);
+}
+const duration=(AUCTION_DURATIONS[rarity]||180)*1000;
+const now=Date.now();
+const auc={seller:company,name:name,rarity:rarity,baseValue:baseValue,currentBid:baseValue,
+  duration:duration,effectKey:effectKey,effectDesc:effectDesc,
+  playerBid:0,playerIsHighBidder:false,
+  startTime:now,endTime:now+duration,lastNpcBidTime:now,
+  bcBreach:rarity==='legendary'&&Math.random()<0.3};
+G.npcAuctions.push(auc);
+addLog(LF('logNpcAucNew',company,name),'info');
+addNewsItem(LF('logNpcAucNew',company,name));
+}
+
+function updateNpcAuctions(){
+if(!G.npcAuctions||G.npcAuctions.length===0){
+  // Spawn check
+  const now=Date.now();
+  if(!G.lastNpcAuctionSpawn)G.lastNpcAuctionSpawn=now;
+  if(now-G.lastNpcAuctionSpawn>=180000+Math.random()*120000){G.lastNpcAuctionSpawn=now;generateNpcAuction();}
+  return;
+}
+const now=Date.now();
+// Spawn check
+if(!G.lastNpcAuctionSpawn)G.lastNpcAuctionSpawn=now;
+if(now-G.lastNpcAuctionSpawn>=180000+Math.random()*120000){G.lastNpcAuctionSpawn=now;if(G.npcAuctions.length<5)generateNpcAuction();}
+const completed=[];
+G.npcAuctions.forEach((auc,i)=>{
+  // NPC auto-bid every 45s
+  if(now-auc.lastNpcBidTime>=45000&&now<auc.endTime){
+    const bidInc=1.05+Math.random()*0.10;
+    auc.currentBid=Math.floor(auc.currentBid*bidInc);
+    auc.lastNpcBidTime=now;
+    if(auc.playerIsHighBidder){auc.playerIsHighBidder=false;G.data+=auc.playerBid;addLog(LF('logNpcAucOutbid',auc.name),'warning');}
+  }
+  if(now>=auc.endTime)completed.push(i);
+});
+for(let i=completed.length-1;i>=0;i--){
+  const auc=G.npcAuctions.splice(completed[i],1)[0];
+  if(auc.playerIsHighBidder){
+    // Player won
+    addLog(LF('logNpcAucWon',auc.name,auc.effectDesc),'info');
+    SFX.play('hackSuccess');
+    applyNpcAuctionEffect(auc);
+  }else{
+    // Player lost — refund bid
+    if(auc.playerBid>0){G.data+=auc.playerBid;addLog(LF('logNpcAucLost',auc.name),'warning');}
+    // Enemy NPC won — check ByteCorp breach
+    if(auc.bcBreach&&auc.rarity==='legendary'){
+      const enemies=G.npcs?G.npcs.filter(n=>n.relation==='enemy'):[];
+      if(enemies.length>0){
+        const winner=enemies[Math.floor(Math.random()*enemies.length)];
+        applyBcBreach(winner,auc);
+      }
+    }
+  }
+}
+if(document.getElementById('bmarket-overlay').classList.contains('active'))renderNpcAuctions();
+}
+
+function npcAuctionBid(idx){
+if(idx<0||idx>=G.npcAuctions.length)return;
+const auc=G.npcAuctions[idx];
+if(Date.now()>=auc.endTime)return;
+const bidAmount=Math.floor(auc.currentBid*1.10);
+if(G.data<bidAmount){addLog('Not enough DATA to bid','warning');return;}
+// Refund previous bid
+if(auc.playerBid>0)G.data+=auc.playerBid;
+G.data-=bidAmount;
+auc.playerBid=bidAmount;auc.currentBid=bidAmount;auc.playerIsHighBidder=true;
+addLog(LF('logNpcAucBid',fmt(bidAmount),auc.name),'info');
+SFX.play('bid');
+renderNpcAuctions();
+}
+
+function npcAuctionPass(idx){
+if(idx<0||idx>=G.npcAuctions.length)return;
+const auc=G.npcAuctions[idx];
+if(auc.playerBid>0&&auc.playerIsHighBidder){/* still high bidder, can't just pass */return;}
+if(auc.playerBid>0){G.data+=auc.playerBid;auc.playerBid=0;auc.playerIsHighBidder=false;}
+renderNpcAuctions();
+}
+
+function npcAuctionResell(idx){
+if(idx<0||idx>=G.npcAucWonItems.length)return;
+const item=G.npcAucWonItems.splice(idx,1)[0];
+const profit=1.2+Math.random()*0.2;
+const sellPrice=Math.floor(item.playerBid*profit);
+const pctProfit=Math.floor((profit-1)*100);
+G.data+=sellPrice;
+addLog(LF('logNpcAucResell',item.name,fmt(sellPrice),pctProfit),'info');
+renderNpcAuctions();
+}
+
+function applyNpcAuctionEffect(auc){
+const company=auc.seller;
+const npc=G.npcs?G.npcs.find(n=>n.name===company):null;
+switch(auc.effectKey){
+  case 'none':
+    // Common: store for resell
+    G.npcAucWonItems=G.npcAucWonItems||[];
+    G.npcAucWonItems.push({name:auc.name,rarity:auc.rarity,playerBid:auc.playerBid,effectKey:'none'});
+    break;
+  case 'secDown':
+    if(npc){npc.securityLevel=Math.max(0.5,npc.securityLevel-1);
+    setTimeout(()=>{if(npc)npc.securityLevel+=1;},600000);}
+    addLog(LF('logNpcSecDown',company),'info');break;
+  case 'skipCmd':
+    G.npcAucEffects=G.npcAucEffects||{};G.npcAucEffects[company]=G.npcAucEffects[company]||{};
+    G.npcAucEffects[company].skipCmd=true;
+    addLog(LF('logNpcSkipCmd',company),'info');break;
+  case 'rewardUp':
+    G.npcAucEffects=G.npcAucEffects||{};G.npcAucEffects[company]=G.npcAucEffects[company]||{};
+    G.npcAucEffects[company].rewardUp=true;
+    addLog(LF('logNpcRewardUp',company),'info');break;
+  case 'stealCreds':
+    if(npc){const stolen=500+Math.floor(Math.random()*1500);G.credits+=stolen;
+    addLog(LF('logNpcStealCreds',fmt(stolen),company),'info');}break;
+  case 'reveal':
+    const actions=['attack you','deploy a virus','send a fake contract','form a coalition'];
+    const action=actions[Math.floor(Math.random()*actions.length)];
+    addLog(LF('logNpcReveal',company,action),'info');break;
+  case 'dataBoost':
+    G.npcAucDataBoostExpiry=Date.now()+600000;
+    addLog(L('logNpcDataBoost'),'info');break;
+  case 'coalWarn':
+    G.npcAucCoalWarnActive=true;
+    addLog(L('logNpcCoalWarn'),'info');break;
+  case 'bankrupt':
+    showBankruptPicker();break;
+  case 'turnNeutral':
+    if(G.npcs){const enemies=G.npcs.filter(n=>n.relation==='enemy');
+    if(enemies.length>0){const target=enemies[Math.floor(Math.random()*enemies.length)];
+    target.relation='neutral';addLog(LF('logNpcTurnNeutral',target.name),'info');}}break;
+  case 'zeroDay':
+    const zdTypes=['0-day: SSH Bypass','0-day: Windows Auth','0-day: Kernel Exploit','0-day: Root Access'];
+    const zd=zdTypes[Math.floor(Math.random()*zdTypes.length)];
+    G.zeroDaysInventory.push(zd);
+    addLog(L('logNpcZeroDay'),'info');break;
+}
+}
+
+function showBankruptPicker(){
+const overlay=document.getElementById('bankrupt-picker-overlay');
+const list=document.getElementById('bankrupt-picker-list');
+list.innerHTML='';
+if(!G.npcs)return;
+G.npcs.forEach((n,i)=>{
+  if(n.relation==='ally')return;
+  const btn=document.createElement('button');btn.className='bankrupt-btn';
+  btn.textContent=n.name+' ('+n.relation+')';
+  btn.onclick=()=>{n.income=0;addLog(LF('logNpcBankrupt',n.name),'info');
+  addNewsItem(LF('logNpcBankrupt',n.name));overlay.classList.remove('active');};
+  list.appendChild(btn);
+});
+overlay.classList.add('active');
+}
+
+function applyBcBreach(winner,auc){
+const roll=Math.random();let effect,desc;
+if(roll<0.33){effect='elite';desc=LF('bcBreachElite',winner.name);G.npcAucBcBreachElite=winner.name;}
+else if(roll<0.66){effect='fake';desc=LF('bcBreachFake',winner.name);G.npcAucBcBreachFake=winner.name;}
+else{effect='copy';desc=LF('bcBreachCopy',winner.name);
+  winner.income=(winner.income||100)*2;setTimeout(()=>{if(winner)winner.income=Math.floor(winner.income/2);},300000);}
+addLog(LF('logBcBreach',winner.name,desc),'alert');
+addNewsItem(LF('logBcBreach',winner.name,desc));
+}
+
+function renderNpcAuctions(){
+const el=document.getElementById('bmarket-npcauctions');if(!el)return;
+if((!G.npcAuctions||G.npcAuctions.length===0)&&(!G.npcAucWonItems||G.npcAucWonItems.length===0)){
+  el.innerHTML='<div class="bmarket-empty">'+L('noNpcAuctions')+'</div>';return;
+}
+el.innerHTML='';const now=Date.now();
+// Won items available for resell
+if(G.npcAucWonItems&&G.npcAucWonItems.length>0){
+  G.npcAucWonItems.forEach((item,i)=>{
+    const div=document.createElement('div');div.className='npc-auc-card';
+    div.innerHTML='<div class="npc-auc-name rarity-common">'+item.name+' <span class="rarity-badge common" style="font-size:0.6em">WON</span></div>'+
+    '<div class="npc-auc-actions"><button class="bm-btn bm-resell" onclick="npcAuctionResell('+i+')">'+L('npcAucResell')+'</button></div>';
+    el.appendChild(div);
+  });
+}
+// Active auctions
+G.npcAuctions.forEach((auc,i)=>{
+  const remaining=Math.max(0,Math.ceil((auc.endTime-now)/1000));
+  const div=document.createElement('div');
+  div.className='npc-auc-card'+(auc.playerIsHighBidder?' npc-auc-highbid':'');
+  let html='<div class="npc-auc-seller">'+auc.seller+'</div>';
+  html+='<div class="npc-auc-name rarity-'+auc.rarity+'">'+auc.name+' <span class="rarity-badge '+auc.rarity+'" style="font-size:0.6em">'+auc.rarity.toUpperCase()+'</span></div>';
+  html+='<div class="npc-auc-effect">'+auc.effectDesc+'</div>';
+  html+='<div class="npc-auc-info"><span class="npc-auc-bid">'+LF('npcAucCurrentBid',fmt(auc.currentBid))+'</span>';
+  html+='<span class="npc-auc-time">'+LF('npcAucTimeLeft',Math.floor(remaining/60),remaining%60)+'</span></div>';
+  if(auc.playerBid>0)html+='<div style="font-size:0.6em;color:#FFD700;margin-bottom:4px">'+LF('npcAucYourBid',fmt(auc.playerBid))+(auc.playerIsHighBidder?' — '+L('npcAucHighBidder'):'')+'</div>';
+  html+='<div class="npc-auc-actions">';
+  if(remaining>0&&!auc.playerIsHighBidder)html+='<button class="bm-btn bm-bid" onclick="npcAuctionBid('+i+')">'+L('npcAucBid')+' ('+fmt(Math.floor(auc.currentBid*1.1))+')</button>';
+  if(remaining>0&&auc.playerBid>0&&!auc.playerIsHighBidder)html+='<button class="bm-btn bm-pass" onclick="npcAuctionPass('+i+')">'+L('npcAucPass')+'</button>';
+  html+='</div>';
+  div.innerHTML=html;el.appendChild(div);
+});
+}
 
 // ========== HACK INPUT ==========
 document.getElementById('hack-input').addEventListener('input',()=>{SFX.play('keyPress');});
@@ -3385,6 +3722,8 @@ function triggerIncomingAttack(npc){
   if(G.upgrades.ids){addLog(LF('logIdsWarning',npc.name),'warning');}
   defenseActive=true;defenseAttacker=npc;
   defenseDifficulty=Math.min(3,npc.baseDifficulty+(npc.relation==='enemy'?1:0));
+  // ByteCorp breach: elite difficulty
+  if(G.npcAucBcBreachElite===npc.name){defenseDifficulty=3;G.npcAucBcBreachElite='';}
   defenseDataRisk=[5,15,25,40,50][defenseDifficulty];
   document.getElementById('defense-skull').textContent=`    ░░░░░░░░░░░░░\n    ░░▄███████▄░░\n    ░██░░░░░░░██░\n    ░██░█░░░█░██░\n    ░░██░░░░░██░░\n    ░░░██████░░░░\n    ░░░██░░██░░░░`;
   document.getElementById('defense-title').textContent=L('intrDetected');
@@ -3621,7 +3960,10 @@ function checkFakeContracts(){
   if(allies.length===0)return;
   const disguise=allies[Math.floor(Math.random()*allies.length)];
   const fakeName=NPC_FAKES[disguise.name]||disguise.name.replace(/[aeiou]/i,c=>c==='e'?'3':c==='a'?'4':c==='o'?'0':c==='i'?'1':'u');
-  const isFlagged=getTraceability()<30||G.upgrades.darkWebScanner;
+  // ByteCorp breach: undetectable fake contract
+  let isFlagged;
+  if(G.npcAucBcBreachFake===enemy.name){isFlagged=false;G.npcAucBcBreachFake='';}
+  else{isFlagged=getTraceability()<30||G.upgrades.darkWebScanner;}
   const area=document.getElementById('contract-area');if(!area)return;
   const div=document.createElement('div');
   div.className='contract-notif'+(isFlagged?' fake':'');
@@ -3694,6 +4036,13 @@ function checkCoalitions(){
   if(enemies.length<3||Math.random()>0.2)return;
   const shuffled=[...enemies].sort(()=>Math.random()-0.5);
   const c1=shuffled[0],c2=shuffled[1];
+  // NPC auction effect: warn 60s before coalition
+  if(G.npcAucCoalWarnActive){G.npcAucCoalWarnActive=false;addLog(L('logNpcCoalWarn'),'warning');
+  setTimeout(()=>{G.coalitionActive=true;G.coalitionCompanies=[c1.name,c2.name];G.coalitionExpiry=Date.now()+600000;
+  addLog(LF('logCoalition',c1.name,c2.name),'alert');
+  addNewsItem(LF('newsCoalition',c1.name,c2.name));
+  setTimeout(()=>{if(G.coalitionActive&&!defenseActive&&!defenseGameActive){const npc1=G.npcs.find(n=>n.name===G.coalitionCompanies[0]);if(npc1)triggerIncomingAttack(npc1);}},5000);
+  setTimeout(()=>{if(G.coalitionActive&&!defenseActive&&!defenseGameActive){const npc2=G.npcs.find(n=>n.name===G.coalitionCompanies[1]);if(npc2)triggerIncomingAttack(npc2);}},15000);},60000);return;}
   G.coalitionActive=true;G.coalitionCompanies=[c1.name,c2.name];G.coalitionExpiry=Date.now()+600000;
   addLog(LF('logCoalition',c1.name,c2.name),'alert');
   addNewsItem(LF('newsCoalition',c1.name,c2.name));
@@ -4191,6 +4540,10 @@ commandMastery:G.commandMastery||{},
 linuxAffinity:G.linuxAffinity||0,
 windowsAffinity:G.windowsAffinity||0,
 zeroDaysInventory:G.zeroDaysInventory||[],
+npcAuctions:G.npcAuctions||[],lastNpcAuctionSpawn:G.lastNpcAuctionSpawn||0,
+npcAucEffects:G.npcAucEffects||{},npcAucWonItems:G.npcAucWonItems||[],
+npcAucDataBoostExpiry:G.npcAucDataBoostExpiry||0,npcAucCoalWarnActive:G.npcAucCoalWarnActive||false,
+npcAucBcBreachElite:G.npcAucBcBreachElite||'',npcAucBcBreachFake:G.npcAucBcBreachFake||'',
 npcs:G.npcs?G.npcs.map(n=>({name:n.name,os:n.os,baseDifficulty:n.baseDifficulty,securityLevel:n.securityLevel,relation:n.relation,
 hackCount:n.hackCount,lastHackTime:n.lastHackTime,lastInteraction:n.lastInteraction,allyExpiry:n.allyExpiry,
 tracerExpiry:n.tracerExpiry,breachExpiry:n.breachExpiry,breachMulti:n.breachMulti,
@@ -4256,6 +4609,10 @@ G.commandMastery=s.commandMastery||{};
 G.linuxAffinity=s.linuxAffinity||0;
 G.windowsAffinity=s.windowsAffinity||0;
 G.zeroDaysInventory=s.zeroDaysInventory||[];
+G.npcAuctions=s.npcAuctions||[];G.lastNpcAuctionSpawn=s.lastNpcAuctionSpawn||0;
+G.npcAucEffects=s.npcAucEffects||{};G.npcAucWonItems=s.npcAucWonItems||[];
+G.npcAucDataBoostExpiry=s.npcAucDataBoostExpiry||0;G.npcAucCoalWarnActive=s.npcAucCoalWarnActive||false;
+G.npcAucBcBreachElite=s.npcAucBcBreachElite||'';G.npcAucBcBreachFake=s.npcAucBcBreachFake||'';
 G._endgameShown=false;if(s.npcs&&s.npcs.length>=15)G.npcs=s.npcs;else initNPCs();
 // Ensure NPC virus fields exist
 if(G.npcs)G.npcs.forEach(n=>{if(!n.virusEffect)n.virusEffect=null;if(!n.virusExpiry)n.virusExpiry=0;if(!n.income)n.income=100;if(!n._neuralBackdoorAlly)n._neuralBackdoorAlly=false;});
@@ -4579,7 +4936,7 @@ if(G.upgrades.auctionBot){const now=Date.now();if(now-lastAuctionBotCheck>=60000
       addLog(LF('logAuctionBot',itemName,r),'info');}
   }
 }}
-updateNPCs();shellCompanyDecay();updateAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
+updateNPCs();shellCompanyDecay();updateAuctions();updateNpcAuctions();updateUsurpation();updateFalseFlag();updateEspionage();
 checkDDoSExpiry();checkIncomingAttacks();checkDDoS();checkUsurpation();checkBounty();bountyAttackCheck();
 // New NPC active behaviors
 checkNpcVirusDeployment();checkFakeContracts();checkFalseFlag();checkEspionage();checkCoalitions();checkBotHijacking();
@@ -4617,6 +4974,7 @@ G.lastCoalitionCheck=G.lastCoalitionCheck||Date.now();
 G.lastBotHijackCheck=G.lastBotHijackCheck||Date.now();
 G.lastNpcWarCheck=G.lastNpcWarCheck||Date.now();
 G.lastUrgentContractCheck=G.lastUrgentContractCheck||Date.now();
+G.lastNpcAuctionSpawn=G.lastNpcAuctionSpawn||Date.now();
 renderAll();initSoundBtn();addLog(L('logInit'));addLog(LF('logWelcome',G.operatorAlias));
 gameIntervals.push(setInterval(gameLoop,100));gameIntervals.push(setInterval(slowLoop,1000));
 pickTarget();gameIntervals.push(setInterval(pickTarget,45000));gameIntervals.push(setInterval(checkAllianceProposals,120000));
